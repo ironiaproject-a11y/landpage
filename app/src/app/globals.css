@@ -153,7 +153,7 @@ body::before {
   z-index: 9999;
   opacity: 0.2;
   mix-blend-mode: overlay;
-  animation: grain-animation 8s steps(10) infinite;
+  animation: grain-animation 12s steps(10) infinite;
 }
 
 /* Subtle Cinematic Vignette */
@@ -377,7 +377,7 @@ h3 {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--color-gold-dim), var(--color-gold-dark));
+  background: linear-gradient(180deg, var(--color-silver-bh), var(--color-silver-light));
 }
 
 /* Super-Luxury Button System - Enhanced */

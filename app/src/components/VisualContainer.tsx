@@ -119,8 +119,8 @@ export default function VisualContainer({
                             background: useTransform(
                                 [glareX, glareY],
                                 ([x, y]) => `
-                                    radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.18) 0%, transparent 45%),
-                                    radial-gradient(circle at ${x} ${y}, rgba(203, 213, 225, 0.1) 0%, transparent 70%)
+                                    radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.25) 0%, transparent 45%),
+                                    radial-gradient(circle at ${x} ${y}, rgba(203, 213, 225, 0.15) 0%, transparent 70%)
                                 `
                             ),
                             opacity: glareOpacity
