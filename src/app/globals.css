@@ -245,7 +245,7 @@ h1 {
 }
 
 .text-subheadline-editorial {
-  @apply text-xl md:text-2xl font-light leading-loose max-w-[52ch];
+  @apply text-xl md:text-[1.75rem] font-light leading-relaxed max-w-[52ch];
   color: #D6D6D6;
   /* Soft Cream / Light Gray */
 }
