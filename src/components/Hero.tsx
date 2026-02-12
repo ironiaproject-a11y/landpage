@@ -293,7 +293,7 @@ export function Hero() {
                 {/* Typography Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[5%] md:px-[8%] h-full flex flex-col justify-center items-start mt-16 md:mt-40"
+                    className="relative z-20 container mx-auto px-[5%] md:px-[8%] h-full flex flex-col justify-center items-start pt-32"
                 >
                     <div className="relative max-w-[800px]">
                         {/* Decorative background text removed to keep the video area clean */}
@@ -303,7 +303,7 @@ export function Hero() {
 
 
                         {/* Heading Group */}
-                        <div className="mb-8 relative">
+                        <div className="mb-12 relative">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight drop-shadow-2xl translate-z-20">
                                 <span className="block mb-2">
                                     <span className="title-line-inner inline-block">Seu Sorriso,</span>
