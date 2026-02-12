@@ -303,25 +303,24 @@ export function Hero() {
 
 
                         {/* Heading Group */}
-                        <div className="mb-10 relative">
-                            {/* Main H1 - Modern Editorial CLAMP Optimized */}
-                            <h1 ref={titleRef} className="font-display font-medium text-[#FAF9F7] leading-[1.1] tracking-tight drop-shadow-2xl translate-z-20">
-                                <span className="block text-[clamp(40px,6.5vw,72px)] mb-3">
+                        <div className="mb-8 relative">
+                            <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight drop-shadow-2xl translate-z-20">
+                                <span className="block mb-2">
                                     <span className="title-line-inner inline-block">Seu Sorriso,</span>
                                 </span>
-                                <span className="block text-[clamp(40px,6.5vw,72px)]">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura</span>.
+                                <span className="block">
+                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
-                        {/* Body Copy - Increased vertical spacing for better flow */}
-                        <div className="overflow-hidden mb-20">
+                        {/* Body Copy - High Contrast Editorial Layout */}
+                        <div className="overflow-hidden mb-16">
                             <p
                                 ref={descriptionRef}
-                                className="text-base md:text-xl text-[var(--color-text-dim)] leading-relaxed font-light max-w-[52ch] opacity-0"
+                                className="text-subheadline-editorial opacity-0"
                             >
-                                A harmonia perfeita entre a ciência avançada e a estética de alta costura. Projetamos o seu sorriso como uma obra de arte única e irreplicável.
+                                A harmonia perfeita entre a ciência avançada e a estética de alta costura. Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
                         </div>
 
@@ -359,16 +358,7 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* Scroll Indicator */}
-                <m.div
-                    initial={{ opacity: 0 }}
-                    animate={mounted ? { opacity: 1 } : {}}
-                    transition={{ delay: 2.5, duration: 1 }}
-                    className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20"
-                >
-                    <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-white/30 vertical-text">Scroll</span>
-                    <div className="w-[1px] h-20 bg-gradient-to-b from-white/40 via-white/10 to-transparent" />
-                </m.div>
+                {/* Scroll Indicator Removed as requested */}
             </div>
 
             {/* Ambient Lighting */}
