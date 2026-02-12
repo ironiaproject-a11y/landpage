@@ -58,7 +58,7 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "py-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-12 pb-8 bg-transparent"
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
@@ -72,8 +72,8 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-xl font-light text-white tracking-[0.3em] uppercase group-hover:tracking-[0.35em] transition-all duration-700">
-                                Clínica<span className="text-[var(--color-silver-bh)] font-medium">.</span>
+                            <span className="font-display text-2xl font-medium text-white tracking-[0.3em] uppercase group-hover:tracking-[0.35em] transition-all duration-700">
+                                Clínica<span className="text-[var(--color-silver-bh)] font-semibold">.</span>
                             </span>
                         </a>
                     </Magnetic>

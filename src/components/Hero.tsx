@@ -293,7 +293,7 @@ export function Hero() {
                 {/* Typography Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[5%] md:px-[8%] h-full flex flex-col justify-center items-start"
+                    className="relative z-20 container mx-auto px-[5%] md:px-[8%] h-full flex flex-col justify-center items-start mt-10 md:mt-20"
                 >
                     <div className="relative max-w-[800px]">
                         {/* Decorative background text removed to keep the video area clean */}
