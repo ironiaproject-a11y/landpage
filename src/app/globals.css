@@ -59,7 +59,7 @@
   /* Ensure editorial fallback */
 
   /* Editorial Spacing & Sizes */
-  --font-size-hero: clamp(4.5rem, 10vw, 8rem);
+  --font-size-hero: clamp(3.5rem, 7vw, 5.5rem);
   --line-height-hero: 1.05;
   --letter-spacing-hero: -0.02em;
 
