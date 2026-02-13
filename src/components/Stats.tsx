@@ -77,77 +77,72 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-32 bg-[#050505] relative overflow-hidden border-y border-white/5">
+        <section ref={containerRef} className="py-24 md:py-32 bg-[#050505] relative overflow-hidden border-y border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-16 md:gap-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
                     {stats.map((stat, index) => (
-                        <div key={index} className="flex-1 w-full flex flex-col items-center md:items-start relative group md:px-16 first:pl-0 last:pr-0">
+                        <m.div 
+                            key={index} 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.2, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
+                            viewport={{ once: true }}
+                            className="flex flex-col items-center md:items-start relative md:px-12 lg:px-16 first:pl-0 last:pr-0"
+                        >
                             {/* Number & Value */}
-                            <m.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 1.2, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
-                                viewport={{ once: true }}
-                                className="flex items-baseline gap-1 mb-6"
-                            >
+                            <div className="flex items-baseline gap-1 mb-8">
                                 {stat.prefix && (
-                                    <span className="text-[var(--color-silver-bh)] font-display text-4xl md:text-5xl font-light opacity-60">
+                                    <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-4xl font-light opacity-60">
                                         {stat.prefix}
                                     </span>
                                 )}
                                 {stat.value !== null ? (
                                     <span
-                                        className="stat-counter font-display text-6xl sm:text-7xl md:text-8xl lg:text-[110px] font-medium text-white tracking-tighter leading-none"
+                                        className="stat-counter font-editorial text-6xl sm:text-7xl md:text-8xl lg:text-[100px] font-medium text-white tracking-tighter leading-none"
                                         data-target={stat.value}
                                         data-float={stat.value % 1 !== 0}
                                     >
                                         0
                                     </span>
                                 ) : (
-                                    <span className="text-gradient-silver font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase leading-none drop-shadow-glow">
+                                    <span className="text-gradient-silver font-editorial text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight uppercase leading-none drop-shadow-glow">
                                         Essência
                                     </span>
                                 )}
                                 {stat.suffix && (
-                                    <span className="text-[var(--color-silver-bh)] font-display text-4xl md:text-5xl font-light opacity-60">
+                                    <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-4xl font-light opacity-60">
                                         {stat.suffix}
                                     </span>
                                 )}
-                            </m.div>
+                            </div>
 
                             {/* Labels */}
-                            <m.div
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ duration: 1, delay: stat.delay + 0.4 }}
-                                viewport={{ once: true }}
-                                className="flex flex-col items-center md:items-start text-center md:text-left"
-                            >
-                                <h4 className="text-[var(--color-silver-bh)] font-body text-[9px] md:text-[10px] font-bold uppercase tracking-[0.5em] mb-4">
+                            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                                <h4 className="text-[var(--color-silver-bh)] font-body text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] mb-4 opacity-80">
                                     {stat.label}
                                 </h4>
-                                <p className="text-[var(--color-text-dim)] font-body text-[14px] font-light leading-relaxed max-w-[260px]">
+                                <p className="text-[var(--color-text-dim)] font-body text-sm md:text-base font-light leading-relaxed max-w-[280px] opacity-70">
                                     {stat.sublabel}
                                 </p>
-                            </m.div>
+                            </div>
 
                             {/* Vertical Divider for Desktop */}
                             {index !== stats.length - 1 && (
-                                <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent" />
+                                <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-32 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
                             )}
 
                             {/* Horizontal Divider for Mobile */}
                             {index !== stats.length - 1 && (
-                                <div className="md:hidden w-12 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/20 to-transparent mt-12" />
+                                <div className="md:hidden w-12 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/20 to-transparent mt-12 mx-auto" />
                             )}
-                        </div>
+                        </m.div>
                     ))}
                 </div>
             </div>
 
             {/* Subtle Ambient Glow Evolution */}
-            <div className="absolute top-1/2 left-0 w-[300px] h-[300px] bg-[var(--color-silver-bh)]/5 blur-[100px] rounded-full -translate-y-1/2 pointer-events-none" />
-            <div className="absolute top-1/2 right-0 w-[300px] h-[300px] bg-[var(--color-silver-bh)]/5 blur-[100px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
         </section>
     );
 }
