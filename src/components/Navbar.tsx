@@ -72,7 +72,7 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-[11px] md:text-xs font-bold text-white tracking-[0.25em] uppercase group-hover:tracking-[0.3em] transition-all duration-700">
+                            <span className="font-body text-[10px] font-bold text-white tracking-[0.2em] uppercase group-hover:tracking-[0.25em] transition-all duration-700">
                                 Clínica<span className="text-[var(--color-silver-bh)] font-bold">.</span>
                             </span>
                         </a>
