@@ -54,7 +54,7 @@ export function Preloader() {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="flex flex-col items-center"
                         >
-                            <span className="font-display text-lg font-light text-white tracking-[0.3em] uppercase mb-2">
+                            <span className="font-display text-base font-light text-white tracking-[0.3em] uppercase mb-2">
                                 Clínica
                             </span>
                             <span className="text-white/20 text-[8px] uppercase tracking-[0.6em] ml-1">
