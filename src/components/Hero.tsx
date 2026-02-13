@@ -8,10 +8,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AmbientParticles } from "./AmbientParticles";
 import { Magnetic } from "./Magnetic";
 
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
+
+const SlideText = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+    <span className={`relative block overflow-hidden group cursor-default ${className}`}>
+        <span className="block transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[105%]">
+            {children}
+        </span>
+        <span className="absolute inset-0 block -translate-x-[105%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0">
+            {children}
+        </span>
+    </span>
+);
+
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -306,10 +316,10 @@ export function Hero() {
                         <div className="mb-12 relative">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight drop-shadow-2xl translate-z-20">
                                 <span className="block mb-2">
-                                    <span className="title-line-inner inline-block">Seu Sorriso,</span>
+                                    <SlideText className="title-line-inner inline-block">Seu Sorriso,</SlideText>
                                 </span>
                                 <span className="block">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura.</span>
+                                    <SlideText className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura.</SlideText>
                                 </span>
                             </h1>
                         </div>
