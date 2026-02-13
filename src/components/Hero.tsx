@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AmbientParticles } from "./AmbientParticles";
 import { Magnetic } from "./Magnetic";
 
-    gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 }
 
 const SlideText = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -267,8 +267,7 @@ export function Hero() {
                         loop
                         muted
                         playsInline
-                        preload="metadata"
-                        poster="/assets/images/clinic-interior.png"
+                        preload="auto"
                         onCanPlay={() => setVideoLoaded(true)}
                         className={`w-full h-full object-cover brightness-[0.7] contrast-[1.05] transition-opacity duration-[1500ms] hero-video ${videoLoaded ? 'opacity-80' : 'opacity-0'}`}
                     >
