@@ -9,7 +9,6 @@ import { AmbientParticles } from "./AmbientParticles";
 import { Magnetic } from "./Magnetic";
 
 gsap.registerPlugin(ScrollTrigger);
-}
 
 const SlideText = ({ children, className }: { children: React.ReactNode, className?: string }) => (
     <span className={`relative block overflow-hidden group cursor-default ${className}`}>
