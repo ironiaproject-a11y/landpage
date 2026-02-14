@@ -139,6 +139,19 @@ export function Hero() {
                     },
                     yPercent: -10
                 });
+
+                // Subtle Headline micro-parallax for mobile
+                gsap.to(titleRef.current, {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 1.2
+                    },
+                    y: -20,
+                    scale: 0.98,
+                    opacity: 0.9
+                });
             }
 
         }, sectionRef);
@@ -184,10 +197,10 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[5%] md:px-[8%] h-full flex flex-col justify-center items-start pt-20"
+                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-20 text-center lg:text-left"
                 >
-                    <div className="max-w-[850px] perspective-1000">
-                        <div className="mb-10 overflow-hidden">
+                    <div className="max-w-[850px] perspective-1000 w-full">
+                        <div className="mb-8 lg:mb-10 overflow-hidden">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-2 overflow-hidden">
                                     <span className="title-line-inner inline-block">Seu Sorriso,</span>
@@ -198,19 +211,19 @@ export function Hero() {
                             </h1>
                         </div>
 
-                        <div className="overflow-hidden mb-14">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch]">
+                        <div className="overflow-hidden mb-12 lg:mb-14">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem]">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row gap-8">
-                            <Magnetic strength={0.3} range={100}>
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 sm:gap-8 w-full sm:w-auto">
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    whileHover={{ y: -5, scale: 1.02 }}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-primary group flex items-center justify-center gap-4 px-10"
+                                    className="btn-luxury-primary group flex items-center justify-center gap-4 px-10 w-full sm:w-auto"
                                 >
                                     <span className="relative z-10 flex items-center gap-4">
                                         Agendar Consulta
@@ -219,11 +232,11 @@ export function Hero() {
                                 </m.button>
                             </Magnetic>
 
-                            <Magnetic strength={0.3} range={100}>
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    whileHover={{ y: -5, scale: 1.02 }}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-ghost group flex items-center justify-center gap-4 px-10"
+                                    className="btn-luxury-ghost group flex items-center justify-center gap-4 px-10 w-full sm:w-auto"
                                 >
                                     Ver Casos Clínicos
                                 </m.button>
@@ -233,8 +246,8 @@ export function Hero() {
                 </div>
 
                 {/* Atmospheric Glows */}
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none" />
-                <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] glow-blob opacity-10 pointer-events-none" />
+                <div className="absolute top-[-10%] left-[-10%] w-[80%] lg:w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none" />
+                <div className="absolute bottom-[-10%] right-[-5%] w-[70%] lg:w-[40%] h-[40%] glow-blob opacity-10 pointer-events-none" />
             </div>
         </section>
     );
