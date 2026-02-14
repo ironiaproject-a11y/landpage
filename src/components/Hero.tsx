@@ -172,7 +172,7 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none opacity-90" />
+                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/40 to-black/20 lg:via-black/20 lg:to-transparent pointer-events-none opacity-90" />
                     <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-transparent to-black pointer-events-none" />
 
                     <video
@@ -195,9 +195,9 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center pt-24 lg:pt-20 text-center"
+                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-28 lg:pt-32 text-center lg:text-left"
                 >
-                    <div className="max-w-[850px] perspective-1000 w-full flex flex-col items-center">
+                    <div className="max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <div className="mb-6 lg:mb-10 overflow-hidden w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-1 lg:mb-2 overflow-hidden">
@@ -210,18 +210,18 @@ export function Hero() {
                         </div>
 
                         <div className="overflow-hidden mb-10 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto text-sm md:text-xl lg:text-[1.75rem] leading-relaxed">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 w-full sm:w-auto">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 sm:gap-8 w-full sm:w-auto">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-primary group flex items-center justify-center gap-4 px-8 lg:px-10 w-full sm:w-auto py-5 lg:py-6"
+                                    className="btn-luxury-primary group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
                                 >
                                     <span className="relative z-10 flex items-center gap-4 text-[10px] lg:text-xs">
                                         Agendar Consulta
@@ -234,7 +234,7 @@ export function Hero() {
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-ghost group flex items-center justify-center gap-4 px-8 lg:px-10 w-full sm:w-auto py-5 lg:py-6"
+                                    className="btn-luxury-ghost group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
                                 >
                                     <span className="text-[10px] lg:text-xs">Ver Casos Clínicos</span>
                                 </m.button>
