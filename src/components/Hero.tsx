@@ -46,6 +46,47 @@ export function Hero() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
+    // Forced Video Playback for Mobile Reliability
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const attemptPlay = async () => {
+            try {
+                video.muted = true;
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+                await video.play();
+                setVideoLoaded(true);
+            } catch (error) {
+                console.log("Autoplay blocked, retry after interaction or wait", error);
+
+                // Secondary retry logic for mobile quirks
+                const retryOnInteraction = () => {
+                    video.play().catch(() => { });
+                    window.removeEventListener('click', retryOnInteraction);
+                    window.removeEventListener('touchstart', retryOnInteraction);
+                };
+                window.addEventListener('click', retryOnInteraction);
+                window.addEventListener('touchstart', retryOnInteraction);
+            }
+        };
+
+        attemptPlay();
+
+        // Handle visibility changes (resume play when returning to tab)
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                video.play().catch(() => { });
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [mounted]);
+
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
         if (!mounted) return;
