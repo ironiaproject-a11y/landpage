@@ -99,9 +99,8 @@ export function Hero() {
                         start: "top top",
                         end: "+=500", // Pinned duration in px
                         pin: pinContainerRef.current,
-                        scrub: 1.5, // High scrub for fluid, "heavy" feel
-                        anticipatePin: 1,
-                        // markers: true, // For debugging
+                        scrub: 1, // Fluid but responsive
+                        anticipatePin: 1
                     }
                 });
 
@@ -162,12 +161,11 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full overflow-visible"
-            style={{ height: isMobile ? '100vh' : 'calc(100vh + 500px)' }}
+            className="relative w-full min-h-screen overflow-visible bg-[#0a0a0a]"
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-screen w-full flex items-center overflow-hidden bg-[#0a0a0a]"
+                className="relative h-screen w-full flex items-center overflow-hidden"
             >
                 {/* Background Video / X-ray Layer */}
                 <div
@@ -197,7 +195,7 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-20 text-center lg:text-left"
+                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center pt-32 lg:pt-20 text-center"
                 >
                     <div className="max-w-[850px] perspective-1000 w-full">
                         <div className="mb-8 lg:mb-10 overflow-hidden">
@@ -212,13 +210,13 @@ export function Hero() {
                         </div>
 
                         <div className="overflow-hidden mb-12 lg:mb-14">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem]">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto text-base md:text-xl lg:text-[1.75rem]">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 sm:gap-8 w-full sm:w-auto">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8 w-full sm:w-auto">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
