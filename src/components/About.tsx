@@ -181,13 +181,14 @@ export function About() {
                         <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
                         <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
 
-                        <div className="relative w-full h-[500px] md:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl">
+                        <div className="relative w-full h-[400px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
                             <Image
                                 src="/assets/images/elevando-padrao-premium.jpg"
                                 alt="Elevando o padrão da Odontologia Estética"
                                 fill
                                 className="object-cover"
                                 priority
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
                             />
                         </div>
                     </m.div>
