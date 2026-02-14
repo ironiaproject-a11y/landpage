@@ -92,7 +92,7 @@ export function CaseStudies() {
                     <m.span
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         transition={{ duration: 1 }}
                         className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block font-body"
                     >
@@ -122,7 +122,7 @@ export function CaseStudies() {
                             key={index}
                             initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, margin: "-10%" }}
+                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                             className="case-study-card light-sweep max-w-5xl w-full"
                         >

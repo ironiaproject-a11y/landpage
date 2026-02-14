@@ -87,7 +87,7 @@ export function Footer() {
                         <div className="space-y-8">
                             <div className="flex items-center gap-4 group/logo cursor-pointer">
                                 <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-[var(--color-silver-bh)] border border-white/10 group-hover/logo:border-[var(--color-silver-bh)]/50 transition-all duration-700 relative overflow-hidden light-sweep">
-                                    <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
+                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <div className="overflow-hidden">
                                     <h3 className="title-line-inner text-base font-display font-medium tracking-tight text-white leading-tight">

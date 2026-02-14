@@ -122,7 +122,7 @@ export function Testimonials() {
                     <m.span
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
                     >
                         Prova Social

@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { m, AnimatePresence } from "framer-motion";
 import { Plus, Minus, HelpCircle } from "lucide-react";
@@ -86,7 +86,7 @@ export function FAQ() {
                         <m.span
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                             className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block"
                         >
@@ -106,7 +106,7 @@ export function FAQ() {
                                 key={index}
                                 initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-5%" }}
+                                viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                                 transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                                 className={`glass-panel overflow-hidden transition-all duration-500 rounded-organic-md ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05]" : "border-white/5"
                                     }`}
@@ -159,7 +159,7 @@ export function FAQ() {
                     <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         className="text-center"
                     >
                         <p className="text-[var(--color-text-tertiary)] text-xs uppercase tracking-[0.2em] mb-8">

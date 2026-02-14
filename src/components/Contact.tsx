@@ -63,7 +63,7 @@ export function Contact() {
                         <m.span
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                             className="text-[var(--color-silver-bh)] font-semibold tracking-[0.2em] uppercase text-xs mb-6 block"
                         >
@@ -80,7 +80,7 @@ export function Contact() {
                         <m.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                             className="text-[var(--color-text-secondary)] mb-12 leading-relaxed"
                         >
@@ -132,7 +132,7 @@ export function Contact() {
                     <m.div
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-10%" }}
+                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                         className="lg:w-2/3"
                     >
@@ -260,7 +260,7 @@ export function Contact() {
                 <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                     className="absolute top-12 left-6 md:left-20 z-30 lg:max-w-xs"
                 >
                     <div className="glass-panel p-8 rounded-organic-md border border-white/10 backdrop-blur-xl">

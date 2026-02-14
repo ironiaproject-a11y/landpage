@@ -51,16 +51,18 @@ export function Stats() {
             counters?.forEach((counter) => {
                 const targetValue = parseFloat(counter.getAttribute("data-target") || "0");
                 const isFloat = counter.getAttribute("data-float") === "true";
+                const isMobile = window.innerWidth < 768;
 
                 const obj = { value: 0 };
                 gsap.to(obj, {
                     value: targetValue,
-                    duration: 3.5,
+                    duration: isMobile ? 2.5 : 3.5,
                     ease: "expo.out",
                     scrollTrigger: {
                         trigger: counter,
-                        start: "top 95%",
-                        once: true
+                        start: "top 85%",
+                        once: true,
+                        markers: false
                     },
                     onUpdate: () => {
                         if (counter) {
@@ -81,12 +83,16 @@ export function Stats() {
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
                     {stats.map((stat, index) => (
-                        <m.div 
-                            key={index} 
+                        <m.div
+                            key={index}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
-                            viewport={{ once: true }}
+                            viewport={{
+                                once: true,
+                                margin: "0px 0px -100px 0px",
+                                amount: 0.3
+                            }}
                             className="flex flex-col items-center md:items-start relative md:px-12 lg:px-16 first:pl-0 last:pr-0"
                         >
                             {/* Number & Value */}

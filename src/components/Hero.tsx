@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -173,9 +173,10 @@ export function Hero() {
                 gsap.to(videoWrapperRef.current, {
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top top",
+                        start: "top 80%",
                         end: "bottom top",
-                        scrub: true
+                        scrub: 0.5,
+                        markers: false
                     },
                     yPercent: -10
                 });
@@ -184,9 +185,10 @@ export function Hero() {
                 gsap.to(titleRef.current, {
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top top",
+                        start: "top 80%",
                         end: "bottom top",
-                        scrub: 1.2
+                        scrub: 0.8,
+                        markers: false
                     },
                     y: -20,
                     scale: 0.98,
@@ -224,7 +226,7 @@ export function Hero() {
                         playsInline
                         preload="auto"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.1] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-70' : 'opacity-0'}`}
+                        className={`w-full h-full object-cover brightness-[0.8] contrast-[1.3] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-70' : 'opacity-0'}`}
                     >
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
