@@ -239,8 +239,9 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    <div className={`absolute inset-0 z-10 bg-gradient-to-r from-black ${isMobile ? 'via-black/40' : 'via-black/60'} to-black/30 lg:via-black/20 lg:to-transparent pointer-events-none ${isMobile ? 'opacity-70' : 'opacity-90'}`} />
-                    <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
+                    {/* Darker mobile overlay for better contrast */}
+                    <div className={`absolute inset-0 z-10 bg-gradient-to-r from-black ${isMobile ? 'via-black/70' : 'via-black/60'} to-black/30 lg:via-black/20 lg:to-transparent pointer-events-none ${isMobile ? 'opacity-85' : 'opacity-90'}`} />
+                    <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/60 via-transparent to-black pointer-events-none" />
 
                     <video
                         ref={videoRef}
@@ -251,7 +252,7 @@ export function Hero() {
                         preload="auto"
                         poster="/assets/images/clinic-interior.png"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.8] contrast-[1.3] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-60 lg:opacity-70' : 'opacity-0'}`}
+                        className={`w-full h-full object-cover brightness-[0.7] contrast-[1.3] lg:brightness-[0.8] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-60 lg:opacity-70' : 'opacity-0'}`}
                     >
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
@@ -263,28 +264,28 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-20 lg:pt-32 text-center lg:text-left"
+                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-16 lg:pt-32 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start">
-                        <div className="mb-4 lg:mb-10 overflow-hidden w-full">
+                        <div className="mb-6 lg:mb-10 overflow-hidden w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-1 lg:mb-2 overflow-hidden px-4">
-                                    <span className="title-line-inner inline-block">Seu Sorriso,</span>
+                                <span className="block mb-0.5 lg:mb-2 overflow-hidden">
+                                    <span className="title-line-inner inline-block text-[clamp(2.5rem,10vw,5.5rem)] leading-tight">Seu Sorriso,</span>
                                 </span>
-                                <span className="block overflow-hidden px-4">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura.</span>
+                                <span className="block overflow-hidden">
+                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(2.5rem,10vw,5.5rem)] leading-tight">Sua Assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
-                        <div className="overflow-hidden mb-8 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-sm md:text-xl lg:text-[1.75rem] leading-relaxed px-4">
+                        <div className="overflow-hidden mb-10 lg:mb-14 w-full">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-sm md:text-xl lg:text-[1.75rem] leading-relaxed px-2 lg:px-0">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 sm:gap-8 w-full sm:w-auto">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 sm:gap-8 w-full sm:w-auto mt-4 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
