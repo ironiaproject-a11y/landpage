@@ -229,7 +229,7 @@ return (
                 ref={videoWrapperRef}
                 className="absolute inset-0 z-0 origin-center will-change-transform"
             >
-                <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/60 to-black/30 lg:via-black/20 lg:to-transparent pointer-events-none opacity-90" />
+                <div className={`absolute inset-0 z-10 bg-gradient-to-r from-black ${isMobile ? 'via-black/40' : 'via-black/60'} to-black/30 lg:via-black/20 lg:to-transparent pointer-events-none ${isMobile ? 'opacity-70' : 'opacity-90'}`} />
                 <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
 
                 <video
@@ -253,10 +253,10 @@ return (
             {/* Main Content */}
             <div
                 ref={contentWrapperRef}
-                className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-28 lg:pt-32 text-center lg:text-left"
+                className="relative z-20 container mx-auto px-[6%] h-full flex flex-col justify-center items-center lg:items-start pt-20 lg:pt-32 text-center lg:text-left"
             >
                 <div className="max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start">
-                    <div className="mb-6 lg:mb-10 overflow-hidden w-full">
+                    <div className="mb-4 lg:mb-10 overflow-hidden w-full">
                         <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                             <span className="block mb-1 lg:mb-2 overflow-hidden">
                                 <span className="title-line-inner inline-block">Seu Sorriso,</span>
@@ -267,7 +267,7 @@ return (
                         </h1>
                     </div>
 
-                    <div className="overflow-hidden mb-10 lg:mb-14 w-full">
+                    <div className="overflow-hidden mb-8 lg:mb-14 w-full">
                         <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed">
                             A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                             Projetamos o seu sorriso como uma obra de arte única e irrepetível.

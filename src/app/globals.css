@@ -59,7 +59,7 @@
   /* Ensure editorial fallback */
 
   /* Editorial Spacing & Sizes */
-  --font-size-hero: clamp(2.25rem, 7vw, 5.5rem);
+  --font-size-hero: clamp(1.85rem, 8vw, 5.5rem);
   --line-height-hero: 1.05;
   --letter-spacing-hero: -0.02em;
 
@@ -245,7 +245,7 @@ h1 {
 }
 
 .text-subheadline-editorial {
-  @apply text-xl md:text-[1.75rem] font-light leading-[1.8] max-w-[52ch];
+  @apply text-base md:text-[1.75rem] font-light leading-[1.6] md:leading-[1.8] max-w-[52ch];
   color: #D6D6D6;
   /* Soft Cream / Light Gray */
 }
