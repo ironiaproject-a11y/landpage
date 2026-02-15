@@ -123,7 +123,7 @@ export function InstitutionalTrust() {
                                 ease: [0.22, 1, 0.36, 1]
                             }}
                             viewport={{ once: true, margin: "-10%" }}
-                            className="group"
+                            className="group will-change-transform"
                         >
                             <VisualContainer
                                 width="100%"

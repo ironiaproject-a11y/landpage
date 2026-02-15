@@ -257,7 +257,7 @@ export function Services() {
                             }}
                             onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
                             className={clsx(
-                                "group relative service-card-wrapper spotlight-card",
+                                "group relative service-card-wrapper spotlight-card will-change-transform",
                                 index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
                             )}
                         >

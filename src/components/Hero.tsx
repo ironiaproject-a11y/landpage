@@ -109,14 +109,14 @@ export function Hero() {
                     y: 100,
                     opacity: 0,
                     skewY: 7,
-                    filter: "blur(10px)"
+                    filter: isMobile ? "none" : "blur(10px)"
                 });
 
                 entranceTl.to(titleLines, {
                     y: 0,
                     opacity: 1,
                     skewY: 0,
-                    filter: "blur(0px)",
+                    filter: isMobile ? "none" : "blur(0px)",
                     stagger: 0.1,
                     duration: 1.5,
                     ease: "expo.out"
@@ -215,8 +215,8 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/40 to-black/20 lg:via-black/20 lg:to-transparent pointer-events-none opacity-90" />
-                    <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-transparent to-black pointer-events-none" />
+                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/60 to-black/30 lg:via-black/20 lg:to-transparent pointer-events-none opacity-90" />
+                    <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
 
                     <video
                         ref={videoRef}
@@ -226,7 +226,7 @@ export function Hero() {
                         playsInline
                         preload="auto"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.8] contrast-[1.3] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-70' : 'opacity-0'}`}
+                        className={`w-full h-full object-cover brightness-[0.8] contrast-[1.3] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-60 lg:opacity-70' : 'opacity-0'}`}
                     >
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
@@ -253,7 +253,7 @@ export function Hero() {
                         </div>
 
                         <div className="overflow-hidden mb-10 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>

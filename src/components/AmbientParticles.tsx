@@ -36,14 +36,15 @@ export function AmbientParticles() {
             window.addEventListener("resize", resizeCanvas);
         }
 
-        // Initialize particles
-        const particleCount = 40;
+        // Initialize particles - Reduced for mobile
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 15 : 40;
         particlesRef.current = Array.from({ length: particleCount }, () => ({
             x: Math.random() * (canvas.width || 800),
             y: Math.random() * (canvas.height || 600),
             size: Math.random() * 2 + 0.5,
-            speedX: (Math.random() - 0.5) * 0.2,
-            speedY: (Math.random() - 0.5) * 0.2,
+            speedX: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.2),
+            speedY: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.2),
             opacity: Math.random() * 0.2 + 0.05
         }));
 

@@ -94,11 +94,12 @@ export default function VisualContainer({
                 {/* Main Card Surface */}
                 <div
                     className={cn(
-                        "relative w-full bg-[#0A0A0A]/80 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden flex flex-col transition-all duration-700",
+                        "relative w-full bg-[#0A0A0A]/80 border border-white/10 rounded-2xl overflow-hidden flex flex-col transition-all duration-700",
+                        !isMobile && "backdrop-blur-md",
                         className
                     )}
                     style={{
-                        boxShadow: isHovered
+                        boxShadow: isHovered && !isMobile
                             ? `0 35px 80px -20px ${hoverColor}, 0 0 1px 1px rgba(255,255,255,0.05) inset`
                             : "0 8px 12px -4px rgba(0,0,0,0.5)",
                         transform: "translateZ(0px)",

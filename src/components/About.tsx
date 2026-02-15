@@ -172,7 +172,7 @@ export function About() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:w-1/2 relative about-image-wrapper p-4"
+                        className="lg:w-1/2 relative about-image-wrapper p-4 will-change-transform"
                     >
                         {/* Lighting Blob Behind Image */}
                         <div className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] glow-blob opacity-30 blur-[100px] pointer-events-none" />
