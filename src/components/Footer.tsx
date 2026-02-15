@@ -196,20 +196,9 @@ export function Footer() {
                 {/* Bottom Bar */}
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div className="flex flex-col md:flex-row items-center gap-8">
-                        <div className="flex flex-col items-center md:items-start gap-2">
-                            <p className="text-[var(--color-text-tertiary)] text-xs">
-                                © {currentYear} Clínica Odontologia. Todos os direitos reservados.
-                            </p>
-                            <p className="text-[var(--color-text-tertiary)]/40 text-[9px] uppercase tracking-widest flex items-center gap-2">
-                                v1.0.1 • BUILD_{new Date().toISOString().split('T')[0].replace(/-/g, '')}
-                                <button
-                                    onClick={() => window.location.href = window.location.pathname + '?v=' + Date.now()}
-                                    className="hover:text-[var(--color-silver-bh)] underline transition-colors"
-                                >
-                                    Atualizar Versão
-                                </button>
-                            </p>
-                        </div>
+                        <p className="text-[var(--color-text-tertiary)] text-xs">
+                            © {currentYear} Clínica Odontologia. Todos os direitos reservados.
+                        </p>
                         <div className="flex gap-6">
                             <a href="#" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-silver-bh)] transition-colors text-xs font-medium">
                                 Políticas
