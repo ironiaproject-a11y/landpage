@@ -609,3 +609,19 @@ h3 {
 .magnetic-element:hover {
   transform: scale(1.05);
 }
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
