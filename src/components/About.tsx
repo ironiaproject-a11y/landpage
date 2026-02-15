@@ -28,7 +28,7 @@ export function About() {
 
     useEffect(() => {
         setMounted(true);
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
         checkMobile();
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
@@ -78,7 +78,7 @@ export function About() {
             }
 
             // Enhanced Multi-Layer Parallax - Enabled for all with speed adjustment
-            const speedMult = isMobile ? 0.5 : 1;
+            const speedMult = isMobile ? 0.3 : 1;
 
             // Background Glow Drift
             gsap.to(".glow-blob", {
@@ -96,7 +96,7 @@ export function About() {
 
             // Main Image Container Parallax
             gsap.fromTo(".about-image-wrapper",
-                { y: 100 * speedMult },
+                { y: isMobile ? 0 : 100 },
                 {
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -104,14 +104,14 @@ export function About() {
                         end: "bottom top",
                         scrub: 1.5,
                     },
-                    y: -100 * speedMult,
+                    y: isMobile ? 0 : -100,
                     ease: "power1.inOut"
                 }
             );
 
-            // Internal Image Parallax (Lens effect)
+            // Internal Image Parallax (Lens effect) - Dampen on mobile
             gsap.fromTo(".inner-image-parallax img",
-                { y: "-10%" },
+                { y: isMobile ? "-5%" : "-15%" },
                 {
                     scrollTrigger: {
                         trigger: ".about-image-wrapper",
@@ -119,7 +119,7 @@ export function About() {
                         end: "bottom top",
                         scrub: true,
                     },
-                    y: "10%",
+                    y: isMobile ? "5%" : "15%",
                     ease: "none"
                 }
             );
@@ -168,11 +168,11 @@ export function About() {
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Side */}
                     <m.div
-                        initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: isMobile ? "0px 0px -20px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.01 : 0.3 }}
+                        initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, x: -60 }}
+                        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                        viewport={{ once: true, margin: isMobile ? "0px 0px 100px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.01 : 0.3 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:w-1/2 relative p-4"
+                        className="w-full lg:w-1/2 relative p-4"
                     >
                         <div className="about-image-wrapper will-change-transform">
                             {/* Lighting Blob Behind Image */}
@@ -182,21 +182,21 @@ export function About() {
                             <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
                             <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
 
-                            <div className="relative w-full h-[400px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
+                            <div className="relative w-full h-[450px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
                                     alt="Elevando o padrão da Odontologia Estética"
                                     fill
                                     className="object-cover"
                                     priority
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
+                                    sizes="(max-width: 1024px) 100vw, 600px"
                                 />
                             </div>
                         </div>
                     </m.div>
 
                     {/* Content Side */}
-                    <div className="lg:w-1/2">
+                    <div className="w-full lg:w-1/2">
                         <m.div
                             initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
                             whileInView={{ opacity: 1 }}
