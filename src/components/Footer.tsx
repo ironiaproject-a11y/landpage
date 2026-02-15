@@ -196,9 +196,26 @@ export function Footer() {
                 {/* Bottom Bar */}
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div className="flex flex-col md:flex-row items-center gap-8">
-                        <p className="text-[var(--color-text-tertiary)] text-xs">
-                            © {currentYear} Clínica Odontologia. Todos os direitos reservados.
-                        </p>
+                        <div className="flex flex-col items-center md:items-start gap-1">
+                            <p className="text-[var(--color-text-tertiary)] text-xs">
+                                © {currentYear} Clínica Odontologia. Todos os direitos reservados.
+                            </p>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] text-white/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
+                                <button
+                                    onClick={() => {
+                                        if (typeof window !== 'undefined') {
+                                            localStorage.clear();
+                                            sessionStorage.clear();
+                                            window.location.reload();
+                                        }
+                                    }}
+                                    className="text-[10px] text-[var(--color-silver-bh)]/40 hover:text-[var(--color-silver-bh)] underline underline-offset-2 transition-colors"
+                                >
+                                    Atualizar Versão
+                                </button>
+                            </div>
+                        </div>
                         <div className="flex gap-6">
                             <a href="#" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-silver-bh)] transition-colors text-xs font-medium">
                                 Políticas
