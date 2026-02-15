@@ -59,8 +59,8 @@
   /* Ensure editorial fallback */
 
   /* Editorial Spacing & Sizes */
-  --font-size-hero: clamp(2.2rem, 10vw, 5.5rem);
-  --line-height-hero: 1.15;
+  --font-size-hero: clamp(1.8rem, 10vw, 5.5rem);
+  --line-height-hero: 1.1;
   --letter-spacing-hero: -0.02em;
 
   /* Enhanced Shadows - Layered Depth System */
