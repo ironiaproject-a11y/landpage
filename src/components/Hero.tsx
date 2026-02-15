@@ -266,17 +266,17 @@ export function Hero() {
                     <div className="max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <div className="mb-4 lg:mb-10 overflow-hidden w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-1 lg:mb-2 overflow-hidden">
+                                <span className="block mb-1 lg:mb-2 overflow-hidden px-4">
                                     <span className="title-line-inner inline-block">Seu Sorriso,</span>
                                 </span>
-                                <span className="block overflow-hidden">
+                                <span className="block overflow-hidden px-4">
                                     <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)]">Sua Assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
                         <div className="overflow-hidden mb-8 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[55ch] mx-auto lg:mx-0 text-sm md:text-xl lg:text-[1.75rem] leading-relaxed px-4">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única e irrepetível.
                             </p>
