@@ -239,6 +239,7 @@ return (
                     muted
                     playsInline
                     preload="auto"
+                    poster="/assets/images/clinic-interior.png"
                     onCanPlay={() => setVideoLoaded(true)}
                     className={`w-full h-full object-cover brightness-[0.8] contrast-[1.3] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-60 lg:opacity-70' : 'opacity-0'}`}
                 >
