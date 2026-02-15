@@ -168,29 +168,30 @@ export function About() {
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Side */}
                     <m.div
-                        initial={{ opacity: 0, x: -60 }}
+                        initial={{ opacity: 0, x: isMobile ? -30 : -60 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
+                        viewport={{ once: true, margin: isMobile ? "0px 0px -50px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.1 : 0.3 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:w-1/2 relative about-image-wrapper p-4 will-change-transform"
+                        className="lg:w-1/2 relative p-4"
                     >
-                        {/* Lighting Blob Behind Image */}
-                        <div className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] glow-blob opacity-30 blur-[100px] pointer-events-none" />
+                        <div className="about-image-wrapper will-change-transform">
+                            {/* Lighting Blob Behind Image */}
+                            <div className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] glow-blob opacity-30 blur-[100px] pointer-events-none" />
 
-                        {/* Floating Decorative Elements with independent parallax */}
-                        <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
-                        <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
+                            {/* Floating Decorative Elements with independent parallax */}
+                            <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
+                            <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
 
-                        <div className="relative w-full h-[400px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
-                            <Image
-                                src="/assets/images/elevando-padrao-premium.jpg"
-                                alt="Elevando o padrão da Odontologia Estética"
-                                fill
-                                className="object-cover"
-                                priority
-                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
-                            />
-                        </div>
+                            <div className="relative w-full h-[400px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
+                                <Image
+                                    src="/assets/images/elevando-padrao-premium.jpg"
+                                    alt="Elevando o padrão da Odontologia Estética"
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
+                                />
+                            </div>
                     </m.div>
 
                     {/* Content Side */}

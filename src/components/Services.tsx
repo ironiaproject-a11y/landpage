@@ -257,66 +257,68 @@ export function Services() {
                             }}
                             onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
                             className={clsx(
-                                "group relative service-card-wrapper spotlight-card will-change-transform",
+                                "group relative spotlight-card",
                                 index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
                             )}
                         >
-                            <VisualContainer
-                                width="100%"
-                                height="auto"
-                                hoverColor="rgba(203, 213, 225, 0.05)" // Silver-based hover
-                                sideHeight="12px"
-                            >
-                                <div className="p-8 md:p-12 flex flex-col h-full">
-                                    {/* Image Frame - Luxury Gallery Style */}
-                                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
-                                        <Image
-                                            src={service.image}
-                                            alt={service.title}
-                                            width={800}
-                                            height={600}
-                                            className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            <div className="service-card-wrapper will-change-transform">
+                                <VisualContainer
+                                    width="100%"
+                                    height="auto"
+                                    hoverColor="rgba(203, 213, 225, 0.05)" // Silver-based hover
+                                    sideHeight="12px"
+                                >
+                                    <div className="p-8 md:p-12 flex flex-col h-full">
+                                        {/* Image Frame - Luxury Gallery Style */}
+                                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
+                                            <Image
+                                                src={service.image}
+                                                alt={service.title}
+                                                width={800}
+                                                height={600}
+                                                className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                                        {/* Floating Tag */}
-                                        <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax">
-                                            <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
-                                                {service.tag}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Content Section */}
-                                    <div className="flex-grow">
-                                        <div className="flex items-center gap-6 mb-8">
-                                            <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
+                                            {/* Floating Tag */}
+                                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax">
+                                                <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
+                                                    {service.tag}
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <h3 className="font-display text-3xl md:text-4xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight">
-                                            {service.title}
-                                        </h3>
+                                        {/* Content Section */}
+                                        <div className="flex-grow">
+                                            <div className="flex items-center gap-6 mb-8">
+                                                <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
+                                            </div>
 
-                                        <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 delay-150">
-                                            {service.description}
-                                        </p>
+                                            <h3 className="font-display text-3xl md:text-4xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight">
+                                                {service.title}
+                                            </h3>
 
-                                        <Magnetic strength={0.2} range={60}>
-                                            <m.div
-                                                whileHover={{ x: 5 }}
-                                                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                                className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer transition-all duration-700 delay-100"
-                                            >
-                                                <span>Ver Protocolo</span>
-                                                <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
-                                            </m.div>
-                                        </Magnetic>
+                                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 delay-150">
+                                                {service.description}
+                                            </p>
+
+                                            <Magnetic strength={0.2} range={60}>
+                                                <m.div
+                                                    whileHover={{ x: 5 }}
+                                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer transition-all duration-700 delay-100"
+                                                >
+                                                    <span>Ver Protocolo</span>
+                                                    <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
+                                                </m.div>
+                                            </Magnetic>
+                                        </div>
                                     </div>
-                                </div>
-                            </VisualContainer>
+                                </VisualContainer>
 
-                            {/* Hover Shadow Glow - Silver Clinical */}
-                            <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1500 -z-10" />
+                                {/* Hover Shadow Glow - Silver Clinical */}
+                                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1500 -z-10" />
+                            </div>
                         </m.div>
                     ))
                 }
@@ -324,4 +326,3 @@ export function Services() {
         </section>
     );
 }
-
