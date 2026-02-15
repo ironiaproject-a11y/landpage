@@ -42,10 +42,12 @@ export function Hero() {
     useEffect(() => {
         setMounted(true);
         const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
 
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        if (typeof window !== "undefined") {
+            checkMobile();
+            window.addEventListener("resize", checkMobile);
+            return () => window.removeEventListener("resize", checkMobile);
+        }
     }, []);
 
     // Forced Video Playback for Mobile Reliability

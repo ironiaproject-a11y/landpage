@@ -169,8 +169,8 @@ export function About() {
                     {/* Image Side */}
                     <m.div
                         initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
-                        whileInView={isMobile ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: isMobile ? "0px 0px -20px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.05 : 0.3 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: isMobile ? "0px 0px -20px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.01 : 0.3 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         className="lg:w-1/2 relative p-4"
                     >
@@ -198,9 +198,9 @@ export function About() {
                     {/* Content Side */}
                     <div className="lg:w-1/2">
                         <m.div
-                            initial={{ opacity: 0 }}
+                            initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
                             whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
+                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
                             className="flex items-center gap-3 mb-8"
                         >
                             <div className="w-12 h-[1px] bg-[var(--color-silver-bh)]" />
@@ -218,7 +218,7 @@ export function About() {
                             </div>
                         </h2>
 
-                        <p ref={descriptionRef} className="text-xl text-[var(--color-text-secondary)] mb-12 leading-relaxed font-light border-l-2 border-[var(--color-silver-bh)]/30 pl-8 opacity-0">
+                        <p ref={descriptionRef} className="text-xl text-[var(--color-text-secondary)] mb-12 leading-relaxed font-light border-l-2 border-[var(--color-silver-bh)]/30 pl-8">
                             Com mais de 30 anos de atuação em Pereira Barreto, a clínica alia tradição, inovação e alta tecnologia em Odontologia, contando também com uma clínica radiológica completa. Nosso foco é oferecer um ambiente seguro, acolhedor e altamente eficiente, garantindo um atendimento de excelência para o cuidado de toda a família.
                         </p>
 

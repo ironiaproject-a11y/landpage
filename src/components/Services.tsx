@@ -248,12 +248,12 @@ export function Services() {
                         <m.div
                             key={index}
                             initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-                            whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                             viewport={{
                                 once: true,
                                 margin: "0px 0px -100px 0px",
-                                amount: 0.3
+                                amount: isMobile ? 0.01 : 0.3
                             }}
                             onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
                             className={clsx(
