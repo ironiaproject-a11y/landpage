@@ -168,9 +168,9 @@ export function About() {
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Side */}
                     <m.div
-                        initial={{ opacity: 0, x: isMobile ? -30 : -60 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: isMobile ? "0px 0px -50px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.1 : 0.3 }}
+                        initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
+                        whileInView={isMobile ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: isMobile ? "0px 0px -20px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.05 : 0.3 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         className="lg:w-1/2 relative p-4"
                     >

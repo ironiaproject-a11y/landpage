@@ -247,8 +247,8 @@ export function Services() {
                     services.map((service, index) => (
                         <m.div
                             key={index}
-                            initial={{ opacity: 0, y: 60 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+                            whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                             viewport={{
                                 once: true,
