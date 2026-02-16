@@ -85,15 +85,7 @@ export function Hero() {
                 video.setAttribute('playsinline', '');
                 await video.play();
                 setVideoLoaded(true);
-                // Note: We don't set isPlaying=true here to keep the play button visible 
-                // until user interaction, OR we decide valid autoplay counts as playing.
-                // Request implies explicit "Play affordance" -> "Clique: toca vídeo".
-                // So we can let background play muted, but show button to "really" play/focus?
-                // Actually, for a hero background, usually 'playing' means it's moving. 
-                // But the prompt says "Clique: toca vídeo... remove overlay-pulse".
-                // I will interpret this as: Video plays muted in BG (if possible), BUT button is main control to "activate" it (unmute/ensure play).
-                // Or if it's strictly for mobile where autoplay might be blocked, this button is the fallback.
-                // Let's assume button hides once clicked.
+                setIsPlaying(true); // Set playing state when autoplay succeeds
             } catch (error) {
                 console.log("Autoplay blocked, waiting for interaction", error);
             }
