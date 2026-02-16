@@ -21,6 +21,8 @@ export function Cursor() {
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
+    // Mouse event listeners - runs once on mount
+    // cursorX/cursorY are stable MotionValues, spring configs are constants
     useEffect(() => {
         const moveCursor = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -82,6 +84,7 @@ export function Cursor() {
             window.removeEventListener("mousedown", mouseDown);
             window.removeEventListener("mouseup", mouseUp);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [isMobile, setIsMobile] = useState(false);
