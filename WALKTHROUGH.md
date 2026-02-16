@@ -22,6 +22,7 @@ I've implemented targeted fixes that solve visibility issues and improve the "mo
 - **Image Visibility Fail-safe**: Implemented a robust fix for the "About" and "Services" sections, ensuring images are visible immediately on mobile by separating GSAP and Framer Motion animations.
 - **Scroll Text Overlap**: Removed the "Scroll" hint text on mobile devices to prevent it from overlapping with the "Excelência Comprovada" section content.
 - **Mobile Typography Hierarchy**: Increased font sizes for Hero Title (to ~40px), Description (to 16-18px), and Buttons (to 12px) for improved readability and premium feel on mobile.
+- **Typography Clipping Fix**: Added padding to Hero title containers to prevent italic fonts and descenders from being cut off by overflow rules.
 - **Performance Tuning**: Disabled GPU-intensive blur filters on mobile entrance animations and reduced particle counts for smoother 60fps scrolling.
 
 ### 3. Visual Consistency Sweep

@@ -268,10 +268,10 @@ export function Hero() {
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <div className="mb-6 lg:mb-10 overflow-hidden w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-1 lg:mb-2 overflow-hidden">
+                                <span className="block mb-1 lg:mb-2 overflow-hidden pb-2">
                                     <span className="title-line-inner inline-block text-[clamp(2.5rem,10vw,5.5rem)] leading-[1.1]">Seu Sorriso,</span>
                                 </span>
-                                <span className="block overflow-hidden">
+                                <span className="block overflow-hidden pb-2">
                                     <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(2.5rem,10vw,5.5rem)] leading-[1.1]">Sua Assinatura.</span>
                                 </span>
                             </h1>
