@@ -16,6 +16,8 @@ export function About() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const descriptionRef = useRef<HTMLParagraphElement>(null);
+    const contentWrapperRef = useRef<HTMLDivElement>(null);
+    const overlayGradientRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -154,6 +156,47 @@ export function About() {
                     ease: "none"
                 }
             );
+
+            // Desktop-only cinematic scroll effects
+            if (!isMobile) {
+                // Text content fade and move up during scroll
+                if (contentWrapperRef.current) {
+                    gsap.to(contentWrapperRef.current, {
+                        y: -30,
+                        opacity: 0.7,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Overlay gradient opacity shift
+                if (overlayGradientRef.current) {
+                    gsap.to(overlayGradientRef.current, {
+                        opacity: 0.8,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top center",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Enhanced image parallax intensity
+                gsap.to(".about-image-wrapper", {
+                    scale: 0.95,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -162,7 +205,11 @@ export function About() {
     return (
         <section ref={sectionRef} className="py-24 md:py-40 relative" id="sobre">
             {/* Decorative Background */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#111] to-transparent pointer-events-none" />
+            <div
+                ref={overlayGradientRef}
+                className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#111] to-transparent pointer-events-none"
+                style={{ opacity: 0.5 }}
+            />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
@@ -196,7 +243,7 @@ export function About() {
                     </m.div>
 
                     {/* Content Side */}
-                    <div className="w-full lg:w-1/2">
+                    <div ref={contentWrapperRef} className="w-full lg:w-1/2">
                         <m.div
                             initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
                             whileInView={{ opacity: 1 }}

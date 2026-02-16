@@ -25,6 +25,7 @@ const cases = [
 export function CaseStudies() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
+    const glowRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -76,6 +77,43 @@ export function CaseStudies() {
                         ease: "none"
                     }
                 );
+
+                // Desktop-only cinematic scroll effects
+                // Image zoom effect on scroll
+                gsap.to(".case-study-image", {
+                    scale: 1.05,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+
+                // Title letter spacing increase
+                gsap.to(titleRef.current, {
+                    letterSpacing: "0.05em",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // Ambient glow pulse
+                if (glowRef.current) {
+                    gsap.to(glowRef.current, {
+                        opacity: 0.2,
+                        scale: 1.2,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top center",
+                            end: "bottom top",
+                            scrub: 1
+                        }
+                    });
+                }
             }
         }, sectionRef);
 
@@ -85,7 +123,10 @@ export function CaseStudies() {
     return (
         <section ref={sectionRef} className="py-24 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="casos">
             {/* Ambient Lighting */}
-            <div className="absolute top-1/2 left-0 w-[40%] h-[40%] glow-blob-warm opacity-10 pointer-events-none" />
+            <div
+                ref={glowRef}
+                className="absolute top-1/2 left-0 w-[40%] h-[40%] glow-blob-warm opacity-10 pointer-events-none"
+            />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-3xl mb-16 md:mb-32">

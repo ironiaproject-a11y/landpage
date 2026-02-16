@@ -18,6 +18,7 @@ if (typeof window !== "undefined") {
 export function Services() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
+    const overlayDarkRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     const services = [
@@ -201,6 +202,47 @@ export function Services() {
                     }
                 );
             });
+
+            // Desktop-only cinematic scroll effects
+            if (!isMobile) {
+                // Section heading scale effect
+                gsap.to(titleRef.current, {
+                    scale: 0.95,
+                    opacity: 0.8,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // Dark overlay fade-in
+                if (overlayDarkRef.current) {
+                    gsap.to(overlayDarkRef.current, {
+                        opacity: 0.4,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top center",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Icon rotation on scroll
+                gsap.utils.toArray(".service-icon-rotate").forEach((icon: any) => {
+                    gsap.to(icon, {
+                        rotation: 180,
+                        scrollTrigger: {
+                            trigger: icon.closest(".service-card-wrapper"),
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: 1.5
+                        }
+                    });
+                });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -220,6 +262,13 @@ export function Services() {
         <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
             {/* Background Texture */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
+
+            {/* Dark Overlay (Animated on Scroll) */}
+            <div
+                ref={overlayDarkRef}
+                className="absolute inset-0 z-[1] bg-black/0 pointer-events-none"
+                style={{ opacity: 0 }}
+            />
 
             <div className="max-w-3xl mb-16 md:mb-24">
                 <m.span
@@ -281,7 +330,7 @@ export function Services() {
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                                             {/* Floating Tag */}
-                                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax">
+                                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate">
                                                 <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
                                                     {service.tag}
                                                 </span>

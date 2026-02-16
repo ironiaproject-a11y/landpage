@@ -105,6 +105,50 @@ export function Testimonials() {
                     }
                 });
             }
+
+            // Desktop-only cinematic scroll effects
+            // Testimonial cards stagger reveal
+            const cards = gsap.utils.toArray(".testimonial-card");
+            if (cards.length > 0) {
+                gsap.fromTo(cards,
+                    { opacity: 0, y: 40 },
+                    {
+                        scrollTrigger: {
+                            trigger: ".testimonials-marquee",
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        },
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.15,
+                        duration: 1,
+                        ease: "power3.out"
+                    }
+                );
+            }
+
+            // Star rating shine effect
+            gsap.to(".star-icon", {
+                opacity: 1,
+                scale: 1.1,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top center",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
+            // Quote marks rotation
+            gsap.to(".quote-icon-rotate", {
+                rotation: 15,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top center",
+                    end: "bottom top",
+                    scrub: 2
+                }
+            });
         }, sectionRef);
 
         return () => ctx.revert();
@@ -156,7 +200,7 @@ export function Testimonials() {
                             {[...testimonials, ...testimonials].map((testimonial, index) => (
                                 <div
                                     key={index}
-                                    className="w-[450px] shrink-0 h-full"
+                                    className="testimonial-card w-[450px] shrink-0 h-full"
                                 >
                                     <VisualContainer
                                         width="100%"
@@ -168,14 +212,14 @@ export function Testimonials() {
                                         <div className="p-12 relative overflow-hidden group h-full">
                                             {/* Quote Icon Evolution */}
                                             <div className="mb-12 relative">
-                                                <Quote strokeWidth={1.2} className="w-16 h-16 text-[var(--color-silver-bh)]/10 rotate-180 group-hover:text-[var(--color-silver-bh)]/20 transition-all duration-700" />
+                                                <Quote strokeWidth={1.2} className="quote-icon-rotate w-16 h-16 text-[var(--color-silver-bh)]/10 rotate-180 group-hover:text-[var(--color-silver-bh)]/20 transition-all duration-700" />
                                             </div>
 
                                             <div className="relative z-10 flex flex-col h-full">
                                                 {/* Stars Evolution */}
                                                 <div className="flex gap-2 mb-10">
                                                     {[...Array(testimonial.rating)].map((_, i) => (
-                                                        <Star key={i} strokeWidth={1.2} className="w-4 h-4 fill-[var(--color-silver-bh)] text-[var(--color-silver-bh)] opacity-80" />
+                                                        <Star key={i} strokeWidth={1.2} className="star-icon w-4 h-4 fill-[var(--color-silver-bh)] text-[var(--color-silver-bh)] opacity-80" />
                                                     ))}
                                                 </div>
 

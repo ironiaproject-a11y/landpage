@@ -33,6 +33,7 @@ export function Hero() {
     const videoWrapperRef = useRef<HTMLDivElement>(null);
     const progressLineRef = useRef<HTMLDivElement>(null);
     const scrollHintRef = useRef<HTMLDivElement>(null);
+    const overlayDarkRef = useRef<HTMLDivElement>(null);
 
     const [mounted, setMounted] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
@@ -198,6 +199,29 @@ export function Hero() {
                     filter: "blur(8px)",
                     ease: "none"
                 }, 0);
+
+                // Additional Headline Animation (User-requested)
+                gsap.to(titleRef.current, {
+                    scale: 0.9,
+                    y: -40,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // Dark Overlay Fade-in Animation (User-requested)
+                gsap.to(overlayDarkRef.current, {
+                    opacity: 0.7,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
             } else if (isMobile) {
                 // Minimal parallax for mobile to ensure performance
                 gsap.to(videoWrapperRef.current, {
@@ -269,6 +293,13 @@ export function Hero() {
                     />
                     {/* Darker base overlay for text contrast on edges */}
                     <div className={`absolute inset-0 z-10 bg-black/20 ${isMobile ? 'block' : 'hidden'}`} />
+
+                    {/* Dark Overlay (Animated on Scroll) */}
+                    <div
+                        ref={overlayDarkRef}
+                        className="overlay-dark absolute inset-0 z-[11] bg-black/0 pointer-events-none"
+                        style={{ opacity: 0 }}
+                    />
 
 
                     <video

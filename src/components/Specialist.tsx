@@ -18,6 +18,8 @@ export function Specialist() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const quoteRef = useRef<HTMLDivElement>(null);
+    const credentialsRef = useRef<HTMLDivElement>(null);
+    const backgroundRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -117,6 +119,54 @@ export function Specialist() {
                         ease: "none"
                     }
                 );
+
+                // Desktop-only cinematic scroll effects
+                // Credentials sequential reveal
+                if (credentialsRef.current) {
+                    const credentialItems = credentialsRef.current.querySelectorAll(".credential-item");
+                    gsap.fromTo(credentialItems,
+                        { opacity: 0, x: -30 },
+                        {
+                            scrollTrigger: {
+                                trigger: credentialsRef.current,
+                                start: "top 80%",
+                                toggleActions: "play none none reverse"
+                            },
+                            opacity: 1,
+                            x: 0,
+                            stagger: 0.2,
+                            duration: 1,
+                            ease: "power3.out"
+                        }
+                    );
+                }
+
+                // Quote scale effect on scroll
+                if (quoteRef.current) {
+                    gsap.to(quoteRef.current, {
+                        scale: 0.97,
+                        scrollTrigger: {
+                            trigger: quoteRef.current,
+                            start: "top center",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Background blur effect increase
+                if (backgroundRef.current) {
+                    gsap.to(backgroundRef.current, {
+                        opacity: 0.3,
+                        filter: "blur(20px)",
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top center",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
             }
         }, sectionRef);
 
@@ -125,6 +175,12 @@ export function Specialist() {
 
     return (
         <section ref={sectionRef} className="py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+            {/* Background overlay for blur effect */}
+            <div
+                ref={backgroundRef}
+                className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-transparent pointer-events-none"
+                style={{ opacity: 0 }}
+            />
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-20">
                     {/* Left: Academic & Authority */}
@@ -147,8 +203,8 @@ export function Specialist() {
                             </div>
                         </h2>
 
-                        <div className="space-y-8 mb-12">
-                            <div className="flex items-start gap-6 group">
+                        <div ref={credentialsRef} className="space-y-8 mb-12">
+                            <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Globe strokeWidth={1.2} className="w-6 h-6" />
@@ -159,7 +215,7 @@ export function Specialist() {
                                     <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-6 group">
+                            <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Medal strokeWidth={1.2} className="w-6 h-6" />
