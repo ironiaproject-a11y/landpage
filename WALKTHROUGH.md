@@ -20,6 +20,7 @@ I've implemented targeted fixes that solve visibility issues and improve the "mo
 - **Mobile Hierarchy**: Reduced title font size and adjusted spacings to ensure the background video is properly showcased and not obscured by text.
 - **Video Loading (Poster)**: Set a high-quality poster image (`clinic-interior.png`) for the Hero video to prevent a blank screen while loading.
 - **Image Visibility Fail-safe**: Implemented a robust fix for the "About" and "Services" sections, ensuring images are visible immediately on mobile by separating GSAP and Framer Motion animations.
+- **Scroll Text Overlap**: Removed the "Scroll" hint text on mobile devices to prevent it from overlapping with the "Excelência Comprovada" section content.
 - **Performance Tuning**: Disabled GPU-intensive blur filters on mobile entrance animations and reduced particle counts for smoother 60fps scrolling.
 
 ### 3. Visual Consistency Sweep

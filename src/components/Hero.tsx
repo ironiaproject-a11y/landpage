@@ -325,10 +325,10 @@ export function Hero() {
                     </div>
                 )}
 
-                {/* Scroll Hint (Mobile & Desktop Initial) */}
+                {/* Scroll Hint (Desktop Only) */}
                 <div
                     ref={scrollHintRef}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3 opacity-0 animate-fade-in-up"
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 hidden lg:flex flex-col items-center gap-3 opacity-0 animate-fade-in-up"
                     style={{ animationDelay: '3s', animationFillMode: 'forwards' }}
                 >
                     <span className="text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em]">Scroll</span>
