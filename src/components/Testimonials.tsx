@@ -181,7 +181,7 @@ export function Testimonials() {
 
                                                 {/* Content Evolution */}
                                                 <p className="font-editorial text-2xl text-white/90 italic leading-relaxed mb-12 flex-grow font-light">
-                                                    "{testimonial.content}"
+                                                    &quot;{testimonial.content}&quot;
                                                 </p>
 
                                                 {/* Author Evolution */}

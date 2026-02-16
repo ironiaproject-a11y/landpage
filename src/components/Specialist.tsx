@@ -182,7 +182,7 @@ export function Specialist() {
                                 <div className="p-10 relative overflow-hidden h-full">
                                     <Quote strokeWidth={1.2} className="absolute top-6 right-8 w-12 h-12 text-[var(--color-silver-bh)]/10" />
                                     <p className="font-editorial text-2xl text-white/90 italic leading-relaxed mb-6 font-light relative z-10">
-                                        "Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso."
+                                        &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                     </p>
                                     <div className="relative z-10">
                                         <h4 className="text-white font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
