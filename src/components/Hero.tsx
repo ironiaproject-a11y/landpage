@@ -345,15 +345,27 @@ export function Hero() {
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-8 w-full sm:w-auto mt-4 lg:mt-0">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-6 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     onClick={() => logEvent('cta_agendar_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-[#0B0B0B] text-white rounded-full font-semibold shadow-xl border border-white/5"
+                                    whileTap={{ scale: 0.95 }}
+                                    className="group relative flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[64px] lg:h-auto py-0 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-2xl overflow-hidden"
                                 >
-                                    <span className="relative z-10 flex items-center gap-4 text-sm font-medium">
+                                    {/* Shimmer Effect */}
+                                    <m.div
+                                        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
+                                        initial={{ x: "-100%" }}
+                                        animate={{ x: "200%" }}
+                                        transition={{
+                                            repeat: Infinity,
+                                            duration: 2.5,
+                                            ease: "easeInOut",
+                                            delay: 1
+                                        }}
+                                    />
+                                    <span className="relative z-10 flex items-center gap-4 text-[11px] sm:text-xs tracking-[0.3em]">
                                         AGENDAR CONSULTA
                                     </span>
                                 </m.button>
@@ -363,10 +375,10 @@ export function Hero() {
                                 <m.button
                                     onClick={() => logEvent('cta_ver_casos_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-4 px-8 w-full sm:w-auto h-[50px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/30 text-white/90 rounded-full hover:bg-white/5 transition-colors"
+                                    whileTap={{ scale: 0.95 }}
+                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
                                 >
-                                    <span className="text-sm">Ver casos clínicos</span>
+                                    <span className="text-[11px] sm:text-xs tracking-[0.2em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>
                             </Magnetic>
                         </div>

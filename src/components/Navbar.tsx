@@ -2,7 +2,7 @@
 
 import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Instagram, Facebook, Linkedin } from "lucide-react";
 import { Magnetic } from "./Magnetic";
 
 export function Navbar() {
@@ -190,26 +190,30 @@ export function Navbar() {
                             <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
                         </div>
 
-                        <div className="relative z-10 w-full px-12">
-                            <ul className="flex flex-col items-center gap-6 text-center w-full">
+                        <div className="relative z-10 w-full px-8 sm:px-12 flex flex-col h-full justify-center">
+                            <ul className="flex flex-col items-center gap-4 sm:gap-6 text-center w-full mt-10">
                                 {links.map((link, index) => (
                                     <m.li
                                         key={link.name}
-                                        initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                                        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
                                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                        transition={{ delay: 0.2 + index * 0.1, duration: 0.8, ease: "easeOut" }}
+                                        transition={{
+                                            delay: 0.1 + index * 0.1,
+                                            duration: 0.8,
+                                            ease: [0.22, 1, 0.36, 1]
+                                        }}
                                         className="w-full"
                                     >
                                         <a
                                             href={link.href}
                                             onClick={() => setIsMobileOpen(false)}
-                                            className="group relative inline-block py-4"
+                                            className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-display text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-tight">
+                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-tight">
                                                 {link.name}
                                             </span>
                                             <m.div
-                                                className="absolute bottom-2 left-0 right-0 h-px bg-[var(--color-silver-bh)] origin-center"
+                                                className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--color-silver-bh)] origin-center"
                                                 initial={{ scaleX: 0 }}
                                                 whileHover={{ scaleX: 1 }}
                                             />
@@ -217,37 +221,60 @@ export function Navbar() {
                                     </m.li>
                                 ))}
                                 <m.li
-                                    initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                                    initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
                                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                    transition={{ delay: 0.2 + (links.length * 0.1) + 0.1, duration: 1 }}
-                                    className="mt-16 w-full max-w-[320px]"
+                                    transition={{ delay: 0.1 + (links.length * 0.1) + 0.1, duration: 0.8 }}
+                                    className="mt-8 sm:mt-12 w-full max-w-[280px] sm:max-w-[320px]"
                                 >
                                     <a
                                         href="#contato"
                                         onClick={() => setIsMobileOpen(false)}
-                                        className="btn-luxury-primary flex items-center justify-center !py-6 w-full text-xs tracking-[0.3em]"
+                                        className="btn-luxury-primary flex items-center justify-center !py-4 sm:!py-6 w-full text-[10px] sm:text-xs tracking-[0.3em]"
                                     >
                                         Agendar Consulta
                                     </a>
                                 </m.li>
                             </ul>
 
-                            {/* Contact Details in Menu */}
-                            <m.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 1, duration: 1 }}
-                                className="mt-20 text-center border-t border-white/5 pt-12"
-                            >
-                                <p className="text-[10px] uppercase tracking-[0.4em] text-[var(--color-text-tertiary)] mb-4">Atendimento VIP</p>
-                                <a
-                                    href="tel:+551837433000"
-                                    className="text-[var(--color-silver-bh)] font-medium text-xl md:text-2xl hover:brightness-125 transition-all block mb-2"
+                            {/* Contact Details & Socials in Menu */}
+                            <div className="mt-12 sm:mt-16 w-full max-w-[400px] mx-auto overflow-hidden">
+                                <m.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.8, duration: 1 }}
+                                    className="text-center border-t border-white/5 pt-10 sm:pt-12"
                                 >
-                                    +55 (18) 3743-3000
-                                </a>
-                                <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Pereira Barreto - SP</p>
-                            </m.div>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[var(--color-text-tertiary)] mb-4">Atendimento VIP</p>
+                                    <a
+                                        href="tel:+551837433000"
+                                        className="text-[var(--color-silver-bh)] font-medium text-lg sm:text-xl hover:brightness-125 transition-all block mb-2"
+                                    >
+                                        +55 (18) 3743-3000
+                                    </a>
+                                    <p className="text-[9px] sm:text-[10px] text-white/30 uppercase tracking-[0.2em] mb-8">Pereira Barreto - SP</p>
+
+                                    <div className="flex items-center justify-center gap-8 border-t border-white/5 pt-8">
+                                        {[
+                                            { icon: Instagram, href: "#", name: "Instagram" },
+                                            { icon: Facebook, href: "#", name: "Facebook" },
+                                            { icon: Linkedin, href: "#", name: "Linkedin" }
+                                        ].map((social, i) => (
+                                            <m.a
+                                                key={social.name}
+                                                href={social.href}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ delay: 1 + (i * 0.1), duration: 0.5 }}
+                                                whileHover={{ y: -3, color: "var(--color-silver-bh)" }}
+                                                className="text-white/40 transition-colors"
+                                                aria-label={social.name}
+                                            >
+                                                <social.icon strokeWidth={1.2} size={20} />
+                                            </m.a>
+                                        ))}
+                                    </div>
+                                </m.div>
+                            </div>
                         </div>
                     </m.div>
                 )}
