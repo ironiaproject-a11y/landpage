@@ -263,16 +263,16 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-20 sm:pt-24 lg:pt-32 text-center lg:text-left"
+                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-16 sm:pt-20 lg:pt-32 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
-                        <div className="mb-6 lg:mb-10 overflow-hidden w-full">
+                        <div className="mb-6 lg:mb-10 w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-1 lg:mb-2 overflow-hidden pb-2">
-                                    <span className="title-line-inner inline-block text-[clamp(2.2rem,9vw,5.5rem)] leading-[1.1]">Seu Sorriso,</span>
+                                <span className="block mb-1 lg:mb-2 overflow-hidden pb-1">
+                                    <span className="title-line-inner inline-block text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.15]">Seu Sorriso,</span>
                                 </span>
-                                <span className="block overflow-hidden pb-2">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(2.2rem,9vw,5.5rem)] leading-[1.1]">Sua Assinatura.</span>
+                                <span className="block overflow-hidden pb-1">
+                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.15]">Sua Assinatura.</span>
                                 </span>
                             </h1>
                         </div>
