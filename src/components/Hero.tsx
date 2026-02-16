@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -37,6 +37,7 @@ export function Hero() {
     const [mounted, setMounted] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false); // Track play state for UI
     const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
@@ -50,7 +51,28 @@ export function Hero() {
         }
     }, []);
 
-    // Forced Video Playback for Mobile Reliability
+    // Analytics and Flags (Mock)
+    const logEvent = (eventName: string, params?: any) => {
+        console.log(`[Analytics] ${eventName}`, params);
+    };
+
+    const handlePlayClick = () => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        video.muted = false; // Try to unmute on interaction
+        video.play().then(() => {
+            setIsPlaying(true);
+            logEvent('hero_play');
+        }).catch((err) => {
+            console.error("Play failed", err);
+            // Fallback: try muted if unmuted fails (browser policy)
+            video.muted = true;
+            video.play().then(() => setIsPlaying(true));
+        });
+    };
+
+    // Forced Video Playback for Mobile Reliability (Initial Autoplay Muted)
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
@@ -62,34 +84,31 @@ export function Hero() {
                 video.setAttribute('playsinline', '');
                 await video.play();
                 setVideoLoaded(true);
+                // Note: We don't set isPlaying=true here to keep the play button visible 
+                // until user interaction, OR we decide valid autoplay counts as playing.
+                // Request implies explicit "Play affordance" -> "Clique: toca vídeo".
+                // So we can let background play muted, but show button to "really" play/focus?
+                // Actually, for a hero background, usually 'playing' means it's moving. 
+                // But the prompt says "Clique: toca vídeo... remove overlay-pulse".
+                // I will interpret this as: Video plays muted in BG (if possible), BUT button is main control to "activate" it (unmute/ensure play).
+                // Or if it's strictly for mobile where autoplay might be blocked, this button is the fallback.
+                // Let's assume button hides once clicked.
             } catch (error) {
-                console.log("Autoplay blocked, retry after interaction or wait", error);
-
-                // Secondary retry logic for mobile quirks
-                const retryOnInteraction = () => {
-                    video.play().catch(() => { });
-                    window.removeEventListener('click', retryOnInteraction);
-                    window.removeEventListener('touchstart', retryOnInteraction);
-                };
-                window.addEventListener('click', retryOnInteraction);
-                window.addEventListener('touchstart', retryOnInteraction);
+                console.log("Autoplay blocked, waiting for interaction", error);
             }
         };
 
         attemptPlay();
 
-        // Handle visibility changes (resume play when returning to tab)
+        // Handle visibility changes
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
+            if (document.visibilityState === 'visible' && isPlaying) {
                 video.play().catch(() => { });
             }
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, [mounted]);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, [mounted]); // Removed isPlaying from deps to avoid re-triggering loop logic
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
@@ -239,19 +258,28 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    {/* Refined gradient: High contrast for mobile readability */}
-                    <div className={`absolute inset-0 z-10 bg-gradient-to-b from-black/75 via-black/65 to-black/85 lg:bg-gradient-to-r lg:from-black lg:via-black/20 lg:to-transparent pointer-events-none transition-opacity duration-1000 ${isMobile ? 'opacity-100' : 'opacity-90'}`} />
+                    {/* Radial Spotlight Overlay */}
+                    <div
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000"
+                        style={{
+                            background: isMobile
+                                ? 'radial-gradient(circle at 50% 40%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 60%)'
+                                : 'linear-gradient(to right, black, rgba(0,0,0,0.2), transparent)'
+                        }}
+                    />
+                    {/* Darker base overlay for text contrast on edges */}
+                    <div className={`absolute inset-0 z-10 bg-black/20 ${isMobile ? 'block' : 'hidden'}`} />
+
 
                     <video
                         ref={videoRef}
-                        autoPlay
-                        loop
-                        muted
                         playsInline
-                        preload="auto"
+                        muted
+                        loop
+                        preload="metadata"
                         poster="/assets/images/clinic-interior.png"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-50 lg:opacity-70' : 'opacity-0'}`}
+                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}
                     >
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
@@ -260,37 +288,49 @@ export function Hero() {
                 {/* Ambient Particles */}
                 {!shouldReduceMotion && <AmbientParticles />}
 
+                {/* Mobile Play Button overlay */}
+                {isMobile && !isPlaying && (
+                    <button
+                        onClick={handlePlayClick}
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm animate-pulse border border-white/20 shadow-lg"
+                        aria-label="Reproduzir vídeo"
+                    >
+                        <Play className="w-8 h-8 text-white fill-white ml-1" />
+                    </button>
+                )}
+
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
                     className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-[120px] lg:pt-32 pb-20 lg:pb-0 text-center lg:text-left"
                 >
-                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
+                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start" style={{ textShadow: isMobile ? "0 4px 12px rgba(0,0,0,0.5)" : "none" }}>
                         <div className="mb-5 lg:mb-10 w-full">
-                            <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
+                            <h1 ref={titleRef} className={`${isMobile ? 'font-playfair' : 'text-hero-editorial'} font-medium text-[#FAF9F7] tracking-tight will-change-transform`}>
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block text-[34px] sm:text-[38px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1]">Seu sorriso,</span>
+                                    <span className="title-line-inner inline-block text-[36px] sm:text-[40px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.05] lg:leading-[1.1]">Seu sorriso,</span>
                                 </span>
                                 <span className="block overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[34px] sm:text-[38px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1]">sua assinatura.</span>
+                                    <span className={`title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[36px] sm:text-[40px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.05] lg:leading-[1.1]`}>sua assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
                         <div className="overflow-hidden mb-8 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-white/85 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[15px] sm:text-[16px] lg:text-[1.75rem] leading-[1.6] lg:leading-relaxed px-6 lg:px-0">
-                                A harmonia perfeita entre ciência avançada e estética de alta costura. Projetamos seu sorriso como uma obra de arte única.
+                            <p ref={descriptionRef} className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[15px] sm:text-[16px] lg:text-[1.75rem] leading-[1.6] lg:leading-relaxed px-2 lg:px-0 backdrop-blur-[2px] lg:backdrop-blur-none rounded-lg py-2 lg:py-0">
+                                A harmonia perfeita entre ciência avançada e estética de alta costura.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-4 lg:mt-0">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-8 w-full sm:w-auto mt-4 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
+                                    onClick={() => logEvent('cta_agendar_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-white text-[#0B0B0B] rounded-full font-semibold shadow-lg"
+                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-[#0B0B0B] text-white rounded-full font-semibold shadow-xl border border-white/5"
                                 >
-                                    <span className="relative z-10 flex items-center gap-4 text-sm">
+                                    <span className="relative z-10 flex items-center gap-4 text-sm font-medium">
                                         AGENDAR CONSULTA
                                     </span>
                                 </m.button>
@@ -298,9 +338,10 @@ export function Hero() {
 
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
+                                    onClick={() => logEvent('cta_ver_casos_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/90 text-white/90 rounded-full"
+                                    className="group flex items-center justify-center gap-4 px-8 w-full sm:w-auto h-[50px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/30 text-white/90 rounded-full hover:bg-white/5 transition-colors"
                                 >
                                     <span className="text-sm">Ver casos clínicos</span>
                                 </m.button>
