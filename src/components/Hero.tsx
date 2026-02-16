@@ -239,8 +239,8 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    {/* Refined gradient: Clearer center, focus focus on lower content */}
-                    <div className={`absolute inset-0 z-10 bg-gradient-to-b from-black/90 via-black/40 to-black/80 lg:bg-gradient-to-r lg:from-black lg:via-black/20 lg:to-transparent pointer-events-none transition-opacity duration-1000 ${isMobile ? 'opacity-95' : 'opacity-90'}`} />
+                    {/* Refined gradient: High contrast for mobile readability */}
+                    <div className={`absolute inset-0 z-10 bg-gradient-to-b from-black/75 via-black/65 to-black/85 lg:bg-gradient-to-r lg:from-black lg:via-black/20 lg:to-transparent pointer-events-none transition-opacity duration-1000 ${isMobile ? 'opacity-100' : 'opacity-90'}`} />
 
                     <video
                         ref={videoRef}
@@ -263,24 +263,23 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-16 sm:pt-20 lg:pt-32 text-center lg:text-left"
+                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-[120px] lg:pt-32 pb-20 lg:pb-0 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
-                        <div className="mb-6 lg:mb-10 w-full">
+                        <div className="mb-5 lg:mb-10 w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-1 lg:mb-2 overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.15]">Seu Sorriso,</span>
+                                <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
+                                    <span className="title-line-inner inline-block text-[34px] sm:text-[38px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1]">Seu sorriso,</span>
                                 </span>
                                 <span className="block overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.15]">Sua Assinatura.</span>
+                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[34px] sm:text-[38px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1]">sua assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
-                        <div className="overflow-hidden mb-10 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[40ch] lg:max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed px-0 lg:px-0 opacity-80">
-                                A harmonia perfeita entre a ciência avançada e a estética de alta costura.
-                                Projetamos o seu sorriso como uma obra de arte única.
+                        <div className="overflow-hidden mb-8 lg:mb-14 w-full">
+                            <p ref={descriptionRef} className="text-white/85 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[15px] sm:text-[16px] lg:text-[1.75rem] leading-[1.6] lg:leading-relaxed px-6 lg:px-0">
+                                A harmonia perfeita entre ciência avançada e estética de alta costura. Projetamos seu sorriso como uma obra de arte única.
                             </p>
                         </div>
 
@@ -289,11 +288,10 @@ export function Hero() {
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-primary group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
+                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-white text-[#0B0B0B] rounded-full font-semibold shadow-lg"
                                 >
-                                    <span className="relative z-10 flex items-center gap-4 text-xs lg:text-sm">
-                                        Agendar Consulta
-                                        <ArrowRight strokeWidth={1.2} className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-2 transition-transform duration-500 ease-out" />
+                                    <span className="relative z-10 flex items-center gap-4 text-sm">
+                                        AGENDAR CONSULTA
                                     </span>
                                 </m.button>
                             </Magnetic>
@@ -302,9 +300,9 @@ export function Hero() {
                                 <m.button
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-luxury-ghost group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
+                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/90 text-white/90 rounded-full"
                                 >
-                                    <span className="text-xs lg:text-sm">Ver Casos Clínicos</span>
+                                    <span className="text-sm">Ver casos clínicos</span>
                                 </m.button>
                             </Magnetic>
                         </div>
