@@ -47,6 +47,20 @@ export function CTA() {
                     }
                 );
             }
+
+            // Desktop-only cinematic scroll effects
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                gsap.to(".cta-glass-panel", {
+                    scale: 0.98,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -69,7 +83,7 @@ export function CTA() {
                         duration: 1.2,
                         ease: [0.22, 1, 0.36, 1]
                     }}
-                    className="max-w-4xl mx-auto glass-panel rounded-organic-lg p-10 md:p-24 relative overflow-hidden"
+                    className="cta-glass-panel max-w-4xl mx-auto glass-panel rounded-organic-lg p-10 md:p-24 relative overflow-hidden"
                 >
                     {/* Decorative shine evolution */}
                     <div className="absolute -top-[200px] -right-[200px] w-[500px] h-[500px] glow-blob-warm opacity-40" />

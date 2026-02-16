@@ -67,6 +67,55 @@ export function InstitutionalTrust() {
                     }
                 );
             }
+
+            // Desktop-only cinematic scroll effects
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                // Section title scale refinement
+                if (titleRef.current) {
+                    gsap.to(titleRef.current, {
+                        scale: 0.96,
+                        opacity: 0.9,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Background dot pattern parallax
+                gsap.to(".trust-bg-dots", {
+                    y: 100,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+
+                // Cards staggered reveal on scroll
+                const cards = gsap.utils.toArray(".trust-card-item");
+                if (cards.length > 0) {
+                    gsap.fromTo(cards,
+                        { opacity: 0, y: 50 },
+                        {
+                            scrollTrigger: {
+                                trigger: sectionRef.current,
+                                start: "top 70%",
+                                toggleActions: "play none none reverse"
+                            },
+                            opacity: 1,
+                            y: 0,
+                            stagger: 0.1,
+                            duration: 1,
+                            ease: "power3.out"
+                        }
+                    );
+                }
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -75,7 +124,7 @@ export function InstitutionalTrust() {
     return (
         <section ref={sectionRef} className="py-40 bg-[var(--color-deep-black)] relative overflow-hidden">
             {/* Background Texture for Depth */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)' }}></div>
+            <div className="trust-bg-dots absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)' }}></div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-12 border-b border-white/5 pb-20">
@@ -123,7 +172,7 @@ export function InstitutionalTrust() {
                                 ease: [0.22, 1, 0.36, 1]
                             }}
                             viewport={{ once: true, margin: "-10%" }}
-                            className="group will-change-transform"
+                            className="trust-card-item group will-change-transform"
                         >
                             <VisualContainer
                                 width="100%"

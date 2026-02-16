@@ -73,6 +73,22 @@ export function Stats() {
                     }
                 });
             });
+
+            // Desktop-only cinematic scroll effects
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                // Background glows parallax
+                gsap.to(".stats-glow", {
+                    y: 50,
+                    scale: 1.1,
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            }
         }, containerRef);
 
         return () => ctx.revert();
@@ -147,8 +163,8 @@ export function Stats() {
             </div>
 
             {/* Subtle Ambient Glow Evolution */}
-            <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
-            <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="stats-glow absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="stats-glow absolute top-1/2 right-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
         </section>
     );
 }

@@ -68,6 +68,21 @@ export function FAQ() {
                     }
                 );
             }
+
+            // Desktop-only cinematic scroll effects
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                gsap.to(".faq-glow", {
+                    y: 100,
+                    opacity: 0.15,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -76,8 +91,8 @@ export function FAQ() {
     return (
         <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-deep-black)] overflow-hidden" id="faq">
             {/* Atmospheric Lighting */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[40%] h-[60%] glow-blob opacity-10 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-[30%] h-[40%] glow-blob-warm opacity-10 pointer-events-none" />
+            <div className="faq-glow absolute top-1/2 left-0 -translate-y-1/2 w-[40%] h-[60%] glow-blob opacity-10 pointer-events-none" />
+            <div className="faq-glow absolute bottom-0 right-0 w-[30%] h-[40%] glow-blob-warm opacity-10 pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-4xl mx-auto">

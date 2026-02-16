@@ -16,6 +16,7 @@ if (typeof window !== "undefined") {
 export function Amenities() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
+    const glowRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     const items = [
@@ -146,6 +147,38 @@ export function Amenities() {
                     ease: "none"
                 }
             );
+
+            // Desktop-only cinematic scroll effects
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                // Heading scale refinement on scroll
+                if (titleRef.current) {
+                    gsap.to(titleRef.current, {
+                        scale: 0.95,
+                        opacity: 0.8,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
+
+                // Ambient lighting expansion pulse on scroll
+                if (glowRef.current) {
+                    gsap.to(glowRef.current, {
+                        scale: 1.4,
+                        opacity: 0.25,
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: 1.2
+                        }
+                    });
+                }
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -153,6 +186,12 @@ export function Amenities() {
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="experiencia-vip">
+            {/* Ambient Lighting Pulse */}
+            <div
+                ref={glowRef}
+                className="absolute top-1/2 left-0 w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none -z-10"
+                style={{ filter: "blur(120px)" }}
+            />
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-20 items-start">
 

@@ -19,6 +19,8 @@ export function Experience() {
     const titleRef = useRef<HTMLHeadingElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
     const visualRef = useRef<HTMLDivElement>(null);
+    const stepsRef = useRef<HTMLDivElement>(null);
+    const textureRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -119,6 +121,69 @@ export function Experience() {
                         ease: "power3.out"
                     }
                 );
+
+                // Desktop-only cinematic scroll effects
+                if (!isMobile) {
+                    // Title scale down on scroll
+                    if (titleRef.current) {
+                        gsap.to(titleRef.current, {
+                            scale: 0.96,
+                            opacity: 0.9,
+                            scrollTrigger: {
+                                trigger: sectionRef.current,
+                                start: "top top",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        });
+                    }
+
+                    // Background texture parallax
+                    if (textureRef.current) {
+                        gsap.to(textureRef.current, {
+                            x: 100,
+                            opacity: 0.15,
+                            scrollTrigger: {
+                                trigger: sectionRef.current,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: 1.5
+                            }
+                        });
+                    }
+
+                    // Step items staggered reveal based on scroll
+                    const stepItems = stepsRef.current?.querySelectorAll(".experience-step-item");
+                    if (stepItems && stepItems.length > 0) {
+                        gsap.fromTo(stepItems,
+                            { opacity: 0, x: -30 },
+                            {
+                                scrollTrigger: {
+                                    trigger: stepsRef.current,
+                                    start: "top 75%",
+                                    toggleActions: "play none none reverse"
+                                },
+                                opacity: 1,
+                                x: 0,
+                                stagger: 0.2,
+                                duration: 1.2,
+                                ease: "power3.out"
+                            }
+                        );
+                    }
+
+                    // Bottom CTA fade/scale out
+                    gsap.to(ctaRef.current, {
+                        opacity: 0.6,
+                        scale: 0.98,
+                        scrollTrigger: {
+                            trigger: ctaRef.current,
+                            start: "top 60%",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                }
             }
         }, sectionRef);
 
@@ -128,7 +193,7 @@ export function Experience() {
     return (
         <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-graphite)] overflow-hidden" id="experiencia">
             {/* Background Narrative Texture */}
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div ref={textureRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
@@ -152,15 +217,11 @@ export function Experience() {
                             </div>
                         </h2>
 
-                        <div className="space-y-12">
+                        <div ref={stepsRef} className="space-y-12">
                             {steps.map((step, index) => (
                                 <m.div
                                     key={index}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.2 + index * 0.15, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                    className="flex gap-8 group"
+                                    className="experience-step-item flex gap-8 group"
                                 >
                                     <div className="flex flex-col items-center pt-1">
                                         <Magnetic strength={0.3} range={60}>

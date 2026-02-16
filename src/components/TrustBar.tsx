@@ -10,8 +10,29 @@ const trustTokens = [
 ];
 
 export function TrustBar() {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                gsap.to(".trust-token", {
+                    scale: 0.95,
+                    opacity: 0.4,
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className="py-12 border-y border-white/5 bg-[var(--color-background)]/50 backdrop-blur-sm overflow-hidden">
+        <div ref={containerRef} className="py-12 border-y border-white/5 bg-[var(--color-background)]/50 backdrop-blur-sm overflow-hidden">
             <div className="container mx-auto px-6">
                 <div className="flex flex-wrap justify-between items-center gap-8 md:gap-12 opacity-60 hover:opacity-100 transition-opacity duration-700">
                     <m.span
@@ -29,7 +50,7 @@ export function TrustBar() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1, duration: 0.8 }}
                                 viewport={{ once: true }}
-                                className="flex flex-col items-center lg:items-start group transition-all"
+                                className="trust-token flex flex-col items-center lg:items-start group transition-all"
                             >
                                 <span className="font-display text-xl md:text-2xl text-white font-medium tracking-widest group-hover:text-[var(--color-silver-bh)] transition-colors duration-500">
                                     {token.name}
