@@ -269,16 +269,16 @@ export function Hero() {
                         <div className="mb-6 lg:mb-10 overflow-hidden w-full">
                             <h1 ref={titleRef} className="text-hero-editorial font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-1 lg:mb-2 overflow-hidden">
-                                    <span className="title-line-inner inline-block text-[clamp(1.8rem,9vw,5.5rem)] leading-[1.1]">Seu Sorriso,</span>
+                                    <span className="title-line-inner inline-block text-[clamp(2.5rem,10vw,5.5rem)] leading-[1.1]">Seu Sorriso,</span>
                                 </span>
                                 <span className="block overflow-hidden">
-                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(1.8rem,9vw,5.5rem)] leading-[1.1]">Sua Assinatura.</span>
+                                    <span className="title-line-inner inline-block italic font-light text-[var(--color-silver-bh)] text-[clamp(2.5rem,10vw,5.5rem)] leading-[1.1]">Sua Assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
                         <div className="overflow-hidden mb-10 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[45ch] lg:max-w-[55ch] mx-auto lg:mx-0 text-sm md:text-xl lg:text-[1.75rem] leading-relaxed px-4 lg:px-0 opacity-80">
+                            <p ref={descriptionRef} className="text-subheadline-editorial text-white/90 lg:text-white/80 max-w-[45ch] lg:max-w-[55ch] mx-auto lg:mx-0 text-base md:text-xl lg:text-[1.75rem] leading-relaxed px-4 lg:px-0 opacity-80">
                                 A harmonia perfeita entre a ciência avançada e a estética de alta costura.
                                 Projetamos o seu sorriso como uma obra de arte única.
                             </p>
@@ -291,7 +291,7 @@ export function Hero() {
                                     whileTap={{ scale: 0.98 }}
                                     className="btn-luxury-primary group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
                                 >
-                                    <span className="relative z-10 flex items-center gap-4 text-[10px] lg:text-xs">
+                                    <span className="relative z-10 flex items-center gap-4 text-xs lg:text-sm">
                                         Agendar Consulta
                                         <ArrowRight strokeWidth={1.2} className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-2 transition-transform duration-500 ease-out" />
                                     </span>
@@ -304,7 +304,7 @@ export function Hero() {
                                     whileTap={{ scale: 0.98 }}
                                     className="btn-luxury-ghost group flex items-center justify-center gap-4 px-10 w-full sm:w-auto py-5 lg:py-6"
                                 >
-                                    <span className="text-[10px] lg:text-xs">Ver Casos Clínicos</span>
+                                    <span className="text-xs lg:text-sm">Ver Casos Clínicos</span>
                                 </m.button>
                             </Magnetic>
                         </div>
