@@ -169,64 +169,96 @@ export function Hero() {
             // 1. Entrance Animation (Handled by CSS for performance and reduced motion)
             const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
 
-            // 2. Cinematic Scroll Logic (Desktop Only)
-            if (!shouldReduceMotion && !isMobile) {
-                // Main Pinning & Parallax Timeline
-                const scrollTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "+=500", // Pinned duration in px
-                        pin: pinContainerRef.current,
-                        scrub: 1, // Fluid but responsive
-                        anticipatePin: 1
-                    }
-                });
+            // 2. Cinematic Scroll Logic
+            if (!shouldReduceMotion) {
+                // Desktop Version
+                if (!isMobile) {
+                    const scrollTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "+=500",
+                            pin: pinContainerRef.current,
+                            scrub: 1,
+                            anticipatePin: 1
+                        }
+                    });
 
-                // X-ray / Video Background Parallax
-                scrollTl.to(videoWrapperRef.current, {
-                    yPercent: -20, // Move background up
-                    scale: 1.1,
-                    ease: "none"
-                }, 0);
+                    scrollTl.to(videoWrapperRef.current, {
+                        yPercent: -20,
+                        scale: 1.1,
+                        ease: "none"
+                    }, 0);
 
-                // Headline Refinement on Scroll (Editorial Evaporation)
-                scrollTl.to(titleRef.current, {
-                    scale: 0.94,
-                    opacity: 0,
-                    y: -100,
-                    letterSpacing: "0.15em",
-                    filter: "blur(15px)",
-                    ease: "power2.in"
-                }, 0);
+                    scrollTl.to(titleRef.current, {
+                        scale: 0.94,
+                        opacity: 0,
+                        y: -100,
+                        letterSpacing: "0.15em",
+                        filter: "blur(15px)",
+                        ease: "power2.in"
+                    }, 0);
 
-                // Progress Line Animation
-                scrollTl.to(progressLineRef.current, {
-                    scaleY: 1,
-                    ease: "none"
-                }, 0);
+                    scrollTl.to(progressLineRef.current, {
+                        scaleY: 1,
+                        ease: "none"
+                    }, 0);
 
-                // Content Wrapper Fade & Parallax
-                scrollTl.to(contentWrapperRef.current, {
-                    opacity: 0,
-                    y: -50,
-                    filter: "blur(8px)",
-                    ease: "none"
-                }, 0);
+                    scrollTl.to(contentWrapperRef.current, {
+                        opacity: 0,
+                        y: -50,
+                        filter: "blur(8px)",
+                        ease: "none"
+                    }, 0);
 
-                // Additional Headline Animation (User-requested)
-                gsap.to(titleRef.current, {
-                    scale: 0.9,
-                    y: -40,
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
+                    gsap.to(scrollHintRef.current, {
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "top -50px",
+                            scrub: true
+                        },
+                        opacity: 0,
+                        y: -20
+                    });
+                }
+                // Mobile Version (Premium Scroll Effect)
+                else {
+                    const mobileTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
 
-                // Dark Overlay Fade-in Animation (User-requested)
+                    // Video Parallax (0.75x speed/intensity)
+                    mobileTl.to(videoWrapperRef.current, {
+                        y: "15%", // Moving slower than scroll (0.25 effective delta)
+                        ease: "none"
+                    }, 0);
+
+                    // Text Exit (Higher speed/fade)
+                    mobileTl.to([titleRef.current, descriptionRef.current], {
+                        opacity: 0,
+                        y: -30,
+                        ease: "power2.inOut",
+                        stagger: 0.05
+                    }, 0);
+
+                    // CTA Exit (Later fade + subtle scale)
+                    mobileTl.to(actionsRef.current, {
+                        opacity: 0,
+                        scale: 0.96,
+                        y: -10,
+                        ease: "power1.inOut"
+                    }, 0.1);
+                }
+            }
+
+            // Dark Overlay Fade-in Animation (User-requested) - Applies to both desktop/mobile if not reduced motion
+            if (!shouldReduceMotion) {
                 gsap.to(overlayDarkRef.current, {
                     opacity: 0.7,
                     scrollTrigger: {
@@ -236,47 +268,7 @@ export function Hero() {
                         scrub: true
                     }
                 });
-            } else if (isMobile) {
-                // Minimal parallax for mobile to ensure performance
-                gsap.to(videoWrapperRef.current, {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top 80%",
-                        end: "bottom top",
-                        scrub: 0.5,
-                        markers: false
-                    },
-                    yPercent: -15,
-                    scale: 1.05
-                });
-
-                // Scroll Hint Fade Out
-                gsap.to(scrollHintRef.current, {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "top -50px",
-                        scrub: true
-                    },
-                    opacity: 0,
-                    y: -20
-                });
-
-                // Subtle Headline micro-parallax for mobile
-                gsap.to(titleRef.current, {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top 80%",
-                        end: "bottom top",
-                        scrub: 0.8,
-                        markers: false
-                    },
-                    y: -20,
-                    scale: 0.98,
-                    opacity: 0.9
-                });
             }
-
         }, sectionRef);
 
         return () => ctx.revert();
