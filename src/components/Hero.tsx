@@ -83,15 +83,25 @@ export function Hero() {
                 video.muted = true;
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
+
+                // Extra check for mobile browsers that might require play() to be triggered
+                // as soon as metadata is ready or during explicit attempts
                 await video.play();
                 setVideoLoaded(true);
-                setIsPlaying(true); // Set playing state when autoplay succeeds
+                setIsPlaying(true);
             } catch (error) {
                 console.log("Autoplay blocked, waiting for interaction", error);
+                // Fallback: stay on paused state, but ensures video properties are ready
+                setVideoLoaded(true);
             }
         };
 
-        attemptPlay();
+        if (video.readyState >= 2) {
+            attemptPlay();
+        } else {
+            video.addEventListener('loadedmetadata', attemptPlay);
+            return () => video.removeEventListener('loadedmetadata', attemptPlay);
+        }
 
         // Handle visibility changes
         const handleVisibilityChange = () => {
@@ -296,10 +306,11 @@ export function Hero() {
 
                     <video
                         ref={videoRef}
+                        autoPlay
                         playsInline
                         muted
                         loop
-                        preload="metadata"
+                        preload="auto"
                         poster="/assets/images/clinic-interior.png"
                         onCanPlay={() => setVideoLoaded(true)}
                         className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}
