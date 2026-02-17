@@ -75,35 +75,47 @@ export function Hero() {
 
     const playingRef = useRef(false);
 
-    // Forced Video Playback for Mobile Reliability (Initial Autoplay Muted)
+    // Ultra-Aggressive Mobile Autoplay Watchdog
     useEffect(() => {
         const video = videoRef.current;
         if (!video || !mounted) return;
 
+        // Force critical attributes
+        const enforceAttributes = () => {
+            if (!video) return;
+            video.muted = true;
+            video.defaultMuted = true;
+            video.setAttribute('muted', '');
+            video.setAttribute('playsinline', '');
+            video.setAttribute('autoplay', '');
+            video.setAttribute('loop', '');
+        };
+
         const attemptPlay = async () => {
             if (!video || playingRef.current) return;
+            enforceAttributes();
             try {
-                // Ensure all attributes are strictly set
-                video.muted = true;
-                video.defaultMuted = true;
-                video.setAttribute('muted', '');
-                video.setAttribute('playsinline', '');
-
-                // Explicitly load before play for some mobile engines
-                if (video.readyState === 0) video.load();
-
                 await video.play();
                 playingRef.current = true;
                 setIsPlaying(true);
                 setVideoLoaded(true);
-            } catch (error) {
-                console.log("Autoplay blocked, waiting for interaction", error);
-                setVideoLoaded(true);
+                console.log("[Hero] Autoplay success");
+            } catch (err) {
+                // Silently fail, watchdog or interaction will retry
             }
         };
 
-        // Aggressive "Unlock" for mobile: any interaction triggers play if not already playing
-        const unlockVideo = () => {
+        // Watchdog: Keep trying until it plays
+        let rafId: number;
+        const watchdog = () => {
+            if (!playingRef.current && video) {
+                attemptPlay();
+                rafId = requestAnimationFrame(watchdog);
+            }
+        };
+
+        // Interaction "Unlock" - Essential for iPhones in Low Power Mode
+        const unlock = () => {
             if (video && !playingRef.current) {
                 video.play().then(() => {
                     playingRef.current = true;
@@ -111,45 +123,36 @@ export function Hero() {
                     setVideoLoaded(true);
                 }).catch(() => { });
             }
-            // Remove listeners after first successful or attempted interaction-based play
-            window.removeEventListener('touchstart', unlockVideo);
-            window.removeEventListener('mousedown', unlockVideo);
-            window.removeEventListener('keydown', unlockVideo);
-            window.removeEventListener('scroll', unlockVideo);
+            // Cleanup listeners after first interaction attempt
+            ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
+                window.removeEventListener(ev, unlock)
+            );
         };
 
-        // Initial attempt with a slight delay to ensure DOM readiness
-        const timeoutId = setTimeout(() => {
-            if (video.readyState >= 2) {
-                attemptPlay();
-            } else {
-                video.addEventListener('loadedmetadata', attemptPlay, { once: true });
-            }
-        }, 100);
+        enforceAttributes();
 
-        window.addEventListener('touchstart', unlockVideo, { passive: true });
-        window.addEventListener('mousedown', unlockVideo, { passive: true });
-        window.addEventListener('keydown', unlockVideo, { passive: true });
-        window.addEventListener('scroll', unlockVideo, { passive: true });
+        // Start watchdog and listeners
+        rafId = requestAnimationFrame(watchdog);
+        ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
+            window.addEventListener(ev, unlock, { passive: true })
+        );
 
-        // Handle visibility changes
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && playingRef.current) {
+        // Visibility handling
+        const onVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && video && playingRef.current) {
                 video.play().catch(() => { });
             }
         };
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('visibilitychange', onVisibilityChange);
 
         return () => {
-            clearTimeout(timeoutId);
-            video.removeEventListener('loadedmetadata', attemptPlay);
-            window.removeEventListener('touchstart', unlockVideo);
-            window.removeEventListener('mousedown', unlockVideo);
-            window.removeEventListener('keydown', unlockVideo);
-            window.removeEventListener('scroll', unlockVideo);
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            cancelAnimationFrame(rafId);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+            ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
+                window.removeEventListener(ev, unlock)
+            );
         };
-    }, [mounted]); // Keep dependencies minimal to ensure listeners stay stable
+    }, [mounted]);
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
