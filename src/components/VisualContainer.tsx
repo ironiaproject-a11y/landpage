@@ -79,6 +79,7 @@ export default function VisualContainer({
 
     const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
         if (!containerRef.current) return;
+        setIsHovered(true); // Force hover state for mobile interaction
         const rect = containerRef.current.getBoundingClientRect();
         const touch = e.touches[0];
         const x = (touch.clientX - rect.left) / rect.width - 0.5;
@@ -99,6 +100,7 @@ export default function VisualContainer({
             className="relative"
             style={{ width, height, perspective: "2000px" }}
             onMouseMove={handleMouseMove}
+            onTouchStart={() => setIsHovered(true)}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleMouseLeave}
             onMouseEnter={() => setIsHovered(true)}
