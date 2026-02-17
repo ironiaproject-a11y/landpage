@@ -351,12 +351,12 @@ export function Hero() {
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <div className="mb-4 lg:mb-10 w-full">
-                            <h1 ref={titleRef} className="animate-hero-fade delay-headline font-medium text-[#FAF9F7] tracking-tight will-change-transform">
+                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0">Seu sorriso,</span>
+                                    <span className="animate-hero-fade delay-headline title-line-inner inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0">Seu sorriso,</span>
                                 </span>
                                 <span className="block overflow-hidden pb-1">
-                                    <span className={`title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}>sua assinatura.</span>
+                                    <span className={`animate-hero-fade delay-headline title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}>sua assinatura.</span>
                                 </span>
                             </h1>
                         </div>
