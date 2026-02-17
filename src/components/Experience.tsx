@@ -217,15 +217,18 @@ export function Experience() {
                             </div>
                         </h2>
 
-                        <div ref={stepsRef} className="space-y-12">
+                        <div ref={stepsRef} className="space-y-8 md:space-y-12 relative">
+                            {/* Conceptual Timeline Line Background */}
+                            <div className="absolute left-[23px] top-4 bottom-12 w-[1px] bg-gradient-to-b from-[var(--color-silver-bh)]/30 via-white/5 to-transparent md:hidden" />
+
                             {steps.map((step, index) => (
                                 <m.div
                                     key={index}
-                                    className="experience-step-item flex gap-8 group"
+                                    className="experience-step-item flex gap-6 md:gap-8 group relative z-10"
                                 >
                                     <div className="flex flex-col items-center pt-1">
                                         <Magnetic strength={0.3} range={60}>
-                                            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[var(--color-silver-bh)]/30 transition-all duration-500 bg-white/2 backdrop-blur-sm">
+                                            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[var(--color-silver-bh)]/30 transition-all duration-500 bg-[#0A0A0A] backdrop-blur-sm z-10 shadow-premium-1">
                                                 <span className="text-[var(--color-silver-bh)]/60 group-hover:text-[var(--color-silver-bh)] font-display text-sm font-bold tracking-widest transition-colors duration-500">
                                                     {step.number}
                                                 </span>
@@ -233,16 +236,17 @@ export function Experience() {
                                         </Magnetic>
                                     </div>
                                     <div className="pb-8">
-                                        <h3 className="text-2xl font-display font-medium text-white group-hover:text-[var(--color-silver-bh)] transition-colors mb-3">
+                                        <h3 className="text-xl md:text-2xl font-display font-medium text-white group-hover:text-[var(--color-silver-bh)] transition-colors mb-2 md:mb-3">
                                             {step.title}
                                         </h3>
-                                        <p className="text-[var(--color-text-secondary)] text-lg font-light leading-relaxed max-w-md opacity-80 group-hover:opacity-100 transition-opacity">
+                                        <p className="text-[var(--color-text-secondary)] text-base md:text-lg font-light leading-relaxed max-w-md opacity-80 group-hover:opacity-100 transition-opacity">
                                             {step.description}
                                         </p>
                                     </div>
                                 </m.div>
                             ))}
                         </div>
+
                     </div>
 
                     {/* Right: Visual Showcase (The Brand Visual) */}

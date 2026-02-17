@@ -85,6 +85,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
             <div
                 ref={containerRef}
                 className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleImage ? "" : "cursor-col-resize"} select-none shadow-2xl`}
+                style={{ touchAction: "pan-y" }}
                 onMouseMove={(e) => {
                     handleMove(e);
                     handleMouseMove(e);
@@ -94,6 +95,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleMouseDown}
             >
+
                 {/* After Image (Background) */}
                 <Image
                     src={afterImage}

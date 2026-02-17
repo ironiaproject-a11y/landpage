@@ -95,9 +95,9 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-24 md:py-32 bg-[#050505] relative overflow-hidden border-y border-white/5">
+        <section ref={containerRef} className="py-16 md:py-32 bg-[#050505] relative overflow-hidden border-y border-white/5">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
                     {stats.map((stat, index) => (
                         <m.div
                             key={index}
@@ -106,21 +106,21 @@ export function Stats() {
                             transition={{ duration: 1.2, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
                             viewport={{
                                 once: true,
-                                margin: "0px 0px -100px 0px",
+                                margin: "0px 0px -50px 0px",
                                 amount: 0.3
                             }}
                             className="flex flex-col items-center md:items-start relative md:px-12 lg:px-16 first:pl-0 last:pr-0"
                         >
                             {/* Number & Value */}
-                            <div className="flex items-baseline gap-1 mb-8">
+                            <div className="flex items-baseline gap-1 mb-6 md:mb-8">
                                 {stat.prefix && (
-                                    <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-4xl font-light opacity-60">
+                                    <span className="text-[var(--color-silver-bh)] font-editorial text-2xl md:text-4xl font-light opacity-60">
                                         {stat.prefix}
                                     </span>
                                 )}
                                 {stat.value !== null ? (
                                     <span
-                                        className="stat-counter font-editorial text-6xl sm:text-7xl md:text-8xl lg:text-[100px] font-medium text-white tracking-tighter leading-none"
+                                        className="stat-counter font-editorial text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-medium text-white tracking-tighter leading-none"
                                         data-target={stat.value}
                                         data-float={stat.value % 1 !== 0}
                                     >
@@ -132,7 +132,7 @@ export function Stats() {
                                     </span>
                                 )}
                                 {stat.suffix && (
-                                    <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-4xl font-light opacity-60">
+                                    <span className="text-[var(--color-silver-bh)] font-editorial text-2xl md:text-4xl font-light opacity-60">
                                         {stat.suffix}
                                     </span>
                                 )}
@@ -140,7 +140,7 @@ export function Stats() {
 
                             {/* Labels */}
                             <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                                <h4 className="text-[var(--color-silver-bh)] font-body text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] mb-4 opacity-80">
+                                <h4 className="text-[var(--color-silver-bh)] font-body text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] mb-3 md:mb-4 opacity-80">
                                     {stat.label}
                                 </h4>
                                 <p className="text-[var(--color-text-dim)] font-body text-sm md:text-base font-light leading-relaxed max-w-[280px] opacity-70">
@@ -153,9 +153,9 @@ export function Stats() {
                                 <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-32 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
                             )}
 
-                            {/* Horizontal Divider for Mobile */}
+                            {/* Horizontal Divider for Mobile - Refined */}
                             {index !== stats.length - 1 && (
-                                <div className="md:hidden w-12 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/20 to-transparent mt-12 mx-auto" />
+                                <div className="md:hidden w-16 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/30 to-transparent mt-8 mx-auto" />
                             )}
                         </m.div>
                     ))}
@@ -166,6 +166,7 @@ export function Stats() {
             <div className="stats-glow absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
             <div className="stats-glow absolute top-1/2 right-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
         </section>
+
     );
 }
 
