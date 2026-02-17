@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -46,12 +46,22 @@ export default function VisualContainer({
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
+    // Scroll tracker for mobile automatic 3D
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start bottom", "end top"]
+    });
+
     // Smooth springs - weighted for premium inertia
     const springConfig = { damping: 40, stiffness: 120, mass: 1 };
 
-    // Toned down rotation for a more "stable luxury" feel
-    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [7, -7]), springConfig);
-    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-7, 7]), springConfig);
+    // Intensified rotation (15 degrees) tilting TOWARDS the interaction
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [-15, 15]), springConfig);
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), springConfig);
+
+    // Automatic scroll-based tilt for mobile (reveals 3D side perspective automatically)
+    const scrollRotateX = useSpring(useTransform(scrollYProgress, [0, 1], [-10, 10]), springConfig);
+    const scrollRotateY = useSpring(useTransform(scrollYProgress, [0, 1], [5, -5]), springConfig);
 
     // Glare position transform - Dual Layer Specular highlights
     const glareX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
@@ -97,8 +107,8 @@ export default function VisualContainer({
             <m.div
                 className="w-full h-full relative preserve-3d"
                 style={{
-                    rotateX: isHovered || isMobile ? rotateX : 0,
-                    rotateY: isHovered || isMobile ? rotateY : 0,
+                    rotateX: isHovered ? rotateX : (isMobile ? scrollRotateX : 0),
+                    rotateY: isHovered ? rotateY : (isMobile ? scrollRotateY : 0),
                     transformStyle: "preserve-3d",
                 }}
                 transition={{ duration: parseFloat(transformDuration) }}
