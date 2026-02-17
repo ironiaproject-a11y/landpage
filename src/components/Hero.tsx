@@ -81,6 +81,7 @@ export function Hero() {
         if (!video || !mounted) return;
 
         // Force critical attributes
+        // Force critical attributes
         const enforceAttributes = () => {
             if (!video) return;
             video.muted = true;
@@ -92,16 +93,22 @@ export function Hero() {
         };
 
         const attemptPlay = async () => {
-            if (!video || playingRef.current) return;
-            enforceAttributes();
+            if (!video || playingRef.current || shouldReduceMotion) return;
             try {
+                // Ensure all attributes are strictly set
+                video.muted = true;
+                video.defaultMuted = true;
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+                video.setAttribute('autoplay', '');
+                video.setAttribute('loop', '');
+
                 await video.play();
                 playingRef.current = true;
                 setIsPlaying(true);
                 setVideoLoaded(true);
-                console.log("[Hero] Autoplay success");
             } catch (err) {
-                // Silently fail, watchdog or interaction will retry
+                // Silently fail
             }
         };
 
@@ -314,28 +321,29 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full min-h-[100dvh] flex flex-col overflow-visible bg-[#0a0a0a]"
+            className="relative w-full min-h-[65vh] lg:min-h-screen h-[75vh] lg:h-screen flex flex-col overflow-hidden bg-[#0a0a0a]"
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-[100dvh] lg:h-screen w-full flex items-center overflow-hidden"
+                className="relative h-full w-full flex items-center overflow-hidden"
             >
                 {/* Background Video / X-ray Layer */}
                 <div
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    {/* Radial Spotlight Overlay */}
+                    {/* Gradient Overlay for Mobile Contrast */}
                     <div
-                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000"
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 bg-gradient-to-b from-black/50 via-black/35 to-black/65 lg:hidden"
+                    />
+
+                    {/* Radial Spotlight Overlay (Desktop) */}
+                    <div
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 hidden lg:block"
                         style={{
-                            background: isMobile
-                                ? 'radial-gradient(circle at 50% 40%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 60%)'
-                                : 'linear-gradient(to right, black, rgba(0,0,0,0.2), transparent)'
+                            background: 'linear-gradient(to right, black, rgba(0,0,0,0.2), transparent)'
                         }}
                     />
-                    {/* Darker base overlay for text contrast on edges */}
-                    <div className={`absolute inset-0 z-10 bg-black/20 ${isMobile ? 'block' : 'hidden'}`} />
 
                     {/* Dark Overlay (Animated on Scroll) */}
                     <div
@@ -344,17 +352,17 @@ export function Hero() {
                         style={{ opacity: 0 }}
                     />
 
-
                     <video
                         ref={videoRef}
                         src="/hero-background.mp4"
-                        autoPlay
+                        autoPlay={!shouldReduceMotion}
                         playsInline
                         muted
                         loop
-                        preload="auto"
+                        preload="metadata"
+                        poster="/assets/images/clinic-interior.png"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-700 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-40 lg:opacity-0'}`}
+                        className={`w-full h-full object-cover object-center brightness-[0.5] lg:brightness-[0.8] saturate-[0.8] lg:saturate-100 transition-opacity duration-700 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-40 lg:opacity-0'}`}
                     />
                 </div>
 
@@ -375,33 +383,33 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-[120px] lg:pt-32 pb-20 lg:pb-0 text-center lg:text-left"
+                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-40 pb-16 lg:pb-0 text-center lg:text-left"
                 >
-                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start" style={{ textShadow: isMobile ? "0 4px 12px rgba(0,0,0,0.5)" : "none" }}>
-                        <div className="mb-5 lg:mb-10 w-full">
-                            <h1 ref={titleRef} className={`${isMobile ? 'font-playfair' : 'text-hero-editorial'} font-medium text-[#FAF9F7] tracking-tight will-change-transform`}>
+                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
+                        <div className="mb-4 lg:mb-10 w-full">
+                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
-                                    <span className="title-line-inner inline-block text-[36px] sm:text-[40px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.05] lg:leading-[1.1]">Seu sorriso,</span>
+                                    <span className="title-line-inner inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0">Seu sorriso,</span>
                                 </span>
                                 <span className="block overflow-hidden pb-1">
-                                    <span className={`title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[36px] sm:text-[40px] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.05] lg:leading-[1.1]`}>sua assinatura.</span>
+                                    <span className={`title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}>sua assinatura.</span>
                                 </span>
                             </h1>
                         </div>
 
-                        <div className="overflow-hidden mb-8 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[15px] sm:text-[16px] lg:text-[1.75rem] leading-[1.6] lg:leading-relaxed px-2 lg:px-0 backdrop-blur-[2px] lg:backdrop-blur-none rounded-lg py-2 lg:py-0">
+                        <div className="overflow-hidden mb-6 lg:mb-14 w-full">
+                            <p ref={descriptionRef} className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90">
                                 A harmonia perfeita entre ciência avançada e estética de alta costura.
                             </p>
                         </div>
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-6 lg:mt-0">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-2 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     onClick={() => logEvent('cta_agendar_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[64px] lg:h-auto py-0 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-2xl overflow-hidden"
+                                    className="group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -426,7 +434,7 @@ export function Hero() {
                                     onClick={() => logEvent('cta_ver_casos_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group flex items-center justify-center gap-4 px-10 w-full sm:w-auto h-[56px] lg:h-auto py-0 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
+                                    className="group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
                                 >
                                     <span className="text-[11px] sm:text-xs tracking-[0.2em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>
