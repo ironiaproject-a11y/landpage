@@ -311,9 +311,8 @@ export function Hero() {
                         muted
                         loop
                         preload="auto"
-                        poster="/assets/images/clinic-interior.png"
                         onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-[2000ms] ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}
+                        className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-700 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-40 lg:opacity-0'}`}
                     >
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
