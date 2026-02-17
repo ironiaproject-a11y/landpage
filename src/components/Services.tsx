@@ -144,8 +144,8 @@ export function Services() {
                 );
             }
 
-            // Enhanced Asymmetrical Card Parallax with Horizontal Drift - Enabled for Mobile
-            const speedMult = isMobile ? 0.4 : 1;
+            // Enhanced Asymmetrical Card Parallax with Horizontal Drift - Unified for All Devices
+            const speedMult = 1;
 
             const cards = gsap.utils.toArray(".service-card-wrapper");
             cards.forEach((card: any, i) => {
@@ -203,46 +203,44 @@ export function Services() {
                 );
             });
 
-            // Desktop-only cinematic scroll effects
-            if (!isMobile) {
-                // Section heading scale effect
-                gsap.to(titleRef.current, {
-                    scale: 0.95,
-                    opacity: 0.8,
+            // Cinematic scroll effects for All Devices
+            // Section heading scale effect
+            gsap.to(titleRef.current, {
+                scale: 0.95,
+                opacity: 0.8,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Dark overlay fade-in
+            if (overlayDarkRef.current) {
+                gsap.to(overlayDarkRef.current, {
+                    opacity: 0.4,
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top top",
+                        start: "top center",
                         end: "bottom top",
                         scrub: true
                     }
                 });
-
-                // Dark overlay fade-in
-                if (overlayDarkRef.current) {
-                    gsap.to(overlayDarkRef.current, {
-                        opacity: 0.4,
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top center",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Icon rotation on scroll
-                gsap.utils.toArray(".service-icon-rotate").forEach((icon: any) => {
-                    gsap.to(icon, {
-                        rotation: 180,
-                        scrollTrigger: {
-                            trigger: icon.closest(".service-card-wrapper"),
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: 1.5
-                        }
-                    });
-                });
             }
+
+            // Icon rotation on scroll
+            gsap.utils.toArray(".service-icon-rotate").forEach((icon: any) => {
+                gsap.to(icon, {
+                    rotation: 180,
+                    scrollTrigger: {
+                        trigger: icon.closest(".service-card-wrapper"),
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            });
         }, sectionRef);
 
         return () => ctx.revert();

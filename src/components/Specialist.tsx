@@ -73,18 +73,16 @@ export function Specialist() {
             );
 
             // Badge Parallax
-            if (!isMobile) {
-                gsap.to(".badge-parallax", {
-                    scrollTrigger: {
-                        trigger: ".dr-portrait-wrapper",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1
-                    },
-                    y: -40,
-                    ease: "none"
-                });
-            }
+            gsap.to(".badge-parallax", {
+                scrollTrigger: {
+                    trigger: ".dr-portrait-wrapper",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                },
+                y: -40,
+                ease: "none"
+            });
 
             if (quoteRef.current) {
                 gsap.fromTo(quoteRef.current,
@@ -105,68 +103,66 @@ export function Specialist() {
             }
 
             // High-End Portrait Parallax
-            if (!isMobile) {
-                gsap.fromTo(".dr-portrait-wrapper",
-                    { y: 60 },
+            gsap.fromTo(".dr-portrait-wrapper",
+                { y: 60 },
+                {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.2
+                    },
+                    y: -60,
+                    ease: "none"
+                }
+            );
+
+            // Cinematic scroll effects
+            // Credentials sequential reveal
+            if (credentialsRef.current) {
+                const credentialItems = credentialsRef.current.querySelectorAll(".credential-item");
+                gsap.fromTo(credentialItems,
+                    { opacity: 0, x: -30 },
                     {
                         scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: 1.2
+                            trigger: credentialsRef.current,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
                         },
-                        y: -60,
-                        ease: "none"
+                        opacity: 1,
+                        x: 0,
+                        stagger: 0.2,
+                        duration: 1,
+                        ease: "power3.out"
                     }
                 );
+            }
 
-                // Desktop-only cinematic scroll effects
-                // Credentials sequential reveal
-                if (credentialsRef.current) {
-                    const credentialItems = credentialsRef.current.querySelectorAll(".credential-item");
-                    gsap.fromTo(credentialItems,
-                        { opacity: 0, x: -30 },
-                        {
-                            scrollTrigger: {
-                                trigger: credentialsRef.current,
-                                start: "top 80%",
-                                toggleActions: "play none none reverse"
-                            },
-                            opacity: 1,
-                            x: 0,
-                            stagger: 0.2,
-                            duration: 1,
-                            ease: "power3.out"
-                        }
-                    );
-                }
+            // Quote scale effect on scroll
+            if (quoteRef.current) {
+                gsap.to(quoteRef.current, {
+                    scale: 0.97,
+                    scrollTrigger: {
+                        trigger: quoteRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
 
-                // Quote scale effect on scroll
-                if (quoteRef.current) {
-                    gsap.to(quoteRef.current, {
-                        scale: 0.97,
-                        scrollTrigger: {
-                            trigger: quoteRef.current,
-                            start: "top center",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Background blur effect increase
-                if (backgroundRef.current) {
-                    gsap.to(backgroundRef.current, {
-                        opacity: 0.3,
-                        filter: "blur(20px)",
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top center",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
+            // Background blur effect increase
+            if (backgroundRef.current) {
+                gsap.to(backgroundRef.current, {
+                    opacity: 0.3,
+                    filter: "blur(20px)",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
             }
         }, sectionRef);
 

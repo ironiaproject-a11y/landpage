@@ -59,10 +59,20 @@ export default function VisualContainer({
     const glareOpacity = useSpring(isHovered ? 0.5 : 0, springConfig);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current || isMobile) return;
+        if (!containerRef.current) return;
         const rect = containerRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
+        mouseX.set(x);
+        mouseY.set(y);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = (touch.clientX - rect.left) / rect.width - 0.5;
+        const y = (touch.clientY - rect.top) / rect.height - 0.5;
         mouseX.set(x);
         mouseY.set(y);
     };
@@ -79,14 +89,16 @@ export default function VisualContainer({
             className="relative"
             style={{ width, height, perspective: "2000px" }}
             onMouseMove={handleMouseMove}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleMouseLeave}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={handleMouseLeave}
         >
             <m.div
                 className="w-full h-full relative preserve-3d"
                 style={{
-                    rotateX: !isMobile ? (isHovered ? rotateX : 0) : 5, // Subtle static tilt for mobile depth
-                    rotateY: !isMobile ? (isHovered ? rotateY : 0) : -5,
+                    rotateX: isHovered || isMobile ? rotateX : 0,
+                    rotateY: isHovered || isMobile ? rotateY : 0,
                     transformStyle: "preserve-3d",
                 }}
                 transition={{ duration: parseFloat(transformDuration) }}

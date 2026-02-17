@@ -68,53 +68,50 @@ export function InstitutionalTrust() {
                 );
             }
 
-            // Desktop-only cinematic scroll effects
-            const isMobile = window.innerWidth < 768;
-            if (!isMobile) {
-                // Section title scale refinement
-                if (titleRef.current) {
-                    gsap.to(titleRef.current, {
-                        scale: 0.96,
-                        opacity: 0.9,
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Background dot pattern parallax
-                gsap.to(".trust-bg-dots", {
-                    y: 100,
+            // Cinematic scroll effects for All Devices
+            // Section title scale refinement
+            if (titleRef.current) {
+                gsap.to(titleRef.current, {
+                    scale: 0.96,
+                    opacity: 0.9,
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top bottom",
+                        start: "top top",
                         end: "bottom top",
-                        scrub: 1.5
+                        scrub: true
                     }
                 });
+            }
 
-                // Cards staggered reveal on scroll
-                const cards = gsap.utils.toArray(".trust-card-item");
-                if (cards.length > 0) {
-                    gsap.fromTo(cards,
-                        { opacity: 0, y: 50 },
-                        {
-                            scrollTrigger: {
-                                trigger: sectionRef.current,
-                                start: "top 70%",
-                                toggleActions: "play none none reverse"
-                            },
-                            opacity: 1,
-                            y: 0,
-                            stagger: 0.1,
-                            duration: 1,
-                            ease: "power3.out"
-                        }
-                    );
+            // Background dot pattern parallax
+            gsap.to(".trust-bg-dots", {
+                y: 100,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5
                 }
+            });
+
+            // Cards staggered reveal on scroll
+            const cards = gsap.utils.toArray(".trust-card-item");
+            if (cards.length > 0) {
+                gsap.fromTo(cards,
+                    { opacity: 0, y: 50 },
+                    {
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top 70%",
+                            toggleActions: "play none none reverse"
+                        },
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.1,
+                        duration: 1,
+                        ease: "power3.out"
+                    }
+                );
             }
         }, sectionRef);
 
