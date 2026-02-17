@@ -17,6 +17,7 @@ export function Testimonials() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const testimonials = [
         {
@@ -58,6 +59,10 @@ export function Testimonials() {
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     useEffect(() => {
@@ -85,9 +90,9 @@ export function Testimonials() {
                 );
             }
 
-            // Scroll-Influenced Marquee Speed
+            // Scroll-Influenced Marquee Speed (Desktop only for performance)
             const marquee = sectionRef.current?.querySelector(".testimonials-marquee");
-            if (marquee) {
+            if (marquee && !isMobile) {
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
                     start: "top bottom",
@@ -152,7 +157,7 @@ export function Testimonials() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [mounted]);
+    }, [mounted, isMobile]);
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="depoimentos">
@@ -194,13 +199,13 @@ export function Testimonials() {
                                 ease: "linear",
                                 repeat: Infinity,
                             }}
-                            className="flex gap-10 pr-10 marquee-inner"
+                            className="flex gap-6 md:gap-10 pr-10 marquee-inner will-change-transform"
                             style={{ width: "max-content" }}
                         >
                             {[...testimonials, ...testimonials].map((testimonial, index) => (
                                 <div
                                     key={index}
-                                    className="testimonial-card w-[450px] shrink-0 h-full"
+                                    className="testimonial-card w-[320px] md:w-[450px] shrink-0 h-full"
                                 >
                                     <VisualContainer
                                         width="100%"
