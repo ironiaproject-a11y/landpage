@@ -166,44 +166,8 @@ export function Hero() {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            // 1. Entrance Animation
-            const entranceTl = gsap.timeline({
-                defaults: { ease: "power4.out", duration: 1.8 }
-            });
-
+            // 1. Entrance Animation (Handled by CSS for performance and reduced motion)
             const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
-
-            gsap.set([descriptionRef.current, actionsRef.current], {
-                opacity: 0,
-                y: 30
-            });
-
-            if (titleLines.length > 0) {
-                gsap.set(titleLines, {
-                    y: 100,
-                    opacity: 0,
-                    skewY: 7,
-                    filter: isMobile ? "none" : "blur(10px)"
-                });
-
-                entranceTl.to(titleLines, {
-                    y: 0,
-                    opacity: 1,
-                    skewY: 0,
-                    filter: isMobile ? "none" : "blur(0px)",
-                    stagger: 0.1,
-                    duration: 1.5,
-                    ease: "expo.out"
-                });
-            }
-
-            entranceTl.to([descriptionRef.current, actionsRef.current], {
-                opacity: 1,
-                y: 0,
-                duration: 1.2,
-                stagger: 0.1,
-                ease: "power3.out"
-            }, "-=1");
 
             // 2. Cinematic Scroll Logic (Desktop Only)
             if (!shouldReduceMotion && !isMobile) {
@@ -387,7 +351,7 @@ export function Hero() {
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <div className="mb-4 lg:mb-10 w-full">
-                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform">
+                            <h1 ref={titleRef} className="animate-hero-fade delay-headline font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
                                     <span className="title-line-inner inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0">Seu sorriso,</span>
                                 </span>
@@ -398,7 +362,7 @@ export function Hero() {
                         </div>
 
                         <div className="overflow-hidden mb-6 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90">
+                            <p ref={descriptionRef} className="animate-hero-fade delay-subheadline text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90">
                                 A harmonia perfeita entre ciência avançada e estética de alta costura.
                             </p>
                         </div>
@@ -409,7 +373,7 @@ export function Hero() {
                                     onClick={() => logEvent('cta_agendar_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
+                                    className="animate-hero-fade delay-cta-1 group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -434,7 +398,7 @@ export function Hero() {
                                     onClick={() => logEvent('cta_ver_casos_click')}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
+                                    className="animate-hero-fade delay-cta-2 group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
                                 >
                                     <span className="text-[11px] sm:text-xs tracking-[0.2em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>
@@ -467,7 +431,7 @@ export function Hero() {
                     <div className="w-[1px] h-12 bg-gradient-to-b from-[var(--color-silver-bh)] to-transparent" />
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
 
