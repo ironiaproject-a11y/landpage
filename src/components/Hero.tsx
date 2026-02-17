@@ -79,29 +79,45 @@ export function Hero() {
         if (!video) return;
 
         const attemptPlay = async () => {
+            if (!video || isPlaying) return;
             try {
                 video.muted = true;
+                video.defaultMuted = true;
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
 
-                // Extra check for mobile browsers that might require play() to be triggered
-                // as soon as metadata is ready or during explicit attempts
                 await video.play();
                 setVideoLoaded(true);
                 setIsPlaying(true);
             } catch (error) {
                 console.log("Autoplay blocked, waiting for interaction", error);
-                // Fallback: stay on paused state, but ensures video properties are ready
                 setVideoLoaded(true);
             }
+        };
+
+        // Aggressive "Unlock" for mobile: any interaction triggers play if not already playing
+        const unlockVideo = () => {
+            if (video && !isPlaying) {
+                video.play().then(() => {
+                    setIsPlaying(true);
+                    setVideoLoaded(true);
+                }).catch(() => { });
+            }
+            // Remove listeners after first interaction
+            window.removeEventListener('touchstart', unlockVideo);
+            window.removeEventListener('mousedown', unlockVideo);
+            window.removeEventListener('keydown', unlockVideo);
         };
 
         if (video.readyState >= 2) {
             attemptPlay();
         } else {
             video.addEventListener('loadedmetadata', attemptPlay);
-            return () => video.removeEventListener('loadedmetadata', attemptPlay);
         }
+
+        window.addEventListener('touchstart', unlockVideo, { passive: true });
+        window.addEventListener('mousedown', unlockVideo, { passive: true });
+        window.addEventListener('keydown', unlockVideo, { passive: true });
 
         // Handle visibility changes
         const handleVisibilityChange = () => {
@@ -110,8 +126,15 @@ export function Hero() {
             }
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, [mounted]); // Removed isPlaying from deps to avoid re-triggering loop logic
+
+        return () => {
+            video.removeEventListener('loadedmetadata', attemptPlay);
+            window.removeEventListener('touchstart', unlockVideo);
+            window.removeEventListener('mousedown', unlockVideo);
+            window.removeEventListener('keydown', unlockVideo);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [mounted, isPlaying]); // Added isPlaying to help logic, but unlockVideo handles cleanup
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
@@ -306,6 +329,7 @@ export function Hero() {
 
                     <video
                         ref={videoRef}
+                        src="/hero-background.mp4"
                         autoPlay
                         playsInline
                         muted
@@ -313,9 +337,7 @@ export function Hero() {
                         preload="auto"
                         onCanPlay={() => setVideoLoaded(true)}
                         className={`w-full h-full object-cover brightness-[0.6] contrast-[1.2] lg:brightness-[0.8] transition-opacity duration-700 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-40 lg:opacity-0'}`}
-                    >
-                        <source src="/hero-background.mp4" type="video/mp4" />
-                    </video>
+                    />
                 </div>
 
                 {/* Ambient Particles */}
