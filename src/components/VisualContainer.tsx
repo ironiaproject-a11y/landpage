@@ -36,7 +36,7 @@ export default function VisualContainer({
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
@@ -85,8 +85,8 @@ export default function VisualContainer({
             <m.div
                 className="w-full h-full relative preserve-3d"
                 style={{
-                    rotateX: isHovered && !isMobile ? rotateX : 0,
-                    rotateY: isHovered && !isMobile ? rotateY : 0,
+                    rotateX: !isMobile ? (isHovered ? rotateX : 0) : 5, // Subtle static tilt for mobile depth
+                    rotateY: !isMobile ? (isHovered ? rotateY : 0) : -5,
                     transformStyle: "preserve-3d",
                 }}
                 transition={{ duration: parseFloat(transformDuration) }}
@@ -140,7 +140,7 @@ export default function VisualContainer({
                                 key={idx}
                                 className="w-full relative flex flex-col h-full"
                                 style={{
-                                    transform: isMobile ? "none" : `translateZ(${(idx + 1) * 15}px)`,
+                                    transform: `translateZ(${(idx + 1) * 20}px)`,
                                     transformStyle: "preserve-3d",
                                 }}
                             >
@@ -156,27 +156,23 @@ export default function VisualContainer({
                     )}
                 </div>
 
-                {/* 3D Sides/Depth Effect - Only on desktop */}
-                {!isMobile && (
-                    <>
-                        <div
-                            className="absolute top-0 bottom-0 left-0 bg-[#000] opacity-30"
-                            style={{ width: sideHeight, transform: "rotateY(-90deg) translateZ(0.5px)", transformOrigin: "left" }}
-                        />
-                        <div
-                            className="absolute top-0 bottom-0 right-0 bg-[#000] opacity-30"
-                            style={{ width: sideHeight, transform: "rotateY(90deg) translateZ(0.5px)", transformOrigin: "right" }}
-                        />
-                        <div
-                            className="absolute left-0 right-0 top-0 bg-[#000] opacity-30"
-                            style={{ height: sideHeight, transform: "rotateX(90deg) translateZ(0.5px)", transformOrigin: "top" }}
-                        />
-                        <div
-                            className="absolute left-0 right-0 bottom-0 bg-[#000] opacity-30"
-                            style={{ height: sideHeight, transform: "rotateX(-90deg) translateZ(0.5px)", transformOrigin: "bottom" }}
-                        />
-                    </>
-                )}
+                {/* 3D Sides/Depth Effect */}
+                <div
+                    className="absolute top-0 bottom-0 left-0 bg-[#000] opacity-30"
+                    style={{ width: sideHeight, transform: "rotateY(-90deg) translateZ(0.5px)", transformOrigin: "left" }}
+                />
+                <div
+                    className="absolute top-0 bottom-0 right-0 bg-[#000] opacity-30"
+                    style={{ width: sideHeight, transform: "rotateY(90deg) translateZ(0.5px)", transformOrigin: "right" }}
+                />
+                <div
+                    className="absolute left-0 right-0 top-0 bg-[#000] opacity-30"
+                    style={{ height: sideHeight, transform: "rotateX(90deg) translateZ(0.5px)", transformOrigin: "top" }}
+                />
+                <div
+                    className="absolute left-0 right-0 bottom-0 bg-[#000] opacity-30"
+                    style={{ height: sideHeight, transform: "rotateX(-90deg) translateZ(0.5px)", transformOrigin: "bottom" }}
+                />
             </m.div>
         </div>
     );
