@@ -73,22 +73,29 @@ export function Hero() {
         });
     };
 
+    const playingRef = useRef(false);
+
     // Forced Video Playback for Mobile Reliability (Initial Autoplay Muted)
     useEffect(() => {
         const video = videoRef.current;
-        if (!video) return;
+        if (!video || !mounted) return;
 
         const attemptPlay = async () => {
-            if (!video || isPlaying) return;
+            if (!video || playingRef.current) return;
             try {
+                // Ensure all attributes are strictly set
                 video.muted = true;
                 video.defaultMuted = true;
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
 
+                // Explicitly load before play for some mobile engines
+                if (video.readyState === 0) video.load();
+
                 await video.play();
-                setVideoLoaded(true);
+                playingRef.current = true;
                 setIsPlaying(true);
+                setVideoLoaded(true);
             } catch (error) {
                 console.log("Autoplay blocked, waiting for interaction", error);
                 setVideoLoaded(true);
@@ -97,44 +104,52 @@ export function Hero() {
 
         // Aggressive "Unlock" for mobile: any interaction triggers play if not already playing
         const unlockVideo = () => {
-            if (video && !isPlaying) {
+            if (video && !playingRef.current) {
                 video.play().then(() => {
+                    playingRef.current = true;
                     setIsPlaying(true);
                     setVideoLoaded(true);
                 }).catch(() => { });
             }
-            // Remove listeners after first interaction
+            // Remove listeners after first successful or attempted interaction-based play
             window.removeEventListener('touchstart', unlockVideo);
             window.removeEventListener('mousedown', unlockVideo);
             window.removeEventListener('keydown', unlockVideo);
+            window.removeEventListener('scroll', unlockVideo);
         };
 
-        if (video.readyState >= 2) {
-            attemptPlay();
-        } else {
-            video.addEventListener('loadedmetadata', attemptPlay);
-        }
+        // Initial attempt with a slight delay to ensure DOM readiness
+        const timeoutId = setTimeout(() => {
+            if (video.readyState >= 2) {
+                attemptPlay();
+            } else {
+                video.addEventListener('loadedmetadata', attemptPlay, { once: true });
+            }
+        }, 100);
 
         window.addEventListener('touchstart', unlockVideo, { passive: true });
         window.addEventListener('mousedown', unlockVideo, { passive: true });
         window.addEventListener('keydown', unlockVideo, { passive: true });
+        window.addEventListener('scroll', unlockVideo, { passive: true });
 
         // Handle visibility changes
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && isPlaying) {
+            if (document.visibilityState === 'visible' && playingRef.current) {
                 video.play().catch(() => { });
             }
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
         return () => {
+            clearTimeout(timeoutId);
             video.removeEventListener('loadedmetadata', attemptPlay);
             window.removeEventListener('touchstart', unlockVideo);
             window.removeEventListener('mousedown', unlockVideo);
             window.removeEventListener('keydown', unlockVideo);
+            window.removeEventListener('scroll', unlockVideo);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, [mounted, isPlaying]); // Added isPlaying to help logic, but unlockVideo handles cleanup
+    }, [mounted]); // Keep dependencies minimal to ensure listeners stay stable
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
