@@ -247,7 +247,7 @@ export function Hero() {
                         markers: false
                     },
                     yPercent: -15,
-                    scale: 1.15
+                    scale: 1.05
                 });
 
                 // Scroll Hint Fade Out
