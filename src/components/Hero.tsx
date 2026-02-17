@@ -342,30 +342,77 @@ export function Hero() {
                     className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-40 pb-16 lg:pb-0 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
-                        <div className="mb-4 lg:mb-10 w-full">
+                        <m.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: { opacity: 0 },
+                                visible: {
+                                    opacity: 1,
+                                    transition: {
+                                        staggerChildren: 0.15,
+                                        delayChildren: 0.2
+                                    }
+                                }
+                            }}
+                            className="mb-4 lg:mb-10 w-full"
+                        >
                             <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform">
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
-                                    <span className="animate-hero-fade delay-headline title-line-inner inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0">Seu sorriso,</span>
+                                    <m.span
+                                        variants={{
+                                            hidden: { y: "100%", opacity: 0 },
+                                            visible: {
+                                                y: "0%",
+                                                opacity: 1,
+                                                transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+                                            }
+                                        }}
+                                        className="inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0"
+                                    >
+                                        Seu sorriso,
+                                    </m.span>
                                 </span>
                                 <span className="block overflow-hidden pb-1">
-                                    <span className={`animate-hero-fade delay-headline title-line-inner inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}>sua assinatura.</span>
+                                    <m.span
+                                        variants={{
+                                            hidden: { y: "100%", opacity: 0 },
+                                            visible: {
+                                                y: "0%",
+                                                opacity: 1,
+                                                transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+                                            }
+                                        }}
+                                        className={`inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}
+                                    >
+                                        sua assinatura.
+                                    </m.span>
                                 </span>
                             </h1>
-                        </div>
+                        </m.div>
 
                         <div className="overflow-hidden mb-6 lg:mb-14 w-full">
-                            <p ref={descriptionRef} className="animate-hero-fade delay-subheadline text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90">
+                            <m.p
+                                ref={descriptionRef}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                                className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90"
+                            >
                                 A harmonia perfeita entre ciência avançada e estética de alta costura.
-                            </p>
+                            </m.p>
                         </div>
+
 
                         <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-2 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    onClick={() => logEvent('cta_agendar_click')}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="animate-hero-fade delay-cta-1 group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
+                                    className="group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -388,12 +435,16 @@ export function Hero() {
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     onClick={() => logEvent('cta_ver_casos_click')}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.9, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="animate-hero-fade delay-cta-2 group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
+                                    className="group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
                                 >
                                     <span className="text-[11px] sm:text-xs tracking-[0.2em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>
+
                             </Magnetic>
                         </div>
                     </div>

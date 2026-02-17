@@ -97,7 +97,7 @@ export function Navbar() {
                                                     hover: { y: "-110%" }
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                                 className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-[0.2em]"
                                             >
                                                 {link.name}
@@ -110,7 +110,7 @@ export function Navbar() {
                                                     hover: { y: 0 }
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                                 className="absolute inset-0 py-2 px-4 text-[10px] font-bold text-[var(--color-silver-bh)] uppercase tracking-[0.2em]"
                                             >
                                                 {link.name}
@@ -123,10 +123,11 @@ export function Navbar() {
                                                     hover: { scaleX: 1, opacity: 1 }
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                                 className="absolute bottom-1 left-2 right-2 h-[1.5px] bg-[var(--color-silver-bh)] origin-left"
                                             />
                                         </m.a>
+
                                     </Magnetic>
                                 </li>
                             ))}
@@ -191,16 +192,35 @@ export function Navbar() {
                         </div>
 
                         <div className="relative z-10 w-full px-8 sm:px-12 flex flex-col h-full justify-center">
-                            <ul className="flex flex-col items-center gap-4 sm:gap-6 text-center w-full mt-10">
+                            <m.ul
+                                initial="hidden"
+                                animate="visible"
+                                variants={{
+                                    hidden: { opacity: 0 },
+                                    visible: {
+                                        opacity: 1,
+                                        transition: {
+                                            staggerChildren: 0.1,
+                                            delayChildren: 0.2
+                                        }
+                                    }
+                                }}
+                                className="flex flex-col items-center gap-4 sm:gap-6 text-center w-full mt-10"
+                            >
                                 {links.map((link, index) => (
                                     <m.li
                                         key={link.name}
-                                        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                        transition={{
-                                            delay: 0.1 + index * 0.1,
-                                            duration: 0.8,
-                                            ease: [0.22, 1, 0.36, 1]
+                                        variants={{
+                                            hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+                                            visible: {
+                                                opacity: 1,
+                                                y: 0,
+                                                filter: "blur(0px)",
+                                                transition: {
+                                                    duration: 0.8,
+                                                    ease: [0.22, 1, 0.36, 1]
+                                                }
+                                            }
                                         }}
                                         className="w-full"
                                     >
@@ -221,9 +241,18 @@ export function Navbar() {
                                     </m.li>
                                 ))}
                                 <m.li
-                                    initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                    transition={{ delay: 0.1 + (links.length * 0.1) + 0.1, duration: 0.8 }}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            filter: "blur(0px)",
+                                            transition: {
+                                                duration: 0.8,
+                                                ease: [0.22, 1, 0.36, 1]
+                                            }
+                                        }
+                                    }}
                                     className="mt-8 sm:mt-12 w-full max-w-[280px] sm:max-w-[320px]"
                                 >
                                     <a
@@ -234,7 +263,8 @@ export function Navbar() {
                                         Agendar Consulta
                                     </a>
                                 </m.li>
-                            </ul>
+                            </m.ul>
+
 
                             {/* Contact Details & Socials in Menu */}
                             <div className="mt-12 sm:mt-16 w-full max-w-[400px] mx-auto overflow-hidden">
