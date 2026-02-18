@@ -61,8 +61,8 @@ export default function VisualContainer({
     const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), springConfig);
 
     // Automatic scroll-based tilt for mobile (reveals 3D side perspective automatically)
-    const scrollRotateX = useSpring(useTransform(scrollYProgress, [0, 1], [-10, 10]), springConfig);
-    const scrollRotateY = useSpring(useTransform(scrollYProgress, [0, 1], [5, -5]), springConfig);
+    const scrollRotateX = useSpring(useTransform(scrollYProgress, [0, 1], [-15, 15]), springConfig);
+    const scrollRotateY = useSpring(useTransform(scrollYProgress, [0, 1], [7.5, -7.5]), springConfig);
 
     // Glare position transform - Dual Layer Specular highlights
     const glareX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
@@ -99,19 +99,20 @@ export default function VisualContainer({
         <div
             ref={containerRef}
             className="relative"
-            style={{ width, height, perspective: "2000px" }}
+            style={{ width, height, perspective: "1200px" }}
             onMouseMove={handleMouseMove}
             onTouchStart={() => setIsHovered(true)}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleMouseLeave}
+            onTouchCancel={handleMouseLeave}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={handleMouseLeave}
         >
             <m.div
                 className="w-full h-full relative preserve-3d"
                 style={{
-                    rotateX: isHovered ? rotateX : scrollRotateX,
-                    rotateY: isHovered ? rotateY : scrollRotateY,
+                    rotateX: isMobile ? scrollRotateX : (isHovered ? rotateX : scrollRotateX),
+                    rotateY: isMobile ? scrollRotateY : (isHovered ? rotateY : scrollRotateY),
                     transformStyle: "preserve-3d",
                 }}
                 transition={{ duration: parseFloat(transformDuration) }}
