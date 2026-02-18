@@ -49,8 +49,9 @@ export default function VisualContainer({
     // Scroll tracker for mobile automatic 3D
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start bottom", "end top"]
+        offset: ["start end", "end start"] as const
     });
+
 
     // Smooth springs - weighted for premium inertia
     const springConfig = { damping: 40, stiffness: 120, mass: 1 };

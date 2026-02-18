@@ -159,7 +159,7 @@ export function Hero() {
                 window.removeEventListener(ev, unlock)
             );
         };
-    }, [mounted]);
+    }, [mounted, shouldReduceMotion]);
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
