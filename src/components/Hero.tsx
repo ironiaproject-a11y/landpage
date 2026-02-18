@@ -235,7 +235,8 @@ export function Hero() {
 
                     // Video Parallax (0.75x speed/intensity)
                     mobileTl.to(videoWrapperRef.current, {
-                        y: "15%", // Moving slower than scroll (0.25 effective delta)
+                        y: "40%", // Stronger parallax effect
+                        scale: 1.1, // Subtle zoom for cinematic feel
                         ease: "none"
                     }, 0);
 
@@ -361,11 +362,11 @@ export function Hero() {
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
                                     <m.span
                                         variants={{
-                                            hidden: { y: "100%", opacity: 0 },
+                                            hidden: { y: "30%", opacity: 0 },
                                             visible: {
                                                 y: "0%",
                                                 opacity: 1,
-                                                transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+                                                transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
                                             }
                                         }}
                                         className="inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0"
@@ -376,11 +377,11 @@ export function Hero() {
                                 <span className="block overflow-hidden pb-1">
                                     <m.span
                                         variants={{
-                                            hidden: { y: "100%", opacity: 0 },
+                                            hidden: { y: "30%", opacity: 0 },
                                             visible: {
                                                 y: "0%",
                                                 opacity: 1,
-                                                transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+                                                transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
                                             }
                                         }}
                                         className={`inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}
