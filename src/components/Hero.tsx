@@ -362,9 +362,9 @@ export function Hero() {
                                 <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
                                     <m.span
                                         variants={{
-                                            hidden: { y: "30%", opacity: 0 },
+                                            hidden: { x: "-20%", opacity: 0 },
                                             visible: {
-                                                y: "0%",
+                                                x: "0%",
                                                 opacity: 1,
                                                 transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
                                             }

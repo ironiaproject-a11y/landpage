@@ -98,7 +98,7 @@ export function About() {
 
             // Main Image Container Parallax
             gsap.fromTo(".about-image-wrapper",
-                { y: isMobile ? 0 : 100 },
+                { y: isMobile ? 30 : 100 },
                 {
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -106,7 +106,7 @@ export function About() {
                         end: "bottom top",
                         scrub: 1.5,
                     },
-                    y: isMobile ? 0 : -100,
+                    y: isMobile ? -30 : -100,
                     ease: "power1.inOut"
                 }
             );
