@@ -110,8 +110,8 @@ export default function VisualContainer({
             <m.div
                 className="w-full h-full relative preserve-3d"
                 style={{
-                    rotateX: isHovered ? rotateX : (isMobile ? scrollRotateX : 0),
-                    rotateY: isHovered ? rotateY : (isMobile ? scrollRotateY : 0),
+                    rotateX: isHovered ? rotateX : scrollRotateX,
+                    rotateY: isHovered ? rotateY : scrollRotateY,
                     transformStyle: "preserve-3d",
                 }}
                 transition={{ duration: parseFloat(transformDuration) }}

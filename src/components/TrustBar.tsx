@@ -43,18 +43,16 @@ export function TrustBar() {
                 }
             );
 
-            if (!isMobile) {
-                gsap.to(".trust-token", {
-                    scale: 0.95,
-                    opacity: 0.4,
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-            }
+            gsap.to(".trust-token", {
+                scale: 0.95,
+                opacity: 0.4,
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
         }, containerRef);
         return () => {
             window.removeEventListener("resize", checkMobile);
