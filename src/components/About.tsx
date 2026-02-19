@@ -1,6 +1,6 @@
 "use client";
 
-import { m } from "framer-motion";
+import { m, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
@@ -16,10 +16,18 @@ export function About() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const descriptionRef = useRef<HTMLParagraphElement>(null);
-    const contentWrapperRef = useRef<HTMLDivElement>(null);
-    const overlayGradientRef = useRef<HTMLDivElement>(null);
+    const imageWrapperRef = useRef<HTMLDivElement>(null);
+    const revealShadeRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
+    // Tilt values for motion
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+    const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
     const highlights = [
         "Autoridade em Lentes de Contato 3D",
@@ -36,256 +44,235 @@ export function About() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (isMobile) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
     useEffect(() => {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
+            // Main Reveal Sequence
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 75%",
+                    toggleActions: "play none none reverse"
+                }
+            });
 
+            // 1. Reveal Shade Animation (Cinematic Vertical Reveal)
+            if (revealShadeRef.current) {
+                tl.to(revealShadeRef.current, {
+                    scaleY: 0,
+                    transformOrigin: "top", // Reveals from bottom to top
+                    duration: 1.8,
+                    ease: "power4.inOut"
+                });
+            }
+
+            // 2. Image Zoom & Subtle Float Effect
+            tl.fromTo(".inner-image-content",
+                { scale: 1.1, y: 30 },
+                { scale: 1, y: 0, duration: 2.2, ease: "power2.out" },
+                "-=1.6"
+            );
+
+            // 3. Title Lines
+            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
             if (titleLines.length > 0) {
-                gsap.fromTo(titleLines,
-                    { y: "110%", skewY: 7, opacity: 0 },
+                tl.fromTo(titleLines,
+                    { y: "100%", skewY: 5, opacity: 0 },
                     {
-                        scrollTrigger: {
-                            trigger: titleRef.current,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: 0.1,
+                        duration: 1,
                         ease: "power4.out"
-                    }
+                    },
+                    "-=1.5"
                 );
             }
 
+            // 4. Description & Elements
             if (descriptionRef.current) {
-                gsap.fromTo(descriptionRef.current,
-                    { opacity: 0, y: 30 },
-                    {
-                        scrollTrigger: {
-                            trigger: descriptionRef.current,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
-                        opacity: 1,
-                        y: 0,
-                        duration: 1.2,
-                        ease: "power3.out",
-                        delay: 0.4
-                    }
+                tl.fromTo(descriptionRef.current,
+                    { opacity: 0, x: -20 },
+                    { opacity: 1, x: 0, duration: 1, ease: "power3.out" },
+                    "-=0.8"
                 );
             }
 
-            // Enhanced Multi-Layer Parallax - Enabled for all with speed adjustment
-            const speedMult = isMobile ? 0.3 : 1;
+            tl.fromTo(".about-list-item",
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, stagger: 0.05, duration: 0.8, ease: "power2.out" },
+                "-=0.6"
+            );
 
-            // Background Glow Drift
-            gsap.to(".glow-blob", {
+            // Continuous Parallax Effects
+            const speedMult = isMobile ? 0.4 : 1;
+
+            // Image Container Parallax (Vertical drift)
+            gsap.to(".about-image-wrapper", {
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1,
+                },
+                y: -60 * speedMult,
+                ease: "none"
+            });
+
+            // Decorations
+            gsap.to(".about-decoration-blob", {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top bottom",
                     end: "bottom top",
                     scrub: 2,
                 },
-                y: -100 * speedMult,
-                x: 50 * speedMult,
-                scale: 1.2,
+                y: -120 * speedMult,
+                rotation: 45,
                 ease: "none"
             });
 
-            // Main Image Container Parallax
-            gsap.fromTo(".about-image-wrapper",
-                { y: isMobile ? 30 : 100 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.5,
-                    },
-                    y: isMobile ? -30 : -100,
-                    ease: "power1.inOut"
-                }
-            );
+            // Floating ring
+            gsap.to(".about-decoration-ring", {
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5,
+                },
+                y: 80 * speedMult,
+                scale: 1.1,
+                ease: "none"
+            });
 
-            // Internal Image Parallax (Lens effect) - Dampen on mobile
-            gsap.fromTo(".inner-image-parallax img",
-                { y: isMobile ? "-5%" : "-15%" },
-                {
-                    scrollTrigger: {
-                        trigger: ".about-image-wrapper",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                    y: isMobile ? "5%" : "15%",
-                    ease: "none"
-                }
-            );
-
-            // Decorative Elements Parallax
-            gsap.fromTo(".about-decoration-parallax",
-                { y: 150 * speedMult, rotate: -15 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.2,
-                    },
-                    y: -150 * speedMult,
-                    rotate: 15,
-                    ease: "none"
-                }
-            );
-
-            gsap.fromTo(".about-decoration-parallax-2",
-                { x: -100 * speedMult, opacity: 0 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top 80%",
-                        end: "bottom top",
-                        scrub: 2,
-                    },
-                    x: 100 * speedMult,
-                    opacity: 0.5,
-                    ease: "none"
-                }
-            );
-
-            // Desktop-only cinematic scroll effects
-            if (!isMobile) {
-                // Text content fade and move up during scroll
-                if (contentWrapperRef.current) {
-                    gsap.to(contentWrapperRef.current, {
-                        y: -30,
-                        opacity: 0.7,
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Overlay gradient opacity shift
-                if (overlayGradientRef.current) {
-                    gsap.to(overlayGradientRef.current, {
-                        opacity: 0.8,
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top center",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-                }
-
-                // Enhanced image parallax intensity
-                gsap.to(".about-image-wrapper", {
-                    scale: 0.95,
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top center",
-                        end: "bottom top",
-                        scrub: 1.5
-                    }
-                });
-            }
         }, sectionRef);
 
         return () => ctx.revert();
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative" id="sobre">
-            {/* Decorative Background */}
-            <div
-                ref={overlayGradientRef}
-                className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#111] to-transparent pointer-events-none"
-                style={{ opacity: 0.5 }}
-            />
+        <section ref={sectionRef} className="py-24 md:py-40 relative bg-black overflow-hidden" id="sobre">
+            {/* Ambient Background Elements */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                    {/* Image Side */}
+                    {/* Image Side - Desktop Tilt & Parallax */}
                     <m.div
-                        initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, x: -60 }}
-                        whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                        viewport={{ once: true, margin: isMobile ? "0px 0px 100px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.01 : 0.3 }}
-                        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="w-full lg:w-1/2 relative p-4"
+                        className="w-full lg:w-1/2 relative group"
+                        style={!isMobile ? { perspective: 1000 } : {}}
                     >
-                        <div className="about-image-wrapper will-change-transform">
-                            {/* Lighting Blob Behind Image */}
-                            <div className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] glow-blob opacity-30 blur-[100px] pointer-events-none" />
+                        <m.div
+                            ref={imageWrapperRef}
+                            className="about-image-wrapper relative rounded-2xl overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10"
+                            style={!isMobile ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            {/* Cinematic Reveal Shade */}
+                            <div
+                                ref={revealShadeRef}
+                                className="absolute inset-0 bg-neutral-900 z-30"
+                            />
 
-                            {/* Floating Decorative Elements with independent parallax */}
-                            <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
-                            <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
-
-                            <div className="relative w-full h-[450px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
+                            {/* Main Image with Zoom Effect */}
+                            <div className="relative w-full h-[450px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
                                     alt="Elevando o padrão da Odontologia Estética"
                                     fill
                                     className="object-cover"
                                     priority
-                                    sizes="(max-width: 1024px) 100vw, 600px"
+                                    sizes="(max-width: 1024px) 100vw, 800px"
                                 />
+                                {/* Glass Overlay on Hover */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                             </div>
-                        </div>
+
+                            {/* Floating ring decoration inside tilt container */}
+                            <div
+                                className="absolute -top-10 -right-10 w-40 h-40 border border-white/10 rounded-full about-decoration-ring pointer-events-none z-20 backdrop-blur-[2px] bg-white/5"
+                                style={!isMobile ? { transform: "translateZ(50px)" } : {}}
+                            />
+                        </m.div>
+
+                        {/* External decorative blob */}
+                        <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-gradient-to-br from-[var(--color-silver-bh)]/20 to-transparent blur-3xl rounded-full about-decoration-blob pointer-events-none -z-10" />
                     </m.div>
 
                     {/* Content Side */}
-                    <div ref={contentWrapperRef} className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-1/2 flex flex-col items-start">
                         <m.div
-                            initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
-                            className="flex items-center gap-3 mb-8"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="flex items-center gap-4 mb-8"
                         >
-                            <div className="w-12 h-[1px] bg-[var(--color-silver-bh)]" />
-                            <span className="text-[var(--color-silver-bh)] font-bold tracking-[0.2em] uppercase text-xs">
-                                Excelência Comprovada
+                            <span className="w-12 h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent" />
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.3em] uppercase text-[10px] md:text-xs">
+                                Excelência e Tradição
                             </span>
                         </m.div>
 
-                        <h2 ref={titleRef} className="text-5xl md:text-6xl font-medium mt-4 mb-8 text-white leading-[1.05] tracking-tight">
+                        <h2 ref={titleRef} className="text-4xl md:text-6xl lg:text-7xl font-light mb-10 text-white leading-[1.1] tracking-tight">
                             <div className="block overflow-hidden pb-1">
                                 <span className="title-line-inner inline-block">Elevando o padrão da</span>
                             </div>
                             <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver font-editorial italic">Odontologia Estética</span>.
+                                <span className="title-line-inner inline-block text-gradient-silver font-editorial italic">Odontologia Estética</span>
                             </div>
                         </h2>
 
-                        <p ref={descriptionRef} className="text-xl text-[var(--color-text-secondary)] mb-12 leading-relaxed font-light border-l-2 border-[var(--color-silver-bh)]/30 pl-8">
-                            Com mais de 30 anos de atuação em Pereira Barreto, a clínica alia tradição, inovação e alta tecnologia em Odontologia, contando também com uma clínica radiológica completa. Nosso foco é oferecer um ambiente seguro, acolhedor e altamente eficiente, garantindo um atendimento de excelência para o cuidado de toda a família.
+                        <p ref={descriptionRef} className="text-lg md:text-xl text-white/60 mb-12 leading-relaxed font-light border-l border-[var(--color-silver-bh)]/20 pl-8 max-w-xl">
+                            Com mais de 30 anos de atuação em Pereira Barreto, a clínica alia tradição, inovação e alta tecnologia. Nosso foco é oferecer um ambiente seguro, acolhedor e altamente eficiente para o cuidado de toda a família.
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 mb-14">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
                             {highlights.map((item, index) => (
-                                <m.div
+                                <div
                                     key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                                    transition={{ delay: 0.4 + index * 0.1, duration: 0.8, ease: "easeOut" }}
-                                    className="flex items-center gap-4 group"
+                                    className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-white/20 transition-colors cursor-default"
                                 >
-                                    <div className="w-5 h-5 rounded-full border border-[var(--color-silver-bh)]/50 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] group-hover:border-[var(--color-silver-bh)] transition-all">
-                                        <ArrowUpRight strokeWidth={1.2} className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
+                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] group-hover:border-[var(--color-silver-bh)] transition-all duration-500">
+                                        <ArrowUpRight strokeWidth={1.5} className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-white/90 font-medium text-sm tracking-wide">{item}</span>
-                                </m.div>
+                                    <span className="text-white/80 font-medium text-sm tracking-wide group-hover:text-white transition-colors">{item}</span>
+                                </div>
                             ))}
                         </div>
+
+                        {/* Primary CTA suggestion */}
+                        <m.button
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.8 }}
+                            className="px-10 py-5 bg-white text-black text-xs font-bold uppercase tracking-[0.2em] rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500"
+                        >
+                            Descubra nossa tecnologia
+                        </m.button>
                     </div>
                 </div>
             </div>

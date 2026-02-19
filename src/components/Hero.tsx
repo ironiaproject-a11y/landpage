@@ -285,46 +285,76 @@ export function Hero() {
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <m.div
                             initial="hidden"
-                            animate="visible"
+                            animate={mounted ? "visible" : "hidden"}
                             variants={{
                                 hidden: { opacity: 0 },
                                 visible: {
                                     opacity: 1,
                                     transition: {
-                                        staggerChildren: 0.15,
-                                        delayChildren: 0.2
+                                        staggerChildren: 0.12,
+                                        delayChildren: 2.8 // Ensures preloader is fully clear
                                     }
                                 }
                             }}
                             className="mb-4 lg:mb-10 w-full"
                         >
-                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform">
-                                <span className="block mb-0 lg:mb-2 overflow-hidden pb-1">
+                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform perspective-2000">
+                                <span className="block mb-0 lg:mb-4 overflow-hidden pb-4">
                                     <m.span
                                         variants={{
-                                            hidden: { x: "-20%", opacity: 0 },
+                                            hidden: {
+                                                y: "150%",
+                                                rotateX: -90,
+                                                opacity: 0,
+                                                filter: "blur(25px)",
+                                                scale: 1.2,
+                                                letterSpacing: "0.2em"
+                                            },
                                             visible: {
-                                                x: "0%",
+                                                y: "0%",
+                                                rotateX: 0,
                                                 opacity: 1,
-                                                transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+                                                filter: "blur(0px)",
+                                                scale: 1,
+                                                letterSpacing: "normal",
+                                                transition: {
+                                                    duration: 1.8,
+                                                    ease: [0.16, 1, 0.3, 1],
+                                                    filter: { duration: 1.2 }
+                                                }
                                             }
                                         }}
-                                        className="inline-block text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0"
+                                        className="inline-block text-[clamp(32px,8vw,48px)] lg:text-[clamp(2.5rem,9vw,6.5rem)] leading-[1] lg:leading-[1.1] origin-bottom will-change-transform"
                                     >
                                         Seu sorriso,
                                     </m.span>
                                 </span>
-                                <span className="block overflow-hidden pb-1">
+                                <span className="block overflow-hidden pb-4">
                                     <m.span
                                         variants={{
-                                            hidden: { y: "30%", opacity: 0 },
+                                            hidden: {
+                                                y: "150%",
+                                                rotateX: -90,
+                                                opacity: 0,
+                                                filter: "blur(25px)",
+                                                scale: 1.2,
+                                                letterSpacing: "0.2em"
+                                            },
                                             visible: {
                                                 y: "0%",
+                                                rotateX: 0,
                                                 opacity: 1,
-                                                transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+                                                filter: "blur(0px)",
+                                                scale: 1,
+                                                letterSpacing: "normal",
+                                                transition: {
+                                                    duration: 1.8,
+                                                    ease: [0.16, 1, 0.3, 1],
+                                                    filter: { duration: 1.2 }
+                                                }
                                             }
                                         }}
-                                        className={`inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(28px,6vw,42px)] lg:text-[clamp(1.8rem,8vw,5.5rem)] leading-[1.1] lg:leading-[1.1] max-w-[92%] lg:max-w-none mx-auto lg:mx-0`}
+                                        className={`inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(32px,8vw,48px)] lg:text-[clamp(2.5rem,9vw,6.5rem)] leading-[1] lg:leading-[1.1] origin-bottom will-change-transform`}
                                     >
                                         sua assinatura.
                                     </m.span>
