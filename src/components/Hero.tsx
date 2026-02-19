@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TOTAL_FRAMES = 192;
 
-const FrameSequence = ({ videoLoaded, setVideoLoaded }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void }) => {
+const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameIndexRef = useRef(0);
@@ -71,7 +71,12 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded }: { videoLoaded: boolean, 
 
         const animate = (time: number) => {
             if (time - lastTime >= interval) {
-                frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                // ONLY increment if start is true, otherwise draw frame 0
+                if (start) {
+                    frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                } else {
+                    frameIndexRef.current = 0; // Forced human arch start
+                }
                 drawFrame();
                 lastTime = time;
             }
@@ -98,7 +103,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded }: { videoLoaded: boolean, 
             cancelAnimationFrame(frameId);
             window.removeEventListener('resize', handleResize);
         };
-    }, [setVideoLoaded]);
+    }, [setVideoLoaded, start]); // Re-run or update when start changes
 
     return (
         <div className={`w-full h-full relative transition-opacity duration-1000 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}>
@@ -124,6 +129,7 @@ export function Hero() {
 
     const [mounted, setMounted] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
+    const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const shouldReduceMotion = useReducedMotion();
 
@@ -134,7 +140,16 @@ export function Hero() {
         if (typeof window !== "undefined") {
             checkMobile();
             window.addEventListener("resize", checkMobile);
-            return () => window.removeEventListener("resize", checkMobile);
+
+            // Match preloader timeout (2200ms) + exit animation (400ms)
+            const timer = setTimeout(() => {
+                setCanStartSequence(true);
+            }, 2600);
+
+            return () => {
+                window.removeEventListener("resize", checkMobile);
+                clearTimeout(timer);
+            };
         }
     }, []);
 
@@ -271,6 +286,7 @@ export function Hero() {
                     <FrameSequence
                         videoLoaded={videoLoaded}
                         setVideoLoaded={setVideoLoaded}
+                        start={canStartSequence}
                     />
                 </div>
 
