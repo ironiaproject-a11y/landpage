@@ -10,22 +10,109 @@ import { Magnetic } from "./Magnetic";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SlideText = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <span className={`relative block overflow-hidden group cursor-default ${className}`}>
-        <span className="block transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[105%]">
-            {children}
-        </span>
-        <span className="absolute inset-0 block -translate-x-[105%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0">
-            {children}
-        </span>
-    </span>
-);
+const TOTAL_FRAMES = 192;
 
+const FrameSequence = ({ videoLoaded, setVideoLoaded }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void }) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const framesRef = useRef<HTMLImageElement[]>([]);
+    const frameIndexRef = useRef(0);
+
+    useEffect(() => {
+        // Preload frames as Image objects
+        let loadedCount = 0;
+        const imageElements: HTMLImageElement[] = [];
+
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+            const img = new Image();
+            img.src = `/assets/hero-frames/frame-${i}.gif`;
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount === TOTAL_FRAMES) {
+                    setVideoLoaded(true);
+                }
+            };
+            imageElements[i] = img;
+        }
+        framesRef.current = imageElements;
+
+        // Animation loop - Direct Canvas drawing for zero-latency
+        let frameId: number;
+        let lastTime = 0;
+        const fps = 60;
+        const interval = 1000 / fps;
+
+        const drawFrame = () => {
+            const canvas = canvasRef.current;
+            const ctx = canvas?.getContext('2d', { alpha: false });
+            const img = framesRef.current[frameIndexRef.current];
+
+            if (canvas && ctx && img && img.complete) {
+                // High-performance canvas setup
+                const canvasAspect = canvas.width / canvas.height;
+                const imgAspect = img.naturalWidth / img.naturalHeight;
+
+                let drawWidth, drawHeight, offsetX, offsetY;
+
+                if (canvasAspect > imgAspect) {
+                    drawWidth = canvas.width;
+                    drawHeight = canvas.width / imgAspect;
+                    offsetX = 0;
+                    offsetY = (canvas.height - drawHeight) / 2;
+                } else {
+                    drawWidth = canvas.height * imgAspect;
+                    drawHeight = canvas.height;
+                    offsetX = (canvas.width - drawWidth) / 2;
+                    offsetY = 0;
+                }
+
+                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            }
+        };
+
+        const animate = (time: number) => {
+            if (time - lastTime >= interval) {
+                frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                drawFrame();
+                lastTime = time;
+            }
+            frameId = requestAnimationFrame(animate);
+        };
+
+        const handleResize = () => {
+            if (canvasRef.current) {
+                // Cap DPR at 1.5 for performance on mobile devices, or use 2 for desktop
+                const isMobileDevice = window.innerWidth < 1024;
+                const dpr = Math.min(window.devicePixelRatio || 1, isMobileDevice ? 1.5 : 2);
+
+                canvasRef.current.width = window.innerWidth * dpr;
+                canvasRef.current.height = window.innerHeight * dpr;
+                drawFrame();
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        frameId = requestAnimationFrame(animate);
+        return () => {
+            cancelAnimationFrame(frameId);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [setVideoLoaded]);
+
+    return (
+        <div className={`w-full h-full relative transition-opacity duration-1000 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}>
+            <canvas
+                ref={canvasRef}
+                className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.5] lg:brightness-[0.8] saturate-[0.8] lg:saturate-100 will-change-transform"
+            />
+        </div>
+    );
+};
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const pinContainerRef = useRef<HTMLDivElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const descriptionRef = useRef<HTMLParagraphElement>(null);
     const actionsRef = useRef<HTMLDivElement>(null);
@@ -38,7 +125,6 @@ export function Hero() {
     const [mounted, setMounted] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false); // Track play state for UI
     const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
@@ -52,149 +138,42 @@ export function Hero() {
         }
     }, []);
 
-    // Analytics and Flags (Mock)
+    // Analytics (Mock)
     const logEvent = (eventName: string, params?: any) => {
         console.log(`[Analytics] ${eventName}`, params);
     };
-
-    const handlePlayClick = () => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        video.muted = false; // Try to unmute on interaction
-        video.play().then(() => {
-            setIsPlaying(true);
-            logEvent('hero_play');
-        }).catch((err) => {
-            console.error("Play failed", err);
-            // Fallback: try muted if unmuted fails (browser policy)
-            video.muted = true;
-            video.play().then(() => setIsPlaying(true));
-        });
-    };
-
-    const playingRef = useRef(false);
-
-    // Ultra-Aggressive Mobile Autoplay Watchdog
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video || !mounted) return;
-
-        // Force critical attributes
-        // Force critical attributes
-        const enforceAttributes = () => {
-            if (!video) return;
-            video.muted = true;
-            video.defaultMuted = true;
-            video.setAttribute('muted', '');
-            video.setAttribute('playsinline', '');
-            video.setAttribute('autoplay', '');
-            video.setAttribute('loop', '');
-        };
-
-        const attemptPlay = async () => {
-            if (!video || playingRef.current || shouldReduceMotion) return;
-            try {
-                // Ensure all attributes are strictly set
-                video.muted = true;
-                video.defaultMuted = true;
-                video.setAttribute('muted', '');
-                video.setAttribute('playsinline', '');
-                video.setAttribute('autoplay', '');
-                video.setAttribute('loop', '');
-
-                await video.play();
-                playingRef.current = true;
-                setIsPlaying(true);
-                setVideoLoaded(true);
-            } catch (err) {
-                // Silently fail
-            }
-        };
-
-        // Watchdog: Keep trying until it plays
-        let rafId: number;
-        const watchdog = () => {
-            if (!playingRef.current && video) {
-                attemptPlay();
-                rafId = requestAnimationFrame(watchdog);
-            }
-        };
-
-        // Interaction "Unlock" - Essential for iPhones in Low Power Mode
-        const unlock = () => {
-            if (video && !playingRef.current) {
-                video.play().then(() => {
-                    playingRef.current = true;
-                    setIsPlaying(true);
-                    setVideoLoaded(true);
-                }).catch(() => { });
-            }
-            // Cleanup listeners after first interaction attempt
-            ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
-                window.removeEventListener(ev, unlock)
-            );
-        };
-
-        enforceAttributes();
-
-        // Start watchdog and listeners
-        rafId = requestAnimationFrame(watchdog);
-        ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
-            window.addEventListener(ev, unlock, { passive: true })
-        );
-
-        // Visibility handling
-        const onVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && video && playingRef.current) {
-                video.play().catch(() => { });
-            }
-        };
-        document.addEventListener('visibilitychange', onVisibilityChange);
-
-        return () => {
-            cancelAnimationFrame(rafId);
-            document.removeEventListener('visibilitychange', onVisibilityChange);
-            ['touchstart', 'mousedown', 'keydown', 'scroll'].forEach(ev =>
-                window.removeEventListener(ev, unlock)
-            );
-        };
-    }, [mounted, shouldReduceMotion]);
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            // 1. Entrance Animation (Handled by CSS for performance and reduced motion)
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
-
-            // 2. Cinematic Scroll Logic
             if (!shouldReduceMotion) {
-                // Desktop Version
+                // Unified Scroll Timeline (Desktop & Mobile Parallax)
+                const scrollTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: isMobile ? "bottom top" : "+=600",
+                        pin: !isMobile ? pinContainerRef.current : false,
+                        scrub: 1.2, // Smooth scrubbing
+                        anticipatePin: 1
+                    }
+                });
+
+                // Enhanced Parallax ("Paradex") Effect
+                scrollTl.to(videoWrapperRef.current, {
+                    yPercent: isMobile ? 30 : 25,
+                    scale: 1.15,
+                    filter: "blur(4px)", // Cinematic depth blur on exit
+                    ease: "none"
+                }, 0);
+
                 if (!isMobile) {
-                    const scrollTl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "+=500",
-                            pin: pinContainerRef.current,
-                            scrub: 1,
-                            anticipatePin: 1
-                        }
-                    });
-
-                    scrollTl.to(videoWrapperRef.current, {
-                        yPercent: -20,
-                        scale: 1.1,
-                        ease: "none"
-                    }, 0);
-
                     scrollTl.to(titleRef.current, {
                         scale: 0.94,
                         opacity: 0,
                         y: -100,
-                        letterSpacing: "0.15em",
                         filter: "blur(15px)",
                         ease: "power2.in"
                     }, 0);
@@ -221,47 +200,27 @@ export function Hero() {
                         opacity: 0,
                         y: -20
                     });
-                }
-                // Mobile Version (Premium Scroll Effect)
-                else {
-                    const mobileTl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "bottom top",
-                            scrub: true
-                        }
-                    });
-
-                    // Video Parallax (0.75x speed/intensity)
-                    mobileTl.to(videoWrapperRef.current, {
-                        y: "40%", // Stronger parallax effect
-                        scale: 1.1, // Subtle zoom for cinematic feel
-                        ease: "none"
-                    }, 0);
-
-                    // Text Exit (Higher speed/fade)
-                    mobileTl.to([titleRef.current, descriptionRef.current], {
+                } else {
+                    // Optimized Mobile Transitions
+                    scrollTl.to([titleRef.current, descriptionRef.current], {
                         opacity: 0,
-                        y: -30,
+                        y: -40,
+                        filter: "blur(10px)",
                         ease: "power2.inOut",
                         stagger: 0.05
                     }, 0);
 
-                    // CTA Exit (Later fade + subtle scale)
-                    mobileTl.to(actionsRef.current, {
+                    scrollTl.to(actionsRef.current, {
                         opacity: 0,
-                        scale: 0.96,
-                        y: -10,
+                        scale: 0.95,
+                        y: -20,
                         ease: "power1.inOut"
                     }, 0.1);
                 }
-            }
 
-            // Dark Overlay Fade-in Animation (User-requested) - Applies to both desktop/mobile if not reduced motion
-            if (!shouldReduceMotion) {
+                // Dark Overlay
                 gsap.to(overlayDarkRef.current, {
-                    opacity: 0.7,
+                    opacity: 0.8,
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         start: "top center",
@@ -284,7 +243,7 @@ export function Hero() {
                 ref={pinContainerRef}
                 className="relative h-full w-full flex items-center overflow-hidden"
             >
-                {/* Background Video / X-ray Layer */}
+                {/* Background Frame Sequence Layer */}
                 <div
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
@@ -309,38 +268,19 @@ export function Hero() {
                         style={{ opacity: 0 }}
                     />
 
-                    <video
-                        ref={videoRef}
-                        src="/hero-background.mp4"
-                        autoPlay={!shouldReduceMotion}
-                        playsInline
-                        muted
-                        loop
-                        preload="metadata"
-                        poster="/assets/images/clinic-interior.png"
-                        onCanPlay={() => setVideoLoaded(true)}
-                        className={`w-full h-full object-cover object-center brightness-[0.5] lg:brightness-[0.8] saturate-[0.8] lg:saturate-100 transition-opacity duration-700 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-40 lg:opacity-0'}`}
+                    <FrameSequence
+                        videoLoaded={videoLoaded}
+                        setVideoLoaded={setVideoLoaded}
                     />
                 </div>
 
                 {/* Ambient Particles */}
                 {!shouldReduceMotion && <AmbientParticles />}
 
-                {/* Mobile Play Button overlay */}
-                {isMobile && !isPlaying && (
-                    <button
-                        onClick={handlePlayClick}
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm animate-pulse border border-white/20 shadow-lg"
-                        aria-label="Reproduzir vídeo"
-                    >
-                        <Play className="w-8 h-8 text-white fill-white ml-1" />
-                    </button>
-                )}
-
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-40 pb-16 lg:pb-0 text-center lg:text-left"
+                    className="relative z-[50] container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-40 pb-16 lg:pb-0 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <m.div
