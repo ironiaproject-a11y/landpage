@@ -246,7 +246,7 @@ export function About() {
                         </h2>
 
                         <p ref={descriptionRef} className="text-lg md:text-xl text-white/60 mb-12 leading-relaxed font-light border-l border-[var(--color-silver-bh)]/20 pl-8 max-w-xl">
-                            Com mais de 30 anos de atuação em Pereira Barreto, a clínica alia tradição, inovação e alta tecnologia. Nosso foco é oferecer um ambiente seguro, acolhedor e altamente eficiente para o cuidado de toda a família.
+                            Mais do que tratamentos, oferecemos confiança, conforto e segurança em cada etapa do cuidado com quem você mais ama.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
