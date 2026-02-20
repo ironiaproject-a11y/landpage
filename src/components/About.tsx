@@ -112,9 +112,9 @@ export function About() {
             // 4. Description & Elements
             if (descriptionRef.current) {
                 tl.fromTo(descriptionRef.current,
-                    { opacity: 0, x: -20 },
-                    { opacity: 1, x: 0, duration: 1, ease: "power3.out" },
-                    "-=0.8"
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
+                    "-=1.2"
                 );
             }
 

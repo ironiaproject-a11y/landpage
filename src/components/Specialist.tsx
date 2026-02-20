@@ -84,6 +84,24 @@ export function Specialist() {
                 ease: "none"
             });
 
+            // Badge Entrance
+            gsap.fromTo(".op-badge-specialist",
+                { opacity: 0, scale: 0.8, x: 20 },
+                {
+                    scrollTrigger: {
+                        trigger: ".dr-portrait-wrapper",
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    scale: 1,
+                    x: 0,
+                    duration: 1.5,
+                    delay: 0.8,
+                    ease: "expo.out"
+                }
+            );
+
             if (quoteRef.current) {
                 gsap.fromTo(quoteRef.current,
                     { opacity: 0, y: 30 },
@@ -275,8 +293,8 @@ export function Specialist() {
                                         but keep as child for translateZ effect via VisualContainer mapping if possible.
                                         VisualContainer maps children to translateZ layers.
                                     */}
-                                    <div className="absolute top-12 right-12 glass-panel p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20">
-                                        <p className="text-[var(--color-silver-bh)] font-display text-4xl font-bold tracking-tight">15+</p>
+                                    <div className="absolute top-12 right-12 glass-panel p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
+                                        <p className="text-[var(--color-silver-bh)] font-display text-4xl font-bold tracking-tight">15</p>
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 

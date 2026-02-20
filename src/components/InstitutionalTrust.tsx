@@ -95,9 +95,9 @@ export function InstitutionalTrust() {
             });
 
             // Cards staggered reveal on scroll
-            const cards = gsap.utils.toArray(".trust-card-item");
-            if (cards.length > 0) {
-                gsap.fromTo(cards,
+            const cardItems = gsap.utils.toArray(".trust-card-item");
+            if (cardItems.length > 0) {
+                gsap.fromTo(cardItems,
                     { opacity: 0, y: 50 },
                     {
                         scrollTrigger: {
@@ -110,6 +110,44 @@ export function InstitutionalTrust() {
                         stagger: 0.1,
                         duration: 1,
                         ease: "power3.out"
+                    }
+                );
+
+                // Animate subtitles within cards
+                const cardSubtitles = gsap.utils.toArray(".trust-card-subtitle");
+                gsap.fromTo(cardSubtitles,
+                    { opacity: 0, x: -10 },
+                    {
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top 65%",
+                            toggleActions: "play none none reverse"
+                        },
+                        opacity: 1,
+                        x: 0,
+                        stagger: 0.1,
+                        duration: 1.2,
+                        delay: 0.3,
+                        ease: "power2.out"
+                    }
+                );
+
+                // Animate "Pilar de Excelência" details
+                const cardDetails = gsap.utils.toArray(".trust-card-detail");
+                gsap.fromTo(cardDetails,
+                    { opacity: 0, y: 10 },
+                    {
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top 60%",
+                            toggleActions: "play none none reverse"
+                        },
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.1,
+                        duration: 1,
+                        delay: 0.6,
+                        ease: "power2.out"
                     }
                 );
             }
@@ -201,13 +239,13 @@ export function InstitutionalTrust() {
                                             {card.title}
                                         </h3>
 
-                                        <p className="font-body text-[var(--color-text-tertiary)] text-sm leading-relaxed group-hover/card:text-[var(--color-text-secondary)] transition-colors duration-500 max-w-[90%]">
+                                        <p className="font-body text-[var(--color-text-tertiary)] text-sm leading-relaxed group-hover/card:text-[var(--color-text-secondary)] transition-colors duration-500 max-w-[90%] trust-card-subtitle">
                                             {card.subtitle}
                                         </p>
                                     </div>
 
                                     {/* Bottom Detail */}
-                                    <div className="z-10 mt-8 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
+                                    <div className="z-10 mt-8 group-hover/card:opacity-100 transition-opacity duration-700 trust-card-detail">
                                         <div className="text-[9px] uppercase tracking-[0.3em] text-[var(--color-silver-bh)]">Pilar de Excelência</div>
                                     </div>
                                 </div>

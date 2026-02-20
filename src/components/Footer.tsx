@@ -42,13 +42,28 @@ export function Footer() {
                         },
                         y: 0,
                         skewY: 0,
-                        opacity: 1,
-                        stagger: 0.1,
-                        duration: 1,
                         ease: "power4.out"
                     }
                 );
             }
+
+            // Animate Footer Content
+            const footerItems = gsap.utils.toArray(".footer-reveal-item");
+            gsap.fromTo(footerItems,
+                { opacity: 0, y: 15 },
+                {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 95%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.05,
+                    duration: 0.8,
+                    ease: "power2.out"
+                }
+            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -95,7 +110,7 @@ export function Footer() {
                                     </h3>
                                 </div>
                             </div>
-                            <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-sm font-light text-sm opacity-60 group-hover/logo:opacity-100 transition-opacity duration-700">
+                            <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-sm font-light text-sm opacity-60 group-hover/logo:opacity-100 transition-opacity duration-700 footer-reveal-item">
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -128,7 +143,7 @@ export function Footer() {
                         <div className="overflow-hidden mb-8">
                             <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Navegação</h4>
                         </div>
-                        <ul className="space-y-4">
+                        <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
                                     <a
@@ -148,7 +163,7 @@ export function Footer() {
                         <div className="overflow-hidden mb-8">
                             <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Especialidades</h4>
                         </div>
-                        <ul className="space-y-4">
+                        <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
                                 <li key={index}>
                                     <a
@@ -168,7 +183,7 @@ export function Footer() {
                         <div className="overflow-hidden mb-8">
                             <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Onde Estamos</h4>
                         </div>
-                        <div className="space-y-6">
+                        <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
                                 <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[var(--color-silver-bh)]/30 transition-colors">
                                     <MapPin strokeWidth={1.2} className="w-5 h-5 text-[var(--color-silver-bh)]" />

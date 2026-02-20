@@ -49,6 +49,43 @@ export function Contact() {
                     }
                 );
             }
+
+            // Animate Contact Info Items
+            const infoItems = gsap.utils.toArray(".contact-info-item");
+            gsap.fromTo(infoItems,
+                { opacity: 0, x: -20 },
+                {
+                    scrollTrigger: {
+                        trigger: ".contact-info-item",
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    x: 0,
+                    stagger: 0.15,
+                    duration: 1,
+                    ease: "power3.out"
+                }
+            );
+
+            // Animate Form Labels
+            const formLabels = gsap.utils.toArray(".form-label-reveal");
+            gsap.fromTo(formLabels,
+                { opacity: 0, x: -10 },
+                {
+                    scrollTrigger: {
+                        trigger: ".glass-panel",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    x: 0,
+                    stagger: 0.1,
+                    duration: 1,
+                    delay: 0.5,
+                    ease: "power2.out"
+                }
+            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -88,7 +125,7 @@ export function Contact() {
                         </m.p>
 
                         <div className="space-y-8">
-                            <div className="flex items-start gap-4 group">
+                            <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Phone strokeWidth={1.2} className="w-5 h-5" />
@@ -101,7 +138,7 @@ export function Contact() {
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4 group">
+                            <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Mail strokeWidth={1.2} className="w-5 h-5" />
@@ -114,7 +151,7 @@ export function Contact() {
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4 group">
+                            <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <MapPin strokeWidth={1.2} className="w-5 h-5" />
@@ -166,7 +203,7 @@ export function Contact() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                                 <div className="space-y-4 group/input">
-                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block">Nome</label>
+                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Nome</label>
                                     <input
                                         name="name"
                                         type="text"
@@ -176,7 +213,7 @@ export function Contact() {
                                     />
                                 </div>
                                 <div className="space-y-4 group/input">
-                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block">Telefone</label>
+                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Telefone</label>
                                     <input
                                         name="phone"
                                         type="tel"
@@ -188,7 +225,7 @@ export function Contact() {
                             </div>
 
                             <div className="space-y-4 mb-12 group/input">
-                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block">Email</label>
+                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Email</label>
                                 <input
                                     name="email"
                                     type="email"
@@ -199,7 +236,7 @@ export function Contact() {
                             </div>
 
                             <div className="space-y-4 mb-14 group/input">
-                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block">Mensagem</label>
+                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Mensagem</label>
                                 <textarea
                                     name="message"
                                     rows={5}

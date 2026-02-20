@@ -27,7 +27,8 @@ export function Services() {
             title: "Implantes Dentários",
             description: "Recupere a função e a estética do seu sorriso com implantes de alta durabilidade e precisão.",
             tag: "01",
-            image: "/assets/images/service-implant.png"
+            image: "/assets/images/service-implant.png",
+            video: "/assets/videos/services/implant.mp4"
         },
         {
             icon: "Diamond",
@@ -55,7 +56,8 @@ export function Services() {
             title: "Estética Dental",
             description: "Transforme seu sorriso com facetas, clareamento e procedimentos que harmonizam sua face.",
             tag: "05",
-            image: "/assets/images/service-aesthetic.png"
+            image: "/assets/images/service-aesthetic.png",
+            video: "/assets/videos/services/aesthetic.mp4"
         },
         {
             icon: "CircleDashed",
@@ -69,28 +71,32 @@ export function Services() {
             title: "Cirurgias e Extrações",
             description: "Procedimentos cirúrgicos seguros, realizados por especialistas com técnicas minimamente invasivas.",
             tag: "07",
-            image: "/assets/images/surgery-room.jpg"
+            image: "/assets/images/surgery-room.jpg",
+            video: "/assets/videos/services/surgery.mp4"
         },
         {
             icon: "Cpu",
             title: "Radiografia Panorâmica",
             description: "Diagnóstico completo com imagens amplas da arcada dentária para um planejamento preciso.",
             tag: "08",
-            image: "/assets/images/3d-ct-scan.jpg"
+            image: "/assets/images/3d-ct-scan.jpg",
+            video: "/assets/videos/services/panoramic.mp4"
         },
         {
             icon: "Diamond",
             title: "Protocolo Ortodôntico",
             description: "Correção e alinhamento dental com protocolos modernos para um sorriso funcional e estético.",
             tag: "09",
-            image: "/assets/images/service-orthodontics.png"
+            image: "/assets/images/service-orthodontics.png",
+            video: "/assets/videos/services/orthodontics.mp4"
         },
         {
             icon: "Cpu",
             title: "Escaneamento Digital",
             description: "Moldagem digital de alta precisão, eliminando massas e garantindo agilidade no tratamento.",
             tag: "10",
-            image: "/assets/images/digital-scanning-process.jpg"
+            image: "/assets/images/digital-scanning-process.jpg",
+            video: "/assets/videos/services/scanning.mp4"
         },
         {
             icon: "CircleDashed",
@@ -104,7 +110,8 @@ export function Services() {
             title: "Skycam",
             description: "Tecnologia avançada para diagnósticos e acompanhamentos detalhados.",
             tag: "12",
-            image: "/assets/images/skycam-device.jpg"
+            image: "/assets/images/skycam-device.jpg",
+            video: "/assets/videos/services/skycam.mp4"
         }
 
     ];
@@ -229,6 +236,40 @@ export function Services() {
                 });
             }
 
+            // Animate card descriptions and CTAs
+            gsap.fromTo(".service-card-description",
+                { opacity: 0, y: 15 },
+                {
+                    scrollTrigger: {
+                        trigger: ".service-card-wrapper",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.1,
+                    duration: 1,
+                    ease: "power2.out"
+                }
+            );
+
+            gsap.fromTo(".service-card-cta",
+                { opacity: 0, x: -10 },
+                {
+                    scrollTrigger: {
+                        trigger: ".service-card-wrapper",
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    x: 0,
+                    stagger: 0.1,
+                    duration: 1.2,
+                    delay: 0.4,
+                    ease: "power2.out"
+                }
+            );
+
             // Icon rotation on scroll
             gsap.utils.toArray(".service-icon-rotate").forEach((icon: any) => {
                 gsap.to(icon, {
@@ -318,14 +359,25 @@ export function Services() {
                                     <div className="p-8 md:p-12 flex flex-col h-full">
                                         {/* Image Frame - Luxury Gallery Style */}
                                         <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
-                                            <Image
-                                                src={service.image}
-                                                alt={service.title}
-                                                width={800}
-                                                height={600}
-                                                className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                            {typeof service === 'object' && 'video' in service ? (
+                                                <video
+                                                    src={service.video as string}
+                                                    autoPlay
+                                                    muted
+                                                    loop
+                                                    playsInline
+                                                    className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
+                                                />
+                                            ) : (
+                                                <Image
+                                                    src={service.image}
+                                                    alt={service.title}
+                                                    width={800}
+                                                    height={600}
+                                                    className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
+                                                />
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
                                             {/* Floating Tag */}
                                             <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate">
@@ -345,7 +397,7 @@ export function Services() {
                                                 {service.title}
                                             </h3>
 
-                                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 delay-150">
+                                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 service-card-description">
                                                 {service.description}
                                             </p>
 
@@ -353,7 +405,7 @@ export function Services() {
                                                 <m.div
                                                     whileHover={{ x: 5 }}
                                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer transition-all duration-700 delay-100"
+                                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer transition-all duration-700 service-card-cta"
                                                 >
                                                     <span>Ver Protocolo</span>
                                                     <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />

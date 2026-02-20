@@ -172,6 +172,39 @@ export function Experience() {
                         );
                     }
 
+                    // Animate "Jornada do Paciente" Label
+                    gsap.fromTo(".experience-label",
+                        { opacity: 0, y: 15 },
+                        {
+                            scrollTrigger: {
+                                trigger: ".experience-label",
+                                start: "top 90%",
+                                toggleActions: "play none none reverse"
+                            },
+                            opacity: 1,
+                            y: 0,
+                            duration: 1,
+                            ease: "power2.out"
+                        }
+                    );
+
+                    // Animate Image Content
+                    gsap.fromTo(".experience-image-content",
+                        { opacity: 0, y: 30 },
+                        {
+                            scrollTrigger: {
+                                trigger: ".experience-visual-wrapper",
+                                start: "top 80%",
+                                toggleActions: "play none none reverse"
+                            },
+                            opacity: 1,
+                            y: 0,
+                            duration: 1.5,
+                            delay: 0.5,
+                            ease: "power3.out"
+                        }
+                    );
+
                     // Bottom CTA fade/scale out
                     gsap.to(ctaRef.current, {
                         opacity: 0.6,
@@ -200,11 +233,8 @@ export function Experience() {
                     {/* Left: Content & Steps */}
                     <div className="lg:w-1/2">
                         <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
+                            initial={{ opacity: 0 }}
+                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block experience-label"
                         >
                             A Jornada do Paciente
                         </m.span>
@@ -276,7 +306,7 @@ export function Experience() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
                                     {/* Refined Brand Badge */}
-                                    <div className="absolute bottom-12 left-12 right-12 translate-z-30">
+                                    <div className="absolute bottom-12 left-12 right-12 translate-z-30 experience-image-content">
                                         <p className="text-[var(--color-silver-bh)] font-display text-3xl font-bold mb-2 tracking-tight">Exclusividade</p>
                                         <p className="text-white/70 text-sm font-light tracking-wide max-w-xs leading-relaxed">
                                             Planejamento personalizado e alta tecnologia para cada sorriso de elite.
