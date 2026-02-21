@@ -42,8 +42,7 @@ export function Services() {
             title: "Tratamento de Canal",
             description: "Procedimentos endodônticos avançados para salvar seus dentes com máximo conforto e segurança.",
             tag: "03",
-            image: "/assets/images/service-sensitivity.png",
-            video: "/assets/videos/services/canal.mp4"
+            image: "/assets/images/root-canal-treatment.png"
         },
         {
             icon: "Cpu",
@@ -66,7 +65,8 @@ export function Services() {
             title: "Tratamento de Sensibilidade",
             description: "Tratamentos específicos para eliminar o desconforto e devolver o prazer de comer e beber.",
             tag: "06",
-            image: "/assets/images/dental-exam.jpg"
+            image: "/assets/images/service-sensitivity.png",
+            video: "/assets/videos/services/canal.mp4"
         },
         {
             icon: "Crown",
