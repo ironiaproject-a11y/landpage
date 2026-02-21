@@ -21,13 +21,15 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
         // Preload frames as Image objects
         let loadedCount = 0;
         const imageElements: HTMLImageElement[] = [];
+        const INITIAL_BATCH = 20; // Show hero after these many frames load
 
         for (let i = 0; i < TOTAL_FRAMES; i++) {
             const img = new Image();
             img.src = `/assets/hero-frames/frame-${i}.gif`;
             img.onload = () => {
                 loadedCount++;
-                if (loadedCount === TOTAL_FRAMES) {
+                // Show hero immediately after a small batch for better LCP
+                if (loadedCount === INITIAL_BATCH) {
                     setVideoLoaded(true);
                 }
             };

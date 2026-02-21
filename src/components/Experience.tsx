@@ -301,7 +301,6 @@ export function Experience() {
                                         width={1000}
                                         height={1250}
                                         className="w-full h-full object-cover object-[center_25%] transition-transform duration-[2s] group-hover:scale-110"
-                                        unoptimized
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 

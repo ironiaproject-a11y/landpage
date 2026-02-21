@@ -42,14 +42,16 @@ export function Services() {
             title: "Tratamento de Canal",
             description: "Procedimentos endodônticos avançados para salvar seus dentes com máximo conforto e segurança.",
             tag: "03",
-            image: "/assets/images/service-sensitivity.png"
+            image: "/assets/images/service-sensitivity.png",
+            video: "/assets/videos/services/canal.mp4"
         },
         {
             icon: "Cpu",
             title: "Odontopediatria",
             description: "Cuidado especializado e acolhedor para a saúde bucal dos pequenos desde os primeiros anos.",
             tag: "04",
-            image: "/assets/images/pediatric-dentistry.png"
+            image: "/assets/images/pediatric-dentistry.png",
+            video: "/assets/videos/services/pediatrics.mp4"
         },
         {
             icon: "Diamond",

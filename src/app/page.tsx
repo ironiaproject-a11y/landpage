@@ -1,8 +1,6 @@
 // Final Polish Verification
 import nextDynamic from "next/dynamic";
 
-export const revalidate = 0;
-export const dynamic = 'force-dynamic';
 import { Hero } from "@/components/Hero";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 
