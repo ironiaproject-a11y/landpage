@@ -57,8 +57,7 @@ export function Services() {
             title: "Estética Dental",
             description: "Transforme seu sorriso com facetas, clareamento e procedimentos que harmonizam sua face.",
             tag: "05",
-            image: "/assets/images/service-aesthetic.png",
-            video: "/assets/videos/services/aesthetic.mp4"
+            image: "/assets/images/service-aesthetic.png"
         },
         {
             icon: "CircleDashed",
@@ -66,7 +65,7 @@ export function Services() {
             description: "Tratamentos específicos para eliminar o desconforto e devolver o prazer de comer e beber.",
             tag: "06",
             image: "/assets/images/service-sensitivity.png",
-            video: "/assets/videos/services/canal.mp4"
+            video: "/assets/videos/services/aesthetic.mp4"
         },
         {
             icon: "Crown",
