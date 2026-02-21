@@ -8,7 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AmbientParticles } from "./AmbientParticles";
 import { Magnetic } from "./Magnetic";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 const TOTAL_FRAMES = 192;
 
