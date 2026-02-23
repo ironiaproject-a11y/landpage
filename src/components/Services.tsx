@@ -79,7 +79,8 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                             {/* Video Layer - Acts as its own poster */}
                             <video
                                 ref={videoRef}
-                                src={isMobile ? service.video : `${service.video}#t=0.1`}
+                                src={service.video}
+                                poster={service.image}
                                 muted
                                 loop
                                 playsInline

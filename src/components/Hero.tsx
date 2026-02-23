@@ -351,55 +351,62 @@ export function Hero() {
                         >
                             <h1 ref={titleRef} className="text-hero-editorial will-change-transform perspective-2000">
                                 <span className="block mb-0 lg:mb-3 overflow-hidden pb-4">
-                                    <m.span
-                                        variants={{
-                                            hidden: {
-                                                y: "115%",
-                                                rotateX: -15,
-                                                opacity: 0,
-                                                filter: "blur(20px)",
-                                            },
-                                            visible: {
-                                                y: "0%",
-                                                rotateX: 0,
-                                                opacity: 1,
-                                                filter: "blur(0px)",
-                                                transition: {
-                                                    duration: 1.8,
-                                                    ease: [0.16, 1, 0.3, 1],
+                                    {"Seu sorriso,".split("").map((char, i) => (
+                                        <m.span
+                                            key={i}
+                                            variants={{
+                                                hidden: {
+                                                    y: "115%",
+                                                    rotateX: -15,
+                                                    opacity: 0,
+                                                    filter: "blur(10px)",
+                                                },
+                                                visible: {
+                                                    y: "0%",
+                                                    rotateX: 0,
+                                                    opacity: 1,
+                                                    filter: "blur(0px)",
+                                                    transition: {
+                                                        duration: 1.4,
+                                                        ease: [0.16, 1, 0.3, 1],
+                                                        delay: i * 0.04
+                                                    }
                                                 }
-                                            }
-                                        }}
-                                        className="inline-block origin-bottom will-change-transform"
-                                    >
-                                        Seu sorriso,
-                                    </m.span>
+                                            }}
+                                            className="inline-block origin-bottom will-change-transform whitespace-pre"
+                                        >
+                                            {char}
+                                        </m.span>
+                                    ))}
                                 </span>
                                 <span className="block overflow-hidden pb-2">
-                                    <m.span
-                                        variants={{
-                                            hidden: {
-                                                y: "110%",
-                                                rotateX: -15,
-                                                opacity: 0,
-                                                filter: "blur(20px)",
-                                            },
-                                            visible: {
-                                                y: "0%",
-                                                rotateX: 0,
-                                                opacity: 1,
-                                                filter: "blur(0px)",
-                                                transition: {
-                                                    duration: 1.5,
-                                                    ease: [0.16, 1, 0.3, 1],
-                                                    delay: 0.1
+                                    {"sua assinatura.".split("").map((char, i) => (
+                                        <m.span
+                                            key={i}
+                                            variants={{
+                                                hidden: {
+                                                    y: "110%",
+                                                    rotateX: -15,
+                                                    opacity: 0,
+                                                    filter: "blur(10px)",
+                                                },
+                                                visible: {
+                                                    y: "0%",
+                                                    rotateX: 0,
+                                                    opacity: 1,
+                                                    filter: "blur(0px)",
+                                                    transition: {
+                                                        duration: 1.2,
+                                                        ease: [0.16, 1, 0.3, 1],
+                                                        delay: 0.3 + i * 0.04
+                                                    }
                                                 }
-                                            }
-                                        }}
-                                        className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom"
-                                    >
-                                        sua assinatura.
-                                    </m.span>
+                                            }}
+                                            className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom whitespace-pre"
+                                        >
+                                            {char}
+                                        </m.span>
+                                    ))}
                                 </span>
                             </h1>
                         </m.div>
