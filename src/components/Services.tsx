@@ -28,6 +28,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isVideoActive, setIsVideoActive] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [shouldLoadSource, setShouldLoadSource] = useState(false);
 
     const handleInteractionStart = () => {
         if (videoRef.current) {
@@ -46,6 +47,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     };
 
     const handleViewportEnter = () => {
+        setShouldLoadSource(true);
         if (videoRef.current) {
             videoRef.current.play().catch(() => { });
         }
@@ -95,12 +97,11 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                             {/* Video Layer - Acts as its own poster */}
                             <video
                                 ref={videoRef}
-                                src={service.video}
                                 poster={service.image}
                                 muted
                                 loop
                                 playsInline
-                                preload="auto"
+                                preload="metadata"
                                 onLoadedData={() => setIsLoaded(true)}
                                 onPlaying={() => setIsVideoActive(true)}
                                 className={clsx(
@@ -108,7 +109,14 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                                     isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110",
                                     isVideoActive ? "brightness-100" : "brightness-[0.7] grayscale-[30%] group-hover:grayscale-0 group-hover:brightness-100"
                                 )}
-                            />
+                            >
+                                {shouldLoadSource && (
+                                    <>
+                                        <source src={service.video.replace('.mp4', '.webm')} type="video/webm" />
+                                        <source src={service.video} type="video/mp4" />
+                                    </>
+                                )}
+                            </video>
 
                             {/* Loading State Skeleton */}
                             {!isLoaded && (
