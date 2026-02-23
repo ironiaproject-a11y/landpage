@@ -28,21 +28,23 @@ export function Services() {
             description: "Recupere a função e a estética do seu sorriso com implantes de alta durabilidade e precisão.",
             tag: "01",
             image: "/assets/images/service-implant.png",
-            video: "/assets/videos/services/implant.mp4"
+            video: "/assets/videos/services/implant_new.mp4"
         },
         {
             icon: "Diamond",
             title: "Tratamento de Bruxismo e Dor",
             description: "Alívio eficaz para dores orofaciais e proteção dos dentes contra o desgaste excessivo.",
             tag: "02",
-            image: "/assets/images/root-canal-treatment.png"
+            image: "/assets/images/root-canal-treatment.png",
+            video: "/assets/videos/services/bruxismo.mp4"
         },
         {
             icon: "Crown",
             title: "Tratamento de Canal",
             description: "Procedimentos endodônticos avançados para salvar seus dentes com máximo conforto e segurança.",
             tag: "03",
-            image: "/assets/images/root-canal-treatment.png"
+            image: "/assets/images/root-canal-treatment.png",
+            video: "/assets/videos/services/canal.mp4"
         },
         {
             icon: "Cpu",
@@ -57,7 +59,8 @@ export function Services() {
             title: "Estética Dental",
             description: "Transforme seu sorriso com facetas, clareamento e procedimentos que harmonizam sua face.",
             tag: "05",
-            image: "/assets/images/service-aesthetic.png"
+            image: "/assets/images/service-aesthetic.png",
+            video: "/assets/videos/services/aesthetic_new_2.mp4"
         },
         {
             icon: "CircleDashed",
@@ -73,7 +76,7 @@ export function Services() {
             description: "Procedimentos cirúrgicos seguros, realizados por especialistas com técnicas minimamente invasivas.",
             tag: "07",
             image: "/assets/images/surgery-room.jpg",
-            video: "/assets/videos/services/surgery.mp4"
+            video: "/assets/videos/services/grok-surgery.mp4"
         },
         {
             icon: "Cpu",
@@ -89,7 +92,7 @@ export function Services() {
             description: "Correção e alinhamento dental com protocolos modernos para um sorriso funcional e estético.",
             tag: "09",
             image: "/assets/images/service-orthodontics.png",
-            video: "/assets/videos/services/orthodontics.mp4"
+            video: "/assets/videos/services/ortho_protocol.mp4"
         },
         {
             icon: "Cpu",
@@ -112,7 +115,7 @@ export function Services() {
             description: "Tecnologia avançada para diagnósticos e acompanhamentos detalhados.",
             tag: "12",
             image: "/assets/images/skycam-device.jpg",
-            video: "/assets/videos/services/skycam.mp4"
+            video: "/assets/videos/services/implant.mp4"
         }
 
     ];
@@ -152,34 +155,32 @@ export function Services() {
                 );
             }
 
-            // Enhanced Asymmetrical Card Parallax with Horizontal Drift - Unified for All Devices
-            const speedMult = 1;
-
+            // Harmonized Card Parallax - Unified values for organic organization
             const cards = gsap.utils.toArray(".service-card-wrapper");
             cards.forEach((card: any, i) => {
-                const ySpeed = (i % 2 === 0 ? 60 : 120) * speedMult;
-                const xDrift = (i % 2 === 0 ? 30 : -30) * speedMult;
+                const ySpeed = 80; // Consistent vertical speed
+                const xDrift = (i % 2 === 0 ? 15 : -15); // Subtle horizontal drift
 
                 gsap.fromTo(card,
-                    { y: ySpeed, x: xDrift * 0.5 },
+                    { y: ySpeed / 2, x: xDrift * 0.5 },
                     {
                         scrollTrigger: {
                             trigger: card,
                             start: "top bottom",
                             end: "bottom top",
-                            scrub: 1.5
+                            scrub: 1.2
                         },
-                        y: -ySpeed,
+                        y: -ySpeed / 2,
                         x: -xDrift,
                         ease: "power1.inOut"
                     }
                 );
 
-                // Float the individual tag within the card
+                // Float the individual tag within the card - unified speed
                 const tag = card.querySelector(".service-tag-parallax");
                 if (tag) {
                     gsap.fromTo(tag,
-                        { y: 20 * speedMult },
+                        { y: 15 },
                         {
                             scrollTrigger: {
                                 trigger: card,
@@ -187,7 +188,7 @@ export function Services() {
                                 end: "bottom top",
                                 scrub: 1
                             },
-                            y: -40 * speedMult,
+                            y: -30,
                             ease: "none"
                         }
                     );
@@ -345,8 +346,19 @@ export function Services() {
                                 amount: isMobile ? 0.01 : 0.3
                             }}
                             onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+                            onMouseEnter={(e) => {
+                                const video = e.currentTarget.querySelector('video');
+                                if (video) video.play();
+                            }}
+                            onMouseLeave={(e) => {
+                                const video = e.currentTarget.querySelector('video');
+                                if (video) {
+                                    video.pause();
+                                    video.currentTime = 0;
+                                }
+                            }}
                             className={clsx(
-                                "group relative spotlight-card",
+                                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
                                 index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
                             )}
                         >
@@ -354,7 +366,7 @@ export function Services() {
                                 <VisualContainer
                                     width="100%"
                                     height="auto"
-                                    hoverColor="rgba(203, 213, 225, 0.05)" // Silver-based hover
+                                    hoverColor="rgba(203, 213, 225, 0.1)" // Intensified Silver-based hover
                                     sideHeight="12px"
                                 >
                                     <div className="p-8 md:p-12 flex flex-col h-full">
@@ -363,7 +375,6 @@ export function Services() {
                                             {typeof service === 'object' && 'video' in service ? (
                                                 <video
                                                     src={service.video as string}
-                                                    autoPlay
                                                     muted
                                                     loop
                                                     playsInline
@@ -416,8 +427,8 @@ export function Services() {
                                     </div>
                                 </VisualContainer>
 
-                                {/* Hover Shadow Glow - Silver Clinical */}
-                                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1500 -z-10" />
+                                {/* Hover Shadow Glow - Silver Clinical Enhanced for Relief */}
+                                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/10 blur-[130px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
                             </div>
                         </m.div>
                     ))

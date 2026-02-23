@@ -53,12 +53,12 @@ export default function VisualContainer({
     });
 
 
-    // Smooth springs - weighted for premium inertia
-    const springConfig = { damping: 40, stiffness: 120, mass: 1 };
+    // Higher damping and mass for more deliberate, premium movement
+    const springConfig = { damping: 50, stiffness: 100, mass: 1.5 };
 
-    // Intensified rotation (15 degrees) tilting TOWARDS the interaction
-    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [-15, 15]), springConfig);
-    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), springConfig);
+    // Intensified rotation (12 degrees) - slightly reduced for more control
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [-12, 12]), springConfig);
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [12, -12]), springConfig);
 
     // Automatic scroll-based tilt for mobile (reveals 3D side perspective automatically)
     const scrollRotateX = useSpring(useTransform(scrollYProgress, [0, 1], [-15, 15]), springConfig);
@@ -139,15 +139,15 @@ export default function VisualContainer({
                         }}
                     />
 
-                    {/* Dynamic Glare Overlay - Dual Specular Layer */}
+                    {/* Dynamic Glare Overlay - Softened for glass realism */}
                     <m.div
                         className="absolute inset-0 z-10 pointer-events-none"
                         style={{
                             background: useTransform(
                                 [glareX, glareY],
                                 ([x, y]) => `
-                                    radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.25) 0%, transparent 45%),
-                                    radial-gradient(circle at ${x} ${y}, rgba(203, 213, 225, 0.15) 0%, transparent 70%)
+                                    radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.15) 0%, transparent 50%),
+                                    radial-gradient(circle at ${x} ${y}, rgba(203, 213, 225, 0.08) 0%, transparent 80%)
                                 `
                             ),
                             opacity: glareOpacity
@@ -182,21 +182,21 @@ export default function VisualContainer({
                     )}
                 </div>
 
-                {/* 3D Sides/Depth Effect */}
+                {/* 3D Sides/Depth Effect - Added Rim Lighting/Thickness */}
                 <div
-                    className="absolute top-0 bottom-0 left-0 bg-[#000] opacity-30"
+                    className="absolute top-0 bottom-0 left-0 bg-[#0A0A0A] border-r border-white/5"
                     style={{ width: sideHeight, transform: "rotateY(-90deg) translateZ(0.5px)", transformOrigin: "left" }}
                 />
                 <div
-                    className="absolute top-0 bottom-0 right-0 bg-[#000] opacity-30"
+                    className="absolute top-0 bottom-0 right-0 bg-[#0A0A0A] border-l border-white/5"
                     style={{ width: sideHeight, transform: "rotateY(90deg) translateZ(0.5px)", transformOrigin: "right" }}
                 />
                 <div
-                    className="absolute left-0 right-0 top-0 bg-[#000] opacity-30"
+                    className="absolute left-0 right-0 top-0 bg-[#0A0A0A] border-b border-white/5"
                     style={{ height: sideHeight, transform: "rotateX(90deg) translateZ(0.5px)", transformOrigin: "top" }}
                 />
                 <div
-                    className="absolute left-0 right-0 bottom-0 bg-[#000] opacity-30"
+                    className="absolute left-0 right-0 bottom-0 bg-[#0A0A0A] border-t border-white/5"
                     style={{ height: sideHeight, transform: "rotateX(-90deg) translateZ(0.5px)", transformOrigin: "bottom" }}
                 />
             </m.div>
