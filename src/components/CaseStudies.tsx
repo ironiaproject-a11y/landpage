@@ -21,15 +21,6 @@ const cases = [
         title: "Reabilitação Oral de Precisão",
         description: "Transformação completa utilizando protocolos digitais e lentes de contato de porcelana, garantindo máxima naturalidade e funcionalidade.",
         isSingleMedia: false
-    },
-    {
-        beforeSource: "/assets/images/service-aesthetic.png",
-        beforeType: "image" as const,
-        afterSource: "/assets/images/service-aesthetic.png",
-        afterType: "image" as const,
-        title: "Excelência em Odontologia Estética",
-        description: "Harmonização do sorriso com técnicas minimamente invasivas, preservando a estrutura dental e elevando a autoestima.",
-        isSingleMedia: false
     }
 ];
 

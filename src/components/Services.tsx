@@ -37,9 +37,23 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     };
 
     const handleInteractionEnd = () => {
+        if (!isMobile && videoRef.current) {
+            // Keep playing on desktop even if mouse leaves, as long as it's in viewport
+            setIsVideoActive(false);
+        } else if (isMobile && videoRef.current) {
+            setIsVideoActive(false);
+        }
+    };
+
+    const handleViewportEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => { });
+        }
+    };
+
+    const handleViewportLeave = () => {
         if (videoRef.current) {
             videoRef.current.pause();
-            setIsVideoActive(false);
         }
     };
 
@@ -49,10 +63,12 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             viewport={{
-                once: true,
+                once: false, // Allow re-triggering for buffer management
                 margin: "0px 0px -100px 0px",
                 amount: isMobile ? 0.01 : 0.3
             }}
+            onViewportEnter={handleViewportEnter}
+            onViewportLeave={handleViewportLeave}
             onMouseEnter={handleInteractionStart}
             onMouseLeave={handleInteractionEnd}
             onTouchStart={handleInteractionStart}

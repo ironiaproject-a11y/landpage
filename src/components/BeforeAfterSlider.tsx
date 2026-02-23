@@ -90,16 +90,18 @@ export function BeforeAfterSlider({
         };
     }, []);
 
-    const MediaRenderer = ({ source, type, label, isBefore = false }: { source: string; type: "image" | "video"; label: string; isBefore?: boolean }) => {
+    const MediaRenderer = ({ source, type, label, poster, isBefore = false }: { source: string; type: "image" | "video"; label: string; poster?: string; isBefore?: boolean }) => {
         if (type === "video") {
             return (
                 <video
                     src={source}
+                    poster={poster}
                     autoPlay
                     muted
                     loop
                     playsInline
-                    className={`absolute inset-0 w-full h-full object-cover ${isBefore ? "grayscale" : ""}`}
+                    preload="auto"
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""}`}
                 />
             );
         }
@@ -108,6 +110,7 @@ export function BeforeAfterSlider({
                 src={source}
                 alt={label}
                 fill
+                priority={isBefore}
                 className={`object-cover ${isBefore ? "grayscale" : ""}`}
             />
         );
@@ -130,7 +133,12 @@ export function BeforeAfterSlider({
             >
 
                 {/* After Media (Background) */}
-                <MediaRenderer source={afterSource} type={afterType} label="After" />
+                <MediaRenderer
+                    source={afterSource}
+                    type={afterType}
+                    label="After"
+                    poster={beforeType === "image" ? beforeSource : undefined}
+                />
 
                 {!isSingleMedia && (
                     <>
