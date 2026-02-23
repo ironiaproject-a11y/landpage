@@ -300,14 +300,14 @@ export function Hero() {
                 >
                     {/* Gradient Overlay for Mobile Contrast */}
                     <div
-                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 bg-gradient-to-b from-black/50 via-black/35 to-black/65 lg:hidden"
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 bg-gradient-to-b from-black/70 via-black/50 to-black/80 lg:hidden"
                     />
 
                     {/* Radial Spotlight Overlay (Desktop) */}
                     <div
                         className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 hidden lg:block"
                         style={{
-                            background: 'linear-gradient(to right, black, rgba(0,0,0,0.2), transparent)'
+                            background: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)'
                         }}
                     />
 
@@ -333,7 +333,16 @@ export function Hero() {
                     ref={contentWrapperRef}
                     className="relative z-[50] container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-24 lg:pt-32 pb-16 lg:pb-0 text-center lg:text-left"
                 >
-                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
+                    {/* Localized Scrim for enhanced readability */}
+                    <div
+                        className="absolute inset-0 z-[-1] opacity-70 pointer-events-none hidden lg:block"
+                        style={{
+                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 70%)',
+                            filter: 'blur(40px)'
+                        }}
+                    />
+
+                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start relative">
                         <m.div
                             initial="hidden"
                             animate={mounted ? "visible" : "hidden"}
