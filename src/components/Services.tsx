@@ -29,13 +29,14 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     const [isVideoActive, setIsVideoActive] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const handleMouseEnter = () => {
+    const handleInteractionStart = () => {
         if (videoRef.current) {
             videoRef.current.play().catch(() => { });
+            setIsVideoActive(true);
         }
     };
 
-    const handleMouseLeave = () => {
+    const handleInteractionEnd = () => {
         if (videoRef.current) {
             videoRef.current.pause();
             setIsVideoActive(false);
@@ -52,19 +53,25 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 margin: "0px 0px -100px 0px",
                 amount: isMobile ? 0.01 : 0.3
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleInteractionStart}
+            onMouseLeave={handleInteractionEnd}
+            onTouchStart={handleInteractionStart}
+            onTouchEnd={handleInteractionEnd}
             className={clsx(
                 "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
                 index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
             )}
         >
-            <div className="service-card-wrapper will-change-transform">
+            <m.div
+                className="service-card-wrapper will-change-transform"
+                whileTap={isMobile ? { scale: 1.05, z: 50, transition: { duration: 0.4 } } : {}}
+            >
                 <VisualContainer
                     width="100%"
                     height="auto"
                     hoverColor="rgba(203, 213, 225, 0.1)"
                     sideHeight="12px"
+                    className={clsx(isMobile && isVideoActive && "border-[var(--color-silver-bh)]/30 shadow-[0_0_40px_rgba(203,213,225,0.15)]")}
                 >
                     <div className="p-8 md:p-12 flex flex-col h-full">
                         {/* Image Frame - luxury first-frame video approach */}
@@ -72,11 +79,11 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                             {/* Video Layer - Acts as its own poster */}
                             <video
                                 ref={videoRef}
-                                src={`${service.video}#t=0.1`}
+                                src={isMobile ? service.video : `${service.video}#t=0.1`}
                                 muted
                                 loop
                                 playsInline
-                                preload="metadata"
+                                preload="auto"
                                 onLoadedData={() => setIsLoaded(true)}
                                 onPlaying={() => setIsVideoActive(true)}
                                 className={clsx(
@@ -131,7 +138,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
 
                 {/* Hover Shadow Glow - Silver Clinical Enhanced for Relief */}
                 <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/10 blur-[130px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
-            </div>
+            </m.div>
         </m.div>
     );
 }

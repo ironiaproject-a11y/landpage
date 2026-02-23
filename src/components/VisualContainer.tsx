@@ -126,13 +126,14 @@ export default function VisualContainer({
                 animate={{
                     rotateX: rotateX.get(),
                     rotateY: rotateY.get(),
-                    scale: isClicked ? 1.04 : 1,
-                    z: isClicked ? 40 : 0
+                    scale: isClicked || (isMobile && isHovered) ? 1.06 : 1,
+                    z: isClicked || (isMobile && isHovered) ? 60 : 0
                 }}
                 transition={{
                     type: "spring",
-                    stiffness: 100,
-                    damping: 20
+                    stiffness: 120,
+                    damping: 18,
+                    mass: 1
                 }}
                 style={{
                     rotateX,
