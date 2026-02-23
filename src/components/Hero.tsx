@@ -20,24 +20,54 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
     const frameIndexRef = useRef(0);
 
     useEffect(() => {
-        // Preload frames as Image objects
-        let loadedCount = 0;
-        const imageElements: HTMLImageElement[] = [];
-        const INITIAL_BATCH = 20; // Show hero after these many frames load
+        const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+        const CRITICAL_BATCH = 30;
+        const REMAINING_BATCH_SIZE = 20;
+        let criticalLoaded = 0;
 
-        for (let i = 0; i < TOTAL_FRAMES; i++) {
-            const img = new Image();
-            img.src = `/assets/hero-frames/frame-${i}.gif`;
-            img.onload = () => {
-                loadedCount++;
-                // Show hero immediately after a small batch for better LCP
-                if (loadedCount === INITIAL_BATCH) {
+        // Load a single frame (returns a promise)
+        const loadFrame = (i: number): Promise<void> => {
+            return new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    imageElements[i] = img;
+                    resolve();
+                };
+                img.onerror = () => resolve(); // Don't block on error
+                img.src = `/assets/hero-frames/frame-${i}.gif`;
+            });
+        };
+
+        // Phase 1: Load critical frames (0–29) immediately
+        const criticalPromises = Array.from({ length: CRITICAL_BATCH }, (_, i) =>
+            loadFrame(i).then(() => {
+                criticalLoaded++;
+                if (criticalLoaded === CRITICAL_BATCH) {
+                    framesRef.current = imageElements;
                     setVideoLoaded(true);
                 }
-            };
-            imageElements[i] = img;
-        }
-        framesRef.current = imageElements;
+            })
+        );
+
+        // Phase 2: Load remaining frames in staggered batches
+        const loadRemaining = () => {
+            const remaining = TOTAL_FRAMES - CRITICAL_BATCH;
+            const batches = Math.ceil(remaining / REMAINING_BATCH_SIZE);
+            for (let b = 0; b < batches; b++) {
+                const batchDelay = 2000 + b * 500;
+                setTimeout(() => {
+                    const batchStart = CRITICAL_BATCH + b * REMAINING_BATCH_SIZE;
+                    const batchEnd = Math.min(batchStart + REMAINING_BATCH_SIZE, TOTAL_FRAMES);
+                    for (let i = batchStart; i < batchEnd; i++) {
+                        loadFrame(i).then(() => {
+                            framesRef.current = imageElements;
+                        });
+                    }
+                }, batchDelay);
+            }
+        };
+
+        Promise.all(criticalPromises).then(loadRemaining);
 
         // Animation loop - Direct Canvas drawing for zero-latency
         let frameId: number;
@@ -108,6 +138,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
             window.removeEventListener('resize', handleResize);
         };
     }, [setVideoLoaded, start]); // Re-run or update when start changes
+
 
     return (
         <div className={`w-full h-full relative transition-opacity duration-1000 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}>
@@ -318,63 +349,54 @@ export function Hero() {
                             }}
                             className="mb-4 lg:mb-10 w-full"
                         >
-                            <h1 ref={titleRef} className="font-medium text-[#FAF9F7] tracking-tight will-change-transform perspective-2000">
-                                <span className="block mb-0 lg:mb-4 overflow-hidden pb-4">
+                            <h1 ref={titleRef} className="text-hero-editorial will-change-transform perspective-2000">
+                                <span className="block mb-0 lg:mb-2 overflow-hidden pb-2">
                                     <m.span
                                         variants={{
                                             hidden: {
-                                                y: "150%",
-                                                rotateX: -90,
+                                                y: "110%",
+                                                rotateX: -15,
                                                 opacity: 0,
-                                                filter: "blur(25px)",
-                                                scale: 1.2,
-                                                letterSpacing: "0.2em"
+                                                filter: "blur(20px)",
                                             },
                                             visible: {
                                                 y: "0%",
                                                 rotateX: 0,
                                                 opacity: 1,
                                                 filter: "blur(0px)",
-                                                scale: 1,
-                                                letterSpacing: "normal",
                                                 transition: {
-                                                    duration: 1.8,
+                                                    duration: 1.5,
                                                     ease: [0.16, 1, 0.3, 1],
-                                                    filter: { duration: 1.2 }
                                                 }
                                             }
                                         }}
-                                        className="inline-block text-[clamp(32px,8vw,48px)] lg:text-[clamp(2.5rem,9vw,6.5rem)] leading-[1] lg:leading-[1.1] origin-bottom will-change-transform"
+                                        className="inline-block origin-bottom will-change-transform"
                                     >
                                         Seu sorriso,
                                     </m.span>
                                 </span>
-                                <span className="block overflow-hidden pb-4">
+                                <span className="block overflow-hidden pb-2">
                                     <m.span
                                         variants={{
                                             hidden: {
-                                                y: "150%",
-                                                rotateX: -90,
+                                                y: "110%",
+                                                rotateX: -15,
                                                 opacity: 0,
-                                                filter: "blur(25px)",
-                                                scale: 1.2,
-                                                letterSpacing: "0.2em"
+                                                filter: "blur(20px)",
                                             },
                                             visible: {
                                                 y: "0%",
                                                 rotateX: 0,
                                                 opacity: 1,
                                                 filter: "blur(0px)",
-                                                scale: 1,
-                                                letterSpacing: "normal",
                                                 transition: {
-                                                    duration: 1.8,
+                                                    duration: 1.5,
                                                     ease: [0.16, 1, 0.3, 1],
-                                                    filter: { duration: 1.2 }
+                                                    delay: 0.1
                                                 }
                                             }
                                         }}
-                                        className={`inline-block ${isMobile ? 'font-playfair italic font-light' : 'italic font-light'} text-[var(--color-silver-bh)] text-[clamp(32px,8vw,48px)] lg:text-[clamp(2.5rem,9vw,6.5rem)] leading-[1] lg:leading-[1.1] origin-bottom will-change-transform`}
+                                        className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom"
                                     >
                                         sua assinatura.
                                     </m.span>
@@ -388,9 +410,9 @@ export function Hero() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-white/90 lg:text-white/80 max-w-[90%] lg:max-w-[55ch] mx-auto lg:mx-0 text-[clamp(14px,3.2vw,18px)] lg:text-[1.75rem] leading-relaxed opacity-90"
+                                className="text-subheadline-editorial text-center lg:text-left"
                             >
-                                A harmonia perfeita entre ciência avançada e estética de alta costura.
+                                A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial">alta costura</span>.
                             </m.p>
                         </div>
 

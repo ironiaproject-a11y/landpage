@@ -212,7 +212,7 @@ export function InstitutionalTrust() {
                             <VisualContainer
                                 width="100%"
                                 height="420px"
-                                hoverColor="rgba(196, 175, 126, 0.1)"
+                                hoverColor="rgba(203, 213, 225, 0.1)"
                                 sideHeight="12px"
                                 className="!bg-[var(--color-surface-dark)]/40 hover:!bg-[var(--color-surface)]/60 border-white/5 hover:border-[var(--color-silver-bh)]/20 transition-all duration-700 light-sweep"
                             >

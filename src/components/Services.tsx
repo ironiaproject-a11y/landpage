@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { ArrowRight, CircleDashed, Diamond, Crown, Cpu } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
 import VisualContainer from "./VisualContainer";
 import Image from "next/image";
@@ -15,13 +15,138 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+interface Service {
+    icon: string;
+    title: string;
+    description: string;
+    tag: string;
+    image: string;
+    video: string;
+}
+
+function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [isVideoActive, setIsVideoActive] = useState(false);
+
+    const handleMouseEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.load();
+            videoRef.current.play().catch(() => { });
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+            setIsVideoActive(false);
+        }
+    };
+
+    return (
+        <m.div
+            initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{
+                once: true,
+                margin: "0px 0px -100px 0px",
+                amount: isMobile ? 0.01 : 0.3
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={clsx(
+                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
+                index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
+            )}
+        >
+            <div className="service-card-wrapper will-change-transform">
+                <VisualContainer
+                    width="100%"
+                    height="auto"
+                    hoverColor="rgba(203, 213, 225, 0.1)"
+                    sideHeight="12px"
+                >
+                    <div className="p-8 md:p-12 flex flex-col h-full">
+                        {/* Image Frame - Luxury Gallery Style */}
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
+                            {/* Static Image (Poster/Backdrop) */}
+                            <Image
+                                src={service.image}
+                                alt={service.title}
+                                fill
+                                className={clsx(
+                                    "object-cover transition-all duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax",
+                                    isVideoActive ? "opacity-0" : "opacity-100"
+                                )}
+                            />
+
+                            {/* Video Layer */}
+                            <video
+                                ref={videoRef}
+                                src={service.video}
+                                muted
+                                loop
+                                playsInline
+                                preload="none"
+                                onPlaying={() => setIsVideoActive(true)}
+                                className={clsx(
+                                    "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out",
+                                    isVideoActive ? "opacity-100" : "opacity-0"
+                                )}
+                            />
+
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                            {/* Floating Tag */}
+                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate">
+                                <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
+                                    {service.tag}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Content Section */}
+                        <div className="flex-grow">
+                            <div className="flex items-center gap-6 mb-8">
+                                <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
+                            </div>
+
+                            <h3 className="font-display text-3xl md:text-4xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight">
+                                {service.title}
+                            </h3>
+
+                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 service-card-description">
+                                {service.description}
+                            </p>
+
+                            <Magnetic strength={0.2} range={60}>
+                                <m.div
+                                    whileHover={{ x: 5 }}
+                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-extra-wide cursor-pointer transition-all duration-700 service-card-cta"
+                                >
+                                    <span className="font-body">Ver Protocolo</span>
+                                    <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
+                                </m.div>
+                            </Magnetic>
+                        </div>
+                    </div>
+                </VisualContainer>
+
+                {/* Hover Shadow Glow - Silver Clinical Enhanced for Relief */}
+                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/10 blur-[130px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
+            </div>
+        </m.div>
+    );
+}
+
 export function Services() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const overlayDarkRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
-    const services = [
+    const services: Service[] = [
         {
             icon: "CircleDashed",
             title: "Implantes Dentários",
@@ -68,7 +193,7 @@ export function Services() {
             description: "Tratamentos específicos para eliminar o desconforto e devolver o prazer de comer e beber.",
             tag: "06",
             image: "/assets/images/service-sensitivity.png",
-            video: "/assets/videos/services/aesthetic.mp4"
+            video: "/assets/videos/services/canal.mp4"
         },
         {
             icon: "Crown",
@@ -107,7 +232,8 @@ export function Services() {
             title: "Radiografia Digital",
             description: "Imagens radiográficas de alta definição com menor exposição à radiação e resultado imediato.",
             tag: "11",
-            image: "/assets/images/digital-xray-tablet.jpg"
+            image: "/assets/images/digital-xray-tablet.jpg",
+            video: "/assets/videos/services/panoramic.mp4"
         },
         {
             icon: "Crown",
@@ -115,9 +241,8 @@ export function Services() {
             description: "Tecnologia avançada para diagnósticos e acompanhamentos detalhados.",
             tag: "12",
             image: "/assets/images/skycam-device.jpg",
-            video: "/assets/videos/services/implant.mp4"
+            video: "/assets/videos/services/skycam.mp4"
         }
-
     ];
 
     const [isMobile, setIsMobile] = useState(false);
@@ -289,16 +414,6 @@ export function Services() {
         return () => ctx.revert();
     }, [mounted, isMobile]);
 
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-    const handleMouseMove = (e: React.MouseEvent, card: HTMLElement) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty("--mouse-x", `${x}%`);
-        card.style.setProperty("--mouse-y", `${y}%`);
-    };
-
     return (
         <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
             {/* Background Texture */}
@@ -311,22 +426,22 @@ export function Services() {
                 style={{ opacity: 0 }}
             />
 
-            <div className="max-w-3xl mb-16 md:mb-24">
+            <div className="max-w-4xl mb-16 md:mb-24">
                 <m.span
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block font-body"
+                    className="text-[var(--color-silver-bh)] font-semibold tracking-extra-wide uppercase text-[10px] mb-8 block font-body"
                 >
                     Tratamentos de Elite
                 </m.span>
-                <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,90px)] font-light text-white leading-[0.9] tracking-tight">
+                <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,85px)] font-medium text-white leading-[1.05] tracking-tight">
                     <div className="block overflow-hidden pb-1">
                         <span className="title-line-inner inline-block">Soluções clínicas de</span>
                     </div>
                     <div className="block overflow-hidden pb-1">
-                        <span className="title-line-inner inline-block text-gradient-silver font-medium italic">extrema precisão</span>.
+                        <span className="title-line-inner inline-block text-gradient-silver italic font-light">extrema precisão</span>.
                     </div>
                 </h2>
             </div>
@@ -335,102 +450,12 @@ export function Services() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16 md:gap-y-32">
                 {
                     services.map((service, index) => (
-                        <m.div
+                        <ServiceCard
                             key={index}
-                            initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                            viewport={{
-                                once: true,
-                                margin: "0px 0px -100px 0px",
-                                amount: isMobile ? 0.01 : 0.3
-                            }}
-                            onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-                            onMouseEnter={(e) => {
-                                const video = e.currentTarget.querySelector('video');
-                                if (video) video.play();
-                            }}
-                            onMouseLeave={(e) => {
-                                const video = e.currentTarget.querySelector('video');
-                                if (video) {
-                                    video.pause();
-                                    video.currentTime = 0;
-                                }
-                            }}
-                            className={clsx(
-                                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
-                                index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
-                            )}
-                        >
-                            <div className="service-card-wrapper will-change-transform">
-                                <VisualContainer
-                                    width="100%"
-                                    height="auto"
-                                    hoverColor="rgba(203, 213, 225, 0.1)" // Intensified Silver-based hover
-                                    sideHeight="12px"
-                                >
-                                    <div className="p-8 md:p-12 flex flex-col h-full">
-                                        {/* Image Frame - Luxury Gallery Style */}
-                                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
-                                            {typeof service === 'object' && 'video' in service ? (
-                                                <video
-                                                    src={service.video as string}
-                                                    muted
-                                                    loop
-                                                    playsInline
-                                                    className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    src={service.image}
-                                                    alt={service.title}
-                                                    width={800}
-                                                    height={600}
-                                                    className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax"
-                                                />
-                                            )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                                            {/* Floating Tag */}
-                                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate">
-                                                <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
-                                                    {service.tag}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {/* Content Section */}
-                                        <div className="flex-grow">
-                                            <div className="flex items-center gap-6 mb-8">
-                                                <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
-                                            </div>
-
-                                            <h3 className="font-display text-3xl md:text-4xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight">
-                                                {service.title}
-                                            </h3>
-
-                                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 service-card-description">
-                                                {service.description}
-                                            </p>
-
-                                            <Magnetic strength={0.2} range={60}>
-                                                <m.div
-                                                    whileHover={{ x: 5 }}
-                                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer transition-all duration-700 service-card-cta"
-                                                >
-                                                    <span>Ver Protocolo</span>
-                                                    <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
-                                                </m.div>
-                                            </Magnetic>
-                                        </div>
-                                    </div>
-                                </VisualContainer>
-
-                                {/* Hover Shadow Glow - Silver Clinical Enhanced for Relief */}
-                                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/10 blur-[130px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
-                            </div>
-                        </m.div>
+                            service={service}
+                            index={index}
+                            isMobile={isMobile}
+                        />
                     ))
                 }
             </div>

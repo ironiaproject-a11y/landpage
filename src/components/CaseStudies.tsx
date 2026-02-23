@@ -14,11 +14,22 @@ if (typeof window !== "undefined") {
 
 const cases = [
     {
-        beforeImage: "/assets/images/case-study-dental-premium.jpg",
-        afterImage: "/assets/images/case-study-dental-premium.jpg",
-        title: "Transformação Estética Premium",
-        description: "Reabilitação estética completa com lentes de contato dental de alta performance, restaurando a harmonia e o brilho natural do sorriso.",
-        isSingleImage: false
+        beforeSource: "/assets/images/case-study-dental-premium.jpg",
+        beforeType: "image" as const,
+        afterSource: "/assets/videos/results/result-case-1.mp4",
+        afterType: "video" as const,
+        title: "Reabilitação Oral de Precisão",
+        description: "Transformação completa utilizando protocolos digitais e lentes de contato de porcelana, garantindo máxima naturalidade e funcionalidade.",
+        isSingleMedia: false
+    },
+    {
+        beforeSource: "/assets/images/service-aesthetic.png",
+        beforeType: "image" as const,
+        afterSource: "/assets/images/service-aesthetic.png",
+        afterType: "image" as const,
+        title: "Excelência em Odontologia Estética",
+        description: "Harmonização do sorriso com técnicas minimamente invasivas, preservando a estrutura dental e elevando a autoestima.",
+        isSingleMedia: false
     }
 ];
 
@@ -168,11 +179,13 @@ export function CaseStudies() {
                             className="case-study-card light-sweep max-w-5xl w-full"
                         >
                             <BeforeAfterSlider
-                                beforeImage={item.beforeImage}
-                                afterImage={item.afterImage}
+                                beforeSource={item.beforeSource}
+                                beforeType={item.beforeType}
+                                afterSource={item.afterSource}
+                                afterType={item.afterType}
                                 title={item.title}
                                 description={item.description}
-                                isSingleImage={item.isSingleImage}
+                                isSingleMedia={item.isSingleMedia}
                             />
                         </m.div>
                     ))}

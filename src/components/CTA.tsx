@@ -100,12 +100,12 @@ export function CTA() {
                         Agenda Aberta 2026
                     </m.div>
 
-                    <h2 ref={titleRef} className="font-display text-5xl md:text-7xl lg:text-8xl font-medium text-white mb-10 leading-[0.95] tracking-tight">
+                    <h2 ref={titleRef} className="font-display text-5xl md:text-7xl lg:text-8xl font-medium text-white mb-10 leading-[1.05] tracking-tight">
                         <div className="block overflow-hidden pb-1">
                             <span className="title-line-inner inline-block">Seu novo sorriso</span>
                         </div>
                         <div className="block overflow-hidden pb-1">
-                            <span className="title-line-inner inline-block text-gradient-silver">começa hoje.</span>
+                            <span className="title-line-inner inline-block text-gradient-silver italic font-light">começa hoje.</span>
                         </div>
                     </h2>
 
@@ -114,9 +114,9 @@ export function CTA() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-lg md:text-2xl text-[var(--color-text-secondary)] mb-16 leading-relaxed max-w-2xl mx-auto font-light tracking-wide"
+                        className="text-subheadline-editorial max-w-2xl mx-auto mb-16"
                     >
-                        Agende uma avaliação detalhada e descubra como nosso protocolo exclusivo pode transformar sua autoestima.
+                        Agende uma avaliação detalhada e descubra como nosso protocolo <span className="italic font-editorial font-light text-white">exclusivo</span> pode transformar sua autoestima.
                     </m.p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8">

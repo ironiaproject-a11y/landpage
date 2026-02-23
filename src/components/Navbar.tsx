@@ -98,7 +98,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-[0.2em]"
+                                                className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-extra-wide"
                                             >
                                                 {link.name}
                                             </m.div>
@@ -111,7 +111,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="absolute inset-0 py-2 px-4 text-[10px] font-bold text-[var(--color-silver-bh)] uppercase tracking-[0.2em]"
+                                                className="absolute inset-0 py-2 px-4 text-[10px] font-bold text-[var(--color-silver-bh)] uppercase tracking-extra-wide"
                                             >
                                                 {link.name}
                                             </m.div>

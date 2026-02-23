@@ -52,16 +52,18 @@
   --gradient-surface: linear-gradient(180deg, rgba(11, 11, 11, 0.8) 0%, rgba(11, 11, 11, 1) 100%);
   --gradient-dark: linear-gradient(to bottom, #0B0B0B, #121212);
 
-  /* Typography */
+  /* Typography - Playfair Display & Plus Jakarta Sans Combination */
   --font-display: var(--font-playfair), serif;
-  --font-body: var(--font-inter), sans-serif;
-  --font-editorial: "Playfair Display", serif;
-  /* Ensure editorial fallback */
+  --font-body: var(--font-jakarta), sans-serif;
+  --font-editorial: var(--font-playfair), serif;
 
-  /* Editorial Spacing & Sizes */
-  --font-size-hero: clamp(1.8rem, 10vw, 5.5rem);
-  --line-height-hero: 1.1;
-  --letter-spacing-hero: -0.02em;
+  /* Editorial Spacing & Sizes - Refined for 2026 Premium Aesthetic */
+  --font-size-hero: clamp(3rem, 10vw, 8rem);
+  --line-height-hero: 0.95;
+  --letter-spacing-hero: -0.04em;
+  --letter-spacing-tight: -0.03em;
+  --letter-spacing-wide: 0.08em;
+  --letter-spacing-extra-wide: 0.2em;
 
   /* Enhanced Shadows - Layered Depth System */
   --shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -226,14 +228,15 @@ h5,
 h6 {
   font-family: var(--font-display);
   color: var(--color-text-light);
-  letter-spacing: -0.03em;
-  font-feature-settings: "kern" 1, "liga" 1;
+  letter-spacing: var(--letter-spacing-tight);
+  font-feature-settings: "kern" 1, "liga" 1, "ss01" 1, "ital" 1;
   text-rendering: optimizeLegibility;
+  font-weight: 500;
 }
 
 h1 {
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-hero);
   line-height: var(--line-height-hero);
 }
 
@@ -242,21 +245,29 @@ h1 {
   line-height: var(--line-height-hero);
   letter-spacing: var(--letter-spacing-hero);
   font-family: var(--font-editorial);
+  font-weight: 500;
 }
 
 .text-subheadline-editorial {
-  @apply text-base md:text-[1.75rem] font-light leading-[1.6] md:leading-[1.8] max-w-[52ch];
-  color: #D6D6D6;
-  /* Soft Cream / Light Gray */
+  @apply text-base md:text-[1.25rem] font-light leading-[1.6] md:leading-[1.8] max-w-[55ch];
+  color: var(--color-text-dim);
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  font-weight: 600;
-  letter-spacing: -0.035em;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
 }
 
 h3 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
   font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 ::selection {

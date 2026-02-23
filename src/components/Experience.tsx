@@ -238,7 +238,7 @@ export function Experience() {
                         >
                             A Jornada do Paciente
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-5xl md:text-7xl font-medium text-white leading-tight mb-12 md:mb-16 tracking-tight">
+                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,8vw,6.5rem)] font-medium text-white leading-[0.95] mb-12 md:mb-16 tracking-tight">
                             <div className="block overflow-hidden pb-1">
                                 <span className="title-line-inner inline-block">O Protocolo de</span>
                             </div>

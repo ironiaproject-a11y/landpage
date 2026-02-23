@@ -58,8 +58,16 @@ export function AmbientParticles() {
             window.addEventListener("scroll", handleScroll, { passive: true });
         }
 
+        // Visibility flag - controlled by IntersectionObserver
+        let isVisible = true;
+
         // Animation loop
         const animate = () => {
+            if (!isVisible) {
+                animationFrameRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particlesRef.current.forEach((particle, i) => {
@@ -97,11 +105,21 @@ export function AmbientParticles() {
             animationFrameRef.current = requestAnimationFrame(animate);
         };
 
+        // IntersectionObserver: pause drawing when canvas leaves viewport
+        const observer = new IntersectionObserver(
+            (entries) => {
+                isVisible = entries[0].isIntersecting;
+            },
+            { threshold: 0 }
+        );
+        observer.observe(canvas);
+
         animate();
 
         return () => {
             window.removeEventListener("resize", resizeCanvas);
             window.removeEventListener("scroll", handleScroll);
+            observer.disconnect();
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
             }

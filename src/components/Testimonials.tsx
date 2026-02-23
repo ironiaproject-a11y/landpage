@@ -210,7 +210,7 @@ export function Testimonials() {
                                     <VisualContainer
                                         width="100%"
                                         height="100%"
-                                        hoverColor="rgba(199, 168, 107, 0.05)"
+                                        hoverColor="rgba(203, 213, 225, 0.1)"
                                         sideHeight="5px"
                                         className="rounded-organic-md light-sweep"
                                     >

@@ -6,20 +6,30 @@ import { MoveLeft, MoveRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 interface ComparisonProps {
-    beforeImage: string;
-    afterImage: string;
+    beforeSource: string;
+    beforeType?: "image" | "video";
+    afterSource: string;
+    afterType?: "image" | "video";
     title: string;
     description: string;
-    isSingleImage?: boolean;
+    isSingleMedia?: boolean;
 }
 
-export function BeforeAfterSlider({ beforeImage, afterImage, title, description, isSingleImage }: ComparisonProps) {
-    const [sliderPos, setSliderPos] = useState(isSingleImage ? 100 : 50);
+export function BeforeAfterSlider({
+    beforeSource,
+    beforeType = "image",
+    afterSource,
+    afterType = "image",
+    title,
+    description,
+    isSingleMedia
+}: ComparisonProps) {
+    const [sliderPos, setSliderPos] = useState(isSingleMedia ? 100 : 50);
     const [isResizing, setIsResizing] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const handleMove = (e: React.MouseEvent | React.TouchEvent | any) => {
-        if (isSingleImage) return;
+        if (isSingleMedia) return;
         if (!isResizing && e.type !== "mousemove" && e.type !== "touchmove") return;
 
         const rect = containerRef.current?.getBoundingClientRect();
@@ -33,7 +43,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
     };
 
     const handleMouseDown = () => {
-        if (!isSingleImage) setIsResizing(true);
+        if (!isSingleMedia) setIsResizing(true);
     };
     const handleMouseUp = () => setIsResizing(false);
 
@@ -45,7 +55,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
     const springHandleY = useSpring(handleY, springConfig);
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (isSingleImage || isResizing) return;
+        if (isSingleMedia || isResizing) return;
         const rect = containerRef.current?.getBoundingClientRect();
         if (!rect) return;
 
@@ -80,11 +90,34 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
         };
     }, []);
 
+    const MediaRenderer = ({ source, type, label, isBefore = false }: { source: string; type: "image" | "video"; label: string; isBefore?: boolean }) => {
+        if (type === "video") {
+            return (
+                <video
+                    src={source}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={`absolute inset-0 w-full h-full object-cover ${isBefore ? "grayscale" : ""}`}
+                />
+            );
+        }
+        return (
+            <Image
+                src={source}
+                alt={label}
+                fill
+                className={`object-cover ${isBefore ? "grayscale" : ""}`}
+            />
+        );
+    };
+
     return (
         <div className="group relative flex flex-col gap-8">
             <div
                 ref={containerRef}
-                className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleImage ? "" : "cursor-col-resize"} select-none shadow-2xl`}
+                className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleMedia ? "" : "cursor-col-resize"} select-none shadow-2xl`}
                 style={{ touchAction: "pan-y" }}
                 onMouseMove={(e) => {
                     handleMove(e);
@@ -96,29 +129,18 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
                 onTouchStart={handleMouseDown}
             >
 
-                {/* After Image (Background) */}
-                <Image
-                    src={afterImage}
-                    alt="After"
-                    fill
-                    className="object-cover"
-                    priority
-                />
+                {/* After Media (Background) */}
+                <MediaRenderer source={afterSource} type={afterType} label="After" />
 
-                {!isSingleImage && (
+                {!isSingleMedia && (
                     <>
-                        {/* Before Image (Clip) */}
+                        {/* Before Media (Clip) */}
                         <div
                             className="absolute inset-0 w-full h-full overflow-hidden"
                             style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
                         >
-                            <Image
-                                src={beforeImage}
-                                alt="Before"
-                                fill
-                                className="object-cover grayscale"
-                                priority
-                            />
+                            <MediaRenderer source={beforeSource} type={beforeType} label="Before" isBefore />
+
                             {/* Before Label */}
                             <div className="absolute top-6 left-6 px-4 py-2 rounded-full glass-panel border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Antes</span>

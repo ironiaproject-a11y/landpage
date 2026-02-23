@@ -231,22 +231,22 @@ export function About() {
                             className="flex items-center gap-4 mb-8"
                         >
                             <span className="w-12 h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent" />
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.3em] uppercase text-[10px] md:text-xs">
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-extra-wide uppercase text-[10px] md:text-xs font-body">
                                 Excelência e Tradição
                             </span>
                         </m.div>
 
-                        <h2 ref={titleRef} className="text-4xl md:text-6xl lg:text-7xl font-light mb-10 text-white leading-[1.1] tracking-tight">
+                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,7.5vw,5.5rem)] font-medium mb-10 text-white leading-[1] tracking-tight">
                             <div className="block overflow-hidden pb-1">
                                 <span className="title-line-inner inline-block">Elevando o padrão da</span>
                             </div>
                             <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver font-editorial italic">Odontologia Estética</span>
+                                <span className="title-line-inner inline-block text-gradient-silver font-editorial italic font-light">Odontologia Estética</span>
                             </div>
                         </h2>
 
-                        <p ref={descriptionRef} className="text-lg md:text-xl text-white/60 mb-12 leading-relaxed font-light border-l border-[var(--color-silver-bh)]/20 pl-8 max-w-xl">
-                            Mais do que tratamentos, oferecemos confiança, conforto e segurança em cada etapa do cuidado com quem você mais ama.
+                        <p ref={descriptionRef} className="text-subheadline-editorial mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8">
+                            Mais do que tratamentos, oferecemos <span className="italic font-editorial font-light text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
@@ -269,7 +269,7 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.8 }}
-                            className="px-10 py-5 bg-white text-black text-xs font-bold uppercase tracking-[0.2em] rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500"
+                            className="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-extra-wide rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500 font-body"
                         >
                             Descubra nossa tecnologia
                         </m.button>
