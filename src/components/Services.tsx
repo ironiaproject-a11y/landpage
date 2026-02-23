@@ -27,10 +27,10 @@ interface Service {
 function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isVideoActive, setIsVideoActive] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const handleMouseEnter = () => {
         if (videoRef.current) {
-            videoRef.current.load();
             videoRef.current.play().catch(() => { });
         }
     };
@@ -67,33 +67,29 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     sideHeight="12px"
                 >
                     <div className="p-8 md:p-12 flex flex-col h-full">
-                        {/* Image Frame - Luxury Gallery Style */}
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#1A1A1A] border border-white/5 shadow-inner">
-                            {/* Static Image (Poster/Backdrop) */}
-                            <Image
-                                src={service.image}
-                                alt={service.title}
-                                fill
-                                className={clsx(
-                                    "object-cover transition-all duration-[2.5s] ease-out group-hover:scale-105 grayscale-[40%] group-hover:grayscale-0 service-image-parallax",
-                                    isVideoActive ? "opacity-0" : "opacity-100"
-                                )}
-                            />
-
-                            {/* Video Layer */}
+                        {/* Image Frame - luxury first-frame video approach */}
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#0A0A0A] border border-white/5 shadow-inner">
+                            {/* Video Layer - Acts as its own poster */}
                             <video
                                 ref={videoRef}
-                                src={service.video}
+                                src={`${service.video}#t=0.1`}
                                 muted
                                 loop
                                 playsInline
-                                preload="none"
+                                preload="metadata"
+                                onLoadedData={() => setIsLoaded(true)}
                                 onPlaying={() => setIsVideoActive(true)}
                                 className={clsx(
-                                    "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out",
-                                    isVideoActive ? "opacity-100" : "opacity-0"
+                                    "absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out",
+                                    isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110",
+                                    isVideoActive ? "brightness-100" : "brightness-[0.7] grayscale-[30%] group-hover:grayscale-0 group-hover:brightness-100"
                                 )}
                             />
+
+                            {/* Loading State Skeleton */}
+                            {!isLoaded && (
+                                <div className="absolute inset-0 skeleton-shimmer bg-white/5" />
+                            )}
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 

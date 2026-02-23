@@ -331,7 +331,7 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-[50] container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-32 lg:pt-40 pb-16 lg:pb-0 text-center lg:text-left"
+                    className="relative z-[50] container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-24 lg:pt-32 pb-16 lg:pb-0 text-center lg:text-left"
                 >
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start">
                         <m.div
@@ -350,11 +350,11 @@ export function Hero() {
                             className="mb-4 lg:mb-10 w-full"
                         >
                             <h1 ref={titleRef} className="text-hero-editorial will-change-transform perspective-2000">
-                                <span className="block mb-0 lg:mb-2 overflow-hidden pb-2">
+                                <span className="block mb-0 lg:mb-3 overflow-hidden pb-4">
                                     <m.span
                                         variants={{
                                             hidden: {
-                                                y: "110%",
+                                                y: "115%",
                                                 rotateX: -15,
                                                 opacity: 0,
                                                 filter: "blur(20px)",
@@ -365,7 +365,7 @@ export function Hero() {
                                                 opacity: 1,
                                                 filter: "blur(0px)",
                                                 transition: {
-                                                    duration: 1.5,
+                                                    duration: 1.8,
                                                     ease: [0.16, 1, 0.3, 1],
                                                 }
                                             }
@@ -404,15 +404,15 @@ export function Hero() {
                             </h1>
                         </m.div>
 
-                        <div className="overflow-hidden mb-6 lg:mb-14 w-full">
+                        <div className="overflow-hidden mb-8 lg:mb-16 w-full lg:pl-1">
                             <m.p
                                 ref={descriptionRef}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                                transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                                 className="text-subheadline-editorial text-center lg:text-left"
                             >
-                                A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial">alta costura</span>.
+                                A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
