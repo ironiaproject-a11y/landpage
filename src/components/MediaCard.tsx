@@ -159,8 +159,8 @@ export function MediaCard({
                     src={posterSrc}
                     alt={alt}
                     className={clsx(
-                        "media-poster absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[5]",
-                        isPlaying && isLoaded ? "opacity-0" : "opacity-100"
+                        "media-poster absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2]",
+                        isLoaded ? "opacity-0 invisible pointer-events-none" : "opacity-100"
                     )}
                 />
             )}

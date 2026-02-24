@@ -184,15 +184,15 @@ export function BeforeAfterSlider({
                         playsInline
                         preload="metadata"
                         onLoadedData={() => setIsLoaded(true)}
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""} ${isLoaded ? "opacity-100" : "opacity-0"}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""} ${isLoaded ? "opacity-100 z-[2]" : "opacity-0 z-[1]"}`}
                         aria-hidden="true"
                     />
-                    {!isLoaded && poster && (
+                    {poster && (
                         <Image
                             src={poster}
                             alt={label}
                             fill
-                            className={`object-cover ${isBefore ? "grayscale" : ""} transition-opacity duration-700`}
+                            className={`object-cover ${isBefore ? "grayscale" : ""} transition-opacity duration-700 ${isLoaded ? "opacity-0 invisible pointer-events-none" : "opacity-100"} z-[1]`}
                         />
                     )}
                 </>

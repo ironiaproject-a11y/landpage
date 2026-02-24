@@ -20,7 +20,6 @@ export default function ThreeDCardDemo() {
                     </div>
                     <div className="space-y-2">
                         <p className="text-white text-2xl font-display font-medium">Experiência Imersiva</p>
-                        <p className="text-[var(--color-text-secondary)] text-sm max-w-[250px]">Toque e interaja com o futuro da odontologia moderna.</p>
                     </div>
                 </div>
             </VisualContainer>
