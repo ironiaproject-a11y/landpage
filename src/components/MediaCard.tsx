@@ -39,11 +39,11 @@ export function MediaCard({
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterRef = useRef<HTMLImageElement>(null);
-    
+
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isInView, setIsInView] = useState(false);
-    
+
     const shouldReduceMotion = useReducedMotion();
 
     // 1. IntersectionObserver for Poster Lazy-Loading
@@ -79,9 +79,9 @@ export function MediaCard({
     // 3. Source Injection on Interaction
     const loadSources = () => {
         if (!videoRef.current || videoRef.current.dataset.loaded === "1") return;
-        
+
         const video = videoRef.current;
-        
+
         if (webmSrc) {
             const webm = document.createElement("source");
             webm.src = webmSrc;
@@ -180,15 +180,6 @@ export function MediaCard({
 
             {/* Subtle Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-[10]" />
-
-            {/* Accessibility / Interaction Prompt */}
-            {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity z-[12] pointer-events-none">
-                    <span className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-bold bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm">
-                        Interagir para reproduzir
-                    </span>
-                </div>
-            )}
         </div>
     );
 }
