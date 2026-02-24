@@ -34,11 +34,11 @@ export function WhatsAppButton() {
                     }}
                     onMouseLeave={() => setIsHovered(false)}
                     whileHover={{
-                        scale: 1.08,
-                        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
+                        scale: 1, // Restrained
+                        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)"
                     }}
                     whileTap={{ scale: 0.94 }}
-                    className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl text-white/70 border border-white/20 shadow-xl transition-all duration-500 group overflow-hidden relative"
+                    className="w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl text-white/70 border border-white/20 shadow-xl transition-all duration-500 group overflow-hidden relative saturate-[0.8] scale-[0.85]"
                 >
                     {/* Subtle Pulsing Edge */}
                     <m.div

@@ -144,7 +144,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
         <div className={`w-full h-full relative transition-opacity duration-1500 ${videoLoaded ? 'opacity-80 lg:opacity-60' : 'opacity-0'}`}>
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.45] lg:brightness-[0.7] saturate-[0.7] lg:saturate-90 blur-[1px] lg:blur-sm will-change-transform"
+                className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
+                style={{ filter: 'brightness(0.92) contrast(0.96)' }}
             />
         </div>
     );
@@ -211,11 +212,10 @@ export function Hero() {
                     }
                 });
 
-                // Enhanced Parallax ("Paradex") Effect
+                // Enhanced Parallax ("Paradex") Effect - RESTRAINED
                 scrollTl.to(videoWrapperRef.current, {
-                    yPercent: isMobile ? 45 : 35, // Increased depth
-                    scale: 1.25, // More immersive zoom
-                    filter: "blur(6px)", // Cinematographic depth blur on exit
+                    yPercent: isMobile ? 8 : 6, // Reduced intensity (6-8%)
+                    scale: 1.05, // More subtle zoom
                     ease: "none"
                 }, 0);
 
@@ -298,16 +298,11 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
                 >
-                    {/* Gradient Overlay for Mobile Contrast */}
+                    {/* Refined Cinematic Overlay Gradient */}
                     <div
-                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 bg-gradient-to-b from-black/85 via-black/60 to-black/90 lg:hidden"
-                    />
-
-                    {/* Radial Spotlight Overlay (Desktop) */}
-                    <div
-                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 hidden lg:block"
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 backdrop-blur-[4px]"
                         style={{
-                            background: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)'
+                            background: 'linear-gradient(180deg, rgba(11,11,11,0.55) 0%, rgba(11,11,11,0.35) 45%, rgba(11,11,11,0.20) 75%, rgba(11,11,11,0.12) 100%)'
                         }}
                     />
 
@@ -333,37 +328,28 @@ export function Hero() {
                     ref={contentWrapperRef}
                     className="relative z-[50] container mx-auto px-6 h-full flex flex-col justify-center items-center lg:items-start pt-24 lg:pt-32 pb-16 lg:pb-0 text-center lg:text-left"
                 >
-                    {/* Localized Scrim for enhanced readability */}
-                    <div
-                        className="absolute inset-0 z-[-1] opacity-80 pointer-events-none hidden lg:block"
-                        style={{
-                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.6) 0%, transparent 80%)',
-                            filter: 'blur(60px)'
-                        }}
-                    />
+                    <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
+                        <m.h1
+                            ref={titleRef}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                            transition={{
+                                duration: 0.8,
+                                ease: [0.22, 0.9, 0.32, 1],
+                                delay: 2.6
+                            }}
+                            className="text-hero-editorial will-change-transform perspective-2000"
+                        >
+                            <span className="block mb-1 lg:mb-2 shine-text">Seu sorriso,</span>
+                            <span className="block italic font-light text-[var(--color-silver-bh)] shine-text">sua assinatura.</span>
+                        </m.h1>
 
-                    <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start relative">
-                            <m.h1
-                                ref={titleRef}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                                transition={{
-                                    duration: 1.2,
-                                    ease: [0.22, 1, 0.32, 1],
-                                    delay: isMobile ? 2.5 : 2.8
-                                }}
-                                className="text-hero-editorial will-change-transform perspective-2000"
-                            >
-                                <span className="block mb-2 lg:mb-4 shine-text">Seu sorriso,</span>
-                                <span className="block italic font-light text-[var(--color-silver-bh)] shine-text">sua assinatura.</span>
-                            </m.h1>
-
-                        <div className="overflow-hidden mb-12 lg:mb-20 w-full lg:pl-1">
+                        <div className="overflow-hidden mb-8 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
                             <m.p
                                 ref={descriptionRef}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: isMobile ? 2.8 : 3.1, duration: 1.2, ease: [0.22, 1, 0.32, 1] }}
+                                initial={{ opacity: 0 }}
+                                animate={mounted ? { opacity: 0.88 } : { opacity: 0 }}
+                                transition={{ delay: 2.72, duration: 0.7 }}
                                 className="text-subheadline-editorial text-center lg:text-left shine-text"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
@@ -371,15 +357,15 @@ export function Hero() {
                         </div>
 
 
-                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-2 lg:mt-0">
+                        <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-7 lg:mt-9">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96 }}
                                     animate={mounted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
-                                    transition={{ delay: isMobile ? 3.0 : 3.3, duration: 1, ease: [0.22, 1, 0.32, 1] }}
+                                    transition={{ delay: 2.95, duration: 0.6, ease: [0.22, 1, 0.32, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-7 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus:outline-white"
+                                    className="group relative flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus:outline-white"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -403,11 +389,11 @@ export function Hero() {
                                 <m.button
                                     onClick={() => logEvent('cta_ver_casos_click')}
                                     initial={{ opacity: 0 }}
-                                    animate={mounted ? { opacity: 1 } : { opacity: 0 }}
-                                    transition={{ delay: isMobile ? 3.2 : 3.5, duration: 1 }}
-                                    whileHover={!isMobile ? { y: -3, scale: 1.01 } : {}}
+                                    animate={mounted ? { opacity: 0.85 } : { opacity: 0 }}
+                                    transition={{ delay: 3.1, duration: 0.6 }}
+                                    whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-7 bg-transparent border border-white/10 text-white/60 rounded-full backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/30 hover:text-white"
+                                    className="group flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-6 bg-transparent border border-white/10 text-white/60 rounded-full backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/30 hover:text-white"
                                 >
                                     <span className="text-[11px] sm:text-xs tracking-[0.3em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>

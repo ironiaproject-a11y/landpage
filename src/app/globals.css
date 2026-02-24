@@ -57,13 +57,13 @@
   --font-body: var(--font-jakarta), sans-serif;
   --font-editorial: var(--font-playfair), serif;
 
-  /* Editorial Spacing & Sizes - Refined for 2026 Premium Aesthetic */
-  --font-size-hero: clamp(4rem, 12vw, 11rem);
-  --line-height-hero: 0.88;
-  --letter-spacing-hero: -0.04em;
-  --letter-spacing-tight: -0.02em;
-  --letter-spacing-wide: 0.08em;
-  --letter-spacing-extra-wide: 0.2em;
+  /* Editorial Spacing & Sizes - Refined for Cinematic Balance */
+  --font-size-hero: clamp(32px, 8.5vw, 64px);
+  --line-height-hero: 1.04;
+  --letter-spacing-hero: -0.02em;
+  --letter-spacing-tight: -0.015em;
+  --letter-spacing-wide: 0.05em;
+  --letter-spacing-extra-wide: 0.15em;
 
   /* Enhanced Shadows - Layered Depth System */
   --shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -253,11 +253,14 @@ h1 {
 }
 
 .text-subheadline-editorial {
-  @apply text-base md:text-[1.35rem] font-light leading-[1.7] md:leading-[1.9] max-w-[60ch];
+  @apply text-base font-light max-w-[60ch];
+  font-size: clamp(14px, 3.2vw, 18px);
+  line-height: 1.5;
+  opacity: 0.88;
   color: var(--color-text-dim);
   font-family: var(--font-body);
-  letter-spacing: -0.01em;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
