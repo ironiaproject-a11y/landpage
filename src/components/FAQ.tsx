@@ -38,10 +38,15 @@ export function FAQ() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
     useEffect(() => {
@@ -56,21 +61,20 @@ export function FAQ() {
                     {
                         scrollTrigger: {
                             trigger: titleRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: isMobile ? 0.08 : 0.15,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power4.out"
                     }
                 );
             }
 
             // Desktop-only cinematic scroll effects
-            const isMobile = window.innerWidth < 768;
             if (!isMobile) {
                 gsap.to(".faq-glow", {
                     y: 100,

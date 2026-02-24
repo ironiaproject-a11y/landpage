@@ -37,10 +37,14 @@ const cards = [
 export function InstitutionalTrust() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
-    const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
     useEffect(() => {
@@ -55,14 +59,14 @@ export function InstitutionalTrust() {
                     {
                         scrollTrigger: {
                             trigger: titleRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: isMobile ? 0.08 : 0.15,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power4.out"
                     }
                 );
@@ -102,13 +106,13 @@ export function InstitutionalTrust() {
                     {
                         scrollTrigger: {
                             trigger: sectionRef.current,
-                            start: "top 70%",
+                            start: isMobile ? "top 85%" : "top 70%",
                             toggleActions: "play none none reverse"
                         },
                         opacity: 1,
                         y: 0,
-                        stagger: 0.1,
-                        duration: 1,
+                        stagger: isMobile ? 0.05 : 0.1,
+                        duration: isMobile ? 0.7 : 1,
                         ease: "power3.out"
                     }
                 );

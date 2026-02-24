@@ -43,14 +43,14 @@ export function Specialist() {
                     {
                         scrollTrigger: {
                             trigger: titleRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: isMobile ? 0.08 : 0.15,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power4.out"
                     }
                 );
@@ -108,14 +108,14 @@ export function Specialist() {
                     {
                         scrollTrigger: {
                             trigger: quoteRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         opacity: 1,
                         y: 0,
-                        duration: 1.2,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power3.out",
-                        delay: 0.4
+                        delay: isMobile ? 0.2 : 0.4
                     }
                 );
             }
@@ -144,13 +144,13 @@ export function Specialist() {
                     {
                         scrollTrigger: {
                             trigger: credentialsRef.current,
-                            start: "top 80%",
+                            start: isMobile ? "top 90%" : "top 80%",
                             toggleActions: "play none none reverse"
                         },
                         opacity: 1,
                         x: 0,
-                        stagger: 0.2,
-                        duration: 1,
+                        stagger: isMobile ? 0.1 : 0.2,
+                        duration: isMobile ? 0.7 : 1,
                         ease: "power3.out"
                     }
                 );

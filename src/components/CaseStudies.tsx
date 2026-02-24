@@ -51,14 +51,14 @@ export function CaseStudies() {
                     {
                         scrollTrigger: {
                             trigger: titleRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: isMobile ? 0.08 : 0.15,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power4.out"
                     }
                 );

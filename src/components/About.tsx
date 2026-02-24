@@ -70,7 +70,7 @@ export function About() {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top 75%",
+                    start: isMobile ? "top 90%" : "top 75%",
                     toggleActions: "play none none reverse"
                 }
             });
@@ -80,7 +80,7 @@ export function About() {
                 tl.to(revealShadeRef.current, {
                     scaleY: 0,
                     transformOrigin: "top", // Reveals from bottom to top
-                    duration: 1.8,
+                    duration: isMobile ? 1.2 : 1.8,
                     ease: "power4.inOut"
                 });
             }
@@ -101,8 +101,8 @@ export function About() {
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.1,
-                        duration: 1,
+                        stagger: isMobile ? 0.05 : 0.1,
+                        duration: isMobile ? 0.7 : 1,
                         ease: "power4.out"
                     },
                     "-=1.5"

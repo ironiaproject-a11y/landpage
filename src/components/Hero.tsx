@@ -351,8 +351,8 @@ export function Hero() {
                                 visible: {
                                     opacity: 1,
                                     transition: {
-                                        staggerChildren: 0.12,
-                                        delayChildren: 2.8 // Ensures preloader is fully clear
+                                        staggerChildren: isMobile ? 0.08 : 0.12,
+                                        delayChildren: isMobile ? 2.5 : 2.8 // Snappier entry on mobile
                                     }
                                 }
                             }}
@@ -374,11 +374,11 @@ export function Hero() {
                                                     y: "0%",
                                                     rotateX: 0,
                                                     opacity: 1,
-                                                    filter: "blur(0px)",
+                                                    filter: isMobile ? "none" : "blur(0px)",
                                                     transition: {
-                                                        duration: 1.4,
+                                                        duration: isMobile ? 0.9 : 1.4,
                                                         ease: [0.16, 1, 0.3, 1],
-                                                        delay: i * 0.04
+                                                        delay: i * (isMobile ? 0.02 : 0.04)
                                                     }
                                                 }
                                             }}
@@ -403,11 +403,11 @@ export function Hero() {
                                                     y: "0%",
                                                     rotateX: 0,
                                                     opacity: 1,
-                                                    filter: "blur(0px)",
+                                                    filter: isMobile ? "none" : "blur(0px)",
                                                     transition: {
-                                                        duration: 1.2,
+                                                        duration: isMobile ? 0.8 : 1.2,
                                                         ease: [0.16, 1, 0.3, 1],
-                                                        delay: 0.3 + i * 0.04
+                                                        delay: (isMobile ? 0.2 : 0.3) + i * (isMobile ? 0.02 : 0.04)
                                                     }
                                                 }
                                             }}
