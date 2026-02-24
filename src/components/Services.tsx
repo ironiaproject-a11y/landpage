@@ -54,7 +54,10 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     sideHeight="12px"
                     className={clsx(isMobile && isVideoActive && "border-[var(--color-silver-bh)]/30 shadow-[0_0_40px_rgba(203,213,225,0.15)]")}
                 >
-                    <div className="p-8 md:p-12 flex flex-col h-full">
+                    <div
+                        className="p-8 md:p-12 flex flex-col h-full cursor-pointer"
+                        onClick={() => setIsVideoActive(!isVideoActive)}
+                    >
                         {/* High-Performance Media Card */}
                         <div className="relative mb-12">
                             <MediaCard
@@ -66,6 +69,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                                 className="shadow-2xl"
                                 onPlay={() => setIsVideoActive(true)}
                                 onPause={() => setIsVideoActive(false)}
+                                playing={isVideoActive}
                             />
 
                             {/* Floating Tag */}
@@ -131,7 +135,7 @@ export function Services() {
             title: "Tratamento de Bruxismo e Dor",
             description: "Alívio eficaz para dores orofaciais e proteção dos dentes contra o desgaste excessivo.",
             tag: "02",
-            image: "/assets/images/root-canal-treatment.png",
+            image: "/assets/images/service-sensitivity.png",
             video: "/assets/videos/services/bruxismo.mp4"
         },
         {

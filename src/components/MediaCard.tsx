@@ -14,6 +14,8 @@ interface MediaCardProps {
     aspectRatio?: string;
     onPlay?: () => void;
     onPause?: () => void;
+    playing?: boolean;
+    onClick?: () => void;
 }
 
 /**
@@ -34,7 +36,9 @@ export function MediaCard({
     className,
     aspectRatio = "aspect-[4/3]",
     onPlay,
-    onPause
+    onPause,
+    playing,
+    onClick
 }: MediaCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -117,6 +121,17 @@ export function MediaCard({
         }
     };
 
+    // Sync with external 'playing' prop
+    useEffect(() => {
+        if (playing !== undefined) {
+            if (playing) {
+                handlePlay();
+            } else {
+                handlePause();
+            }
+        }
+    }, [playing]);
+
     // External pause listener
     useEffect(() => {
         const video = videoRef.current;
@@ -143,7 +158,13 @@ export function MediaCard({
             onPointerLeave={handlePause}
             onFocus={handlePlay}
             onBlur={handlePause}
-            onClick={() => isPlaying ? handlePause() : handlePlay()}
+            onClick={() => {
+                if (onClick) {
+                    onClick();
+                } else {
+                    isPlaying ? handlePause() : handlePlay();
+                }
+            }}
         >
             {/* Poster Layer */}
             {isInView && (
