@@ -206,17 +206,33 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=100%", // Use viewport-relative end for consistency
+                    end: "+=100%",
                     pin: !isMobile ? pinContainerRef.current : false,
                     scrub: 1.2,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    onUpdate: (self) => {
+                        if (shouldReduceMotion) return;
+
+                        // Direction-sensitive micro-motion
+                        const direction = self.direction; // 1 for down, -1 for up
+                        const velocity = self.getVelocity();
+                        const intensity = Math.min(Math.abs(velocity) / 2000, 1);
+
+                        gsap.to(videoWrapperRef.current, {
+                            x: direction * intensity * (isMobile ? 4 : 8),
+                            scale: 1.05 + (intensity * 0.005),
+                            rotationZ: direction * intensity * 0.1,
+                            duration: 0.8,
+                            ease: "power2.out",
+                            overwrite: "auto"
+                        });
+                    }
                 }
             });
 
-            // 1. Background Layer Parallax (Restrained 6-8%)
+            // 1. Background Layer Parallax (Restrained 4-6%)
             scrollTl.to(videoWrapperRef.current, {
-                yPercent: isMobile ? 8 : 6,
-                scale: 1.05,
+                yPercent: isMobile ? 6 : 4,
                 ease: "none"
             }, 0);
 
@@ -275,7 +291,19 @@ export function Hero() {
                 <div
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform"
+                    style={{
+                        transform: `scale(${isMobile ? 0.95 : 0.98})`,
+                        transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
+                    }}
                 >
+                    {/* Radial Vignette Overlay */}
+                    <div
+                        className="absolute inset-0 z-[12] pointer-events-none transition-opacity duration-1500"
+                        style={{
+                            background: 'radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%)'
+                        }}
+                    />
+
                     {/* Refined Cinematic Overlay Gradient */}
                     <div
                         className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 backdrop-blur-[4px]"
@@ -313,11 +341,25 @@ export function Hero() {
                         <m.h1
                             ref={titleRef}
                             initial={{ opacity: 0, y: 30 }}
-                            animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                            transition={{
+                            animate={mounted ? (videoLoaded ? {
+                                opacity: 1,
+                                y: 0,
+                                skewX: 0,
+                                rotate: 0
+                            } : {
+                                opacity: 0.4,
+                                y: [0, -5, 0],
+                                skewX: [-0.5, 0.5, -0.5],
+                                rotate: [-0.2, 0.2, -0.2]
+                            }) : { opacity: 0, y: 30 }}
+                            transition={videoLoaded ? {
                                 duration: 0.8,
-                                ease: [0.22, 0.9, 0.32, 1],
-                                delay: 2.6
+                                ease: [0.22, 1, 0.36, 1], // Power3.out equivalent
+                                delay: 0.1
+                            } : {
+                                y: { duration: 4, repeat: Infinity, ease: "sine.inOut" },
+                                skewX: { duration: 5, repeat: Infinity, ease: "sine.inOut" },
+                                rotate: { duration: 6, repeat: Infinity, ease: "sine.inOut" }
                             }}
                             className="text-hero-editorial will-change-transform perspective-2000"
                         >
@@ -329,8 +371,8 @@ export function Hero() {
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0 }}
-                                animate={mounted ? { opacity: 0.88 } : { opacity: 0 }}
-                                transition={{ delay: 2.72, duration: 0.7 }}
+                                animate={mounted && videoLoaded ? { opacity: 0.88, y: 0 } : { opacity: 0, y: 15 }}
+                                transition={{ delay: 0.25, duration: 0.7, ease: "easeOut" }}
                                 className="text-subheadline-editorial text-center lg:text-left shine-text"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
@@ -341,9 +383,8 @@ export function Hero() {
                         <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-7 lg:mt-9">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    initial={{ opacity: 0, scale: 0.96 }}
-                                    animate={mounted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
-                                    transition={{ delay: 2.95, duration: 0.6, ease: [0.22, 1, 0.32, 1] }}
+                                    animate={mounted && videoLoaded ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
+                                    transition={{ delay: 0.45, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
                                     className="group relative flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus:outline-white"
@@ -368,10 +409,9 @@ export function Hero() {
 
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    onClick={() => logEvent('cta_ver_casos_click')}
-                                    initial={{ opacity: 0 }}
-                                    animate={mounted ? { opacity: 0.85 } : { opacity: 0 }}
-                                    transition={{ delay: 3.1, duration: 0.6 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={mounted && videoLoaded ? { opacity: 0.85, y: 0 } : { opacity: 0 }}
+                                    transition={{ delay: 0.6, duration: 0.6 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
                                     className="group flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-6 bg-transparent border border-white/10 text-white/60 rounded-full backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/30 hover:text-white"
