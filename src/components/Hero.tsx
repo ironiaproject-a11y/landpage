@@ -199,86 +199,64 @@ export function Hero() {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            if (!shouldReduceMotion) {
-                // Unified Scroll Timeline (Desktop & Mobile Parallax)
-                const scrollTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: isMobile ? "bottom top" : "+=600",
-                        pin: !isMobile ? pinContainerRef.current : false,
-                        scrub: 1.2, // Smooth scrubbing
-                        anticipatePin: 1
-                    }
-                });
+            if (shouldReduceMotion) return;
 
-                // Enhanced Parallax ("Paradex") Effect - RESTRAINED
-                scrollTl.to(videoWrapperRef.current, {
-                    yPercent: isMobile ? 8 : 6, // Reduced intensity (6-8%)
-                    scale: 1.05, // More subtle zoom
-                    ease: "none"
-                }, 0);
-
-                if (!isMobile) {
-                    scrollTl.to(titleRef.current, {
-                        scale: 0.85, // Stronger recession effect
-                        opacity: 0,
-                        y: -150, // Higher exit
-                        filter: "blur(20px)",
-                        ease: "power2.in"
-                    }, 0);
-
-                    scrollTl.to(progressLineRef.current, {
-                        scaleY: 1,
-                        ease: "none"
-                    }, 0);
-
-                    scrollTl.to(contentWrapperRef.current, {
-                        opacity: 0,
-                        y: -50,
-                        filter: "blur(8px)",
-                        ease: "none"
-                    }, 0);
-
-                    gsap.to(scrollHintRef.current, {
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "top -50px",
-                            scrub: true
-                        },
-                        opacity: 0,
-                        y: -20
-                    });
-                } else {
-                    // Optimized Mobile Transitions
-                    scrollTl.to([titleRef.current, descriptionRef.current], {
-                        opacity: 0,
-                        y: -40,
-                        filter: "blur(10px)",
-                        ease: "power2.inOut",
-                        stagger: 0.05
-                    }, 0);
-
-                    scrollTl.to(actionsRef.current, {
-                        opacity: 0,
-                        scale: 0.95,
-                        y: -20,
-                        ease: "power1.inOut"
-                    }, 0.1);
+            // Unified Scroll Timeline (Depth & Atmosphere)
+            const scrollTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=100%", // Use viewport-relative end for consistency
+                    pin: !isMobile ? pinContainerRef.current : false,
+                    scrub: 1.2,
+                    anticipatePin: 1
                 }
+            });
 
-                // Dark Overlay
-                gsap.to(overlayDarkRef.current, {
-                    opacity: 0.8,
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top center",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-            }
+            // 1. Background Layer Parallax (Restrained 6-8%)
+            scrollTl.to(videoWrapperRef.current, {
+                yPercent: isMobile ? 8 : 6,
+                scale: 1.05,
+                ease: "none"
+            }, 0);
+
+            // 2. Text Block Layer (Depth Separation)
+            scrollTl.to(contentWrapperRef.current, {
+                y: -30,
+                opacity: 0.85,
+                ease: "none"
+            }, 0);
+
+            // 3. CTA Layer (Scale reduction + Stays visible longer)
+            scrollTl.to(actionsRef.current, {
+                scale: 0.97,
+                opacity: 0.95,
+                ease: "none"
+            }, 0.1);
+
+            // 4. Darken bottom gradient for transition
+            gsap.to(".bottom-cinematic-fade", {
+                opacity: 0.9,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "bottom center",
+                    scrub: true
+                }
+            });
+
+            // 5. Scroll Indicator Fade
+            gsap.to(scrollHintRef.current, {
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "top -50px",
+                    scrub: true
+                },
+                opacity: 0,
+                y: -20,
+                ease: "power2.inOut"
+            });
         }, sectionRef);
 
         return () => ctx.revert();
@@ -312,6 +290,9 @@ export function Hero() {
                         className="overlay-dark absolute inset-0 z-[11] bg-black/0 pointer-events-none"
                         style={{ opacity: 0 }}
                     />
+
+                    {/* Bottom Cinematic Fade Transition */}
+                    <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0" />
 
                     <FrameSequence
                         videoLoaded={videoLoaded}
@@ -416,11 +397,10 @@ export function Hero() {
                     </div>
                 )}
 
-                {/* Scroll Indicator */}
                 <m.div
                     ref={scrollHintRef}
                     initial={{ opacity: 0, x: "-50%" }}
-                    animate={{ opacity: 1, x: "-50%" }}
+                    animate={{ opacity: 0.6, x: "-50%" }}
                     transition={{ delay: 3, duration: 1.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
                 >
@@ -432,7 +412,7 @@ export function Hero() {
                                 y: ["-100%", "100%"]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 1.8,
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}

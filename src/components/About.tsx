@@ -176,7 +176,13 @@ export function About() {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-            <div className="container mx-auto px-6 relative z-10">
+            <m.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="container mx-auto px-6 relative z-10"
+            >
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Side - Desktop Tilt & Parallax */}
                     <m.div
@@ -275,7 +281,7 @@ export function About() {
                         </m.button>
                     </div>
                 </div>
-            </div>
+            </m.div>
         </section>
     );
 }
