@@ -46,6 +46,20 @@ export function BeforeAfterSlider({
     const videoRefAfter = useRef<HTMLVideoElement>(null);
 
     const startVideos = () => {
+        // Injetar sources sob demanda para performance
+        const loadSources = (v: HTMLVideoElement | null, src: string) => {
+            if (!v || v.dataset.loaded === "1") return;
+            const mp4 = document.createElement("source");
+            mp4.src = src;
+            mp4.type = "video/mp4";
+            v.appendChild(mp4);
+            v.load();
+            v.dataset.loaded = "1";
+        };
+
+        if (beforeType === "video") loadSources(videoRefBefore.current, beforeSource);
+        if (afterType === "video") loadSources(videoRefAfter.current, afterSource);
+
         videoRefBefore.current?.play().catch(() => { });
         videoRefAfter.current?.play().catch(() => { });
     };
@@ -92,6 +106,22 @@ export function BeforeAfterSlider({
             handleX.set(0);
             handleY.set(0);
         }
+
+        // Se estiver perto do handle, pré-carrega os vídeos
+        if (distance < 150) {
+            // Apenas injeta sources, não dá play ainda
+            const loadSourcesOnly = (v: HTMLVideoElement | null, src: string) => {
+                if (!v || v.dataset.loaded === "1") return;
+                const mp4 = document.createElement("source");
+                mp4.src = src;
+                mp4.type = "video/mp4";
+                v.appendChild(mp4);
+                v.load();
+                v.dataset.loaded = "1";
+            };
+            if (beforeType === "video") loadSourcesOnly(videoRefBefore.current, beforeSource);
+            if (afterType === "video") loadSourcesOnly(videoRefAfter.current, afterSource);
+        }
     };
 
     const handleMouseLeave = () => {
@@ -114,13 +144,13 @@ export function BeforeAfterSlider({
             return (
                 <video
                     ref={isBefore ? videoRefBefore : videoRefAfter}
-                    src={source}
                     poster={poster}
                     muted
                     loop
                     playsInline
-                    preload="auto"
+                    preload="none"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""}`}
+                    aria-hidden="true"
                 />
             );
         }

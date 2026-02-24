@@ -9,6 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Magnetic } from "./Magnetic";
+import { MediaCard } from "./MediaCard";
 
 // Register ScrollTrigger
 if (typeof window !== "undefined") {
@@ -25,32 +26,7 @@ interface Service {
 }
 
 function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
-    const videoRef = useRef<HTMLVideoElement>(null);
     const [isVideoActive, setIsVideoActive] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    const handleInteractionStart = () => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => { });
-            setIsVideoActive(true);
-        }
-    };
-
-    const handleInteractionEnd = () => {
-        if (videoRef.current) {
-            videoRef.current.pause();
-            setIsVideoActive(false);
-        }
-    };
-
-    const handleViewportEnter = () => {
-    };
-
-    const handleViewportLeave = () => {
-        if (videoRef.current) {
-            videoRef.current.pause();
-        }
-    };
 
     return (
         <m.div
@@ -58,16 +34,10 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             viewport={{
-                once: false, // Allow re-triggering for buffer management
+                once: false,
                 margin: "0px 0px -100px 0px",
                 amount: isMobile ? 0.01 : 0.3
             }}
-            onViewportEnter={handleViewportEnter}
-            onViewportLeave={handleViewportLeave}
-            onMouseEnter={handleInteractionStart}
-            onMouseLeave={handleInteractionEnd}
-            onTouchStart={handleInteractionStart}
-            onTouchEnd={handleInteractionEnd}
             className={clsx(
                 "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
                 index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
@@ -85,37 +55,21 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     className={clsx(isMobile && isVideoActive && "border-[var(--color-silver-bh)]/30 shadow-[0_0_40px_rgba(203,213,225,0.15)]")}
                 >
                     <div className="p-8 md:p-12 flex flex-col h-full">
-                        {/* Image Frame - luxury first-frame video approach */}
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] mb-12 bg-[#0A0A0A] border border-white/5 shadow-inner">
-                            {/* Video Layer - Acts as its own poster */}
-                            <video
-                                ref={videoRef}
-                                poster={service.image}
-                                muted
-                                loop
-                                playsInline
-                                preload="auto"
-                                onLoadedData={() => setIsLoaded(true)}
-                                onPlaying={() => setIsVideoActive(true)}
-                                className={clsx(
-                                    "absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out",
-                                    isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110",
-                                    isVideoActive ? "brightness-100" : "brightness-[0.7] grayscale-[30%] group-hover:grayscale-0 group-hover:brightness-100"
-                                )}
-                            >
-                                <source src={service.video.replace('.mp4', '.webm')} type="video/webm" />
-                                <source src={service.video} type="video/mp4" />
-                            </video>
-
-                            {/* Loading State Skeleton */}
-                            {!isLoaded && (
-                                <div className="absolute inset-0 skeleton-shimmer bg-white/5" />
-                            )}
-
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                        {/* High-Performance Media Card */}
+                        <div className="relative mb-12">
+                            <MediaCard
+                                mp4Src={service.video}
+                                webmSrc={service.video.replace('.mp4', '.webm')}
+                                posterSrc={service.image}
+                                alt={service.title}
+                                ariaLabel={`Ver detalhes de ${service.title}`}
+                                className="shadow-2xl"
+                                onPlay={() => setIsVideoActive(true)}
+                                onPause={() => setIsVideoActive(false)}
+                            />
 
                             {/* Floating Tag */}
-                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate">
+                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate z-[20]">
                                 <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
                                     {service.tag}
                                 </span>

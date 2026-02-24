@@ -534,6 +534,44 @@ h3 {
   max-width: 520px;
 }
 
+/* ===================================
+   MEDIA CARD SYSTEM
+   =================================== */
+.media-card {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.media-video {
+  opacity: 0;
+  transition: opacity 220ms ease;
+  will-change: opacity;
+}
+
+.media-card.is-playing .media-video {
+  opacity: 1;
+}
+
+.media-poster {
+  transition: opacity 400ms ease;
+}
+
+.media-card.is-playing .media-poster {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-video {
+    display: none !important;
+  }
+
+  .media-card.is-playing .media-poster {
+    opacity: 1 !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .hero-video,
