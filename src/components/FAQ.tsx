@@ -90,7 +90,7 @@ export function FAQ() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [mounted]);
+    }, [mounted, isMobile]);
 
     return (
         <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-deep-black)] overflow-hidden" id="faq">

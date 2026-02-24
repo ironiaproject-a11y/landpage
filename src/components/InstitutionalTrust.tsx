@@ -37,6 +37,7 @@ const cards = [
 export function InstitutionalTrust() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
+    const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -158,7 +159,7 @@ export function InstitutionalTrust() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [mounted]);
+    }, [mounted, isMobile]);
 
     return (
         <section ref={sectionRef} className="py-40 bg-[var(--color-deep-black)] relative overflow-hidden">

@@ -107,7 +107,7 @@ export function BeforeAfterSlider({
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchend", handleMouseUp);
         };
-    }, []);
+    }, [handleMouseUp]);
 
     const MediaRenderer = ({ source, type, label, poster, isBefore = false }: { source: string; type: "image" | "video"; label: string; poster?: string; isBefore?: boolean }) => {
         if (type === "video") {

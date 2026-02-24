@@ -26,7 +26,7 @@ export function WhatsAppButton() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.5, y: 50 }}
+                    initial={{ opacity: 0, scale: 0.8, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     onMouseEnter={() => {
                         setIsHovered(true);
@@ -34,31 +34,31 @@ export function WhatsAppButton() {
                     }}
                     onMouseLeave={() => setIsHovered(false)}
                     whileHover={{
-                        scale: 1.05,
-                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(37, 211, 102, 0.3)"
+                        scale: 1.08,
+                        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
                     }}
-                    whileTap={{ scale: 0.92 }}
-                    className="w-14 h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-2xl transition-shadow duration-300 group overflow-hidden relative"
+                    whileTap={{ scale: 0.94 }}
+                    className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl text-white/70 border border-white/20 shadow-xl transition-all duration-500 group overflow-hidden relative"
                 >
-                    {/* Ripple Background Animation */}
+                    {/* Subtle Pulsing Edge */}
                     <m.div
-                        className="absolute inset-0 bg-[#25D366] rounded-full z-0"
+                        className="absolute inset-0 rounded-full border border-white/40 z-0"
                         animate={{
-                            scale: [1, 1.4],
+                            scale: [1, 1.15],
                             opacity: [0.3, 0]
                         }}
                         transition={{
                             repeat: Infinity,
-                            duration: 2,
+                            duration: 3,
                             ease: "easeOut"
                         }}
                     />
 
                     {/* Premium Glow Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
 
-                    {/* Static Gold Border (Luxury Feel) */}
-                    <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-[var(--color-silver-bh)]/40 transition-colors z-20" />
+                    {/* Static Silver Border (Luxury Feel) */}
+                    <div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-white/30 transition-colors z-20" />
 
                     <m.div
                         animate={{
@@ -71,7 +71,7 @@ export function WhatsAppButton() {
                         }}
                         className="relative z-30"
                     >
-                        <MessageCircle strokeWidth={1.2} className="w-7 h-7 lg:w-8 lg:h-8" />
+                        <MessageCircle strokeWidth={1} className="w-6 h-6 lg:w-7 lg:h-7 text-white/80 group-hover:text-white transition-colors" />
                     </m.div>
 
                     {/* Proactive Speech Bubble */}

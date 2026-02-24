@@ -141,10 +141,10 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
 
 
     return (
-        <div className={`w-full h-full relative transition-opacity duration-1000 ${videoLoaded ? 'opacity-90 lg:opacity-70' : 'opacity-0'}`}>
+        <div className={`w-full h-full relative transition-opacity duration-1500 ${videoLoaded ? 'opacity-80 lg:opacity-60' : 'opacity-0'}`}>
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.5] lg:brightness-[0.8] saturate-[0.8] lg:saturate-100 will-change-transform"
+                className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.45] lg:brightness-[0.7] saturate-[0.7] lg:saturate-90 blur-[1px] lg:blur-sm will-change-transform"
             />
         </div>
     );
@@ -300,7 +300,7 @@ export function Hero() {
                 >
                     {/* Gradient Overlay for Mobile Contrast */}
                     <div
-                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 bg-gradient-to-b from-black/70 via-black/50 to-black/80 lg:hidden"
+                        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 bg-gradient-to-b from-black/85 via-black/60 to-black/90 lg:hidden"
                     />
 
                     {/* Radial Spotlight Overlay (Desktop) */}
@@ -335,97 +335,35 @@ export function Hero() {
                 >
                     {/* Localized Scrim for enhanced readability */}
                     <div
-                        className="absolute inset-0 z-[-1] opacity-70 pointer-events-none hidden lg:block"
+                        className="absolute inset-0 z-[-1] opacity-80 pointer-events-none hidden lg:block"
                         style={{
-                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 70%)',
-                            filter: 'blur(40px)'
+                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.6) 0%, transparent 80%)',
+                            filter: 'blur(60px)'
                         }}
                     />
 
                     <div className="max-w-[850px] lg:max-w-none perspective-1000 w-full flex flex-col items-center lg:items-start relative">
-                        <m.div
-                            initial="hidden"
-                            animate={mounted ? "visible" : "hidden"}
-                            variants={{
-                                hidden: { opacity: 0 },
-                                visible: {
-                                    opacity: 1,
-                                    transition: {
-                                        staggerChildren: isMobile ? 0.08 : 0.12,
-                                        delayChildren: isMobile ? 2.5 : 2.8 // Snappier entry on mobile
-                                    }
-                                }
-                            }}
-                            className="mb-4 lg:mb-10 w-full"
-                        >
-                            <h1 ref={titleRef} className="text-hero-editorial will-change-transform perspective-2000">
-                                <span className="block mb-0 lg:mb-3 overflow-hidden pb-4">
-                                    {"Seu sorriso,".split("").map((char, i) => (
-                                        <m.span
-                                            key={i}
-                                            variants={{
-                                                hidden: {
-                                                    y: "115%",
-                                                    rotateX: -15,
-                                                    opacity: 0,
-                                                    filter: "blur(10px)",
-                                                },
-                                                visible: {
-                                                    y: "0%",
-                                                    rotateX: 0,
-                                                    opacity: 1,
-                                                    filter: isMobile ? "none" : "blur(0px)",
-                                                    transition: {
-                                                        duration: isMobile ? 0.9 : 1.4,
-                                                        ease: [0.16, 1, 0.3, 1],
-                                                        delay: i * (isMobile ? 0.02 : 0.04)
-                                                    }
-                                                }
-                                            }}
-                                            className="inline-block origin-bottom will-change-transform whitespace-pre shine-text"
-                                        >
-                                            {char}
-                                        </m.span>
-                                    ))}
-                                </span>
-                                <span className="block overflow-hidden pb-2">
-                                    {"sua assinatura.".split("").map((char, i) => (
-                                        <m.span
-                                            key={i}
-                                            variants={{
-                                                hidden: {
-                                                    y: "110%",
-                                                    rotateX: -15,
-                                                    opacity: 0,
-                                                    filter: "blur(10px)",
-                                                },
-                                                visible: {
-                                                    y: "0%",
-                                                    rotateX: 0,
-                                                    opacity: 1,
-                                                    filter: isMobile ? "none" : "blur(0px)",
-                                                    transition: {
-                                                        duration: isMobile ? 0.8 : 1.2,
-                                                        ease: [0.16, 1, 0.3, 1],
-                                                        delay: (isMobile ? 0.2 : 0.3) + i * (isMobile ? 0.02 : 0.04)
-                                                    }
-                                                }
-                                            }}
-                                            className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom whitespace-pre shine-text"
-                                        >
-                                            {char}
-                                        </m.span>
-                                    ))}
-                                </span>
-                            </h1>
-                        </m.div>
+                            <m.h1
+                                ref={titleRef}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                                transition={{
+                                    duration: 1.2,
+                                    ease: [0.22, 1, 0.32, 1],
+                                    delay: isMobile ? 2.5 : 2.8
+                                }}
+                                className="text-hero-editorial will-change-transform perspective-2000"
+                            >
+                                <span className="block mb-2 lg:mb-4 shine-text">Seu sorriso,</span>
+                                <span className="block italic font-light text-[var(--color-silver-bh)] shine-text">sua assinatura.</span>
+                            </m.h1>
 
-                        <div className="overflow-hidden mb-8 lg:mb-16 w-full lg:pl-1">
+                        <div className="overflow-hidden mb-12 lg:mb-20 w-full lg:pl-1">
                             <m.p
                                 ref={descriptionRef}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                transition={{ delay: isMobile ? 2.8 : 3.1, duration: 1.2, ease: [0.22, 1, 0.32, 1] }}
                                 className="text-subheadline-editorial text-center lg:text-left shine-text"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
@@ -436,26 +374,26 @@ export function Hero() {
                         <div ref={actionsRef} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 w-full sm:w-auto mt-2 lg:mt-0">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
+                                    initial={{ opacity: 0, scale: 0.96 }}
+                                    animate={mounted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
+                                    transition={{ delay: isMobile ? 3.0 : 3.3, duration: 1, ease: [0.22, 1, 0.32, 1] }}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-md lg:shadow-2xl overflow-hidden focus:outline-white"
+                                    className="group relative flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-7 bg-[#FAF9F7] text-[#0B0B0B] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus:outline-white"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
-                                        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
+                                        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12"
                                         initial={{ x: "-100%" }}
                                         animate={{ x: "200%" }}
                                         transition={{
                                             repeat: Infinity,
-                                            duration: 2.5,
+                                            duration: 3,
                                             ease: "easeInOut",
-                                            delay: 1
+                                            delay: 2
                                         }}
                                     />
-                                    <span className="relative z-10 flex items-center gap-4 text-[11px] sm:text-xs tracking-[0.3em]">
+                                    <span className="relative z-10 flex items-center gap-4 text-[11px] sm:text-xs tracking-[0.4em] font-extrabold">
                                         AGENDAR CONSULTA
                                     </span>
                                 </m.button>
@@ -464,16 +402,15 @@ export function Hero() {
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     onClick={() => logEvent('cta_ver_casos_click')}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.9, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02 } : {}}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="group flex items-center justify-center gap-4 px-6 lg:px-10 w-full max-w-[280px] sm:max-w-none sm:w-auto py-3 lg:py-6 bg-transparent border border-white/20 text-white/80 rounded-full backdrop-blur-sm transition-all hover:bg-white/5"
+                                    initial={{ opacity: 0 }}
+                                    animate={mounted ? { opacity: 1 } : { opacity: 0 }}
+                                    transition={{ delay: isMobile ? 3.2 : 3.5, duration: 1 }}
+                                    whileHover={!isMobile ? { y: -3, scale: 1.01 } : {}}
+                                    whileTap={{ scale: 0.98 }}
+                                    className="group flex items-center justify-center gap-4 px-8 lg:px-12 w-full max-w-[300px] sm:max-w-none sm:w-auto py-4 lg:py-7 bg-transparent border border-white/10 text-white/60 rounded-full backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/30 hover:text-white"
                                 >
-                                    <span className="text-[11px] sm:text-xs tracking-[0.2em] font-medium uppercase">Galeria de Resultados</span>
+                                    <span className="text-[11px] sm:text-xs tracking-[0.3em] font-medium uppercase">Galeria de Resultados</span>
                                 </m.button>
-
                             </Magnetic>
                         </div>
                     </div>

@@ -58,12 +58,12 @@
   --font-editorial: var(--font-playfair), serif;
 
   /* Editorial Spacing & Sizes - Refined for 2026 Premium Aesthetic */
-  --font-size-hero: clamp(3.5rem, 11vw, 9.5rem);
-  --line-height-hero: 0.92;
-  --letter-spacing-hero: -0.05em;
-  --letter-spacing-tight: -0.03em;
-  --letter-spacing-wide: 0.1em;
-  --letter-spacing-extra-wide: 0.25em;
+  --font-size-hero: clamp(4rem, 12vw, 11rem);
+  --line-height-hero: 0.88;
+  --letter-spacing-hero: -0.04em;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-wide: 0.08em;
+  --letter-spacing-extra-wide: 0.2em;
 
   /* Enhanced Shadows - Layered Depth System */
   --shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.1);
