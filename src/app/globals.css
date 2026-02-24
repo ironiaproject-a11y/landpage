@@ -545,21 +545,11 @@ h3 {
 }
 
 .media-video {
-  opacity: 0;
-  transition: opacity 220ms ease;
   will-change: opacity;
-}
-
-.media-card.is-playing .media-video {
-  opacity: 1;
 }
 
 .media-poster {
   transition: opacity 400ms ease;
-}
-
-.media-card.is-playing .media-poster {
-  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

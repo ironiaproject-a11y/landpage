@@ -84,13 +84,6 @@ export function MediaCard({
 
         const video = videoRef.current;
 
-        if (webmSrc) {
-            const webm = document.createElement("source");
-            webm.src = webmSrc;
-            webm.type = "video/webm";
-            video.appendChild(webm);
-        }
-
         const mp4 = document.createElement("source");
         mp4.src = mp4Src;
         mp4.type = "video/mp4";
@@ -168,6 +161,7 @@ export function MediaCard({
             {/* Video Layer */}
             <video
                 ref={videoRef}
+                poster={posterSrc}
                 muted
                 playsInline
                 loop
@@ -175,7 +169,7 @@ export function MediaCard({
                 aria-hidden="true"
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
-                    "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-[220ms] ease-in-out z-[1]",
+                    "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out z-[1]",
                     isLoaded ? "opacity-100" : "opacity-0"
                 )}
             />
