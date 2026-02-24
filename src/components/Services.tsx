@@ -38,19 +38,14 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     };
 
     const handleInteractionEnd = () => {
-        if (!isMobile && videoRef.current) {
-            // Keep playing on desktop even if mouse leaves, as long as it's in viewport
-            setIsVideoActive(false);
-        } else if (isMobile && videoRef.current) {
+        if (videoRef.current) {
+            videoRef.current.pause();
             setIsVideoActive(false);
         }
     };
 
     const handleViewportEnter = () => {
         setShouldLoadSource(true);
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => { });
-        }
     };
 
     const handleViewportLeave = () => {

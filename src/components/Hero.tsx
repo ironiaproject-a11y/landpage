@@ -213,18 +213,18 @@ export function Hero() {
 
                 // Enhanced Parallax ("Paradex") Effect
                 scrollTl.to(videoWrapperRef.current, {
-                    yPercent: isMobile ? 30 : 25,
-                    scale: 1.15,
-                    filter: "blur(4px)", // Cinematic depth blur on exit
+                    yPercent: isMobile ? 45 : 35, // Increased depth
+                    scale: 1.25, // More immersive zoom
+                    filter: "blur(6px)", // Cinematographic depth blur on exit
                     ease: "none"
                 }, 0);
 
                 if (!isMobile) {
                     scrollTl.to(titleRef.current, {
-                        scale: 0.94,
+                        scale: 0.85, // Stronger recession effect
                         opacity: 0,
-                        y: -100,
-                        filter: "blur(15px)",
+                        y: -150, // Higher exit
+                        filter: "blur(20px)",
                         ease: "power2.in"
                     }, 0);
 
@@ -382,7 +382,7 @@ export function Hero() {
                                                     }
                                                 }
                                             }}
-                                            className="inline-block origin-bottom will-change-transform whitespace-pre"
+                                            className="inline-block origin-bottom will-change-transform whitespace-pre shine-text"
                                         >
                                             {char}
                                         </m.span>
@@ -411,7 +411,7 @@ export function Hero() {
                                                     }
                                                 }
                                             }}
-                                            className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom whitespace-pre"
+                                            className="inline-block italic font-light text-[var(--color-silver-bh)] origin-bottom whitespace-pre shine-text"
                                         >
                                             {char}
                                         </m.span>
@@ -426,7 +426,7 @@ export function Hero() {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-subheadline-editorial text-center lg:text-left"
+                                className="text-subheadline-editorial text-center lg:text-left shine-text"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
@@ -493,17 +493,32 @@ export function Hero() {
                     </div>
                 )}
 
-                {/* Scroll Hint (Desktop Only) */}
-                <div
+                {/* Scroll Indicator */}
+                <m.div
                     ref={scrollHintRef}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 hidden lg:flex flex-col items-center gap-3 opacity-0 animate-fade-in-up"
-                    style={{ animationDelay: '3s', animationFillMode: 'forwards' }}
+                    initial={{ opacity: 0, x: "-50%" }}
+                    animate={{ opacity: 1, x: "-50%" }}
+                    transition={{ delay: 3, duration: 1.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
                 >
-                    <span className="text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.4em]">Scroll</span>
-                    <div className="w-[1px] h-12 bg-gradient-to-b from-[var(--color-silver-bh)] to-transparent" />
-                </div>
+                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll</span>
+                    <div className="relative w-px h-16 overflow-hidden">
+                        <div className="absolute inset-0 bg-white/10" />
+                        <m.div
+                            animate={{
+                                y: ["-100%", "100%"]
+                            }}
+                            transition={{
+                                duration: 2.5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }}
+                            className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-silver-bh)] to-transparent"
+                        />
+                    </div>
+                </m.div>
             </div>
-        </section >
+        </section>
     );
 }
 

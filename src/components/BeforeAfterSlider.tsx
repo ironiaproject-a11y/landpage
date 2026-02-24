@@ -42,10 +42,28 @@ export function BeforeAfterSlider({
         setSliderPos(position);
     };
 
+    const videoRefBefore = useRef<HTMLVideoElement>(null);
+    const videoRefAfter = useRef<HTMLVideoElement>(null);
+
+    const startVideos = () => {
+        videoRefBefore.current?.play().catch(() => { });
+        videoRefAfter.current?.play().catch(() => { });
+    };
+
+    const stopVideos = () => {
+        videoRefBefore.current?.pause();
+        videoRefAfter.current?.pause();
+    };
+
     const handleMouseDown = () => {
         if (!isSingleMedia) setIsResizing(true);
+        startVideos();
     };
-    const handleMouseUp = () => setIsResizing(false);
+
+    const handleMouseUp = () => {
+        setIsResizing(false);
+        stopVideos();
+    };
 
     // Magnetic Handle Logic
     const handleX = useMotionValue(0);
@@ -79,6 +97,7 @@ export function BeforeAfterSlider({
     const handleMouseLeave = () => {
         handleX.set(0);
         handleY.set(0);
+        stopVideos();
     };
 
     useEffect(() => {
@@ -94,9 +113,9 @@ export function BeforeAfterSlider({
         if (type === "video") {
             return (
                 <video
+                    ref={isBefore ? videoRefBefore : videoRefAfter}
                     src={source}
                     poster={poster}
-                    autoPlay
                     muted
                     loop
                     playsInline
