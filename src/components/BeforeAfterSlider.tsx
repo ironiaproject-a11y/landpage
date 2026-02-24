@@ -139,19 +139,63 @@ export function BeforeAfterSlider({
         };
     }, [handleMouseUp]);
 
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        // Pré-carrega os vídeos assim que entram em vista para mostrar o frame real
+                        const loadSourcesOnly = (v: HTMLVideoElement | null, src: string) => {
+                            if (!v || v.dataset.loaded === "1") return;
+                            const mp4 = document.createElement("source");
+                            mp4.src = src;
+                            mp4.type = "video/mp4";
+                            v.appendChild(mp4);
+                            v.load();
+                            v.dataset.loaded = "1";
+                        };
+                        if (beforeType === "video") loadSourcesOnly(videoRefBefore.current, beforeSource);
+                        if (afterType === "video") loadSourcesOnly(videoRefAfter.current, afterSource);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: "200px", threshold: 0.01 }
+        );
+
+        if (containerRef.current) observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, [beforeSource, afterSource, beforeType, afterType]);
+
     const MediaRenderer = ({ source, type, label, poster, isBefore = false }: { source: string; type: "image" | "video"; label: string; poster?: string; isBefore?: boolean }) => {
+        const [isLoaded, setIsLoaded] = useState(false);
+
         if (type === "video") {
             return (
-                <video
-                    ref={isBefore ? videoRefBefore : videoRefAfter}
-                    poster={poster}
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""}`}
-                    aria-hidden="true"
-                />
+                <>
+                    <video
+                        ref={isBefore ? videoRefBefore : videoRefAfter}
+                        poster={poster}
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        onLoadedData={() => setIsLoaded(true)}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""} ${isLoaded ? "opacity-100" : "opacity-0"}`}
+                        aria-hidden="true"
+                    />
+                    {!isLoaded && poster && (
+                        <Image
+                            src={poster}
+                            alt={label}
+                            fill
+                            className={`object-cover ${isBefore ? "grayscale" : ""} transition-opacity duration-700`}
+                        />
+                    )}
+                </>
             );
         }
         return (

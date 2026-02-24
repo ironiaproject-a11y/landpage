@@ -46,13 +46,15 @@ export function MediaCard({
 
     const shouldReduceMotion = useReducedMotion();
 
-    // 1. IntersectionObserver for Poster Lazy-Loading
+    // 1. IntersectionObserver for Poster Lazy-Loading and Source Injection
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         setIsInView(true);
+                        // Trigger source injection as soon as it's in view to show the real frame
+                        loadSources();
                         observer.unobserve(entry.target);
                     }
                 });
@@ -169,12 +171,12 @@ export function MediaCard({
                 muted
                 playsInline
                 loop
-                preload="none"
+                preload="auto"
                 aria-hidden="true"
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
-                    "media-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[220ms] ease-in-out z-[1]",
-                    isPlaying && isLoaded && "opacity-100"
+                    "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-[220ms] ease-in-out z-[1]",
+                    isLoaded ? "opacity-100" : "opacity-0"
                 )}
             />
 
