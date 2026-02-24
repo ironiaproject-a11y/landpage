@@ -57,13 +57,16 @@ export function MediaCard({
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         setIsInView(true);
-                        // Trigger source injection as soon as it's in view to show the real frame
-                        loadSources();
+                        // Trigger source injection and set preload to auto when approaching
+                        if (videoRef.current) {
+                            videoRef.current.preload = "auto";
+                            loadSources();
+                        }
                         observer.unobserve(entry.target);
                     }
                 });
             },
-            { rootMargin: "200px", threshold: 0.01 }
+            { rootMargin: "300px", threshold: 0.01 }
         );
 
         if (cardRef.current) observer.observe(cardRef.current);
@@ -186,7 +189,7 @@ export function MediaCard({
                 muted
                 playsInline
                 loop
-                preload="auto"
+                preload="metadata"
                 aria-hidden="true"
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(

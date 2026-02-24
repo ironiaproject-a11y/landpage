@@ -121,6 +121,10 @@ export function Services() {
     const overlayDarkRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
+    // Agent: Prioritize the first video to avoid black frames on entry
+    // We hoist this link via Next.js
+    const firstVideo = "/assets/videos/services/implant_new.mp4";
+
     const services: Service[] = [
         {
             icon: "CircleDashed",
@@ -391,6 +395,9 @@ export function Services() {
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
+            {/* Priority Preload for the first card video */}
+            <link rel="preload" href={firstVideo} as="video" type="video/mp4" />
+
             {/* Background Texture */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 
