@@ -39,7 +39,7 @@ export function Cursor() {
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
                 // Stronger pull when closer
-                const pullStrength = Math.min(1, 80 / distance);
+                const pullStrength = Math.min(1.2, 100 / distance); // Slightly stronger pull
                 const targetX = centerX + distanceX * (1 - pullStrength);
                 const targetY = centerY + distanceY * (1 - pullStrength);
 
@@ -195,15 +195,15 @@ export function Cursor() {
                         animate={{ opacity: 0.6, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-widest text-[var(--color-silver-bh)] whitespace-nowrap"
+                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[var(--color-silver-bh)] whitespace-nowrap"
                         style={{
                             x: cursorXSpring,
                             y: cursorYSpring,
                             translateX: "-50%",
-                            translateY: "-200%",
+                            translateY: "250%",
                         }}
                     >
-                        Click
+                        EXPLORAR
                     </m.div>
                 )}
             </AnimatePresence>

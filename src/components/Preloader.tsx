@@ -7,12 +7,32 @@ export function Preloader() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Minimum loading time for the animation to feel intentional
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2200);
+        let minTimeElapsed = false;
+        let assetsLoaded = (window as any).__HERO_ASSETS_LOADED__ || false;
 
-        return () => clearTimeout(timer);
+        const checkExit = () => {
+            if (minTimeElapsed && assetsLoaded) {
+                window.dispatchEvent(new CustomEvent("preloader-exiting"));
+                setIsLoading(false);
+            }
+        };
+
+        const timer = setTimeout(() => {
+            minTimeElapsed = true;
+            checkExit();
+        }, 1800); // Shorter minimum wait for perceived speed
+
+        const handleAssetsLoaded = () => {
+            assetsLoaded = true;
+            checkExit();
+        };
+
+        window.addEventListener("hero-assets-loaded", handleAssetsLoaded);
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener("hero-assets-loaded", handleAssetsLoaded);
+        };
     }, []);
 
     return (

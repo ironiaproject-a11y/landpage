@@ -45,6 +45,10 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
                 if (criticalLoaded === CRITICAL_BATCH) {
                     framesRef.current = imageElements;
                     setVideoLoaded(true);
+                    if (typeof window !== "undefined") {
+                        (window as any).__HERO_ASSETS_LOADED__ = true;
+                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                    }
                 }
             })
         );
@@ -177,13 +181,21 @@ export function Hero() {
             checkMobile();
             window.addEventListener("resize", checkMobile);
 
-            // Match preloader timeout (2200ms) + exit animation (400ms)
+            // Start sequence when preloader begins to exit
+            const handlePreloaderExit = () => {
+                setCanStartSequence(true);
+            };
+
+            window.addEventListener("preloader-exiting", handlePreloaderExit);
+
+            // Fallback safety
             const timer = setTimeout(() => {
                 setCanStartSequence(true);
-            }, 2600);
+            }, 5000);
 
             return () => {
                 window.removeEventListener("resize", checkMobile);
+                window.removeEventListener("preloader-exiting", handlePreloaderExit);
                 clearTimeout(timer);
             };
         }

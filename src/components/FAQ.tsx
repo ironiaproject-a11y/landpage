@@ -127,7 +127,7 @@ export function FAQ() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                                 transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className={`glass-panel overflow-hidden transition-all duration-500 rounded-organic-md active:scale-[0.99] touch-manipulation ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05]" : "border-white/5"
+                                className={`glass-panel overflow-hidden transition-all duration-500 rounded-organic-md active:scale-[0.98] md:active:scale-[0.99] touch-manipulation cursor-pointer ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05]" : "border-white/5"
                                     }`}
                             >
 
@@ -146,7 +146,7 @@ export function FAQ() {
                                             {faq.question}
                                         </span>
                                     </div>
-                                    <div className="ml-4 transition-transform duration-500">
+                                    <div className="ml-4 transition-transform duration-500 min-w-[24px]">
                                         {activeIndex === index ? (
                                             <Minus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]" />
                                         ) : (
