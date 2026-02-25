@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { m, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
 import { MoveLeft, MoveRight, Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -45,7 +45,7 @@ export function BeforeAfterSlider({
     const videoRefBefore = useRef<HTMLVideoElement>(null);
     const videoRefAfter = useRef<HTMLVideoElement>(null);
 
-    const startVideos = () => {
+    const startVideos = useCallback(() => {
         // Injetar sources sob demanda para performance
         const loadSources = (v: HTMLVideoElement | null, src: string) => {
             if (!v || v.dataset.loaded === "1") return;
@@ -62,22 +62,22 @@ export function BeforeAfterSlider({
 
         videoRefBefore.current?.play().catch(() => { });
         videoRefAfter.current?.play().catch(() => { });
-    };
+    }, [beforeSource, beforeType, afterSource, afterType]);
 
-    const stopVideos = () => {
+    const stopVideos = useCallback(() => {
         videoRefBefore.current?.pause();
         videoRefAfter.current?.pause();
-    };
+    }, []);
 
-    const handleMouseDown = () => {
+    const handleMouseDown = useCallback(() => {
         if (!isSingleMedia) setIsResizing(true);
         startVideos();
-    };
+    }, [isSingleMedia, startVideos]);
 
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
         setIsResizing(false);
         stopVideos();
-    };
+    }, [stopVideos]);
 
     // Magnetic Handle Logic
     const handleX = useMotionValue(0);

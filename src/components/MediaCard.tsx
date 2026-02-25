@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { clsx } from "clsx";
 import { useReducedMotion } from "framer-motion";
 
@@ -50,6 +51,57 @@ export function MediaCard({
 
     const shouldReduceMotion = useReducedMotion();
 
+    // 2. Pause All Except logic
+    const pauseAllExcept = useCallback((currentVideo: HTMLVideoElement) => {
+        const allVideos = document.querySelectorAll<HTMLVideoElement>(".media-video");
+        allVideos.forEach((v) => {
+            if (v !== currentVideo && !v.paused) {
+                v.pause();
+                // Communicate to other components that they should update their state
+                v.dispatchEvent(new CustomEvent("media-paused-externally"));
+            }
+        });
+    }, []);
+
+    // 3. Source Injection on Interaction
+    const loadSources = useCallback(() => {
+        if (!videoRef.current || videoRef.current.dataset.loaded === "1") return;
+
+        const video = videoRef.current;
+
+        const mp4 = document.createElement("source");
+        mp4.src = mp4Src;
+        mp4.type = "video/mp4";
+        video.appendChild(mp4);
+
+        video.load();
+        video.dataset.loaded = "1";
+    }, [mp4Src]);
+
+    const handlePlay = useCallback(async () => {
+        if (shouldReduceMotion) return;
+        if (!videoRef.current) return;
+
+        loadSources();
+        pauseAllExcept(videoRef.current);
+
+        try {
+            await videoRef.current.play();
+            setIsPlaying(true);
+            onPlay?.();
+        } catch (err) {
+            console.warn("MediaCard: Play promise rejected", err);
+        }
+    }, [shouldReduceMotion, loadSources, onPlay, pauseAllExcept]);
+
+    const handlePause = useCallback(() => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+            onPause?.();
+        }
+    }, [onPause]);
+
     // 1. IntersectionObserver for Poster Lazy-Loading and Source Injection
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -71,58 +123,7 @@ export function MediaCard({
 
         if (cardRef.current) observer.observe(cardRef.current);
         return () => observer.disconnect();
-    }, []);
-
-    // 2. Pause All Except logic
-    const pauseAllExcept = (currentVideo: HTMLVideoElement) => {
-        const allVideos = document.querySelectorAll<HTMLVideoElement>(".media-video");
-        allVideos.forEach((v) => {
-            if (v !== currentVideo && !v.paused) {
-                v.pause();
-                // Communicate to other components that they should update their state
-                v.dispatchEvent(new CustomEvent("media-paused-externally"));
-            }
-        });
-    };
-
-    // 3. Source Injection on Interaction
-    const loadSources = () => {
-        if (!videoRef.current || videoRef.current.dataset.loaded === "1") return;
-
-        const video = videoRef.current;
-
-        const mp4 = document.createElement("source");
-        mp4.src = mp4Src;
-        mp4.type = "video/mp4";
-        video.appendChild(mp4);
-
-        video.load();
-        video.dataset.loaded = "1";
-    };
-
-    const handlePlay = async () => {
-        if (shouldReduceMotion) return;
-        if (!videoRef.current) return;
-
-        loadSources();
-        pauseAllExcept(videoRef.current);
-
-        try {
-            await videoRef.current.play();
-            setIsPlaying(true);
-            onPlay?.();
-        } catch (err) {
-            console.warn("MediaCard: Play promise rejected", err);
-        }
-    };
-
-    const handlePause = () => {
-        if (videoRef.current) {
-            videoRef.current.pause();
-            setIsPlaying(false);
-            onPause?.();
-        }
-    };
+    }, [loadSources]);
 
     // Sync with external 'playing' prop
     useEffect(() => {
@@ -133,7 +134,7 @@ export function MediaCard({
                 handlePause();
             }
         }
-    }, [playing]);
+    }, [playing, handlePlay, handlePause]);
 
     // External pause listener
     useEffect(() => {
@@ -171,10 +172,11 @@ export function MediaCard({
         >
             {/* Poster Layer */}
             {isInView && (
-                <img
-                    ref={posterRef}
+                <Image
                     src={posterSrc}
                     alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className={clsx(
                         "media-poster absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2]",
                         isLoaded ? "opacity-0 invisible pointer-events-none" : "opacity-100"
