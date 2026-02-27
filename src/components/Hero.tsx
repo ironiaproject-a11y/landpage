@@ -332,7 +332,7 @@ export function Hero() {
 
                         {/* Dark Base Overlay for contrast */}
                         <div
-                            className="absolute inset-0 z-[9] pointer-events-none"
+                            className="absolute inset-0 z-[9] pointer-events-none hidden lg:block"
                             style={{ background: 'rgba(0,0,0,0.40)' }}
                         />
 
