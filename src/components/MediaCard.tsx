@@ -44,12 +44,56 @@ export function MediaCard({
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterRef = useRef<HTMLImageElement>(null);
+    const internalChangeRef = useRef(false);
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isInView, setIsInView] = useState(false);
 
     const shouldReduceMotion = useReducedMotion();
+
+    // 3. Source Injection on Interaction
+    const loadSources = useCallback(() => {
+        if (!videoRef.current || videoRef.current.dataset.loaded === "1") return;
+
+        const video = videoRef.current;
+
+        // Add MP4 Source
+        const mp4 = document.createElement("source");
+        mp4.src = mp4Src.includes("#t=") ? mp4Src : `${mp4Src}#t=0.001`;
+        mp4.type = "video/mp4";
+        video.appendChild(mp4);
+
+        // Add WebM Source if provided
+        if (webmSrc) {
+            const webm = document.createElement("source");
+            webm.src = webmSrc.includes("#t=") ? webmSrc : `${webmSrc}#t=0.001`;
+            webm.type = "video/webm";
+            video.insertBefore(webm, mp4);
+        }
+
+        video.load();
+        video.dataset.loaded = "1";
+    }, [mp4Src, webmSrc]);
+
+    // 1. Intersection Observer for Lazy Loading
+    useEffect(() => {
+        if (!cardRef.current) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                    loadSources(); // Start loading as soon as it's in view
+                    observer.unobserve(entry.target);
+                }
+            },
+            { threshold: 0.1, rootMargin: "50px" }
+        );
+
+        observer.observe(cardRef.current);
+        return () => observer.disconnect();
+    }, [loadSources]);
 
     // 2. Pause All Except logic
     const pauseAllExcept = useCallback((currentVideo: HTMLVideoElement) => {
@@ -63,75 +107,51 @@ export function MediaCard({
         });
     }, []);
 
-    // 3. Source Injection on Interaction
-    const loadSources = useCallback(() => {
-        if (!videoRef.current || videoRef.current.dataset.loaded === "1") return;
-
-        const video = videoRef.current;
-
-        const mp4 = document.createElement("source");
-        mp4.src = mp4Src;
-        mp4.type = "video/mp4";
-        video.appendChild(mp4);
-
-        video.load();
-        video.dataset.loaded = "1";
-    }, [mp4Src]);
-
-    const handlePlay = useCallback(async () => {
+    const handlePlay = useCallback(async (isInternal = true) => {
         if (shouldReduceMotion) return;
+
+        // Ensure sources are loaded if play is triggered (fallback/focus)
+        loadSources();
+
         if (!videoRef.current) return;
 
-        loadSources();
         pauseAllExcept(videoRef.current);
 
         try {
             await videoRef.current.play();
             setIsPlaying(true);
-            onPlay?.();
+            if (isInternal) {
+                internalChangeRef.current = true;
+                onPlay?.();
+            }
         } catch (err) {
             console.warn("MediaCard: Play promise rejected", err);
         }
-    }, [shouldReduceMotion, loadSources, onPlay, pauseAllExcept]);
+    }, [shouldReduceMotion, onPlay, pauseAllExcept, loadSources]);
 
-    const handlePause = useCallback(() => {
+    const handlePause = useCallback((isInternal = true) => {
         if (videoRef.current) {
             videoRef.current.pause();
             setIsPlaying(false);
-            onPause?.();
+            if (isInternal) {
+                internalChangeRef.current = true;
+                onPause?.();
+            }
         }
     }, [onPause]);
-
-    // 1. IntersectionObserver for Poster Lazy-Loading and Source Injection
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsInView(true);
-                        // Trigger source injection and set preload to auto when approaching
-                        if (videoRef.current) {
-                            videoRef.current.preload = "auto";
-                            loadSources();
-                        }
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { rootMargin: "300px", threshold: 0.01 }
-        );
-
-        if (cardRef.current) observer.observe(cardRef.current);
-        return () => observer.disconnect();
-    }, [loadSources]);
 
     // Sync with external 'playing' prop
     useEffect(() => {
         if (playing !== undefined) {
+            if (internalChangeRef.current) {
+                internalChangeRef.current = false;
+                return;
+            }
+
             if (playing) {
-                handlePlay();
+                handlePlay(false);
             } else {
-                handlePause();
+                handlePause(false);
             }
         }
     }, [playing, handlePlay, handlePause]);
@@ -158,10 +178,10 @@ export function MediaCard({
             tabIndex={0}
             role="button"
             aria-label={ariaLabel}
-            onPointerEnter={!shouldReduceMotion ? handlePlay : undefined}
-            onPointerLeave={handlePause}
-            onFocus={handlePlay}
-            onBlur={handlePause}
+            onPointerEnter={!shouldReduceMotion ? () => handlePlay() : undefined}
+            onPointerLeave={() => handlePause()}
+            onFocus={() => handlePlay()}
+            onBlur={() => handlePause()}
             onClick={() => {
                 if (onClick) {
                     onClick();
@@ -170,32 +190,17 @@ export function MediaCard({
                 }
             }}
         >
-            {/* Poster Layer */}
-            {isInView && (
-                <Image
-                    src={posterSrc}
-                    alt={alt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className={clsx(
-                        "media-poster absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2]",
-                        isLoaded ? "opacity-0 invisible pointer-events-none" : "opacity-100"
-                    )}
-                />
-            )}
-
             {/* Video Layer */}
             <video
                 ref={videoRef}
-                poster={posterSrc}
                 muted
                 playsInline
                 loop
-                preload="metadata"
+                preload="auto"
                 aria-hidden="true"
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
-                    "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out z-[1]",
+                    "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out z-[1]",
                     isLoaded ? "opacity-100" : "opacity-0"
                 )}
             />

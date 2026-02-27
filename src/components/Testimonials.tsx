@@ -229,7 +229,7 @@ export function Testimonials() {
                                                 </div>
 
                                                 {/* Content Evolution */}
-                                                <p className="font-editorial text-2xl text-white/90 italic leading-relaxed mb-12 flex-grow font-light">
+                                                <p className="font-editorial text-2xl text-white/90 italic leading-[1.8] mb-12 flex-grow font-light">
                                                     &quot;{testimonial.content}&quot;
                                                 </p>
 

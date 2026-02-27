@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
 import VisualContainer from "./VisualContainer";
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Magnetic } from "./Magnetic";
@@ -28,6 +28,9 @@ interface Service {
 function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
     const [isVideoActive, setIsVideoActive] = useState(false);
 
+    const handlePlayInternal = useCallback(() => setIsVideoActive(true), []);
+    const handlePauseInternal = useCallback(() => setIsVideoActive(false), []);
+
     return (
         <m.div
             initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
@@ -39,8 +42,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 amount: isMobile ? 0.01 : 0.3
             }}
             className={clsx(
-                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4",
-                index % 2 === 0 ? "md:translate-y-0" : "md:translate-y-24"
+                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4"
             )}
         >
             <m.div
@@ -50,27 +52,32 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 <VisualContainer
                     width="100%"
                     height="auto"
-                    hoverColor="rgba(203, 213, 225, 0.1)"
+                    hoverColor="rgba(245, 245, 220, 0.12)"
                     sideHeight="12px"
                     className={clsx(isMobile && isVideoActive && "border-[var(--color-silver-bh)]/30 shadow-[0_0_40px_rgba(203,213,225,0.15)]")}
                 >
                     <div
                         className="p-8 md:p-12 flex flex-col h-full cursor-pointer"
-                        onClick={() => setIsVideoActive(!isVideoActive)}
+                        onMouseEnter={() => setIsVideoActive(true)}
+                        onMouseLeave={() => setIsVideoActive(false)}
+                        onTouchStart={() => setIsVideoActive(true)}
+                        onTouchEnd={() => setIsVideoActive(false)}
                     >
                         {/* High-Performance Media Card */}
-                        <div className="relative mb-12">
-                            <MediaCard
-                                mp4Src={service.video}
-                                webmSrc={service.video.replace('.mp4', '.webm')}
-                                posterSrc={service.image}
-                                alt={service.title}
-                                ariaLabel={`Ver detalhes de ${service.title}`}
-                                className="shadow-2xl"
-                                onPlay={() => setIsVideoActive(true)}
-                                onPause={() => setIsVideoActive(false)}
-                                playing={isVideoActive}
-                            />
+                        <div className="relative mb-12 overflow-hidden rounded-xl">
+                            <div className="transform transition-transform duration-700 ease-[0.22,1,0.36,1] group-hover:scale-[1.05]">
+                                <MediaCard
+                                    mp4Src={service.video}
+                                    webmSrc={service.video.replace('.mp4', '.webm')}
+                                    posterSrc={service.image}
+                                    alt={service.title}
+                                    ariaLabel={`Ver detalhes de ${service.title}`}
+                                    className="shadow-2xl"
+                                    onPlay={handlePlayInternal}
+                                    onPause={handlePauseInternal}
+                                    playing={isVideoActive}
+                                />
+                            </div>
 
                             {/* Floating Tag */}
                             <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate z-[20]">
@@ -139,7 +146,7 @@ export function Services() {
             title: "Tratamento de Bruxismo e Dor",
             description: "Alívio eficaz para dores orofaciais e proteção dos dentes contra o desgaste excessivo.",
             tag: "02",
-            image: "/assets/images/service-sensitivity.png",
+            image: "/assets/images/dental-exam.jpg",
             video: "/assets/videos/services/bruxismo.mp4"
         },
         {
@@ -172,7 +179,7 @@ export function Services() {
             description: "Tratamentos específicos para eliminar o desconforto e devolver o prazer de comer e beber.",
             tag: "06",
             image: "/assets/images/service-sensitivity.png",
-            video: "/assets/videos/services/canal.mp4"
+            video: "/assets/videos/services/grok-sensibilidade.mp4"
         },
         {
             icon: "Crown",
@@ -191,7 +198,7 @@ export function Services() {
             video: "/assets/videos/services/panoramic.mp4"
         },
         {
-            icon: "Diamond",
+            icon: "Cpu",
             title: "Protocolo Ortodôntico",
             description: "Correção e alinhamento dental com protocolos modernos para um sorriso funcional e estético.",
             tag: "09",
@@ -199,29 +206,15 @@ export function Services() {
             video: "/assets/videos/services/ortho_protocol.mp4"
         },
         {
-            icon: "Cpu",
-            title: "Escaneamento Digital",
-            description: "Moldagem digital de alta precisão, eliminando massas e garantindo agilidade no tratamento.",
-            tag: "10",
-            image: "/assets/images/digital-scanning-process.jpg",
-            video: "/assets/videos/services/scanning.mp4"
-        },
-        {
             icon: "CircleDashed",
             title: "Radiografia Digital",
             description: "Imagens radiográficas de alta definição com menor exposição à radiação e resultado imediato.",
             tag: "11",
-            image: "/assets/images/digital-xray-tablet.jpg",
-            video: "/assets/videos/services/panoramic.mp4"
-        },
-        {
-            icon: "Crown",
-            title: "Skycam",
-            description: "Tecnologia avançada para diagnósticos e acompanhamentos detalhados.",
-            tag: "12",
-            image: "/assets/images/skycam-device.jpg",
-            video: "/assets/videos/services/skycam.mp4"
+            image: "/assets/images/radiografia-digital-new.jpg",
+            video: "/assets/videos/services/grok-radiografia-digital-2.mp4"
         }
+
+
     ];
 
     const [isMobile, setIsMobile] = useState(false);
@@ -259,62 +252,7 @@ export function Services() {
                 );
             }
 
-            // Harmonized Card Parallax - Unified values for organic organization
-            const cards = gsap.utils.toArray(".service-card-wrapper");
-            cards.forEach((card: any, i) => {
-                const ySpeed = 80; // Consistent vertical speed
-                const xDrift = (i % 2 === 0 ? 15 : -15); // Subtle horizontal drift
-
-                gsap.fromTo(card,
-                    { y: ySpeed / 2, x: xDrift * 0.5 },
-                    {
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: 1.2
-                        },
-                        y: -ySpeed / 2,
-                        x: -xDrift,
-                        ease: "power1.inOut"
-                    }
-                );
-
-                // Float the individual tag within the card - unified speed
-                const tag = card.querySelector(".service-tag-parallax");
-                if (tag) {
-                    gsap.fromTo(tag,
-                        { y: 15 },
-                        {
-                            scrollTrigger: {
-                                trigger: card,
-                                start: "top bottom",
-                                end: "bottom top",
-                                scrub: 1
-                            },
-                            y: -30,
-                            ease: "none"
-                        }
-                    );
-                }
-            });
-
-            // Internal Image Lens Parallax (Ultra Smooth)
-            gsap.utils.toArray(".service-image-parallax").forEach((img: any) => {
-                gsap.fromTo(img,
-                    { scale: 1.2, y: "-10%" },
-                    {
-                        scrollTrigger: {
-                            trigger: img.closest(".service-card-wrapper"),
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: true
-                        },
-                        y: "10%",
-                        ease: "none"
-                    }
-                );
-            });
+            // Disabled GSAP parallax to ensure cards are stable and 3D hover works perfectly
 
             // Cinematic scroll effects for All Devices
             // Section heading scale effect

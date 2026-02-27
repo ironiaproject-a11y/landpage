@@ -11,7 +11,7 @@ if (typeof window !== "undefined") {
 
 const stats = [
     {
-        value: 1200,
+        value: 1191,
         prefix: "+",
         suffix: "",
         label: "HISTÓRIAS REAIS",
@@ -19,7 +19,7 @@ const stats = [
         delay: 0
     },
     {
-        value: 99.8,
+        value: 99.1,
         prefix: "",
         suffix: "%",
         label: "PRECISÃO DIGITAL",
@@ -56,11 +56,11 @@ export function Stats() {
                 const obj = { value: 0 };
                 gsap.to(obj, {
                     value: targetValue,
-                    duration: isMobile ? 2.5 : 3,
-                    ease: "expo.out",
+                    duration: isMobile ? 3 : 4,
+                    ease: "power3.out",
                     scrollTrigger: {
                         trigger: counter,
-                        start: "top 85%",
+                        start: "top 75%",
                         once: true,
                         markers: false
                     },
@@ -74,11 +74,11 @@ export function Stats() {
                     onComplete: () => {
                         // Subtle bounce effect on completion
                         gsap.to(counter, {
-                            scale: 1.05,
-                            duration: 0.3,
+                            scale: 1.03,
+                            duration: 0.4,
                             yoyo: true,
                             repeat: 1,
-                            ease: "power1.inOut"
+                            ease: "power2.inOut"
                         });
                     }
                 });
@@ -147,20 +147,21 @@ export function Stats() {
                             <div className="stat-item-inner w-full flex flex-col items-center md:items-start">
                                 {/* Number & Value */}
                                 <m.div
-                                    initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                                    initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
                                     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                    transition={{ duration: 1, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
-                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2, delay: stat.delay, ease: [0.22, 1, 0.36, 1] }}
+                                    viewport={{ once: true, margin: "-15%" }}
                                     className="flex items-baseline gap-1 mb-6 md:mb-10 group"
                                 >
                                     {stat.prefix && (
-                                        <span className="text-[var(--color-silver-bh)] font-editorial text-2xl md:text-5xl font-light opacity-40 group-hover:opacity-80 transition-opacity duration-700">
+                                        <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 mr-2">
                                             {stat.prefix}
                                         </span>
                                     )}
                                     {stat.value !== null ? (
                                         <span
-                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-white tracking-tighter leading-none hover:text-gradient-silver transition-all duration-700"
+                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-[var(--color-creme)] tracking-tighter leading-none transition-all duration-700"
+                                            style={{ textShadow: "0 10px 30px rgba(245,245,220,0.15)" }}
                                             data-target={stat.value}
                                             data-float={stat.value % 1 !== 0}
                                         >
@@ -168,19 +169,20 @@ export function Stats() {
                                         </span>
                                     ) : (
                                         <m.div
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            whileInView={{ opacity: 1, scale: 1 }}
-                                            transition={{ duration: 1.5, delay: stat.delay + 0.2, ease: "easeOut" }}
+                                            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+                                            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                            transition={{ duration: 1.5, delay: stat.delay + 0.2, ease: [0.22, 1, 0.36, 1] }}
+                                            viewport={{ once: true, margin: "-15%" }}
                                             className="relative"
                                         >
-                                            <span className="text-gradient-silver font-editorial text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none drop-shadow-[0_0_30px_rgba(203,213,225,0.2)]">
+                                            <span className="text-[var(--color-creme)] font-editorial text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
                                                 Essência
                                             </span>
-                                            <div className="absolute -inset-4 bg-white/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                                            <div className="absolute -inset-4 bg-[var(--color-creme)]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                                         </m.div>
                                     )}
                                     {stat.suffix && (
-                                        <span className="text-[var(--color-silver-bh)] font-editorial text-2xl md:text-5xl font-light opacity-40 group-hover:opacity-80 transition-opacity duration-700">
+                                        <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 ml-2">
                                             {stat.suffix}
                                         </span>
                                     )}
@@ -190,19 +192,19 @@ export function Stats() {
                                 <div className="flex flex-col items-center md:items-start text-center md:text-left overflow-hidden">
                                     <m.h4
                                         initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 0.8, x: 0 }}
+                                        whileInView={{ opacity: 0.9, x: 0 }}
                                         transition={{ duration: 0.8, delay: stat.delay + 0.4 }}
-                                        viewport={{ once: true }}
+                                        viewport={{ once: true, margin: "-15%" }}
                                         className="text-[var(--color-silver-bh)] font-body text-[11px] md:text-[12px] font-bold uppercase tracking-[0.5em] mb-4"
                                     >
                                         {stat.label}
                                     </m.h4>
                                     <m.p
                                         initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 0.7, y: 0 }}
+                                        whileInView={{ opacity: 0.85, y: 0 }}
                                         transition={{ duration: 1, delay: stat.delay + 0.6 }}
-                                        viewport={{ once: true }}
-                                        className="text-[var(--color-text-dim)] font-body text-sm md:text-base font-light leading-relaxed max-w-[300px] hover:opacity-100 transition-opacity duration-500"
+                                        viewport={{ once: true, margin: "-15%" }}
+                                        className="text-white/80 font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-white transition-colors duration-500"
                                     >
                                         {stat.sublabel}
                                     </m.p>

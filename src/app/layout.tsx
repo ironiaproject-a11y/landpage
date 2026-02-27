@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Lora, Manrope } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -13,17 +13,15 @@ const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton").then(
 });
 const Preloader = dynamic(() => import("@/components/Preloader").then(mod => mod.Preloader), { ssr: false });
 
-
-
-const jakarta = Plus_Jakarta_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-manrope",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const lora = Lora({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-lora",
   display: "swap",
 });
 
@@ -38,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${jakarta.variable} ${playfair.variable}`}>
+    <html lang="pt-br" className={`${manrope.variable} ${lora.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <script

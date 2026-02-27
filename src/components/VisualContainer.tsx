@@ -124,10 +124,8 @@ export default function VisualContainer({
             <m.div
                 className="w-full h-full relative"
                 animate={{
-                    rotateX: rotateX.get(),
-                    rotateY: rotateY.get(),
-                    scale: isClicked || (isMobile && isHovered) ? 1.06 : 1,
-                    z: isClicked || (isMobile && isHovered) ? 60 : 0
+                    scale: isClicked ? 1.04 : (isHovered && !isMobile ? 1.02 : 1),
+                    z: isClicked ? 40 : (isHovered && !isMobile ? 20 : 0)
                 }}
                 transition={{
                     type: "spring",
@@ -144,7 +142,7 @@ export default function VisualContainer({
                 {/* Main Card Surface */}
                 <div
                     className={cn(
-                        "relative w-full bg-[#0A0A0A]/80 border border-white/10 rounded-2xl overflow-hidden flex flex-col",
+                        "relative w-full bg-[#141414]/95 border border-white/10 rounded-2xl overflow-hidden flex flex-col transition-colors duration-700",
                         !isMobile && "backdrop-blur-md",
                         isClicked && "border-white/20",
                         className

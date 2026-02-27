@@ -1,8 +1,8 @@
 "use client";
 
 import { m } from "framer-motion";
-import { BeforeAfterSlider } from "./BeforeAfterSlider";
-import { Star } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { MediaCard } from "./MediaCard";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,15 +14,69 @@ if (typeof window !== "undefined") {
 
 const cases = [
     {
-        beforeSource: "/assets/images/case-study-dental-premium.jpg",
-        beforeType: "image" as const,
-        afterSource: "/assets/videos/results/result-case-1.mp4",
-        afterType: "video" as const,
+        video: "/assets/videos/results/grok-resultados.mp4",
+        poster: "/assets/images/service-sensitivity.png",
         title: "Reabilitação Oral de Precisão",
-        description: "Transformação completa utilizando protocolos digitais e lentes de contato de porcelana, garantindo máxima naturalidade e funcionalidade.",
-        isSingleMedia: false
+        description: "Transformação completa utilizando protocolos digitais e lentes de contato de porcelana, garantindo máxima naturalidade e funcionalidade."
     }
 ];
+
+interface ResultCaseItem {
+    video: string;
+    poster: string;
+    title: string;
+    description: string;
+}
+
+function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
+    const [isVideoActive, setIsVideoActive] = useState(false);
+    return (
+        <m.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="case-study-card light-sweep max-w-5xl w-full overflow-hidden rounded-organic-md border border-white/10 shadow-2xl bg-black"
+        >
+            {/* Video container — agora ocupa o card inteiro para um look "limpo" */}
+            <div
+                className="relative w-full h-full"
+                onMouseEnter={() => setIsVideoActive(true)}
+                onMouseLeave={() => setIsVideoActive(false)}
+                onTouchStart={() => setIsVideoActive(true)}
+                onTouchEnd={() => setIsVideoActive(false)}
+            >
+                {/* Overlay esquerdo — "Antes" */}
+                <div className="absolute top-3 left-3 md:top-4 md:left-4 w-[80px] md:w-[100px] h-[30px] md:h-[36px] bg-black/60 backdrop-blur-md rounded-full z-30 pointer-events-none border border-white/10 flex items-center justify-center shadow-lg">
+                    <span className="text-[9px] md:text-[11px] text-white font-semibold uppercase tracking-[0.2em]">Antes</span>
+                </div>
+
+                {/* Overlay direito — "Depois" */}
+                <div className="absolute top-3 right-3 md:top-4 md:right-4 w-[80px] md:w-[100px] h-[30px] md:h-[36px] bg-black/60 backdrop-blur-md rounded-full z-30 pointer-events-none border border-white/10 flex items-center justify-center shadow-lg">
+                    <span className="text-[9px] md:text-[11px] text-white font-semibold uppercase tracking-[0.2em]">Depois</span>
+                </div>
+
+                {/* Overlay inferior — cobre labels ou marcas d'água extras no fundo do vídeo */}
+                <div className="absolute bottom-0 left-0 w-full h-[50px] bg-black z-30 pointer-events-none" />
+                <div className="absolute bottom-[50px] left-0 w-full h-[30px] bg-gradient-to-t from-black to-transparent z-30 pointer-events-none" />
+
+
+                <MediaCard
+                    mp4Src={item.video}
+                    posterSrc={item.poster}
+                    alt={item.title}
+                    ariaLabel={`Projeto: ${item.title}`}
+                    aspectRatio="aspect-video"
+                    playing={isVideoActive}
+                    onPlay={() => setIsVideoActive(true)}
+                    onPause={() => setIsVideoActive(false)}
+                    className="w-full h-full object-cover scale-[1.01]" // Pequeno scale para garantir preenchimento total
+                />
+            </div>
+        </m.div>
+    );
+}
 
 export function CaseStudies() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -161,24 +215,7 @@ export function CaseStudies() {
 
                 <div className="flex justify-center">
                     {cases.map((item, index) => (
-                        <m.div
-                            key={index}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                            className="case-study-card light-sweep max-w-5xl w-full"
-                        >
-                            <BeforeAfterSlider
-                                beforeSource={item.beforeSource}
-                                beforeType={item.beforeType}
-                                afterSource={item.afterSource}
-                                afterType={item.afterType}
-                                title={item.title}
-                                description={item.description}
-                                isSingleMedia={item.isSingleMedia}
-                            />
-                        </m.div>
+                        <ResultCard key={index} item={item} index={index} />
                     ))}
                 </div>
 
