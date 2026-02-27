@@ -324,7 +324,7 @@ export function Hero() {
                     >
                         {/* Radial Vignette Overlay */}
                         <div
-                            className="absolute inset-0 z-[12] pointer-events-none transition-opacity duration-1500"
+                            className="absolute inset-0 z-[12] pointer-events-none transition-opacity duration-1500 hidden lg:block"
                             style={{
                                 background: 'radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%)'
                             }}
@@ -338,7 +338,7 @@ export function Hero() {
 
                         {/* Refined Cinematic Overlay Gradient */}
                         <div
-                            className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500"
+                            className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 hidden lg:block"
                             style={{
                                 background: 'linear-gradient(90deg, rgba(11,11,11,0.52) 0%, rgba(11,11,11,0.30) 55%, rgba(11,11,11,0.18) 100%)'
                             }}
@@ -347,12 +347,12 @@ export function Hero() {
                         {/* Dark Overlay (Animated on Scroll) */}
                         <div
                             ref={overlayDarkRef}
-                            className="overlay-dark absolute inset-0 z-[11] bg-black/0 pointer-events-none"
+                            className="overlay-dark absolute inset-0 z-[11] bg-black/0 pointer-events-none hidden lg:block"
                             style={{ opacity: 0 }}
                         />
 
                         {/* Bottom Cinematic Fade Transition */}
-                        <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0" />
+                        <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
 
                         <FrameSequence
                             videoLoaded={videoLoaded}
@@ -387,7 +387,7 @@ export function Hero() {
                             transition={{
                                 duration: 2.5,
                                 ease: [0.16, 1, 0.3, 1],
-                                delay: 2.5
+                                delay: 4.5
                             }}
                             className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 28 : 40 }}
                         >
@@ -400,7 +400,7 @@ export function Hero() {
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
                                 animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
-                                transition={{ delay: 2.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
+                                transition={{ delay: 4.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
                                 className="text-subheadline-editorial text-center lg:text-left text-white/90"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
@@ -413,7 +413,7 @@ export function Hero() {
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
-                                    transition={{ delay: 2.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                                    transition={{ delay: 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
                                     className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500" style={{ padding: '16px 32px', minHeight: 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
@@ -427,7 +427,7 @@ export function Hero() {
                                             repeat: Infinity,
                                             duration: 3,
                                             ease: "easeInOut",
-                                            delay: 5.5
+                                            delay: 7.5
                                         }}
                                     />
                                     <span className="relative z-10 flex items-center gap-3 tracking-normal font-bold" style={{ fontSize: 'inherit' }}>
@@ -440,7 +440,7 @@ export function Hero() {
                                 <m.button
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
-                                    transition={{ delay: 2.7, duration: 1.5 }}
+                                    transition={{ delay: 4.7, duration: 1.5 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
                                     className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
@@ -470,7 +470,7 @@ export function Hero() {
                     ref={scrollHintRef}
                     initial={{ opacity: 0, x: "-50%" }}
                     animate={{ opacity: 0.6, x: "-50%" }}
-                    transition={{ delay: 3, duration: 1.5 }}
+                    transition={{ delay: 5, duration: 1.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
                 >
                     <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll</span>

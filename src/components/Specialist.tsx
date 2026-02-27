@@ -80,7 +80,7 @@ export function Specialist() {
                     end: "bottom top",
                     scrub: 1
                 },
-                y: -40,
+                y: isMobile ? -15 : -40,
                 ease: "none"
             });
 
@@ -122,7 +122,7 @@ export function Specialist() {
 
             // High-End Portrait Parallax
             gsap.fromTo(".dr-portrait-wrapper",
-                { y: 60 },
+                { y: isMobile ? 20 : 60 },
                 {
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -130,7 +130,7 @@ export function Specialist() {
                         end: "bottom top",
                         scrub: 1.2
                     },
-                    y: -60,
+                    y: isMobile ? -20 : -60,
                     ease: "none"
                 }
             );

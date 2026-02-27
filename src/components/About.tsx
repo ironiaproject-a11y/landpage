@@ -125,7 +125,7 @@ export function About() {
             );
 
             // Continuous Parallax Effects
-            const speedMult = isMobile ? 0.4 : 1;
+            const speedMult = isMobile ? 0.2 : 1; // Further reduced for mobile
 
             // Image Container Parallax (Vertical drift)
             gsap.to(".about-image-wrapper", {
@@ -135,7 +135,7 @@ export function About() {
                     end: "bottom top",
                     scrub: 1,
                 },
-                y: -60 * speedMult,
+                y: -(isMobile ? 20 : 60) * speedMult,
                 ease: "none"
             });
 
@@ -164,6 +164,7 @@ export function About() {
                 scale: 1.1,
                 ease: "none"
             });
+
 
         }, sectionRef);
 
