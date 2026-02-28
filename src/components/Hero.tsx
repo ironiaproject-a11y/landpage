@@ -355,7 +355,7 @@ export function Hero() {
                         <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
 
                         {/* Mobile Typography Protection */}
-                        <div className="absolute inset-0 z-[10] bg-black/20 pointer-events-none lg:hidden" />
+                        <div className="absolute inset-0 z-[10] bg-black/20 pointer-events-none lg:hidden" style={{ touchAction: 'none' }} />
 
                         <FrameSequence
                             videoLoaded={videoLoaded}
@@ -411,7 +411,7 @@ export function Hero() {
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9" style={{ gap: isMobile ? 16 : 20 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9 pointer-events-auto" style={{ gap: isMobile ? 16 : 20 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
