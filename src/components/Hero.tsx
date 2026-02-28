@@ -354,6 +354,9 @@ export function Hero() {
                         {/* Bottom Cinematic Fade Transition */}
                         <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
 
+                        {/* Mobile Typography Protection */}
+                        <div className="absolute bottom-0 left-0 w-full h-1/2 z-[10] bg-gradient-to-t from-black/20 to-transparent pointer-events-none lg:hidden" />
+
                         <FrameSequence
                             videoLoaded={videoLoaded}
                             setVideoLoaded={setVideoLoaded}
@@ -389,26 +392,26 @@ export function Hero() {
                                 ease: [0.16, 1, 0.3, 1],
                                 delay: 4.5
                             }}
-                            className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 28 : 40 }}
+                            className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 40 : 40 }}
                         >
                             <span className="block mb-1 lg:mb-2 font-bold font-editorial">Seu sorriso,</span>
                             <span className="block italic font-normal text-[var(--color-creme)]">sua assinatura.</span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-8 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
+                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
                                 animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
                                 transition={{ delay: 4.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="text-subheadline-editorial text-center lg:text-left text-white/90"
+                                className="text-[16px] lg:text-[18px] font-medium lg:font-normal text-center lg:text-left text-white/90"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full sm:w-auto mt-7 lg:mt-9" style={{ gap: isMobile ? 16 : 20 }}>
+                        <div ref={actionsRef} className="hero-ctas flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full sm:w-auto mt-[24px] lg:mt-9" style={{ gap: isMobile ? 16 : 20 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
@@ -416,7 +419,7 @@ export function Hero() {
                                     transition={{ delay: 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500" style={{ padding: '16px 32px', minHeight: 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500" style={{ padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -443,7 +446,7 @@ export function Hero() {
                                     transition={{ delay: 4.7, duration: 1.5 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
                                 >
                                     <span className="tracking-normal font-semibold" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
                                 </m.button>
