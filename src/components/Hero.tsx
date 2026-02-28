@@ -355,7 +355,7 @@ export function Hero() {
                         <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
 
                         {/* Mobile Typography Protection */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/2 z-[10] bg-gradient-to-t from-black/20 to-transparent pointer-events-none lg:hidden" />
+                        <div className="absolute inset-0 z-[10] bg-black/20 pointer-events-none lg:hidden" />
 
                         <FrameSequence
                             videoLoaded={videoLoaded}
@@ -392,7 +392,7 @@ export function Hero() {
                                 ease: [0.16, 1, 0.3, 1],
                                 delay: 4.5
                             }}
-                            className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 40 : 40 }}
+                            className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 52 : 40 }}
                         >
                             <span className="block mb-1 lg:mb-2 font-bold font-editorial">Seu sorriso,</span>
                             <span className="block italic font-normal text-[var(--color-creme)]">sua assinatura.</span>
@@ -404,14 +404,14 @@ export function Hero() {
                                 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
                                 animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
                                 transition={{ delay: 4.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="text-[16px] lg:text-[18px] font-medium lg:font-normal text-center lg:text-left text-white/90"
+                                className="text-[16px] lg:text-[18px] font-semibold lg:font-normal text-center lg:text-left text-white/90"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full sm:w-auto mt-[24px] lg:mt-9" style={{ gap: isMobile ? 16 : 20 }}>
+                        <div ref={actionsRef} className="hero-ctas flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9" style={{ gap: isMobile ? 16 : 20 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}

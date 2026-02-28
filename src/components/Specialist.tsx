@@ -122,7 +122,7 @@ export function Specialist() {
 
             // High-End Portrait Parallax
             gsap.fromTo(".dr-portrait-wrapper",
-                { y: isMobile ? 20 : 60 },
+                { y: isMobile ? 40 : 80 },
                 {
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -130,7 +130,22 @@ export function Specialist() {
                         end: "bottom top",
                         scrub: 1.2
                     },
-                    y: isMobile ? -20 : -60,
+                    y: isMobile ? -40 : -80,
+                    ease: "none"
+                }
+            );
+
+            // Description Text Parallax
+            gsap.fromTo(".op-desc-parallax",
+                { y: isMobile ? 15 : 30 },
+                {
+                    scrollTrigger: {
+                        trigger: ".dr-portrait-wrapper",
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    },
+                    y: isMobile ? -15 : -30,
                     ease: "none"
                 }
             );
@@ -270,7 +285,7 @@ export function Specialist() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true, margin: "-10%" }}
                             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                            className="relative dr-portrait-wrapper"
+                            className="relative dr-portrait-wrapper will-change-transform [transform:translateZ(0)]"
                         >
                             <VisualContainer
                                 width="100%"
@@ -299,7 +314,7 @@ export function Specialist() {
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 
-                                    <div className="absolute bottom-12 left-12 z-20">
+                                    <div className="absolute bottom-12 left-12 z-20 op-desc-parallax will-change-transform [transform:translateZ(0)]">
                                         <h4 className="text-white font-display text-3xl font-light tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
                                         <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.3em]">Especialista em Reabilitação Oral</p>
                                     </div>

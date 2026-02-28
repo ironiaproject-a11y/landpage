@@ -91,6 +91,21 @@ export function Experience() {
                 }
             );
 
+            // Text Content Parallax
+            gsap.fromTo(".experience-content-parallax",
+                { y: isMobile ? 20 : 40 },
+                {
+                    scrollTrigger: {
+                        trigger: ".experience-visual-wrapper",
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.2
+                    },
+                    y: isMobile ? -20 : -40,
+                    ease: "none"
+                }
+            );
+
             // Light Sweep Trigger on entrance
             if (visualRef.current) {
                 gsap.to(visualRef.current, {
@@ -286,7 +301,7 @@ export function Experience() {
                             whileInView={{ opacity: 1, scale: 1, y: 0 }}
                             viewport={{ once: true, margin: isMobile ? "0px 0px -15% 0px" : "-10%" }}
                             transition={{ duration: 1.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className="relative z-10 experience-visual-wrapper"
+                            className="relative z-10 experience-visual-wrapper will-change-transform [transform:translateZ(0)]"
                         >
                             <VisualContainer
                                 width="100%"
@@ -306,10 +321,12 @@ export function Experience() {
 
                                     {/* Refined Brand Badge */}
                                     <div className="absolute bottom-12 left-12 right-12 translate-z-30 experience-image-content">
-                                        <p className="text-[var(--color-silver-bh)] font-display text-3xl font-bold mb-2 tracking-tight">Exclusividade</p>
-                                        <p className="text-white/70 text-sm font-light tracking-wide max-w-xs leading-relaxed">
-                                            Planejamento personalizado e alta tecnologia para cada sorriso de elite.
-                                        </p>
+                                        <div className="experience-content-parallax will-change-transform [transform:translateZ(0)]">
+                                            <p className="text-[var(--color-silver-bh)] font-display text-3xl font-bold mb-2 tracking-tight">Exclusividade</p>
+                                            <p className="text-white/70 text-sm font-light tracking-wide max-w-xs leading-relaxed">
+                                                Planejamento personalizado e alta tecnologia para cada sorriso de elite.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </VisualContainer>
