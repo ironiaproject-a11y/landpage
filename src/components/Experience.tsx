@@ -76,7 +76,7 @@ export function Experience() {
             }
 
             // Image Parallax - Experience Visual
-            const speedMult = isMobile ? 0.5 : 1.2;
+            const speedMult = isMobile ? 0.85 : 1.2;
             gsap.fromTo(".experience-visual-wrapper",
                 { y: 80 * speedMult },
                 {
@@ -282,9 +282,9 @@ export function Experience() {
                     {/* Right: Visual Showcase (The Brand Visual) */}
                     <div className="lg:w-1/2 relative">
                         <m.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, margin: "-10%" }}
+                            initial={isMobile ? { opacity: 0, scale: 0.9, y: 60 } : { opacity: 0, scale: 0.95, y: 0 }}
+                            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                            viewport={{ once: true, margin: isMobile ? "0px 0px -15% 0px" : "-10%" }}
                             transition={{ duration: 1.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                             className="relative z-10 experience-visual-wrapper"
                         >

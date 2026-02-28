@@ -80,15 +80,15 @@ export function About() {
                 tl.to(revealShadeRef.current, {
                     scaleY: 0,
                     transformOrigin: "top", // Reveals from bottom to top
-                    duration: isMobile ? 1.2 : 1.8,
+                    duration: isMobile ? 1.8 : 1.8,
                     ease: "power4.inOut"
                 });
             }
 
             // 2. Image Zoom & Subtle Float Effect
             tl.fromTo(".inner-image-content",
-                { scale: 1.1, y: 30 },
-                { scale: 1, y: 0, duration: 2.2, ease: "power2.out" },
+                { scale: isMobile ? 1.25 : 1.1, y: isMobile ? 50 : 30 },
+                { scale: 1, y: 0, duration: isMobile ? 2.5 : 2.2, ease: "power2.out" },
                 "-=1.6"
             );
 
@@ -125,7 +125,7 @@ export function About() {
             );
 
             // Continuous Parallax Effects
-            const speedMult = isMobile ? 0.2 : 1; // Further reduced for mobile
+            const speedMult = isMobile ? 0.45 : 1; // Greatly increased for mobile
 
             // Image Container Parallax (Vertical drift)
             gsap.to(".about-image-wrapper", {
