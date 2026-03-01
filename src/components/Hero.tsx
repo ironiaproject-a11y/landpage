@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 
 const TOTAL_FRAMES = 192;
 
-const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean }) => {
+const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean, isMobile: boolean }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameIndexRef = useRef(0);
@@ -122,11 +122,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start }: { videoLoaded: bo
         };
 
         const handleResize = () => {
-            if (canvasRef.current) {
-                // Cap DPR at 1.5 for performance on mobile devices, or use 2 for desktop
-                const isMobileDevice = window.innerWidth < 1024;
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobileDevice ? 1.5 : 2);
-
+            if (canvasRef.current && typeof window !== 'undefined') {
+                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
                 canvasRef.current.width = window.innerWidth * dpr;
                 canvasRef.current.height = window.innerHeight * dpr;
                 drawFrame();
@@ -185,7 +182,7 @@ export function Hero() {
 
     useEffect(() => {
         setMounted(true);
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
 
         if (typeof window !== "undefined") {
             checkMobile();
@@ -361,6 +358,7 @@ export function Hero() {
                             videoLoaded={videoLoaded}
                             setVideoLoaded={setVideoLoaded}
                             start={canStartSequence}
+                            isMobile={isMobile}
                         />
                     </div>
                 </m.div>
