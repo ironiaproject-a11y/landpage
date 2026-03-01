@@ -21,8 +21,9 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-        const CRITICAL_BATCH = 30;
-        const REMAINING_BATCH_SIZE = 20;
+        // On mobile load fewer critical frames to show content faster
+        const CRITICAL_BATCH = isMobile ? 15 : 30;
+        const REMAINING_BATCH_SIZE = isMobile ? 10 : 20;
         let criticalLoaded = 0;
 
         // Load a single frame (returns a promise)
@@ -38,7 +39,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             });
         };
 
-        // Phase 1: Load critical frames (0–29) immediately
+        // Phase 1: Load critical frames immediately
         const criticalPromises = Array.from({ length: CRITICAL_BATCH }, (_, i) =>
             loadFrame(i).then(() => {
                 criticalLoaded++;
@@ -53,30 +54,41 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             })
         );
 
-        // Phase 2: Load remaining frames in staggered batches
+        // Phase 2: Load remaining frames using idle time (smoother on mobile)
         const loadRemaining = () => {
             const remaining = TOTAL_FRAMES - CRITICAL_BATCH;
             const batches = Math.ceil(remaining / REMAINING_BATCH_SIZE);
-            for (let b = 0; b < batches; b++) {
-                const batchDelay = 2000 + b * 500;
-                setTimeout(() => {
+            let b = 0;
+
+            const scheduleNextBatch = () => {
+                if (b >= batches) return;
+                const scheduleFn = typeof requestIdleCallback !== 'undefined'
+                    ? (cb: () => void) => requestIdleCallback(cb, { timeout: 2000 })
+                    : (cb: () => void) => setTimeout(cb, isMobile ? 800 : 300);
+
+                scheduleFn(() => {
                     const batchStart = CRITICAL_BATCH + b * REMAINING_BATCH_SIZE;
                     const batchEnd = Math.min(batchStart + REMAINING_BATCH_SIZE, TOTAL_FRAMES);
+                    const promises: Promise<void>[] = [];
                     for (let i = batchStart; i < batchEnd; i++) {
-                        loadFrame(i).then(() => {
+                        promises.push(loadFrame(i).then(() => {
                             framesRef.current = imageElements;
-                        });
+                        }));
                     }
-                }, batchDelay);
-            }
+                    b++;
+                    Promise.all(promises).then(scheduleNextBatch);
+                });
+            };
+
+            scheduleNextBatch();
         };
 
         Promise.all(criticalPromises).then(loadRemaining);
 
-        // Animation loop - Direct Canvas drawing for zero-latency
+        // Animation loop — lower FPS on mobile to avoid jank
         let frameId: number;
         let lastTime = 0;
-        const fps = 60;
+        const fps = isMobile ? 24 : 60;
         const interval = 1000 / fps;
 
         const drawFrame = () => {
@@ -85,7 +97,6 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             const img = framesRef.current[frameIndexRef.current];
 
             if (canvas && ctx && img && img.complete) {
-                // High-performance canvas setup
                 const canvasAspect = canvas.width / canvas.height;
                 const imgAspect = img.naturalWidth / img.naturalHeight;
 
@@ -109,11 +120,10 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         const animate = (time: number) => {
             if (time - lastTime >= interval) {
-                // ONLY increment if start is true, otherwise draw frame 0
                 if (start) {
                     frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
                 } else {
-                    frameIndexRef.current = 0; // Forced human arch start
+                    frameIndexRef.current = 0;
                 }
                 drawFrame();
                 lastTime = time;
@@ -123,7 +133,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         const handleResize = () => {
             if (canvasRef.current && typeof window !== 'undefined') {
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+                // Cap DPR at 1 on mobile to avoid rendering too many pixels
+                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2);
                 canvasRef.current.width = window.innerWidth * dpr;
                 canvasRef.current.height = window.innerHeight * dpr;
                 drawFrame();
@@ -138,7 +149,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             cancelAnimationFrame(frameId);
             window.removeEventListener('resize', handleResize);
         };
-    }, [setVideoLoaded, start]); // Re-run or update when start changes
+    }, [setVideoLoaded, start, isMobile]); // Re-run when isMobile changes
 
 
     // Breathe entrance animation (initial zoom out)
@@ -412,11 +423,12 @@ export function Hero() {
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
-                                    animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
-                                    transition={{ delay: isMobile ? 1.8 : 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                                    animate={(mounted && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
+                                    transition={{ delay: isMobile ? 0.6 : 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500" style={{ padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
@@ -427,7 +439,7 @@ export function Hero() {
                                             repeat: Infinity,
                                             duration: 3,
                                             ease: "easeInOut",
-                                            delay: isMobile ? 4 : 7.5
+                                            delay: isMobile ? 2 : 7.5
                                         }}
                                     />
                                     <span className="relative z-10 flex items-center gap-3 tracking-normal font-bold" style={{ fontSize: 'inherit' }}>
@@ -439,11 +451,12 @@ export function Hero() {
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     initial={{ opacity: 0, y: 10 }}
-                                    animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
-                                    transition={{ delay: isMobile ? 2.0 : 4.7, duration: 1.5 }}
+                                    animate={(mounted && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
+                                    transition={{ delay: isMobile ? 0.9 : 4.7, duration: 1.5 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
                                 >
                                     <span className="tracking-normal font-semibold" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
                                 </m.button>
