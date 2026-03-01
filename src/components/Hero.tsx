@@ -147,7 +147,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             initial={{ scale: 1.15 }}
             animate={(videoLoaded && start) ? { scale: 1 } : { scale: 1.15 }}
             transition={{ duration: 2.5, ease: "easeOut" }}
-            className={`w-full h-full relative transition-opacity duration-1500 ${(videoLoaded && start) ? 'opacity-80 lg:opacity-60' : 'opacity-0'}`}
+            className={`w-full h-full relative transition-opacity duration-1500 ${(videoLoaded && start) ? 'opacity-100 lg:opacity-60' : 'opacity-0'}`}
         >
             <canvas
                 ref={canvasRef}
@@ -315,7 +315,7 @@ export function Hero() {
                         ref={videoWrapperRef}
                         className="absolute inset-0 z-0 origin-center will-change-transform"
                         style={{
-                            transform: `scale(${isMobile ? 0.95 : 0.98})`,
+                            transform: `scale(1.02)`,
                             transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}
                     >
@@ -351,8 +351,7 @@ export function Hero() {
                         {/* Bottom Cinematic Fade Transition */}
                         <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
 
-                        {/* Mobile Typography Protection (Subtle) */}
-                        <div className="absolute inset-0 z-[10] bg-black/10 pointer-events-none lg:hidden" style={{ touchAction: 'none' }} />
+                        <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
                         <FrameSequence
                             videoLoaded={videoLoaded}
@@ -369,7 +368,7 @@ export function Hero() {
                 {/* Main Content */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-[50] w-full flex flex-col items-center lg:items-start text-center lg:text-left"
+                    className="relative z-[50] w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
                     style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '120px 24px 100px' : '160px 6vw 140px', width: '100%', position: 'absolute', inset: 0, justifyContent: 'center' }}
                 >
                     <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
@@ -410,7 +409,7 @@ export function Hero() {
 
 
                         <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9 pointer-events-auto" style={{ gap: isMobile ? 16 : 20 }}>
-                            <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
@@ -437,7 +436,7 @@ export function Hero() {
                                 </m.button>
                             </Magnetic>
 
-                            <Magnetic strength={isMobile ? 0 : 0.3} range={100}>
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
