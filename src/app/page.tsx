@@ -1,4 +1,5 @@
-// Final Polish Verification
+"use client";
+
 import nextDynamic from "next/dynamic";
 
 import { Hero } from "@/components/Hero";

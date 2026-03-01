@@ -5,13 +5,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import dynamic from "next/dynamic";
-
-const Cursor = dynamic(() => import("@/components/Cursor").then(mod => mod.Cursor), { ssr: false });
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton").then(mod => mod.WhatsAppButton), {
-  ssr: false,
-});
-const Preloader = dynamic(() => import("@/components/Preloader").then(mod => mod.Preloader), { ssr: false });
+import { ClientSideExtras } from "@/components/ClientSideExtras";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -86,11 +80,9 @@ export default function RootLayout({
         <SmoothScroll>
           <MotionProvider>
             <ScrollProgress />
-            <Cursor />
-            <Preloader />
+            <ClientSideExtras />
             <Navbar />
             {children}
-            <WhatsAppButton />
           </MotionProvider>
         </SmoothScroll>
       </body>
