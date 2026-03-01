@@ -180,6 +180,12 @@ body::after {
   opacity: 0.5;
 }
 
+@media (max-width: 1024px) {
+  body::after {
+    opacity: 0.25;
+  }
+}
+
 @keyframes grain-animation {
 
   0%,
