@@ -178,12 +178,12 @@ export function InstitutionalTrust() {
                         >
                             Fundamentos do Cuidado
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-white text-[clamp(48px,6vw,80px)] font-light tracking-tight leading-[1.0]">
+                        <h2 ref={titleRef} className="font-display text-white text-[clamp(48px,6vw,80px)] font-black tracking-[0.05em] leading-[1.0] uppercase">
                             <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-white">A harmonia entre o</span>
+                                <span className="title-line-inner inline-block text-white text-glitch" data-text="A harmonia entre o">A harmonia entre o</span>
                             </div>
                             <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-medium">Rigor e a Sensibilidade</span>.
+                                <span className="title-line-inner inline-block text-gradient-silver font-black text-glitch" data-text="Rigor e a Sensibilidade">Rigor e a Sensibilidade</span>.
                             </div>
                         </h2>
                     </div>
@@ -233,14 +233,14 @@ export function InstitutionalTrust() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                                            className="font-display italic text-6xl text-white/[0.03] group-hover/card:text-[var(--color-silver-bh)]/10 group-hover/card:scale-110 transition-all duration-1000 leading-none"
+                                            className="font-display font-black text-6xl text-white/[0.03] group-hover/card:text-[var(--color-silver-bh)]/10 group-hover/card:scale-110 transition-all duration-1000 leading-none tracking-tighter"
                                         >
                                             {card.number}
                                         </m.span>
                                     </div>
 
                                     <div className="relative z-10 pt-12">
-                                        <h3 className="font-display text-white text-2xl font-light mb-6 group-hover/card:translate-x-2 transition-transform duration-500">
+                                        <h3 className="font-display text-white text-2xl font-black mb-6 group-hover/card:translate-x-2 transition-transform duration-500 uppercase tracking-wider">
                                             {card.title}
                                         </h3>
 

@@ -72,8 +72,8 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-body text-[10px] font-bold text-white/90 tracking-[0.2em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-silver-bh)] font-bold">.</span>
+                            <span className="font-display text-[12px] font-black text-white/90 tracking-[0.4em] uppercase transition-all duration-700">
+                                Clínica<span className="text-[var(--color-silver-bh)] font-black">.</span>
                             </span>
                         </a>
                     </Magnetic>
@@ -98,7 +98,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-extra-wide"
+                                                className="text-[11px] font-medium text-[var(--color-text-secondary)] uppercase tracking-widest font-body"
                                             >
                                                 {link.name}
                                             </m.div>
@@ -111,7 +111,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="absolute inset-0 py-2 px-4 text-[10px] font-bold text-[var(--color-silver-bh)] uppercase tracking-extra-wide"
+                                                className="absolute inset-0 py-2 px-4 text-[11px] font-medium text-[var(--color-silver-bh)] uppercase tracking-widest font-body"
                                             >
                                                 {link.name}
                                             </m.div>
@@ -151,7 +151,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-luxury-primary !py-3 !px-8 text-[9px] tracking-[0.2em] shadow-none hover:shadow-glow-gold relative overflow-hidden"
+                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-black shadow-none hover:shadow-glow-gold relative overflow-hidden"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"
@@ -229,7 +229,7 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-tight">
+                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-[0.2em] font-black uppercase text-glitch" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lora, Manrope } from "next/font/google";
+import { Montserrat, Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -7,15 +7,16 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { ClientSideExtras } from "@/components/ClientSideExtras";
 
-const manrope = Manrope({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  weight: ["400", "700", "900"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
-const lora = Lora({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-lora",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -30,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${manrope.variable} ${lora.variable}`}>
+    <html lang="pt-br" className={`${montserrat.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <script

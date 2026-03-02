@@ -105,7 +105,7 @@ export function Footer() {
                                     <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <div className="overflow-hidden">
-                                    <h3 className="title-line-inner text-base font-display font-medium tracking-tight text-white leading-tight">
+                                    <h3 className="title-line-inner text-base font-display font-black tracking-[0.3em] text-white leading-tight uppercase">
                                         Clínica.
                                     </h3>
                                 </div>
@@ -141,7 +141,7 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Navegação</h4>
+                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Navegação</h4>
                         </div>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
@@ -161,7 +161,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Especialidades</h4>
+                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Especialidades</h4>
                         </div>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
@@ -181,7 +181,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-bold uppercase tracking-[0.2em] text-white">Onde Estamos</h4>
+                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Onde Estamos</h4>
                         </div>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">

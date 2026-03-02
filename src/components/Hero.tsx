@@ -12,70 +12,161 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-// Removing TOTAL_FRAMES as it's no longer used for the scanner logic
+const TOTAL_FRAMES = 192;
 
-const DentalScanner = ({ videoLoaded, setVideoLoaded, start, isMobile }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean, isMobile: boolean }) => {
+const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMobile: boolean }) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const framesRef = useRef<HTMLImageElement[]>([]);
+    const frameIndexRef = useRef({ frame: 0 });
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+        let loadedCount = 0;
+
+        const loadFrame = (i: number) => {
+            const img = new Image();
+            img.onload = () => {
+                imageElements[i] = img;
+                loadedCount++;
+                if (loadedCount === TOTAL_FRAMES) setLoaded(true);
+            };
+            img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === TOTAL_FRAMES) setLoaded(true);
+            };
+            const paddedIndex = i.toString().padStart(3, '0');
+            img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
+        };
+
+        for (let i = 0; i < TOTAL_FRAMES; i++) loadFrame(i);
+    }, []);
+
+    const drawFrame = useCallback(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d', { alpha: false });
+        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndexRef.current.frame)));
+        const img = framesRef.current[idx];
+
+        if (canvas && ctx && img && img.complete) {
+            const dpr = window.devicePixelRatio || 1;
+            const displayWidth = canvas.clientWidth;
+            const displayHeight = canvas.clientHeight;
+
+            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+                canvas.width = displayWidth * dpr;
+                canvas.height = displayHeight * dpr;
+                ctx.scale(dpr, dpr);
+            }
+
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+            const canvasAspect = displayWidth / displayHeight;
+            const imgAspect = img.naturalWidth / img.naturalHeight;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+            if (canvasAspect > imgAspect) {
+                drawHeight = displayHeight;
+                drawWidth = displayHeight * imgAspect;
+                offsetX = (displayWidth - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = displayWidth;
+                drawHeight = displayWidth / imgAspect;
+                offsetX = 0;
+                offsetY = (displayHeight - drawHeight) / 2;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!loaded) return;
+
+        gsap.to(frameIndexRef.current, {
+            frame: TOTAL_FRAMES - 1,
+            duration: 1.8,
+            ease: "power2.inOut",
+            onUpdate: drawFrame,
+            onComplete: () => {
+                setTimeout(onComplete, 300);
+            }
+        });
+    }, [loaded, drawFrame, onComplete]);
+
+    return (
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+            {!loaded && (
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
+                    <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Iniciando Biometria</span>
+                </div>
+            )}
+            <canvas
+                ref={canvasRef}
+                className={`w-full h-full object-contain transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                    filter: isMobile ? 'brightness(0.5)' : 'brightness(0.34)',
+                    width: 'clamp(300px, 80vw, 1000px)',
+                    height: '70vh'
+                }}
+            />
+        </div>
+    );
+};
+
+const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile: boolean }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const scannerRef = useRef<HTMLDivElement>(null);
     const cursorRef = useRef<HTMLDivElement>(null);
     const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
     const [isInteracting, setIsInteracting] = useState(false);
     const [isAutoAnimating, setIsAutoAnimating] = useState(true);
 
-    // Initial Assets Loading
     useEffect(() => {
         const estetica = new Image();
         const raiox = new Image();
         let loadedCount = 0;
-
         const handleLoad = () => {
             loadedCount++;
-            if (loadedCount === 2) {
-                setVideoLoaded(true);
-            }
+            if (loadedCount === 2) onLoaded();
         };
-
         estetica.onload = handleLoad;
         raiox.onload = handleLoad;
         estetica.src = "/assets/images/dente-estetica.webp";
         raiox.src = "/assets/images/dente-raio-x.webp";
-    }, [setVideoLoaded]);
+    }, [onLoaded]);
 
-    // GSAP Interactions & Auto-Intro
     useEffect(() => {
-        if (!videoLoaded || !start || !containerRef.current) return;
+        if (!containerRef.current) return;
 
         const container = containerRef.current;
         const rect = container.getBoundingClientRect();
-
-        // Initial center position
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        // 3. Auto-Intro Animation
-        const introTl = gsap.timeline({
+        const hintTl = gsap.timeline({
             onComplete: () => setIsAutoAnimating(false)
         });
 
-        // Setup initial state (using CSS variables for clip-path)
         gsap.set(container, { "--mask-size": "0px", "--x": `${centerX}px`, "--y": `${centerY}px` });
 
-        introTl
-            .to(container, { "--mask-size": "150px", duration: 1, ease: "back.out(1.7)" })
-            .to(container, { "--x": `${rect.width * 0.2}px`, duration: 1.2, ease: "power2.inOut" })
-            .to(container, { "--x": `${rect.width * 0.8}px`, duration: 1.5, ease: "power2.inOut" })
-            .to(container, { "--x": `${centerX}px`, duration: 1.2, ease: "power2.inOut" });
+        hintTl
+            .to(container, { "--mask-size": "200px", duration: 0.8, ease: "power2.out" }, "+=0.5")
+            .to(container, { "--mask-size": "150px", duration: 0.6, ease: "back.out(1.7)" });
 
-        // Continuous LERP for smooth follow
         const quickSetterX = gsap.quickSetter(container, "--x", "px");
         const quickSetterY = gsap.quickSetter(container, "--y", "px");
         const cursorSetterX = gsap.quickSetter(cursorRef.current, "x", "px");
         const cursorSetterY = gsap.quickSetter(cursorRef.current, "y", "px");
 
         const ticker = () => {
-            if (isAutoAnimating) return;
-
-            // Slerp style inertia (0.1 for 10% movement per frame)
+            if (isAutoAnimating) {
+                cursorSetterX(centerX);
+                cursorSetterY(centerY);
+                return;
+            }
             mousePos.current.x += (mousePos.current.targetX - mousePos.current.x) * 0.1;
             mousePos.current.y += (mousePos.current.targetY - mousePos.current.y) * 0.1;
 
@@ -86,90 +177,62 @@ const DentalScanner = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
         };
 
         gsap.ticker.add(ticker);
-
         return () => {
             gsap.ticker.remove(ticker);
-            introTl.kill();
+            hintTl.kill();
         };
-    }, [videoLoaded, start, isAutoAnimating]);
+    }, [isAutoAnimating]);
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handleMove = (clientX: number, clientY: number) => {
         if (isAutoAnimating || !containerRef.current) return;
         const rect = containerRef.current.getBoundingClientRect();
-        mousePos.current.targetX = e.clientX - rect.left;
-        mousePos.current.targetY = e.clientY - rect.top;
-    };
-
-    const handleTouchMove = (e: React.TouchEvent) => {
-        if (isAutoAnimating || !containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const touch = e.touches[0];
-
-        // Mobile offset: move the mask slightly above the finger so it's not covered
-        const offset = isMobile ? -60 : 0;
-        mousePos.current.targetX = touch.clientX - rect.left;
-        mousePos.current.targetY = touch.clientY - rect.top + offset;
+        mousePos.current.targetX = clientX - rect.left;
+        mousePos.current.targetY = clientY - rect.top;
     };
 
     return (
         <div
             ref={containerRef}
-            className="relative w-full h-[60vh] lg:h-[70vh] max-w-[1200px] mx-auto overflow-hidden select-none"
-            onMouseMove={handleMouseMove}
-            onTouchMove={handleTouchMove}
-            onMouseEnter={() => !isAutoAnimating && setIsInteracting(true)}
+            className="relative mx-auto overflow-hidden select-none"
+            onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
+            onTouchMove={(e) => handleMove(e.touches[0].clientX, e.touches[0].clientY + (isMobile ? -60 : 0))}
+            onMouseEnter={() => setIsInteracting(true)}
             onMouseLeave={() => setIsInteracting(false)}
             style={{
                 cursor: 'none',
-                touchAction: 'none'
+                touchAction: 'none',
+                width: 'clamp(300px, 80vw, 1000px)',
+                height: '70vh',
+                containerType: 'inline-size'
             } as any}
         >
-            {/* Base Image: Estética */}
             <img
                 src="/assets/images/dente-estetica.webp"
-                alt="Dente Estética"
-                className="absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-1000"
-                style={{ opacity: videoLoaded ? 1 : 0 }}
+                alt="Aesthetic"
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
             />
-
-            {/* Overlaid Image: Raio-X with Mask */}
             <div
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{
-                    clipPath: `circle(var(--mask-size, 150px) at var(--x, 50%) var(--y, 50%))`,
-                    WebkitClipPath: `circle(var(--mask-size, 150px) at var(--x, 50%) var(--y, 50%))`
+                    clipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`,
+                    WebkitClipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`
                 } as any}
             >
-                <img
-                    src="/assets/images/dente-raio-x.webp"
-                    alt="Dente Raio-X"
-                    className="w-full h-full object-contain"
-                />
+                <img src="/assets/images/dente-raio-x.webp" alt="X-Ray" className="w-full h-full object-contain" />
             </div>
 
-            {/* Custom Scanner Cursor */}
             <div
                 ref={cursorRef}
-                className={`fixed top-0 left-0 w-[150px] h-[150px] rounded-full border-2 border-[#C7A86B] pointer-events-none z-50 flex items-center justify-center transition-opacity duration-300 ${isInteracting && !isAutoAnimating ? 'opacity-100' : 'opacity-0'}`}
-                style={{
-                    marginTop: '-75px',
-                    marginLeft: '-75px',
-                    boxShadow: '0 0 30px rgba(199, 168, 107, 0.4), inset 0 0 20px rgba(199, 168, 107, 0.2)'
-                }}
+                className={`fixed top-0 left-0 w-[150px] h-[150px] pointer-events-none z-[100] transition-opacity duration-300 ${isInteracting && !isAutoAnimating ? 'opacity-100' : 'opacity-0'}`}
+                style={{ marginTop: '-75px', marginLeft: '-75px' }}
             >
-                <div className="w-1 h-1 bg-[#C7A86B] rounded-full shadow-[0_0_10px_#C7A86B]" />
-                <div className="absolute inset-[-4px] rounded-full border border-[#C7A86B]/30 animate-pulse" />
+                <div className="absolute inset-0 border border-[#C7A86B]/30 rounded-full" />
+                <div className="absolute top-1/2 left-0 w-4 h-[1px] bg-[#C7A86B] -translate-y-1/2" />
+                <div className="absolute top-1/2 right-0 w-4 h-[1px] bg-[#C7A86B] -translate-y-1/2" />
+                <div className="absolute top-0 left-1/2 w-[1px] h-4 bg-[#C7A86B] -translate-x-1/2" />
+                <div className="absolute bottom-0 left-1/2 w-[1px] h-4 bg-[#C7A86B] -translate-x-1/2" />
+                <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-[#C7A86B] rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_#C7A86B]" />
             </div>
-
-            {/* Loading Indicator */}
-            {!videoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-50">
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
-                        <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Iniciando Scanner</span>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
@@ -188,7 +251,8 @@ export function Hero() {
     const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
     const [mounted, setMounted] = useState(false);
-    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [phase, setPhase] = useState<'rotating' | 'scanning'>('rotating');
+    const [scannerAssetsLoaded, setScannerAssetsLoaded] = useState(false);
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const shouldReduceMotion = useReducedMotion();
@@ -205,17 +269,10 @@ export function Hero() {
             checkMobile();
             window.addEventListener("resize", checkMobile);
 
-            // Start sequence when preloader begins to exit
-            const handlePreloaderExit = () => {
-                setCanStartSequence(true);
-            };
-
+            const handlePreloaderExit = () => setCanStartSequence(true);
             window.addEventListener("preloader-exiting", handlePreloaderExit);
 
-            // Fallback safety
-            const timer = setTimeout(() => {
-                setCanStartSequence(true);
-            }, 5000);
+            const timer = setTimeout(() => setCanStartSequence(true), 5000);
 
             return () => {
                 window.removeEventListener("resize", checkMobile);
@@ -228,89 +285,27 @@ export function Hero() {
     // FrameSequence handles its own asset loading and preloader signaling.
     // The previous video-based aggressive autoplay polling is no longer needed.
 
-    // GSAP Scroll & Entrance Animations
+    // GSAP Scroll Animations
     useEffect(() => {
-        if (!mounted) return;
-
         const ctx = gsap.context(() => {
-            if (shouldReduceMotion) return;
+            if (shouldReduceMotion || isMobile) return;
 
-            // Unified Scroll Timeline (Depth & Atmosphere)
-            const scrollTl = gsap.timeline({
+            gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
                     end: "+=100%",
-                    pin: !isMobile ? pinContainerRef.current : false,
+                    pin: pinContainerRef.current,
                     scrub: 1.2,
-                    anticipatePin: 1,
-                    onUpdate: (self) => {
-                        if (shouldReduceMotion) return;
-
-                        // Direction-sensitive micro-motion
-                        const direction = self.direction; // 1 for down, -1 for up
-                        const velocity = self.getVelocity();
-                        const intensity = Math.min(Math.abs(velocity) / 2000, 1);
-
-                        gsap.to(videoWrapperRef.current, {
-                            x: direction * intensity * (isMobile ? 4 : 8),
-                            scale: 1.05 + (intensity * 0.005),
-                            rotationZ: direction * intensity * 0.1,
-                            duration: 0.8,
-                            ease: "power2.out",
-                            overwrite: "auto"
-                        });
-                    }
+                    anticipatePin: 1
                 }
-            });
-
-            // 1. Background Layer Parallax (Disabled GSAP in favor of framer-motion)
-            // scrollTl.to(videoWrapperRef.current, {
-            //     yPercent: isMobile ? 6 : 4,
-            //     ease: "none"
-            // }, 0);
-
-            // 2. Text Block Layer (Depth Separation)
-            scrollTl.to(contentWrapperRef.current, {
-                y: -30,
-                opacity: 0.85,
-                ease: "none"
-            }, 0);
-
-            // 3. CTA Layer (Scale reduction + Stays visible longer)
-            scrollTl.to(actionsRef.current, {
-                scale: 0.97,
-                opacity: 0.95,
-                ease: "none"
-            }, 0.1);
-
-            // 4. Darken bottom gradient for transition
-            gsap.to(".bottom-cinematic-fade", {
-                opacity: 0.9,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "bottom center",
-                    scrub: true
-                }
-            });
-
-            // 5. Scroll Indicator Fade
-            gsap.to(scrollHintRef.current, {
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "top -50px",
-                    scrub: true
-                },
-                opacity: 0,
-                y: -20,
-                ease: "power2.inOut"
-            });
+            })
+                .to(contentWrapperRef.current, { y: -30, opacity: 0.85, ease: "none" }, 0)
+                .to(actionsRef.current, { scale: 0.97, opacity: 0.95, ease: "none" }, 0.1);
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [mounted, shouldReduceMotion, isMobile]);
+    }, [shouldReduceMotion, isMobile]);
 
     return (
         <section
@@ -368,29 +363,53 @@ export function Hero() {
 
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
-                        <DentalScanner
-                            videoLoaded={videoLoaded}
-                            setVideoLoaded={setVideoLoaded}
-                            start={canStartSequence}
-                            isMobile={isMobile}
-                        />
+                        <AnimatePresence mode="wait">
+                            {phase === 'rotating' ? (
+                                <m.div
+                                    key="intro"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0, scale: 1.05 }}
+                                    transition={{ duration: 0.4 }}
+                                    className="absolute inset-0 flex items-center justify-center"
+                                >
+                                    <IntroSequence
+                                        onComplete={() => setPhase('scanning')}
+                                        isMobile={isMobile}
+                                    />
+                                </m.div>
+                            ) : (
+                                <m.div
+                                    key="scanner"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.6, ease: "easeOut" }}
+                                    className="absolute inset-0 flex items-center justify-center"
+                                >
+                                    <DentalScanner
+                                        onLoaded={() => setScannerAssetsLoaded(true)}
+                                        isMobile={isMobile}
+                                    />
+                                </m.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </m.div>
 
                 {/* Ambient Particles (Disabled for cleaner look) */}
                 {/* {!shouldReduceMotion && <AmbientParticles />} */}
 
-                {/* Main Content */}
+                {/* Main Content (Text) - Always on top */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-[50] w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
+                    className="relative z-[101] w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
                     style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '120px 24px 100px' : '160px 6vw 140px', width: '100%', position: 'absolute', inset: 0, justifyContent: 'center' }}
                 >
                     <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
                         <m.h1
                             ref={titleRef}
                             initial={{ opacity: 0, y: 50, filter: "blur(14px)" }}
-                            animate={(mounted && videoLoaded && canStartSequence) ? {
+                            animate={(mounted && canStartSequence) ? {
                                 opacity: 1,
                                 y: 0,
                                 filter: "blur(0px)"
@@ -404,17 +423,17 @@ export function Hero() {
                                 ease: [0.16, 1, 0.3, 1],
                                 delay: isMobile ? 1.5 : 4.5
                             }}
-                            className="font-editorial text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 52 : 40 }}
+                            className="font-display text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000 font-black uppercase tracking-[0.05em]" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 52 : 40 }}
                         >
-                            <span className="block mb-1 lg:mb-2 font-bold font-editorial">Seu sorriso,</span>
-                            <span className="block italic font-normal text-[var(--color-creme)]">sua assinatura.</span>
+                            <span className="block mb-1 lg:mb-2 text-glitch" data-text="Seu sorriso,">Seu sorriso,</span>
+                            <span className="block font-black text-[var(--color-creme)] text-glitch" data-text="sua assinatura.">sua assinatura.</span>
                         </m.h1>
 
                         <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                                animate={(mounted && videoLoaded && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
+                                animate={(mounted && (scannerAssetsLoaded || phase === 'rotating') && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
                                 transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
                                 className="text-[16px] lg:text-[18px] font-semibold lg:font-normal text-center lg:text-left text-white/90"
                             >
@@ -457,7 +476,7 @@ export function Hero() {
                                 <m.button
                                     onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
                                     initial={{ opacity: 0, y: 10 }}
-                                    animate={(mounted && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
+                                    animate={(canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
                                     transition={{ delay: isMobile ? 0.9 : 4.7, duration: 1.5 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
