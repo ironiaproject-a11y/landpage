@@ -18,6 +18,17 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameIndexRef = useRef(0);
+    const [interactionHappened, setInteractionHappened] = useState(false);
+
+    useEffect(() => {
+        const handleInteraction = () => setInteractionHappened(true);
+        window.addEventListener('mousemove', handleInteraction, { once: true, passive: true });
+        window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
+        return () => {
+            window.removeEventListener('mousemove', handleInteraction);
+            window.removeEventListener('touchstart', handleInteraction);
+        };
+    }, []);
 
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
@@ -119,14 +130,21 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
         const animate = (time: number) => {
             if (time - lastTime >= interval) {
                 if (start) {
-                    // On mobile, skip frames if they aren't loaded to keep the "speed" consistent
-                    // or if we explicitly load only half frames.
-                    const increment = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
-                    frameIndexRef.current = (frameIndexRef.current + increment) % TOTAL_FRAMES;
+                    if (interactionHappened) {
+                        // Reverse Loop
+                        const decrement = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
+                        frameIndexRef.current = (frameIndexRef.current - decrement + TOTAL_FRAMES) % TOTAL_FRAMES;
+                    } else {
+                        // Forward Play
+                        const increment = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
+                        frameIndexRef.current = (frameIndexRef.current + increment) % TOTAL_FRAMES;
+                    }
 
-                    // Safety check for mobile frame skipping
+                    // Safety check for mobile frame skipping (both directions)
                     if (isMobile && frameIndexRef.current >= CRITICAL_BATCH && !framesRef.current[frameIndexRef.current]) {
-                        frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                        frameIndexRef.current = interactionHappened
+                            ? (frameIndexRef.current - 1 + TOTAL_FRAMES) % TOTAL_FRAMES
+                            : (frameIndexRef.current + 1) % TOTAL_FRAMES;
                     }
                 } else {
                     frameIndexRef.current = 0;
