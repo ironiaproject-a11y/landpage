@@ -85,15 +85,17 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         Promise.all(criticalPromises).then(loadRemaining);
 
-        // Animation loop — lower FPS on mobile to avoid jank
+        // Animation loop — unified 60 FPS for maximum smoothness
         let frameId: number;
         let lastTime = 0;
-        const fps = isMobile ? 24 : 60;
+        const fps = 60;
         const interval = 1000 / fps;
+
+        // Cache context to avoid expensive calls in the loop
+        const ctx = canvasRef.current?.getContext('2d', { alpha: false });
 
         const drawFrame = () => {
             const canvas = canvasRef.current;
-            const ctx = canvas?.getContext('2d', { alpha: false });
             const img = framesRef.current[frameIndexRef.current];
 
             if (canvas && ctx && img && img.complete) {
