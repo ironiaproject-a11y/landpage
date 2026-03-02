@@ -364,11 +364,15 @@ export function Hero() {
 
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
-                        <FrameSequence
-                            videoLoaded={videoLoaded}
-                            setVideoLoaded={setVideoLoaded}
-                            start={canStartSequence}
-                            isMobile={isMobile}
+                        <video
+                            src="/hero-background.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
+                            style={{ filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)', transition: 'filter 400ms ease' }}
+                            onLoadedData={() => setVideoLoaded(true)}
                         />
                     </div>
                 </m.div>
@@ -422,6 +426,7 @@ export function Hero() {
                         <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9 pointer-events-auto" style={{ gap: isMobile ? 16 : 20 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
+                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
                                     transition={{ delay: isMobile ? 0.6 : 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
@@ -450,6 +455,7 @@ export function Hero() {
 
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
+                                    onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={(mounted && canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
                                     transition={{ delay: isMobile ? 0.9 : 4.7, duration: 1.5 }}
