@@ -21,12 +21,11 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-        // On mobile load fewer critical frames to show content faster
-        const CRITICAL_BATCH = isMobile ? 15 : 30;
-        const REMAINING_BATCH_SIZE = isMobile ? 10 : 20;
+        // Load more critical frames upfront to ensure smooth start (approx 1s of content)
+        const CRITICAL_BATCH = isMobile ? 40 : 60;
+        const REMAINING_BATCH_SIZE = isMobile ? 20 : 40;
         let criticalLoaded = 0;
 
-        // Load a single frame (returns a promise)
         const loadFrame = (i: number): Promise<void> => {
             return new Promise<void>((resolve) => {
                 const img = new Image();
@@ -34,12 +33,11 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
                     imageElements[i] = img;
                     resolve();
                 };
-                img.onerror = () => resolve(); // Don't block on error
+                img.onerror = () => resolve();
                 img.src = `/assets/hero-frames/frame-${i}.gif`;
             });
         };
 
-        // Phase 1: Load critical frames immediately
         const criticalPromises = Array.from({ length: CRITICAL_BATCH }, (_, i) =>
             loadFrame(i).then(() => {
                 criticalLoaded++;
@@ -54,7 +52,6 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             })
         );
 
-        // Phase 2: Load remaining frames using idle time (smoother on mobile)
         const loadRemaining = () => {
             const remaining = TOTAL_FRAMES - CRITICAL_BATCH;
             const batches = Math.ceil(remaining / REMAINING_BATCH_SIZE);
@@ -63,14 +60,16 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             const scheduleNextBatch = () => {
                 if (b >= batches) return;
                 const scheduleFn = typeof requestIdleCallback !== 'undefined'
-                    ? (cb: () => void) => requestIdleCallback(cb, { timeout: 2000 })
-                    : (cb: () => void) => setTimeout(cb, isMobile ? 800 : 300);
+                    ? (cb: () => void) => requestIdleCallback(cb, { timeout: 1000 })
+                    : (cb: () => void) => setTimeout(cb, isMobile ? 200 : 100);
 
                 scheduleFn(() => {
                     const batchStart = CRITICAL_BATCH + b * REMAINING_BATCH_SIZE;
                     const batchEnd = Math.min(batchStart + REMAINING_BATCH_SIZE, TOTAL_FRAMES);
                     const promises: Promise<void>[] = [];
                     for (let i = batchStart; i < batchEnd; i++) {
+                        // On mobile, only load every 2nd frame after the critical batch to save 50% memory
+                        if (isMobile && i % 2 !== 0) continue;
                         promises.push(loadFrame(i).then(() => {
                             framesRef.current = imageElements;
                         }));
@@ -85,13 +84,12 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         Promise.all(criticalPromises).then(loadRemaining);
 
-        // Animation loop — unified 60 FPS for maximum smoothness
         let frameId: number;
         let lastTime = 0;
+        // Animation loop — unified 60 FPS for maximum smoothness
         const fps = 60;
         const interval = 1000 / fps;
 
-        // Cache context to avoid expensive calls in the loop
         const ctx = canvasRef.current?.getContext('2d', { alpha: false });
 
         const drawFrame = () => {
@@ -103,7 +101,6 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
                 const imgAspect = img.naturalWidth / img.naturalHeight;
 
                 let drawWidth, drawHeight, offsetX, offsetY;
-
                 if (canvasAspect > imgAspect) {
                     drawWidth = canvas.width;
                     drawHeight = canvas.width / imgAspect;
@@ -115,7 +112,6 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
                     offsetX = (canvas.width - drawWidth) / 2;
                     offsetY = 0;
                 }
-
                 ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             }
         };
@@ -123,7 +119,15 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
         const animate = (time: number) => {
             if (time - lastTime >= interval) {
                 if (start) {
-                    frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                    // On mobile, skip frames if they aren't loaded to keep the "speed" consistent
+                    // or if we explicitly load only half frames.
+                    const increment = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
+                    frameIndexRef.current = (frameIndexRef.current + increment) % TOTAL_FRAMES;
+
+                    // Safety check for mobile frame skipping
+                    if (isMobile && frameIndexRef.current >= CRITICAL_BATCH && !framesRef.current[frameIndexRef.current]) {
+                        frameIndexRef.current = (frameIndexRef.current + 1) % TOTAL_FRAMES;
+                    }
                 } else {
                     frameIndexRef.current = 0;
                 }
