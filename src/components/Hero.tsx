@@ -365,6 +365,15 @@ export function Hero() {
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
                         <video
+                            ref={(el) => {
+                                if (el) {
+                                    el.defaultMuted = true;
+                                    el.muted = true;
+                                    el.playsInline = true;
+                                    // Try to force play as soon as element is available
+                                    el.play().catch(() => { });
+                                }
+                            }}
                             src="/hero-background.mp4"
                             autoPlay
                             loop
@@ -372,12 +381,15 @@ export function Hero() {
                             playsInline
                             className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
                             style={{ filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)', transition: 'filter 400ms ease' }}
-                            onLoadedData={() => {
+                            onLoadedData={(e) => {
                                 setVideoLoaded(true);
                                 if (typeof window !== "undefined") {
                                     (window as any).__HERO_ASSETS_LOADED__ = true;
                                     window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
                                 }
+                                // Ensure video plays once data is loaded
+                                const videoElement = e.target as HTMLVideoElement;
+                                videoElement.play().catch(() => { });
                             }}
                         />
                     </div>
