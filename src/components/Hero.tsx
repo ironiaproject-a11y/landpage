@@ -220,62 +220,8 @@ export function Hero() {
         }
     }, []);
 
-    // Aggressive Autoplay Enforcer & Native Setup
-    useEffect(() => {
-        if (!mounted) return;
-
-        // Since we are using dangerouslySetInnerHTML, find the video manually
-        const videoElement = document.querySelector('video[src="/hero-background.mp4"]') as HTMLVideoElement;
-
-        const forcePlay = () => {
-            if (heroVideoRef.current && heroVideoRef.current.paused) {
-                heroVideoRef.current.play().catch(() => { });
-            }
-        };
-
-        if (videoElement) {
-            heroVideoRef.current = videoElement;
-            videoElement.defaultMuted = true;
-            videoElement.muted = true;
-
-            const handleLoad = () => {
-                setVideoLoaded(true);
-                if (typeof window !== "undefined") {
-                    (window as any).__HERO_ASSETS_LOADED__ = true;
-                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-                }
-                forcePlay();
-            };
-
-            if (videoElement.readyState >= 3) {
-                handleLoad();
-            } else {
-                videoElement.addEventListener('loadeddata', handleLoad);
-            }
-        }
-
-        // Attempt to play immediately on mount/update
-        forcePlay();
-
-        // 1. Constantly poll and enforce play state every second
-        const playInterval = setInterval(forcePlay, 1000);
-
-        // 2. Play on any user interaction (best chance to bypass iOS/Safari locks)
-        const handleInteraction = () => {
-            forcePlay();
-        };
-
-        window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
-        window.addEventListener('click', handleInteraction, { once: true, passive: true });
-        window.addEventListener('scroll', handleInteraction, { once: true, passive: true });
-
-        return () => {
-            clearInterval(playInterval);
-            window.removeEventListener('touchstart', handleInteraction);
-            window.removeEventListener('click', handleInteraction);
-            window.removeEventListener('scroll', handleInteraction);
-        };
-    }, [mounted]);
+    // FrameSequence handles its own asset loading and preloader signaling.
+    // The previous video-based aggressive autoplay polling is no longer needed.
 
     // Analytics (Mock)
     const logEvent = (eventName: string, params?: any) => {
@@ -384,7 +330,7 @@ export function Hero() {
                         ref={videoWrapperRef}
                         className="absolute inset-0 z-0 origin-center will-change-transform"
                         style={{
-                            transform: `scale(1.02)`,
+                            transform: 'scale(1.02)',
                             transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}
                     >
@@ -422,23 +368,11 @@ export function Hero() {
 
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
-                        <div
-                            className="absolute inset-0 w-full h-full"
-                            dangerouslySetInnerHTML={{
-                                __html: `
-                                <video
-                                    src="/hero-background.mp4"
-                                    autoplay
-                                    loop
-                                    muted
-                                    playsinline
-                                    controls="false"
-                                    disablepictureinpicture
-                                    disableremoteplayback
-                                    style="width: 100%; height: 100%; object-fit: cover; object-position: center; filter: ${isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)'}; transition: filter 400ms ease;"
-                                ></video>
-                                `
-                            }}
+                        <FrameSequence
+                            videoLoaded={videoLoaded}
+                            setVideoLoaded={setVideoLoaded}
+                            start={canStartSequence}
+                            isMobile={isMobile}
                         />
                     </div>
                 </m.div>
