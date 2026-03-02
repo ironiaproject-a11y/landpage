@@ -372,7 +372,13 @@ export function Hero() {
                             playsInline
                             className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
                             style={{ filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)', transition: 'filter 400ms ease' }}
-                            onLoadedData={() => setVideoLoaded(true)}
+                            onLoadedData={() => {
+                                setVideoLoaded(true);
+                                if (typeof window !== "undefined") {
+                                    (window as any).__HERO_ASSETS_LOADED__ = true;
+                                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                                }
+                            }}
                         />
                     </div>
                 </m.div>

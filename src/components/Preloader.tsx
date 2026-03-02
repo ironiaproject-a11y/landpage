@@ -29,8 +29,16 @@ export function Preloader() {
 
         window.addEventListener("hero-assets-loaded", handleAssetsLoaded);
 
+        // Failsafe timeout to force loading finish after 5 seconds
+        const safetyTimer = setTimeout(() => {
+            assetsLoaded = true;
+            minTimeElapsed = true;
+            checkExit();
+        }, 5000);
+
         return () => {
             clearTimeout(timer);
+            clearTimeout(safetyTimer);
             window.removeEventListener("hero-assets-loaded", handleAssetsLoaded);
         };
     }, []);
