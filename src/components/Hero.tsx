@@ -12,213 +12,165 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const TOTAL_FRAMES = 192;
+// Removing TOTAL_FRAMES as it's no longer used for the scanner logic
 
-const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean, isMobile: boolean }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+const DentalScanner = ({ videoLoaded, setVideoLoaded, start, isMobile }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean, isMobile: boolean }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const framesRef = useRef<HTMLImageElement[]>([]);
-    const frameIndexRef = useRef({ frame: 0 }); // Use an object for GSAP proxy
-    const isInteractedRef = useRef(false);
-    const autoHintTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const scannerRef = useRef<HTMLDivElement>(null);
+    const cursorRef = useRef<HTMLDivElement>(null);
+    const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+    const [isInteracting, setIsInteracting] = useState(false);
+    const [isAutoAnimating, setIsAutoAnimating] = useState(true);
 
-    // Preload images
+    // Initial Assets Loading
     useEffect(() => {
-        const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+        const estetica = new Image();
+        const raiox = new Image();
         let loadedCount = 0;
-        let isCancelled = false;
 
-        const loadFrame = (i: number): Promise<void> => {
-            return new Promise<void>((resolve) => {
-                const img = new Image();
-                img.onload = () => {
-                    if (isCancelled) return;
-                    imageElements[i] = img;
-                    loadedCount++;
-                    resolve();
-                };
-                img.onerror = () => {
-                    if (isCancelled) return;
-                    loadedCount++; // Ignore errors to prevent infinite hang
-                    resolve();
-                };
-                // Format name like: frame_000_delay-0.041s.png
-                const paddedIndex = i.toString().padStart(3, '0');
-                img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
-            });
-        };
-
-        const loadPromises = Array.from({ length: TOTAL_FRAMES }, (_, i) => loadFrame(i));
-
-        // Create a safety timeout promise
-        const timeoutPromise = new Promise<void>((resolve) => {
-            setTimeout(() => {
-                resolve(); // Force resolve after 8 seconds max
-            }, 8000);
-        });
-
-        Promise.race([Promise.all(loadPromises), timeoutPromise]).then(() => {
-            if (isCancelled) return;
-            framesRef.current = imageElements;
-            setVideoLoaded(true);
-            if (typeof window !== "undefined") {
-                (window as any).__HERO_ASSETS_LOADED__ = true;
-                window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+        const handleLoad = () => {
+            loadedCount++;
+            if (loadedCount === 2) {
+                setVideoLoaded(true);
             }
-        });
-
-        // Cleanup
-        return () => {
-            isCancelled = true;
-            framesRef.current = [];
         };
+
+        estetica.onload = handleLoad;
+        raiox.onload = handleLoad;
+        estetica.src = "/assets/images/dente-estetica.webp";
+        raiox.src = "/assets/images/dente-raio-x.webp";
     }, [setVideoLoaded]);
 
-    const drawFrame = useCallback(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d', { alpha: false });
-        // Make sure we clamp to int, and don't go out of bounds
-        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndexRef.current.frame)));
-        const img = framesRef.current[idx];
-
-        if (canvas && ctx && img && img.complete) {
-            // Respect Device Pixel Ratio
-            const dpr = window.devicePixelRatio || 1;
-            const displayWidth = canvas.clientWidth;
-            const displayHeight = canvas.clientHeight;
-
-            // Set actual size in memory (scaled for retina)
-            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
-                canvas.width = displayWidth * dpr;
-                canvas.height = displayHeight * dpr;
-                ctx.scale(dpr, dpr);
-            }
-
-            // Fill bg
-            ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(0, 0, displayWidth, displayHeight);
-
-            const canvasAspect = displayWidth / displayHeight;
-            const imgAspect = img.naturalWidth / img.naturalHeight;
-
-            let drawWidth, drawHeight, offsetX, offsetY;
-
-            // "contain" equivalent drawing logic
-            if (canvasAspect > imgAspect) {
-                // Canvas is wider than image (fit to height)
-                drawHeight = displayHeight;
-                drawWidth = displayHeight * imgAspect;
-                offsetX = (displayWidth - drawWidth) / 2;
-                offsetY = 0;
-            } else {
-                // Image is wider than canvas (fit to width)
-                drawWidth = displayWidth;
-                drawHeight = displayWidth / imgAspect;
-                offsetX = 0;
-                offsetY = (displayHeight - drawHeight) / 2;
-            }
-
-            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-        }
-    }, []);
-
-    // Initial render and resize handling
+    // GSAP Interactions & Auto-Intro
     useEffect(() => {
-        if (!videoLoaded || !start) return;
-
-        let resizeTimer: NodeJS.Timeout;
-        const handleResize = () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(drawFrame, 50); // Debounce
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        // Initial Draw
-        drawFrame();
-
-        // 3. Auto-hint functionality
-        autoHintTimerRef.current = setTimeout(() => {
-            if (!isInteractedRef.current && framesRef.current.length > 0) {
-                gsap.to(frameIndexRef.current, {
-                    frame: Math.min(40, TOTAL_FRAMES - 1),
-                    duration: 1.5,
-                    ease: "power2.inOut",
-                    yoyo: true,
-                    repeat: 1,
-                    onUpdate: drawFrame
-                });
-            }
-        }, 3000);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            if (autoHintTimerRef.current) clearTimeout(autoHintTimerRef.current);
-            gsap.killTweensOf(frameIndexRef.current);
-        };
-    }, [videoLoaded, start, drawFrame]);
-
-    // Handle Input Interaction
-    const handleMove = (clientX: number) => {
         if (!videoLoaded || !start || !containerRef.current) return;
 
-        isInteractedRef.current = true;
-        if (autoHintTimerRef.current) {
-            clearTimeout(autoHintTimerRef.current);
-            autoHintTimerRef.current = null;
-        }
+        const container = containerRef.current;
+        const rect = container.getBoundingClientRect();
 
-        const rect = containerRef.current.getBoundingClientRect();
-        // Calculate progress (0 to 1)
-        let progress = (clientX - rect.left) / rect.width;
-        progress = Math.max(0, Math.min(1, progress));
+        // Initial center position
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-        const targetFrame = Math.round(progress * (TOTAL_FRAMES - 1));
-
-        gsap.to(frameIndexRef.current, {
-            frame: targetFrame,
-            duration: 0.6,
-            ease: "power2.out",
-            overwrite: "auto",
-            onUpdate: drawFrame
+        // 3. Auto-Intro Animation
+        const introTl = gsap.timeline({
+            onComplete: () => setIsAutoAnimating(false)
         });
+
+        // Setup initial state (using CSS variables for clip-path)
+        gsap.set(container, { "--mask-size": "0px", "--x": `${centerX}px`, "--y": `${centerY}px` });
+
+        introTl
+            .to(container, { "--mask-size": "150px", duration: 1, ease: "back.out(1.7)" })
+            .to(container, { "--x": `${rect.width * 0.2}px`, duration: 1.2, ease: "power2.inOut" })
+            .to(container, { "--x": `${rect.width * 0.8}px`, duration: 1.5, ease: "power2.inOut" })
+            .to(container, { "--x": `${centerX}px`, duration: 1.2, ease: "power2.inOut" });
+
+        // Continuous LERP for smooth follow
+        const quickSetterX = gsap.quickSetter(container, "--x", "px");
+        const quickSetterY = gsap.quickSetter(container, "--y", "px");
+        const cursorSetterX = gsap.quickSetter(cursorRef.current, "x", "px");
+        const cursorSetterY = gsap.quickSetter(cursorRef.current, "y", "px");
+
+        const ticker = () => {
+            if (isAutoAnimating) return;
+
+            // Slerp style inertia (0.1 for 10% movement per frame)
+            mousePos.current.x += (mousePos.current.targetX - mousePos.current.x) * 0.1;
+            mousePos.current.y += (mousePos.current.targetY - mousePos.current.y) * 0.1;
+
+            quickSetterX(mousePos.current.x);
+            quickSetterY(mousePos.current.y);
+            cursorSetterX(mousePos.current.x);
+            cursorSetterY(mousePos.current.y);
+        };
+
+        gsap.ticker.add(ticker);
+
+        return () => {
+            gsap.ticker.remove(ticker);
+            introTl.kill();
+        };
+    }, [videoLoaded, start, isAutoAnimating]);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (isAutoAnimating || !containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        mousePos.current.targetX = e.clientX - rect.left;
+        mousePos.current.targetY = e.clientY - rect.top;
     };
 
-    const onMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
-    const onTouchMove = (e: React.TouchEvent) => {
-        // Prevent default scrolling occasionally, but standard passive scroll is better UX. 
-        // We will just listen.
-        handleMove(e.touches[0].clientX);
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (isAutoAnimating || !containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const touch = e.touches[0];
+
+        // Mobile offset: move the mask slightly above the finger so it's not covered
+        const offset = isMobile ? -60 : 0;
+        mousePos.current.targetX = touch.clientX - rect.left;
+        mousePos.current.targetY = touch.clientY - rect.top + offset;
     };
 
     return (
-        <m.div
+        <div
             ref={containerRef}
-            initial={{ scale: 1.15 }}
-            animate={(videoLoaded && start) ? { scale: 1 } : { scale: 1.15 }}
-            transition={{ duration: 2.5, ease: "easeOut" }}
-            className={`w-full h-full relative cursor-ew-resize transition-opacity duration-1500 ${(start) ? 'opacity-100 lg:opacity-60' : 'opacity-0'}`}
-            onMouseMove={onMouseMove}
-            onTouchMove={onTouchMove}
-            style={{ touchAction: 'pan-y' }} // Allow vertical scroll but disable horizontal swipe back
+            className="relative w-full h-[60vh] lg:h-[70vh] max-w-[1200px] mx-auto overflow-hidden select-none"
+            onMouseMove={handleMouseMove}
+            onTouchMove={handleTouchMove}
+            onMouseEnter={() => !isAutoAnimating && setIsInteracting(true)}
+            onMouseLeave={() => setIsInteracting(false)}
+            style={{
+                cursor: 'none',
+                touchAction: 'none'
+            } as any}
         >
+            {/* Base Image: Estética */}
+            <img
+                src="/assets/images/dente-estetica.webp"
+                alt="Dente Estética"
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-1000"
+                style={{ opacity: videoLoaded ? 1 : 0 }}
+            />
+
+            {/* Overlaid Image: Raio-X with Mask */}
+            <div
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{
+                    clipPath: `circle(var(--mask-size, 150px) at var(--x, 50%) var(--y, 50%))`,
+                    WebkitClipPath: `circle(var(--mask-size, 150px) at var(--x, 50%) var(--y, 50%))`
+                } as any}
+            >
+                <img
+                    src="/assets/images/dente-raio-x.webp"
+                    alt="Dente Raio-X"
+                    className="w-full h-full object-contain"
+                />
+            </div>
+
+            {/* Custom Scanner Cursor */}
+            <div
+                ref={cursorRef}
+                className={`fixed top-0 left-0 w-[150px] h-[150px] rounded-full border-2 border-[#C7A86B] pointer-events-none z-50 flex items-center justify-center transition-opacity duration-300 ${isInteracting && !isAutoAnimating ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                    marginTop: '-75px',
+                    marginLeft: '-75px',
+                    boxShadow: '0 0 30px rgba(199, 168, 107, 0.4), inset 0 0 20px rgba(199, 168, 107, 0.2)'
+                }}
+            >
+                <div className="w-1 h-1 bg-[#C7A86B] rounded-full shadow-[0_0_10px_#C7A86B]" />
+                <div className="absolute inset-[-4px] rounded-full border border-[#C7A86B]/30 animate-pulse" />
+            </div>
+
+            {/* Loading Indicator */}
             {!videoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center z-50">
+                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-50">
                     <div className="flex flex-col items-center gap-4">
                         <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
-                        <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Carregando Modelo 3D</span>
+                        <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Iniciando Scanner</span>
                     </div>
                 </div>
             )}
-            <canvas
-                ref={canvasRef}
-                className={`absolute inset-0 w-full h-full object-contain ${!videoLoaded ? 'opacity-0' : 'opacity-100'}`}
-                style={{
-                    filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)',
-                    transition: 'filter 400ms ease, opacity 800ms ease'
-                }}
-            />
-        </m.div>
+        </div>
     );
 };
 
@@ -416,7 +368,7 @@ export function Hero() {
 
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
-                        <FrameSequence
+                        <DentalScanner
                             videoLoaded={videoLoaded}
                             setVideoLoaded={setVideoLoaded}
                             start={canStartSequence}
