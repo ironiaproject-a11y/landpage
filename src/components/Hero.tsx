@@ -179,7 +179,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             cancelAnimationFrame(frameId);
             window.removeEventListener('resize', handleResize);
         };
-    }, [setVideoLoaded, start, isMobile, interactionHappened]); // Re-run when isMobile or interaction changes
+    }, [setVideoLoaded, start, isMobile, interactionHappened, scrollVelocity]); // Re-run when isMobile, interaction, or scrollVelocity changes
 
 
     // Breathe entrance animation (initial zoom out)
