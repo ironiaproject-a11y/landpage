@@ -26,16 +26,19 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
+        let isCancelled = false;
 
         const loadFrame = (i: number): Promise<void> => {
             return new Promise<void>((resolve) => {
                 const img = new Image();
                 img.onload = () => {
+                    if (isCancelled) return;
                     imageElements[i] = img;
                     loadedCount++;
                     resolve();
                 };
                 img.onerror = () => {
+                    if (isCancelled) return;
                     loadedCount++; // Ignore errors to prevent infinite hang
                     resolve();
                 };
@@ -45,9 +48,17 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             });
         };
 
-        const promises = Array.from({ length: TOTAL_FRAMES }, (_, i) => loadFrame(i));
+        const loadPromises = Array.from({ length: TOTAL_FRAMES }, (_, i) => loadFrame(i));
 
-        Promise.all(promises).then(() => {
+        // Create a safety timeout promise
+        const timeoutPromise = new Promise<void>((resolve) => {
+            setTimeout(() => {
+                resolve(); // Force resolve after 8 seconds max
+            }, 8000);
+        });
+
+        Promise.race([Promise.all(loadPromises), timeoutPromise]).then(() => {
+            if (isCancelled) return;
             framesRef.current = imageElements;
             setVideoLoaded(true);
             if (typeof window !== "undefined") {
@@ -58,6 +69,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         // Cleanup
         return () => {
+            isCancelled = true;
             framesRef.current = [];
         };
     }, [setVideoLoaded]);
