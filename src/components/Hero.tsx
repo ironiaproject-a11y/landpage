@@ -99,8 +99,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         let frameId: number;
         let lastTime = 0;
-        // Animation loop — 30 FPS for a more harmonious, cinematic feel
-        const fps = 30;
+        // Animation loop — 22 FPS for a slower, more harmonious cinematic feel
+        const fps = 22;
         const interval = 1000 / fps;
 
         const ctx = canvasRef.current?.getContext('2d', { alpha: false });
@@ -133,8 +133,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             if (time - lastTime >= interval) {
                 if (start) {
                     const velocity = scrollVelocity.get();
-                    // Direction: Forward if scrolling down fast, otherwise Reverse (Paradex)
-                    const isReversing = interactionHappened && velocity <= 10;
+                    // Direction: Reverse only when scrolling UP. Otherwise, Forward.
+                    const isReversing = velocity < -10;
 
                     if (isReversing) {
                         // Reverse Loop
