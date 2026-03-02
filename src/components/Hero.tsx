@@ -20,17 +20,6 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
     const frameIndexRef = useRef(0);
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
-    const [interactionHappened, setInteractionHappened] = useState(false);
-
-    useEffect(() => {
-        const handleInteraction = () => setInteractionHappened(true);
-        window.addEventListener('mousemove', handleInteraction, { once: true, passive: true });
-        window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
-        return () => {
-            window.removeEventListener('mousemove', handleInteraction);
-            window.removeEventListener('touchstart', handleInteraction);
-        };
-    }, []);
 
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
@@ -179,7 +168,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
             cancelAnimationFrame(frameId);
             window.removeEventListener('resize', handleResize);
         };
-    }, [setVideoLoaded, start, isMobile, interactionHappened, scrollVelocity]); // Re-run when isMobile, interaction, or scrollVelocity changes
+    }, [setVideoLoaded, start, isMobile, scrollVelocity]); // Re-run when isMobile, start or scrollVelocity changes
 
 
     // Breathe entrance animation (initial zoom out)
@@ -252,11 +241,6 @@ export function Hero() {
 
     // FrameSequence handles its own asset loading and preloader signaling.
     // The previous video-based aggressive autoplay polling is no longer needed.
-
-    // Analytics (Mock)
-    const logEvent = (eventName: string, params?: any) => {
-        console.log(`[Analytics] ${eventName}`, params);
-    };
 
     // GSAP Scroll & Entrance Animations
     useEffect(() => {
