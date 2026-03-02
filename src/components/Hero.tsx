@@ -1,6 +1,6 @@
 "use client";
 
-import { m, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
+import { m, useScroll, useTransform, useReducedMotion, AnimatePresence, useVelocity } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
@@ -18,6 +18,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameIndexRef = useRef(0);
+    const { scrollY } = useScroll();
+    const scrollVelocity = useVelocity(scrollY);
     const [interactionHappened, setInteractionHappened] = useState(false);
 
     useEffect(() => {
@@ -97,8 +99,8 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
         let frameId: number;
         let lastTime = 0;
-        // Animation loop — unified 60 FPS for maximum smoothness
-        const fps = 60;
+        // Animation loop — 30 FPS for a more harmonious, cinematic feel
+        const fps = 30;
         const interval = 1000 / fps;
 
         const ctx = canvasRef.current?.getContext('2d', { alpha: false });
@@ -130,7 +132,11 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
         const animate = (time: number) => {
             if (time - lastTime >= interval) {
                 if (start) {
-                    if (interactionHappened) {
+                    const velocity = scrollVelocity.get();
+                    // Direction: Forward if scrolling down fast, otherwise Reverse (Paradex)
+                    const isReversing = interactionHappened && velocity <= 10;
+
+                    if (isReversing) {
                         // Reverse Loop
                         const decrement = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
                         frameIndexRef.current = (frameIndexRef.current - decrement + TOTAL_FRAMES) % TOTAL_FRAMES;
@@ -142,7 +148,7 @@ const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { video
 
                     // Safety check for mobile frame skipping (both directions)
                     if (isMobile && frameIndexRef.current >= CRITICAL_BATCH && !framesRef.current[frameIndexRef.current]) {
-                        frameIndexRef.current = interactionHappened
+                        frameIndexRef.current = isReversing
                             ? (frameIndexRef.current - 1 + TOTAL_FRAMES) % TOTAL_FRAMES
                             : (frameIndexRef.current + 1) % TOTAL_FRAMES;
                     }
