@@ -180,6 +180,7 @@ export function Hero() {
     const progressLineRef = useRef<HTMLDivElement>(null);
     const scrollHintRef = useRef<HTMLDivElement>(null);
     const overlayDarkRef = useRef<HTMLDivElement>(null);
+    const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
     const [mounted, setMounted] = useState(false);
     const [videoLoaded, setVideoLoaded] = useState(false);
@@ -218,6 +219,39 @@ export function Hero() {
             };
         }
     }, []);
+
+    // Aggressive Autoplay Enforcer
+    useEffect(() => {
+        if (!mounted) return;
+
+        const forcePlay = () => {
+            if (heroVideoRef.current && heroVideoRef.current.paused) {
+                heroVideoRef.current.play().catch(() => { });
+            }
+        };
+
+        // Attempt to play immediately on mount/update
+        forcePlay();
+
+        // 1. Constantly poll and enforce play state every second
+        const playInterval = setInterval(forcePlay, 1000);
+
+        // 2. Play on any user interaction (best chance to bypass iOS/Safari locks)
+        const handleInteraction = () => {
+            forcePlay();
+        };
+
+        window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
+        window.addEventListener('click', handleInteraction, { once: true, passive: true });
+        window.addEventListener('scroll', handleInteraction, { once: true, passive: true });
+
+        return () => {
+            clearInterval(playInterval);
+            window.removeEventListener('touchstart', handleInteraction);
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('scroll', handleInteraction);
+        };
+    }, [mounted]);
 
     // Analytics (Mock)
     const logEvent = (eventName: string, params?: any) => {
@@ -365,20 +399,15 @@ export function Hero() {
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
                         <video
-                            ref={(el) => {
-                                if (el) {
-                                    el.defaultMuted = true;
-                                    el.muted = true;
-                                    el.playsInline = true;
-                                    // Try to force play as soon as element is available
-                                    el.play().catch(() => { });
-                                }
-                            }}
+                            ref={heroVideoRef}
                             src="/hero-background.mp4"
                             autoPlay
                             loop
                             muted
                             playsInline
+                            controls={false}
+                            disablePictureInPicture
+                            disableRemotePlayback
                             className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
                             style={{ filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)', transition: 'filter 400ms ease' }}
                             onLoadedData={(e) => {
