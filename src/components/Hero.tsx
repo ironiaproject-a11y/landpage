@@ -2,7 +2,7 @@
 
 import { m, useScroll, useTransform, useReducedMotion, AnimatePresence, useVelocity } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AmbientParticles } from "./AmbientParticles";
@@ -16,173 +16,195 @@ const TOTAL_FRAMES = 192;
 
 const FrameSequence = ({ videoLoaded, setVideoLoaded, start, isMobile }: { videoLoaded: boolean, setVideoLoaded: (v: boolean) => void, start: boolean, isMobile: boolean }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
-    const frameIndexRef = useRef(0);
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
+    const frameIndexRef = useRef({ frame: 0 }); // Use an object for GSAP proxy
+    const isInteractedRef = useRef(false);
+    const autoHintTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+    // Preload images
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-        // Load more critical frames upfront to ensure smooth start (approx 1s of content)
-        const CRITICAL_BATCH = isMobile ? 40 : 60;
-        const REMAINING_BATCH_SIZE = isMobile ? 20 : 40;
-        let criticalLoaded = 0;
+        let loadedCount = 0;
 
         const loadFrame = (i: number): Promise<void> => {
             return new Promise<void>((resolve) => {
                 const img = new Image();
                 img.onload = () => {
                     imageElements[i] = img;
+                    loadedCount++;
                     resolve();
                 };
-                img.onerror = () => resolve();
-                img.src = `/assets/hero-frames/frame-${i}.gif`;
+                img.onerror = () => {
+                    loadedCount++; // Ignore errors to prevent infinite hang
+                    resolve();
+                };
+                // Format name like: frame_000_delay-0.041s.png
+                const paddedIndex = i.toString().padStart(3, '0');
+                img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
             });
         };
 
-        const criticalPromises = Array.from({ length: CRITICAL_BATCH }, (_, i) =>
-            loadFrame(i).then(() => {
-                criticalLoaded++;
-                if (criticalLoaded === CRITICAL_BATCH) {
-                    framesRef.current = imageElements;
-                    setVideoLoaded(true);
-                    if (typeof window !== "undefined") {
-                        (window as any).__HERO_ASSETS_LOADED__ = true;
-                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-                    }
-                }
-            })
-        );
+        const promises = Array.from({ length: TOTAL_FRAMES }, (_, i) => loadFrame(i));
 
-        const loadRemaining = () => {
-            const remaining = TOTAL_FRAMES - CRITICAL_BATCH;
-            const batches = Math.ceil(remaining / REMAINING_BATCH_SIZE);
-            let b = 0;
-
-            const scheduleNextBatch = () => {
-                if (b >= batches) return;
-                const scheduleFn = typeof requestIdleCallback !== 'undefined'
-                    ? (cb: () => void) => requestIdleCallback(cb, { timeout: 1000 })
-                    : (cb: () => void) => setTimeout(cb, isMobile ? 200 : 100);
-
-                scheduleFn(() => {
-                    const batchStart = CRITICAL_BATCH + b * REMAINING_BATCH_SIZE;
-                    const batchEnd = Math.min(batchStart + REMAINING_BATCH_SIZE, TOTAL_FRAMES);
-                    const promises: Promise<void>[] = [];
-                    for (let i = batchStart; i < batchEnd; i++) {
-                        // On mobile, only load every 2nd frame after the critical batch to save 50% memory
-                        if (isMobile && i % 2 !== 0) continue;
-                        promises.push(loadFrame(i).then(() => {
-                            framesRef.current = imageElements;
-                        }));
-                    }
-                    b++;
-                    Promise.all(promises).then(scheduleNextBatch);
-                });
-            };
-
-            scheduleNextBatch();
-        };
-
-        Promise.all(criticalPromises).then(loadRemaining);
-
-        let frameId: number;
-        let lastTime = 0;
-        // Animation loop — 22 FPS for a slower, more harmonious cinematic feel
-        const fps = 22;
-        const interval = 1000 / fps;
-
-        const ctx = canvasRef.current?.getContext('2d', { alpha: false });
-
-        const drawFrame = () => {
-            const canvas = canvasRef.current;
-            const img = framesRef.current[frameIndexRef.current];
-
-            if (canvas && ctx && img && img.complete) {
-                const canvasAspect = canvas.width / canvas.height;
-                const imgAspect = img.naturalWidth / img.naturalHeight;
-
-                let drawWidth, drawHeight, offsetX, offsetY;
-                if (canvasAspect > imgAspect) {
-                    drawWidth = canvas.width;
-                    drawHeight = canvas.width / imgAspect;
-                    offsetX = 0;
-                    offsetY = (canvas.height - drawHeight) / 2;
-                } else {
-                    drawWidth = canvas.height * imgAspect;
-                    drawHeight = canvas.height;
-                    offsetX = (canvas.width - drawWidth) / 2;
-                    offsetY = 0;
-                }
-                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        Promise.all(promises).then(() => {
+            framesRef.current = imageElements;
+            setVideoLoaded(true);
+            if (typeof window !== "undefined") {
+                (window as any).__HERO_ASSETS_LOADED__ = true;
+                window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
             }
+        });
+
+        // Cleanup
+        return () => {
+            framesRef.current = [];
         };
+    }, [setVideoLoaded]);
 
-        const animate = (time: number) => {
-            if (time - lastTime >= interval) {
-                if (start) {
-                    const velocity = scrollVelocity.get();
-                    // Direction: Reverse only when scrolling UP. Otherwise, Forward.
-                    const isReversing = velocity < -10;
+    const drawFrame = useCallback(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d', { alpha: false });
+        // Make sure we clamp to int, and don't go out of bounds
+        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndexRef.current.frame)));
+        const img = framesRef.current[idx];
 
-                    if (isReversing) {
-                        // Reverse Loop
-                        const decrement = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
-                        frameIndexRef.current = (frameIndexRef.current - decrement + TOTAL_FRAMES) % TOTAL_FRAMES;
-                    } else {
-                        // Forward Play
-                        const increment = isMobile && frameIndexRef.current >= CRITICAL_BATCH ? 2 : 1;
-                        frameIndexRef.current = (frameIndexRef.current + increment) % TOTAL_FRAMES;
-                    }
+        if (canvas && ctx && img && img.complete) {
+            // Respect Device Pixel Ratio
+            const dpr = window.devicePixelRatio || 1;
+            const displayWidth = canvas.clientWidth;
+            const displayHeight = canvas.clientHeight;
 
-                    // Safety check for mobile frame skipping (both directions)
-                    if (isMobile && frameIndexRef.current >= CRITICAL_BATCH && !framesRef.current[frameIndexRef.current]) {
-                        frameIndexRef.current = isReversing
-                            ? (frameIndexRef.current - 1 + TOTAL_FRAMES) % TOTAL_FRAMES
-                            : (frameIndexRef.current + 1) % TOTAL_FRAMES;
-                    }
-                } else {
-                    frameIndexRef.current = 0;
-                }
-                drawFrame();
-                lastTime = time;
+            // Set actual size in memory (scaled for retina)
+            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+                canvas.width = displayWidth * dpr;
+                canvas.height = displayHeight * dpr;
+                ctx.scale(dpr, dpr);
             }
-            frameId = requestAnimationFrame(animate);
-        };
 
+            // Fill bg
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+            const canvasAspect = displayWidth / displayHeight;
+            const imgAspect = img.naturalWidth / img.naturalHeight;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            // "contain" equivalent drawing logic
+            if (canvasAspect > imgAspect) {
+                // Canvas is wider than image (fit to height)
+                drawHeight = displayHeight;
+                drawWidth = displayHeight * imgAspect;
+                offsetX = (displayWidth - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                // Image is wider than canvas (fit to width)
+                drawWidth = displayWidth;
+                drawHeight = displayWidth / imgAspect;
+                offsetX = 0;
+                offsetY = (displayHeight - drawHeight) / 2;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+    }, []);
+
+    // Initial render and resize handling
+    useEffect(() => {
+        if (!videoLoaded || !start) return;
+
+        let resizeTimer: NodeJS.Timeout;
         const handleResize = () => {
-            if (canvasRef.current && typeof window !== 'undefined') {
-                // Cap DPR at 1 on mobile to avoid rendering too many pixels
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2);
-                canvasRef.current.width = window.innerWidth * dpr;
-                canvasRef.current.height = window.innerHeight * dpr;
-                drawFrame();
-            }
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(drawFrame, 50); // Debounce
         };
 
         window.addEventListener('resize', handleResize);
-        handleResize();
 
-        frameId = requestAnimationFrame(animate);
+        // Initial Draw
+        drawFrame();
+
+        // 3. Auto-hint functionality
+        autoHintTimerRef.current = setTimeout(() => {
+            if (!isInteractedRef.current && framesRef.current.length > 0) {
+                gsap.to(frameIndexRef.current, {
+                    frame: Math.min(40, TOTAL_FRAMES - 1),
+                    duration: 1.5,
+                    ease: "power2.inOut",
+                    yoyo: true,
+                    repeat: 1,
+                    onUpdate: drawFrame
+                });
+            }
+        }, 3000);
+
         return () => {
-            cancelAnimationFrame(frameId);
             window.removeEventListener('resize', handleResize);
+            if (autoHintTimerRef.current) clearTimeout(autoHintTimerRef.current);
+            gsap.killTweensOf(frameIndexRef.current);
         };
-    }, [setVideoLoaded, start, isMobile, scrollVelocity]); // Re-run when isMobile, start or scrollVelocity changes
+    }, [videoLoaded, start, drawFrame]);
 
+    // Handle Input Interaction
+    const handleMove = (clientX: number) => {
+        if (!videoLoaded || !start || !containerRef.current) return;
 
-    // Breathe entrance animation (initial zoom out)
+        isInteractedRef.current = true;
+        if (autoHintTimerRef.current) {
+            clearTimeout(autoHintTimerRef.current);
+            autoHintTimerRef.current = null;
+        }
+
+        const rect = containerRef.current.getBoundingClientRect();
+        // Calculate progress (0 to 1)
+        let progress = (clientX - rect.left) / rect.width;
+        progress = Math.max(0, Math.min(1, progress));
+
+        const targetFrame = Math.round(progress * (TOTAL_FRAMES - 1));
+
+        gsap.to(frameIndexRef.current, {
+            frame: targetFrame,
+            duration: 0.6,
+            ease: "power2.out",
+            overwrite: "auto",
+            onUpdate: drawFrame
+        });
+    };
+
+    const onMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
+    const onTouchMove = (e: React.TouchEvent) => {
+        // Prevent default scrolling occasionally, but standard passive scroll is better UX. 
+        // We will just listen.
+        handleMove(e.touches[0].clientX);
+    };
+
     return (
         <m.div
+            ref={containerRef}
             initial={{ scale: 1.15 }}
             animate={(videoLoaded && start) ? { scale: 1 } : { scale: 1.15 }}
             transition={{ duration: 2.5, ease: "easeOut" }}
-            className={`w-full h-full relative transition-opacity duration-1500 ${(videoLoaded && start) ? 'opacity-100 lg:opacity-60' : 'opacity-0'}`}
+            className={`w-full h-full relative cursor-ew-resize transition-opacity duration-1500 ${(start) ? 'opacity-100 lg:opacity-60' : 'opacity-0'}`}
+            onMouseMove={onMouseMove}
+            onTouchMove={onTouchMove}
+            style={{ touchAction: 'pan-y' }} // Allow vertical scroll but disable horizontal swipe back
         >
+            {!videoLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center z-50">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
+                        <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Carregando Modelo 3D</span>
+                    </div>
+                </div>
+            )}
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
-                style={{ filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)', transition: 'filter 400ms ease' }}
+                className={`absolute inset-0 w-full h-full object-contain ${!videoLoaded ? 'opacity-0' : 'opacity-100'}`}
+                style={{
+                    filter: isMobile ? 'brightness(0.5) contrast(1.05) saturate(1.02)' : 'brightness(0.34) contrast(1.02) saturate(0.95)',
+                    transition: 'filter 400ms ease, opacity 800ms ease'
+                }}
             />
         </m.div>
     );
