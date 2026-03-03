@@ -250,6 +250,7 @@ export function Hero() {
     const [scannerAssetsLoaded, setScannerAssetsLoaded] = useState(false);
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [introFinished, setIntroFinished] = useState(false);
     const frameIndexRef = useRef({ frame: 0 });
     const shouldReduceMotion = useReducedMotion();
 
@@ -277,8 +278,28 @@ export function Hero() {
         }
     }, []);
 
-    // FrameSequence handles its own asset loading and preloader signaling.
-    // The previous video-based aggressive autoplay polling is no longer needed.
+    // Intro Rotation Animation
+    useEffect(() => {
+        if (!mounted || !canStartSequence || introFinished) return;
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                setPhase('scanning');
+                setIntroFinished(true);
+            }
+        });
+
+        tl.to(frameIndexRef.current, {
+            frame: TOTAL_FRAMES - 1,
+            duration: isMobile ? 1.5 : 2.5,
+            ease: "power2.inOut",
+            onUpdate: () => setTick(t => t + 1)
+        });
+
+        return () => {
+            tl.kill();
+        };
+    }, [mounted, canStartSequence, introFinished, isMobile]);
 
     // GSAP Scroll Animations
     useEffect(() => {
@@ -294,10 +315,16 @@ export function Hero() {
                     scrub: 1.2,
                     anticipatePin: 1,
                     onUpdate: (self) => {
+                        // After intro, we only want to switch back to rotating if the user scrolls back to the very top,
+                        // or possibly never if we want the scanner to persist.
+                        // Let's allow switching back if they scroll to the top to see the rotating tooth again.
                         if (self.progress > 0.85 && phase === 'rotating') {
                             setPhase('scanning');
-                        } else if (self.progress < 0.8 && phase === 'scanning') {
-                            setPhase('rotating');
+                        } else if (self.progress < 0.1 && phase === 'scanning' && introFinished) {
+                            // Optionally let it rotate back or stay in scanner mode.
+                            // The user said: "depois ele pode voltar para logica que está de passar o mouse encima e revelar o bojeto"
+                            // If we want it to STAY as scanner after intro:
+                            // setPhase('scanning');
                         }
                     }
                 }
