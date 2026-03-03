@@ -336,11 +336,9 @@ export function Hero() {
 
             if (isMobile) {
                 ScrollTrigger.config({ ignoreMobileResize: true });
-                ScrollTrigger.normalizeScroll(true);
             }
 
             return () => {
-                if (isMobile) ScrollTrigger.normalizeScroll(false);
                 window.removeEventListener("resize", checkMobile);
                 window.removeEventListener("preloader-exiting", handlePreloaderExit);
                 clearTimeout(timer);
@@ -388,9 +386,10 @@ export function Hero() {
                     start: "top top",
                     end: "bottom bottom",
                     pin: pinContainerRef.current,
-                    pinType: "transform",
+                    pinType: isMobile ? "fixed" : "transform",
                     scrub: isMobile ? 1.0 : 1.5,
                     anticipatePin: 1,
+                    pinSpacing: true,
                 }
             });
 
