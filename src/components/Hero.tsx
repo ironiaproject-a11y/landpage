@@ -1,11 +1,9 @@
 "use client";
 
-import { m, useScroll, useTransform, useReducedMotion, AnimatePresence, useVelocity } from "framer-motion";
-import { ArrowRight, Play } from "lucide-react";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { m, useReducedMotion, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AmbientParticles } from "./AmbientParticles";
 import { Magnetic } from "./Magnetic";
 
 if (typeof window !== "undefined") {
@@ -14,10 +12,14 @@ if (typeof window !== "undefined") {
 
 const TOTAL_FRAMES = 192;
 
-const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }, isMobile: boolean }) => {
+// Expose a draw(frameIdx) method directly — GSAP calls this on every tick
+type IntroSequenceHandle = { draw: (idx: number) => void };
+
+const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(function IntroSequence({ isMobile }, ref) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const [loaded, setLoaded] = useState(false);
+    const loadedRef = useRef(false);
 
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
@@ -30,6 +32,7 @@ const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }
                 loadedCount++;
                 if (loadedCount === TOTAL_FRAMES) {
                     framesRef.current = imageElements;
+                    loadedRef.current = true;
                     setLoaded(true);
                 }
             };
@@ -37,6 +40,7 @@ const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }
                 loadedCount++;
                 if (loadedCount === TOTAL_FRAMES) {
                     framesRef.current = imageElements;
+                    loadedRef.current = true;
                     setLoaded(true);
                 }
             };
@@ -47,49 +51,76 @@ const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }
         for (let i = 0; i < TOTAL_FRAMES; i++) loadFrame(i);
     }, []);
 
-    const drawFrame = useCallback(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d', { alpha: false });
-        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndex.frame)));
-        const img = framesRef.current[idx];
+    // Expose draw() so GSAP can call it directly without triggering React renders
+    useImperativeHandle(ref, () => ({
+        draw(frameIdx: number) {
+            if (!loadedRef.current) return;
+            const canvas = canvasRef.current;
+            const ctx = canvas?.getContext('2d');
+            const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
+            const img = framesRef.current[idx];
 
-        if (canvas && ctx && img && img.complete) {
-            const dpr = window.devicePixelRatio || 1;
-            const displayWidth = canvas.clientWidth;
-            const displayHeight = canvas.clientHeight;
+            if (canvas && ctx && img && img.complete) {
+                const dpr = window.devicePixelRatio || 1;
+                const displayWidth = canvas.clientWidth;
+                const displayHeight = canvas.clientHeight;
 
-            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
-                canvas.width = displayWidth * dpr;
-                canvas.height = displayHeight * dpr;
-                ctx.scale(dpr, dpr);
+                if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+                    canvas.width = displayWidth * dpr;
+                    canvas.height = displayHeight * dpr;
+                    ctx.scale(dpr, dpr);
+                }
+
+                ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+                const canvasAspect = displayWidth / displayHeight;
+                const imgAspect = img.naturalWidth / img.naturalHeight;
+
+                let drawWidth, drawHeight, offsetX, offsetY;
+                if (canvasAspect > imgAspect) {
+                    drawHeight = displayHeight;
+                    drawWidth = displayHeight * imgAspect;
+                    offsetX = (displayWidth - drawWidth) / 2;
+                    offsetY = 0;
+                } else {
+                    drawWidth = displayWidth;
+                    drawHeight = displayWidth / imgAspect;
+                    offsetX = 0;
+                    offsetY = (displayHeight - drawHeight) / 2;
+                }
+
+                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             }
-
-            ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(0, 0, displayWidth, displayHeight);
-
-            const canvasAspect = displayWidth / displayHeight;
-            const imgAspect = img.naturalWidth / img.naturalHeight;
-
-            let drawWidth, drawHeight, offsetX, offsetY;
-            if (canvasAspect > imgAspect) {
-                drawHeight = displayHeight;
-                drawWidth = displayHeight * imgAspect;
-                offsetX = (displayWidth - drawWidth) / 2;
-                offsetY = 0;
-            } else {
-                drawWidth = displayWidth;
-                drawHeight = displayWidth / imgAspect;
-                offsetX = 0;
-                offsetY = (displayHeight - drawHeight) / 2;
-            }
-
-            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
-    }, [frameIndex.frame]);
+    }), []);
 
+    // Draw the first frame when images are ready
     useEffect(() => {
-        if (loaded) drawFrame();
-    }, [loaded, drawFrame]);
+        if (loaded && canvasRef.current) {
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext('2d');
+            const img = framesRef.current[0];
+            if (ctx && img && img.complete) {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.clientWidth * dpr;
+                canvas.height = canvas.clientHeight * dpr;
+                ctx.scale(dpr, dpr);
+                const displayWidth = canvas.clientWidth;
+                const displayHeight = canvas.clientHeight;
+                const canvasAspect = displayWidth / displayHeight;
+                const imgAspect = img.naturalWidth / img.naturalHeight;
+                let drawWidth, drawHeight, offsetX, offsetY;
+                if (canvasAspect > imgAspect) {
+                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
+                    offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
+                } else {
+                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
+                    offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
+                }
+                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            }
+        }
+    }, [loaded]);
 
     return (
         <div className="absolute inset-0 z-0 flex items-center justify-center">
@@ -101,16 +132,16 @@ const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }
             )}
             <canvas
                 ref={canvasRef}
-                className={`w-full h-full object-contain transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-full h-full transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
-                    filter: isMobile ? 'brightness(0.5)' : 'brightness(0.34)',
+                    filter: isMobile ? 'brightness(0.6)' : 'brightness(0.72)',
                     width: '100%',
                     height: '100%'
                 }}
             />
         </div>
     );
-};
+});
 
 const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile: boolean }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -246,16 +277,12 @@ export function Hero() {
     const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
     const [mounted, setMounted] = useState(false);
-    const [phase, setPhase] = useState<'rotating' | 'scanning'>('rotating');
-    const [scannerAssetsLoaded, setScannerAssetsLoaded] = useState(false);
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [introFinished, setIntroFinished] = useState(false);
-    const frameIndexRef = useRef({ frame: 0 });
+    const introRef = useRef<{ draw: (idx: number) => void } | null>(null);
+    const frameProxy = useRef({ frame: 0 });
     const shouldReduceMotion = useReducedMotion();
-
-    // Force frame update for IntroSequence
-    const [, setTick] = useState(0);
 
     useEffect(() => {
         setMounted(true);
@@ -278,33 +305,35 @@ export function Hero() {
         }
     }, []);
 
-    // Intro Rotation Animation
+    // Phase 1 — Intro: automatic rotation plays on load
     useEffect(() => {
         if (!mounted || !canStartSequence || introFinished) return;
 
+        frameProxy.current.frame = 0;
+
         const tl = gsap.timeline({
-            onComplete: () => {
-                setPhase('scanning');
-                setIntroFinished(true);
+            onComplete: () => setIntroFinished(true)
+        });
+
+        tl.to(frameProxy.current, {
+            frame: TOTAL_FRAMES - 1,
+            duration: isMobile ? 2.0 : 3.2,
+            ease: "power4.inOut",
+            onUpdate() {
+                introRef.current?.draw(frameProxy.current.frame);
             }
         });
 
-        tl.to(frameIndexRef.current, {
-            frame: TOTAL_FRAMES - 1,
-            duration: isMobile ? 1.5 : 2.5,
-            ease: "power2.inOut",
-            onUpdate: () => setTick(t => t + 1)
-        });
-
-        return () => {
-            tl.kill();
-        };
+        return () => { tl.kill(); };
     }, [mounted, canStartSequence, introFinished, isMobile]);
 
-    // GSAP Scroll Animations
+    // Phase 2 — Scroll: after intro, scroll drives frames 0→191 in sync
     useEffect(() => {
+        if (!introFinished) return;
         const ctx = gsap.context(() => {
-            if (shouldReduceMotion || isMobile) return;
+            if (shouldReduceMotion) return;
+
+            frameProxy.current.frame = 0;
 
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -312,40 +341,30 @@ export function Hero() {
                     start: "top top",
                     end: "bottom bottom",
                     pin: pinContainerRef.current,
-                    scrub: 1.2,
+                    scrub: 1.5,
                     anticipatePin: 1,
-                    onUpdate: (self) => {
-                        // After intro, we only want to switch back to rotating if the user scrolls back to the very top,
-                        // or possibly never if we want the scanner to persist.
-                        // Let's allow switching back if they scroll to the top to see the rotating tooth again.
-                        if (self.progress > 0.85 && phase === 'rotating') {
-                            setPhase('scanning');
-                        } else if (self.progress < 0.1 && phase === 'scanning' && introFinished) {
-                            // Optionally let it rotate back or stay in scanner mode.
-                            // The user said: "depois ele pode voltar para logica que está de passar o mouse encima e revelar o bojeto"
-                            // If we want it to STAY as scanner after intro:
-                            // setPhase('scanning');
-                        }
-                    }
                 }
             });
 
-            tl.fromTo(frameIndexRef.current,
-                { frame: 0 },
-                {
-                    frame: TOTAL_FRAMES - 1,
-                    ease: "none",
-                    onUpdate: () => setTick(t => t + 1)
-                }, 0)
-                .fromTo(videoWrapperRef.current,
-                    { scale: 1.5, yPercent: 0 },
-                    { scale: 1.0, yPercent: -10, ease: "power1.inOut" }, 0)
-                .to(contentWrapperRef.current, { y: -30, opacity: 0.85, ease: "none" }, 0)
-                .to(actionsRef.current, { scale: 0.97, opacity: 0.95, ease: "none" }, 0.1);
+            // Frames 0→191 driven by scroll progress
+            tl.to(frameProxy.current, {
+                frame: TOTAL_FRAMES - 1,
+                ease: "none",
+                onUpdate() {
+                    introRef.current?.draw(frameProxy.current.frame);
+                }
+            }, 0);
+
+            // Wrapper parallax / scale in sync
+            tl.fromTo(videoWrapperRef.current,
+                { scale: 1.15, yPercent: 0 },
+                { scale: 1.0, yPercent: -6, ease: "none" }, 0)
+                .to(contentWrapperRef.current, { y: -30, opacity: 0.8, ease: "none" }, 0)
+                .to(actionsRef.current, { scale: 0.97, opacity: 0.9, ease: "none" }, 0.1);
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [shouldReduceMotion, isMobile]);
+    }, [introFinished, shouldReduceMotion]);
 
     return (
         <section
@@ -398,36 +417,11 @@ export function Hero() {
 
                         <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
 
-                        <AnimatePresence mode="wait">
-                            {phase === 'rotating' ? (
-                                <m.div
-                                    key="intro"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0, scale: 1.05 }}
-                                    transition={{ duration: 0.4 }}
-                                    className="absolute inset-0 flex items-center justify-center"
-                                >
-                                    <IntroSequence
-                                        frameIndex={frameIndexRef.current}
-                                        isMobile={isMobile}
-                                    />
-                                </m.div>
-                            ) : (
-                                <m.div
-                                    key="scanner"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.6, ease: "easeOut" }}
-                                    className="absolute inset-0 flex items-center justify-center"
-                                >
-                                    <DentalScanner
-                                        onLoaded={() => setScannerAssetsLoaded(true)}
-                                        isMobile={isMobile}
-                                    />
-                                </m.div>
-                            )}
-                        </AnimatePresence>
+                        {/* Frame sequence — always visible, driven by intro then scroll */}
+                        <IntroSequence
+                            ref={introRef}
+                            isMobile={isMobile}
+                        />
                     </div>
                 </div>
 
@@ -473,7 +467,7 @@ export function Hero() {
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={(mounted && (scannerAssetsLoaded || phase === 'rotating') && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
+                                animate={(mounted && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
                                 className="text-[17px] lg:text-[18px] font-medium text-center lg:text-left text-white/90 leading-[1.65] body-text-refined"
                             >
