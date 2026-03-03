@@ -28,7 +28,6 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
         const targetFrames = TOTAL_FRAMES;
 
         const loadFrame = (i: number) => {
-
             const img = new Image();
             img.onload = () => {
                 imageElements[i] = img;
@@ -52,28 +51,26 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
         };
 
         for (let i = 0; i < TOTAL_FRAMES; i++) loadFrame(i);
-    }, [isMobile]);
+    }, []);
 
     // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
         draw(frameIdx: number) {
             if (!loadedRef.current) return;
             const canvas = canvasRef.current;
-            const ctx = canvas?.getContext('2d', { alpha: false }); // Optimization: disable alpha if not needed
+            const ctx = canvas?.getContext('2d', { alpha: false });
 
             if (!canvas || !ctx) return;
 
-            // Direct index access - remove skip/rounding complexity
             const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
-
             const img = framesRef.current[idx];
             if (!img || !img.complete) return;
 
-            const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+            const isMobileView = window.innerWidth < 768;
+            const dpr = Math.min(window.devicePixelRatio || 1, isMobileView ? 1.5 : 2);
             const displayWidth = canvas.clientWidth;
             const displayHeight = canvas.clientHeight;
 
-            // Only update canvas dimensions if they changed to save GPU cycles
             if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
                 canvas.width = displayWidth * dpr;
                 canvas.height = displayHeight * dpr;
@@ -87,7 +84,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
             let drawWidth, drawHeight, offsetX, offsetY;
 
-            if (isMobile) {
+            if (isMobileView) {
                 if (canvasAspect > imgAspect) {
                     drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
                     offsetX = 0; offsetY = (displayHeight - drawHeight) * 0.5;
@@ -107,7 +104,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
-    }), [isMobile]);
+    }), []);
 
     // Draw the first frame when images are ready
     useEffect(() => {
@@ -116,7 +113,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const ctx = canvas.getContext('2d');
             const img = framesRef.current[0];
             if (ctx && img && img.complete) {
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 3);
+                const isMobileView = window.innerWidth < 768;
+                const dpr = Math.min(window.devicePixelRatio || 1, isMobileView ? 1.5 : 3);
                 canvas.width = canvas.clientWidth * dpr;
                 canvas.height = canvas.clientHeight * dpr;
                 ctx.scale(dpr, dpr);
@@ -126,8 +124,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 const imgAspect = img.naturalWidth / img.naturalHeight;
                 let drawWidth, drawHeight, offsetX, offsetY;
 
-                // Match the draw() logic for consistency
-                if (isMobile) {
+                if (isMobileView) {
                     if (canvasAspect > imgAspect) {
                         drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
                         offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
@@ -147,7 +144,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             }
         }
-    }, [loaded, isMobile]);
+    }, [loaded]);
 
     return (
         <div className="absolute inset-0 z-0 flex items-center justify-center">
@@ -314,10 +311,8 @@ export function Hero() {
     const introRef = useRef<{ draw: (idx: number) => void } | null>(null);
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
-    const rafId = useRef<number | null>(null);
     const isAnimating = useRef(false);
     const frameProxy = useRef({ frame: 0 });
-    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
         setMounted(true);
@@ -344,113 +339,115 @@ export function Hero() {
         }
     }, []);
 
-    // Phase 1 — Intro: automatic rotation plays on load
+    // Phase 1 & 2 — Animation Orchestration
     useEffect(() => {
-        if (!mounted || !canStartSequence || introFinished) return;
+        if (!mounted || !canStartSequence) return;
 
-        frameProxy.current.frame = 0;
-
-        const tl = gsap.timeline({
-            onComplete: () => setIntroFinished(true)
-        });
-
-        tl.to(frameProxy.current, {
-            frame: TOTAL_FRAMES - 1,
-            duration: isMobile ? 4.5 : 5.0,
-            ease: "power3.inOut",
-            onUpdate() {
-                introRef.current?.draw(frameProxy.current.frame);
-                // Synchronize Lerp refs with intro finish
-                smoothedProgress.current = frameProxy.current.frame;
-                targetProgress.current = frameProxy.current.frame;
-            }
-        });
-
-        tl.add(() => {
-            ScrollTrigger.refresh();
-        });
-
-        return () => { tl.kill(); };
-    }, [mounted, canStartSequence, introFinished, isMobile]);
-
-    // Phase 2 — Smooth Rendering Loop (Lerp + rAF)
-    useEffect(() => {
-        if (!introFinished || shouldReduceMotion) return;
-
-        const render = () => {
-            if (!isAnimating.current) return;
-
-            const diff = targetProgress.current - smoothedProgress.current;
-
-            // Lerp formula: smoothed += (target - smoothed) * factor
-            // Using 0.08 for extremely buttery feel, 0.1 for standard
-            smoothedProgress.current += diff * (isMobile ? 0.08 : 0.1);
-
-            // Draw current frame
-            if (introRef.current) {
-                introRef.current.draw(smoothedProgress.current);
-            }
-
-            // Threshold to stop rAF when reached target to save CPU
-            if (Math.abs(diff) < 0.001) {
-                smoothedProgress.current = targetProgress.current;
-                isAnimating.current = false;
-                rafId.current = null;
-                return;
-            }
-
-            rafId.current = requestAnimationFrame(render);
-        };
-
-        const startLoop = () => {
-            if (!isAnimating.current) {
-                isAnimating.current = true;
-                rafId.current = requestAnimationFrame(render);
-            }
-        };
-
-        // ScrollTrigger to drive targetProgress
         const ctx = gsap.context(() => {
-            const startFrame = isMobile ? TOTAL_FRAMES - 1 : 0;
-            const endFrame = isMobile ? 0 : TOTAL_FRAMES - 1;
+            const mm = gsap.matchMedia();
 
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                pin: pinContainerRef.current,
-                pinType: isMobile ? "fixed" : "transform",
-                scrub: false, // We handle smoothing ourselves
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    targetProgress.current = startFrame + (endFrame - startFrame) * progress;
-                    startLoop();
-                },
-                anticipatePin: 1,
-                pinSpacing: true,
+            mm.add({
+                isDesktop: "(min-width: 768px)",
+                isMobile: "(max-width: 767px)",
+                reduceMotion: "(prefers-reduced-motion: reduce)"
+            }, (context) => {
+                const { isMobile, reduceMotion } = context.conditions as { isMobile: boolean, reduceMotion: boolean };
+
+                // Reset frame proxy
+                frameProxy.current.frame = 0;
+
+                // Intro Timeline
+                const introTl = gsap.timeline({
+                    onComplete: () => setIntroFinished(true)
+                });
+
+                introTl.to(frameProxy.current, {
+                    frame: TOTAL_FRAMES - 1,
+                    duration: isMobile ? 4.5 : 5.0,
+                    ease: "power3.inOut",
+                    onUpdate() {
+                        introRef.current?.draw(frameProxy.current.frame);
+                        smoothedProgress.current = frameProxy.current.frame;
+                        targetProgress.current = frameProxy.current.frame;
+                    },
+                    onComplete: () => {
+                        setIntroFinished(true);
+                        ScrollTrigger.refresh();
+                    }
+                });
+
+                // Scroll Animation (Only if not reduced motion)
+                if (!reduceMotion) {
+                    const startFrame = isMobile ? TOTAL_FRAMES - 1 : 0;
+                    const endFrame = isMobile ? 0 : TOTAL_FRAMES - 1;
+
+                    ScrollTrigger.create({
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom bottom",
+                        pin: pinContainerRef.current,
+                        pinType: isMobile ? "fixed" : "transform",
+                        scrub: false,
+                        onUpdate: (self) => {
+                            targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
+                            // Trigger ticker rendering
+                            if (!isAnimating.current) {
+                                isAnimating.current = true;
+                            }
+                        },
+                        anticipatePin: 1,
+                        pinSpacing: true,
+                    });
+
+                    // Parallax and Content Animations
+                    gsap.timeline({
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "bottom bottom",
+                            scrub: 0.5, // Standardized scrub
+                        }
+                    })
+                        .fromTo(videoWrapperRef.current,
+                            { scale: 1.15, y: 0 },
+                            { scale: 1.0, y: isMobile ? 0 : -30, ease: "none" }, 0) // Only animates transform
+                        .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
+                        .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
+                }
+
+                return () => {
+                    // Cleanup handled by ctx.revert()
+                };
             });
 
-            // Parallax and other animations still use GSAP scrub for simplicity or can be synced
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: isMobile ? 0.5 : 1.2,
-                }
-            })
-                .fromTo(videoWrapperRef.current,
-                    { scale: 1.15, yPercent: 0 },
-                    { scale: 1.0, yPercent: isMobile ? 0 : -6, ease: "none" }, 0)
-                .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
-                .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
-        });
+            // Ticker for smooth LERPing
+            const tickerRender = () => {
+                if (!isAnimating.current) return;
 
-        return () => {
-            ctx.revert();
-            if (rafId.current) cancelAnimationFrame(rafId.current);
-        };
-    }, [introFinished, shouldReduceMotion, isMobile]);
+                const diff = targetProgress.current - smoothedProgress.current;
+                const lerpFactor = window.innerWidth < 768 ? 0.08 : 0.1;
+
+                smoothedProgress.current += diff * lerpFactor;
+
+                if (introRef.current) {
+                    introRef.current.draw(smoothedProgress.current);
+                }
+
+                if (Math.abs(diff) < 0.001) {
+                    smoothedProgress.current = targetProgress.current;
+                    isAnimating.current = false;
+                }
+            };
+
+            gsap.ticker.add(tickerRender);
+
+            return () => {
+                gsap.ticker.remove(tickerRender);
+            };
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, [mounted, canStartSequence]);
 
     return (
         <section
