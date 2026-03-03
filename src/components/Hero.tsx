@@ -395,7 +395,12 @@ export function Hero() {
                                 isAnimating.current = true;
                             }
                         },
-                        anticipatePin: 1,
+                        onLeave: () => {
+                            // Force final state to prevent lock stutter
+                            targetProgress.current = endFrame;
+                            isAnimating.current = true;
+                        },
+                        anticipatePin: 1.5,
                         pinSpacing: true,
                     });
 
@@ -409,8 +414,8 @@ export function Hero() {
                         }
                     })
                         .fromTo(videoWrapperRef.current,
-                            { scale: 1.08, y: 0 },
-                            { scale: 0.95, y: isMobile ? 0 : -30, ease: "none" }, 0) // Polished scale range
+                            { scale: 0.90, y: 0 },
+                            { scale: 0.82, y: isMobile ? 0 : -30, ease: "none", overwrite: "auto" }, 0)
                         .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
                         .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
                 }
