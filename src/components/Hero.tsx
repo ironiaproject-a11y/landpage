@@ -312,6 +312,10 @@ export function Hero() {
     const [isMobile, setIsMobile] = useState(false);
     const [introFinished, setIntroFinished] = useState(false);
     const introRef = useRef<{ draw: (idx: number) => void } | null>(null);
+    const targetProgress = useRef(0);
+    const smoothedProgress = useRef(0);
+    const rafId = useRef<number | null>(null);
+    const isAnimating = useRef(false);
     const frameProxy = useRef({ frame: 0 });
     const shouldReduceMotion = useReducedMotion();
 
@@ -356,6 +360,9 @@ export function Hero() {
             ease: "power3.inOut",
             onUpdate() {
                 introRef.current?.draw(frameProxy.current.frame);
+                // Synchronize Lerp refs with intro finish
+                smoothedProgress.current = frameProxy.current.frame;
+                targetProgress.current = frameProxy.current.frame;
             }
         });
 
@@ -366,45 +373,83 @@ export function Hero() {
         return () => { tl.kill(); };
     }, [mounted, canStartSequence, introFinished, isMobile]);
 
-    // Phase 2 — Scroll: after intro, scroll drives frames 0→191 in sync
+    // Phase 2 — Smooth Rendering Loop (Lerp + rAF)
     useEffect(() => {
-        if (!introFinished) return;
+        if (!introFinished || shouldReduceMotion) return;
+
+        const render = () => {
+            if (!isAnimating.current) return;
+
+            const diff = targetProgress.current - smoothedProgress.current;
+
+            // Lerp formula: smoothed += (target - smoothed) * factor
+            // Using 0.08 for extremely buttery feel, 0.1 for standard
+            smoothedProgress.current += diff * (isMobile ? 0.08 : 0.1);
+
+            // Draw current frame
+            if (introRef.current) {
+                introRef.current.draw(smoothedProgress.current);
+            }
+
+            // Threshold to stop rAF when reached target to save CPU
+            if (Math.abs(diff) < 0.001) {
+                smoothedProgress.current = targetProgress.current;
+                isAnimating.current = false;
+                rafId.current = null;
+                return;
+            }
+
+            rafId.current = requestAnimationFrame(render);
+        };
+
+        const startLoop = () => {
+            if (!isAnimating.current) {
+                isAnimating.current = true;
+                rafId.current = requestAnimationFrame(render);
+            }
+        };
+
+        // ScrollTrigger to drive targetProgress
         const ctx = gsap.context(() => {
-            if (shouldReduceMotion) return;
+            const startFrame = isMobile ? TOTAL_FRAMES - 1 : 0;
+            const endFrame = isMobile ? 0 : TOTAL_FRAMES - 1;
 
-            frameProxy.current.frame = isMobile ? TOTAL_FRAMES - 1 : 0;
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "top top",
+                end: "bottom bottom",
+                pin: pinContainerRef.current,
+                pinType: isMobile ? "fixed" : "transform",
+                scrub: false, // We handle smoothing ourselves
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    targetProgress.current = startFrame + (endFrame - startFrame) * progress;
+                    startLoop();
+                },
+                anticipatePin: 1,
+                pinSpacing: true,
+            });
 
-            const tl = gsap.timeline({
+            // Parallax and other animations still use GSAP scrub for simplicity or can be synced
+            gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
                     end: "bottom bottom",
-                    pin: pinContainerRef.current,
-                    pinType: isMobile ? "fixed" : "transform",
-                    scrub: isMobile ? 0.3 : 1.5,
-                    anticipatePin: 1,
-                    pinSpacing: true,
+                    scrub: isMobile ? 0.5 : 1.2,
                 }
-            });
-
-            // Frames driven by scroll progress - Reversed on mobile to respect transformation direction
-            tl.to(frameProxy.current, {
-                frame: isMobile ? 0 : TOTAL_FRAMES - 1,
-                ease: "none",
-                onUpdate() {
-                    introRef.current?.draw(frameProxy.current.frame);
-                }
-            }, 0);
-
-            // Wrapper parallax / scale in sync
-            tl.fromTo(videoWrapperRef.current,
-                { scale: isMobile ? 1.15 : 1.15, yPercent: 0 },
-                { scale: isMobile ? 1.0 : 1.0, yPercent: isMobile ? 0 : -6, ease: "none" }, 0)
+            })
+                .fromTo(videoWrapperRef.current,
+                    { scale: 1.15, yPercent: 0 },
+                    { scale: 1.0, yPercent: isMobile ? 0 : -6, ease: "none" }, 0)
                 .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
                 .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
-        }, sectionRef);
+        });
 
-        return () => ctx.revert();
+        return () => {
+            ctx.revert();
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+        };
     }, [introFinished, shouldReduceMotion, isMobile]);
 
     return (
