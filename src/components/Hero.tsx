@@ -99,8 +99,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 offsetY = 0;
             }
 
-            // Clear with background color to avoid any flickering at edges
-            ctx.fillStyle = '#0a0a0a';
+            // Clear with absolute black to avoid any visible seams
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, displayWidth, displayHeight);
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
@@ -467,19 +467,21 @@ export function Hero() {
         <section
             ref={sectionRef}
             className="relative w-full h-[300vh] flex flex-col bg-black overflow-x-hidden"
-            style={{ padding: '0 5vw' }} // Generous padding as buffer
+            style={{ padding: '0 5vw', backgroundColor: '#000000' }} // Force absolute black
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform"
+                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform bg-black"
+                style={{ backgroundColor: '#000000' }}
             >
-                {/* Brand-Focused 360 Viewer Container */}
+                {/* Brand-Focused 360 Viewer Wrapper Container */}
                 <div
-                    className="relative w-[80vw] h-[80vh] max-w-[1400px] max-h-[900px] z-0 overflow-hidden rounded-[2px] bg-[#0a0a0a] shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                    className="relative w-[85vw] h-[85vh] max-w-[1600px] max-h-[1000px] z-0 overflow-hidden flex items-center justify-center bg-black"
+                    style={{ margin: 'auto', backgroundColor: '#000000' }}
                 >
                     <div
                         ref={videoWrapperRef}
-                        className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center"
+                        className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
                     >
                         {/* Radial Vignette Overlay */}
                         <div
