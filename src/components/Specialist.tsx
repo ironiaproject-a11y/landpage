@@ -223,12 +223,12 @@ export function Specialist() {
                         >
                             Corpo Clínico
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(40px,5.5vw,72px)] font-light text-white mb-10 leading-[1.0] tracking-tight">
+                        <h2 ref={titleRef} className="font-display text-[clamp(28px,5.5vw,48px)] font-medium text-white mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
                             <div className="block overflow-hidden pb-1">
                                 <span className="title-line-inner inline-block">A ciência por trás do seu</span>
                             </div>
                             <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-medium">melhor sorriso</span>.
+                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">melhor sorriso</span>.
                             </div>
                         </h2>
 
