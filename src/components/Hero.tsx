@@ -25,12 +25,9 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
-        // On mobile, we only load even frames to save memory and improve performance
-        const skipFactor = isMobile ? 2 : 1;
-        const targetFrames = isMobile ? Math.ceil(TOTAL_FRAMES / skipFactor) : TOTAL_FRAMES;
+        const targetFrames = TOTAL_FRAMES;
 
         const loadFrame = (i: number) => {
-            if (isMobile && i % skipFactor !== 0) return;
 
             const img = new Image();
             img.onload = () => {
@@ -66,11 +63,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
             if (!canvas || !ctx) return;
 
-            // On mobile, find the nearest loaded frame
-            let idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
-            if (isMobile && idx % 2 !== 0) {
-                idx = Math.max(0, idx - 1);
-            }
+            // Direct index access - remove skip/rounding complexity
+            const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
 
             const img = framesRef.current[idx];
             if (!img || !img.complete) return;
@@ -387,7 +381,7 @@ export function Hero() {
                     end: "bottom bottom",
                     pin: pinContainerRef.current,
                     pinType: isMobile ? "fixed" : "transform",
-                    scrub: isMobile ? 1.0 : 1.5,
+                    scrub: isMobile ? 0.3 : 1.5,
                     anticipatePin: 1,
                     pinSpacing: true,
                 }
