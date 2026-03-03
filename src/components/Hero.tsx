@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 const TOTAL_FRAMES = 192;
 
 // Expose a draw(frameIdx) method directly — GSAP calls this on every tick
-type IntroSequenceHandle = { draw: (idx: number, scaleMultiplier?: number) => void };
+type IntroSequenceHandle = { draw: (idx: number) => void };
 
 const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(function IntroSequence({ isMobile }, ref) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,7 +55,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
     // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
-        draw(frameIdx: number, scaleMultiplier: number = 1.0) {
+        draw(frameIdx: number) {
             if (!loadedRef.current) return;
             const canvas = canvasRef.current;
             const ctx = canvas?.getContext('2d', { alpha: false });
@@ -77,37 +77,31 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 ctx.scale(dpr, dpr);
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = "high";
-            } else {
-                // Clear previous frame
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(0, 0, displayWidth, displayHeight);
             }
 
-            const canvasAspect = displayWidth / displayHeight;
+            // Object-Fit: Cover algorithm
             const imgAspect = img.naturalWidth / img.naturalHeight;
+            const canvasAspect = displayWidth / displayHeight;
 
             let drawWidth, drawHeight, offsetX, offsetY;
 
-            // Apply base calculation then scale internally
-            if (isMobileView) {
-                if (canvasAspect > imgAspect) {
-                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                } else {
-                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                }
+            if (canvasAspect > imgAspect) {
+                // Canvas is wider than image aspect
+                drawWidth = displayWidth;
+                drawHeight = displayWidth / imgAspect;
+                offsetX = 0;
+                offsetY = (displayHeight - drawHeight) * 0.5;
             } else {
-                if (canvasAspect > imgAspect) {
-                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                } else {
-                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                }
+                // Canvas is taller than image aspect
+                drawHeight = displayHeight;
+                drawWidth = displayHeight * imgAspect;
+                offsetX = (displayWidth - drawWidth) * 0.5;
+                offsetY = 0;
             }
 
-            // Apply the internal scale multiplier
-            drawWidth *= scaleMultiplier;
-            drawHeight *= scaleMultiplier;
-            offsetX = (displayWidth - drawWidth) * 0.5;
-            offsetY = (displayHeight - drawHeight) * 0.5;
+            // Clear with background color to avoid any flickering at edges
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, displayWidth, displayHeight);
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
@@ -163,11 +157,12 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             )}
             <canvas
                 ref={canvasRef}
-                className={`w-full h-full transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-full h-full object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     filter: isMobile ? 'brightness(0.65) contrast(1.1)' : 'brightness(0.72)',
                     width: '100%',
                     height: '100%',
+                    objectFit: 'cover',
                     transform: 'translateZ(0)',
                     backfaceVisibility: 'hidden'
                 }}
@@ -319,7 +314,7 @@ export function Hero() {
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
     const isAnimating = useRef(false);
-    const frameProxy = useRef({ frame: 0, assetScale: 1.0 });
+    const frameProxy = useRef({ frame: 0 });
     const sectionMounted = useRef(false);
 
     useEffect(() => {
@@ -372,11 +367,10 @@ export function Hero() {
 
                 introTl.to(frameProxy.current, {
                     frame: TOTAL_FRAMES - 1,
-                    assetScale: 0.82, // Set base scale after intro
                     duration: isMobile ? 4.5 : 5.0,
                     ease: "power3.inOut",
                     onUpdate() {
-                        introRef.current?.draw(frameProxy.current.frame, frameProxy.current.assetScale);
+                        introRef.current?.draw(frameProxy.current.frame);
                         smoothedProgress.current = frameProxy.current.frame;
                         targetProgress.current = frameProxy.current.frame;
                     },
@@ -401,17 +395,12 @@ export function Hero() {
                         onUpdate: (self) => {
                             targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
 
-                            // Dynamically update asset scale based on scroll progress
-                            // Map 0 -> 1 progress to 0.82 -> 0.70 asset scale
-                            frameProxy.current.assetScale = 0.82 - (0.12 * self.progress);
-
                             if (!isAnimating.current) {
                                 isAnimating.current = true;
                             }
                         },
                         onLeave: () => {
                             targetProgress.current = endFrame;
-                            frameProxy.current.assetScale = 0.70;
                             isAnimating.current = true;
                         },
                         anticipatePin: 1.5,
@@ -452,7 +441,7 @@ export function Hero() {
 
                 if (introRef.current) {
                     // Always draw with current proxy state
-                    introRef.current.draw(smoothedProgress.current, frameProxy.current.assetScale);
+                    introRef.current.draw(smoothedProgress.current);
                 }
 
                 if (Math.abs(diff) < 0.0001) {
