@@ -72,9 +72,9 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-[16px] font-medium text-white/90 tracking-[0.2em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-creme)] font-light italic">.</span>
-                            </span>
+                            <h1 className="font-display text-[24px] md:text-[clamp(1.5rem,4vw,3rem)] font-black text-white/95 tracking-[0.15em] uppercase transition-all duration-700 leading-tight">
+                                IRONIA <span className="text-[var(--color-creme)] font-light italic">PROJECT</span>
+                            </h1>
                         </a>
                     </Magnetic>
 

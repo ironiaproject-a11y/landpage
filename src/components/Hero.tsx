@@ -466,15 +466,16 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-[300vh] flex flex-col bg-[#0a0a0a]"
+            className="relative w-full h-[300vh] flex flex-col bg-black overflow-x-hidden"
+            style={{ padding: '0 5vw' }} // Generous padding as buffer
         >
             <div
                 ref={pinContainerRef}
                 className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform"
             >
-                {/* Background Frame Sequence Layer - No max-width or padding restrictions */}
+                {/* Brand-Focused 360 Viewer Container */}
                 <div
-                    className="absolute inset-0 z-0 overflow-hidden"
+                    className="relative w-[80vw] h-[80vh] max-w-[1400px] max-h-[900px] z-0 overflow-hidden rounded-[2px] bg-[#0a0a0a] shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                 >
                     <div
                         ref={videoWrapperRef}
@@ -527,16 +528,28 @@ export function Hero() {
 
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-10 w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
-                    style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '120px 24px 100px' : '160px 6vw 140px', width: '100%', position: 'absolute', inset: 0, justifyContent: 'center' }}
+                    className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center text-center pointer-events-none"
+                    style={{ padding: '0 5vw' }}
                 >
-                    <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
+                    <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative">
+                        {/* Dominant Brand Element (Optional, since Navbar has it, but can be used for extra brand dominance) */}
+                        <m.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
+                            transition={{ delay: 5.5, duration: 2 }}
+                            className="absolute top-[-15%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
+                        >
+                            <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
+                                IRONIA
+                            </span>
+                        </m.div>
+
                         <m.h1
                             ref={titleRef}
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[0.08em] md:tracking-[0.05em] leading-[1.3] md:leading-[1.05] mb-14 md:mb-10"
+                            className="font-display text-[clamp(2rem,6vw,5.5rem)] text-[var(--color-creme)] will-change-transform font-black uppercase tracking-[0.1em] leading-[1.05] mb-10 text-shadow-luxury"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -552,7 +565,7 @@ export function Hero() {
                                 <m.span
                                     initial={{ y: "100%" }}
                                     animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
-                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.7 : 4.7 }}
+                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.8 : 4.8 }}
                                     className="text-mask-reveal-inner font-light italic"
                                 >
                                     sua assinatura.
@@ -560,30 +573,30 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-14 lg:mt-8 max-w-[650px]">
+                        <div className="overflow-hidden mb-12 w-full max-w-[700px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={(mounted && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-[17px] lg:text-[18px] font-medium text-center lg:text-left text-white/90 leading-[1.75] body-text-refined px-4 lg:px-0"
+                                transition={{ delay: isMobile ? 1.2 : 5.2, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="text-[18px] lg:text-[20px] font-medium text-center text-white/90 leading-[1.75] body-text-refined px-4"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[40px] lg:mt-12 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
-                                    transition={{ delay: isMobile ? 0.6 : 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
+                                    transition={{ delay: isMobile ? 0.6 : 5.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.6)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '16px 32px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
-                                    className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden border border-transparent hover:scale-[1.02] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto' }}
+                                    className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div
