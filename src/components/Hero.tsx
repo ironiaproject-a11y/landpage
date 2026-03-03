@@ -340,7 +340,12 @@ export function Hero() {
 
             const timer = setTimeout(() => setCanStartSequence(true), 5000);
 
+            if (isMobile) {
+                ScrollTrigger.normalizeScroll(true);
+            }
+
             return () => {
+                if (isMobile) ScrollTrigger.normalizeScroll(false);
                 window.removeEventListener("resize", checkMobile);
                 window.removeEventListener("preloader-exiting", handlePreloaderExit);
                 clearTimeout(timer);
@@ -391,6 +396,7 @@ export function Hero() {
                     pinType: "transform",
                     scrub: isMobile ? 1.0 : 1.5,
                     anticipatePin: 1,
+                    ignoreMobileResize: true,
                 }
             });
 
@@ -421,7 +427,7 @@ export function Hero() {
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0"
+                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform"
             >
                 {/* Background Frame Sequence Layer - No max-width or padding restrictions */}
                 <div
