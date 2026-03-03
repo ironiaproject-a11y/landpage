@@ -62,7 +62,9 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
         draw(frameIdx: number) {
             if (!loadedRef.current) return;
             const canvas = canvasRef.current;
-            const ctx = canvas?.getContext('2d');
+            const ctx = canvas?.getContext('2d', { alpha: false }); // Optimization: disable alpha if not needed
+
+            if (!canvas || !ctx) return;
 
             // On mobile, find the nearest loaded frame
             let idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
@@ -71,55 +73,45 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             }
 
             const img = framesRef.current[idx];
+            if (!img || !img.complete) return;
 
-            if (canvas && ctx && img && img.complete) {
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 3);
-                const displayWidth = canvas.clientWidth;
-                const displayHeight = canvas.clientHeight;
+            const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+            const displayWidth = canvas.clientWidth;
+            const displayHeight = canvas.clientHeight;
 
-                if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
-                    canvas.width = displayWidth * dpr;
-                    canvas.height = displayHeight * dpr;
-                    ctx.scale(dpr, dpr);
-                }
-
-                ctx.clearRect(0, 0, displayWidth, displayHeight);
-
-                const canvasAspect = displayWidth / displayHeight;
-                const imgAspect = img.naturalWidth / img.naturalHeight;
-
-                let drawWidth, drawHeight, offsetX, offsetY;
-
-                // MOBILE FIX: Use 'cover' scaling instead of 'contain'
-                if (isMobile) {
-                    if (canvasAspect > imgAspect) {
-                        drawWidth = displayWidth;
-                        drawHeight = displayWidth / imgAspect;
-                        offsetX = 0;
-                        offsetY = (displayHeight - drawHeight) / 2;
-                    } else {
-                        drawHeight = displayHeight;
-                        drawWidth = displayHeight * imgAspect;
-                        offsetX = (displayWidth - drawWidth) / 2;
-                        offsetY = 0;
-                    }
-                } else {
-                    // Desktop can keep 'contain' or a balanced look
-                    if (canvasAspect > imgAspect) {
-                        drawHeight = displayHeight;
-                        drawWidth = displayHeight * imgAspect;
-                        offsetX = (displayWidth - drawWidth) / 2;
-                        offsetY = 0;
-                    } else {
-                        drawWidth = displayWidth;
-                        drawHeight = displayWidth / imgAspect;
-                        offsetX = 0;
-                        offsetY = (displayHeight - drawHeight) / 2;
-                    }
-                }
-
-                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            // Only update canvas dimensions if they changed to save GPU cycles
+            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+                canvas.width = displayWidth * dpr;
+                canvas.height = displayHeight * dpr;
+                ctx.scale(dpr, dpr);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = "high";
             }
+
+            const canvasAspect = displayWidth / displayHeight;
+            const imgAspect = img.naturalWidth / img.naturalHeight;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (isMobile) {
+                if (canvasAspect > imgAspect) {
+                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
+                    offsetX = 0; offsetY = (displayHeight - drawHeight) * 0.5;
+                } else {
+                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
+                    offsetX = (displayWidth - drawWidth) * 0.5; offsetY = 0;
+                }
+            } else {
+                if (canvasAspect > imgAspect) {
+                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
+                    offsetX = (displayWidth - drawWidth) * 0.5; offsetY = 0;
+                } else {
+                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
+                    offsetX = 0; offsetY = (displayHeight - drawHeight) * 0.5;
+                }
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
     }), [isMobile]);
 
@@ -177,7 +169,9 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 style={{
                     filter: isMobile ? 'brightness(0.65) contrast(1.1)' : 'brightness(0.72)',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
                 }}
             />
         </div>
@@ -412,9 +406,9 @@ export function Hero() {
             // Wrapper parallax / scale in sync
             tl.fromTo(videoWrapperRef.current,
                 { scale: isMobile ? 1.15 : 1.15, yPercent: 0 },
-                { scale: isMobile ? 1.0 : 1.0, yPercent: isMobile ? -2 : -6, ease: "none" }, 0)
-                .to(contentWrapperRef.current, { y: -30, opacity: 0.8, ease: "none" }, 0)
-                .to(actionsRef.current, { scale: 0.97, opacity: 0.9, ease: "none" }, 0.1);
+                { scale: isMobile ? 1.0 : 1.0, yPercent: isMobile ? 0 : -6, ease: "none" }, 0)
+                .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
+                .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
         }, sectionRef);
 
         return () => ctx.revert();
