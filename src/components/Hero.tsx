@@ -2,6 +2,7 @@
 
 import { m, useReducedMotion, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Magnetic } from "./Magnetic";
@@ -272,10 +273,12 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
                 containerType: 'inline-size'
             } as any}
         >
-            <img
+            <Image
                 src="/assets/images/dente-estetica.webp"
                 alt="Aesthetic"
-                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                fill
+                className="object-contain pointer-events-none"
+                priority
             />
             <div
                 className="absolute inset-0 w-full h-full pointer-events-none"
@@ -284,7 +287,7 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
                     WebkitClipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`
                 } as any}
             >
-                <img src="/assets/images/dente-raio-x.webp" alt="X-Ray" className="w-full h-full object-contain" />
+                <Image src="/assets/images/dente-raio-x.webp" alt="X-Ray" fill className="object-contain" priority />
             </div>
 
             <div
@@ -405,7 +408,7 @@ export function Hero() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [introFinished, shouldReduceMotion]);
+    }, [introFinished, shouldReduceMotion, isMobile]);
 
     return (
         <section
