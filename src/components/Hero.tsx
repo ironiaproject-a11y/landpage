@@ -163,7 +163,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: 'scale(1.05) translateZ(0)',
+                    transform: `scale(${isMobile ? 0.8 : 0.85}) translateZ(0)`,
                     backfaceVisibility: 'hidden'
                 }}
             />
@@ -520,22 +520,22 @@ export function Hero() {
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
                 >
-                    {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) */}
+                    {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
                     <div
                         ref={backlightRef}
-                        className="absolute w-[120vw] h-[120vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
+                        className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
-                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.05) 0%, transparent 60%)',
-                            opacity: 0.05
+                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.08) 0%, transparent 65%)',
+                            opacity: 0.08
                         }}
                     />
 
-                    {/* Radial Mask Container for "Bleeding" Video Edges */}
+                    {/* Radial Mask Container for "Bleeding" Video Edges - Optimized for smaller scale */}
                     <div
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
-                            maskImage: 'radial-gradient(circle at center, black 35%, transparent 75%)',
-                            WebkitMaskImage: 'radial-gradient(circle at center, black 35%, transparent 75%)'
+                            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)',
+                            WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
                         }}
                     >
                         {/* Radial Vignette Overlay (Simplified for Atmospheric feel) */}
