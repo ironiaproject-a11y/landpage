@@ -314,7 +314,7 @@ export function Hero() {
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
     const isAnimating = useRef(false);
-    const frameProxy = useRef({ frame: 0 });
+    const frameProxy = useRef({ frame: 0, letterSpacing: 0, textY: 0, opacity: 1 });
     const sectionMounted = useRef(false);
 
     useEffect(() => {
@@ -395,12 +395,21 @@ export function Hero() {
                         onUpdate: (self) => {
                             targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
 
+                            // Quiet Luxury Interactions
+                            // Expands letter-spacing from 0px to 8px
+                            frameProxy.current.letterSpacing = self.progress * 8;
+                            // Negative parallax moves text up as scroll progresses
+                            frameProxy.current.textY = self.progress * -80;
+                            // Smooth fade out as we reach the bottom of the section
+                            frameProxy.current.opacity = 1 - Math.max(0, (self.progress - 0.5) * 2);
+
                             if (!isAnimating.current) {
                                 isAnimating.current = true;
                             }
                         },
                         onLeave: () => {
                             targetProgress.current = endFrame;
+                            frameProxy.current.opacity = 0;
                             isAnimating.current = true;
                         },
                         anticipatePin: 1.5,
@@ -438,6 +447,25 @@ export function Hero() {
                 const lerpFactor = isNearEnd ? 0.15 : (window.innerWidth < 768 ? 0.05 : 0.07);
 
                 smoothedProgress.current += diff * lerpFactor;
+
+                if (titleRef.current) {
+                    gsap.set(titleRef.current, {
+                        letterSpacing: `${frameProxy.current.letterSpacing}px`,
+                        y: frameProxy.current.textY,
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
+                if (descriptionRef.current) {
+                    gsap.set(descriptionRef.current, {
+                        y: frameProxy.current.textY * 0.8, // Subtle parallax difference
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
+                if (actionsRef.current) {
+                    gsap.set(actionsRef.current, {
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
 
                 if (introRef.current) {
                     // Always draw with current proxy state
@@ -534,13 +562,16 @@ export function Hero() {
                     className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center text-center pointer-events-none"
                     style={{ padding: '0 5vw' }}
                 >
-                    <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative">
+                    {/* Subtle Radial Black Gradient for Legibility - Zero Purple Policy */}
+                    <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.15)_0%,transparent_70%)]" />
+
+                    <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative z-10">
                         {/* Branded Atmospheric Overlay */}
                         <m.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
                             transition={{ delay: 5.5, duration: 2 }}
-                            className="absolute top-[-15%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
+                            className="absolute top-[-25%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
                         >
                             <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
                                 CLÍNICA.
@@ -552,7 +583,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[clamp(2rem,6vw,5.5rem)] text-[var(--color-creme)] will-change-transform font-black uppercase tracking-[0.1em] leading-[1.05] mb-10 text-shadow-luxury"
+                            className="font-display text-[clamp(2rem,6vw,5.5rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.05em] leading-[1.05] mb-[50px] text-shadow-luxury transform -translate-y-[30px]"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -561,7 +592,7 @@ export function Hero() {
                                     transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.5 : 4.5 }}
                                     className="text-mask-reveal-inner"
                                 >
-                                    Seu sorriso,
+                                    Seu Sorriso,
                                 </m.span>
                             </span>
                             <span className="text-mask-reveal">
@@ -576,7 +607,7 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-12 w-full max-w-[700px]">
+                        <div className="overflow-hidden mb-12 w-full max-w-[700px] transform translate-y-[20px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
