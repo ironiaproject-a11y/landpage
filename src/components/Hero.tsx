@@ -409,8 +409,8 @@ export function Hero() {
                         }
                     })
                         .fromTo(videoWrapperRef.current,
-                            { scale: 1.15, y: 0 },
-                            { scale: 1.0, y: isMobile ? 0 : -30, ease: "none" }, 0) // Only animates transform
+                            { scale: 1.08, y: 0 },
+                            { scale: 0.95, y: isMobile ? 0 : -30, ease: "none" }, 0) // Polished scale range
                         .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
                         .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
                 }
@@ -425,7 +425,7 @@ export function Hero() {
                 if (!isAnimating.current) return;
 
                 const diff = targetProgress.current - smoothedProgress.current;
-                const lerpFactor = window.innerWidth < 768 ? 0.08 : 0.1;
+                const lerpFactor = window.innerWidth < 768 ? 0.05 : 0.07; // Increased fluidity (lower factor)
 
                 smoothedProgress.current += diff * lerpFactor;
 
