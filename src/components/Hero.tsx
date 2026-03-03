@@ -360,11 +360,15 @@ export function Hero() {
 
         tl.to(frameProxy.current, {
             frame: TOTAL_FRAMES - 1,
-            duration: isMobile ? 2.0 : 3.2,
-            ease: "power4.inOut",
+            duration: isMobile ? 4.5 : 5.0,
+            ease: "power3.inOut",
             onUpdate() {
                 introRef.current?.draw(frameProxy.current.frame);
             }
+        });
+
+        tl.add(() => {
+            ScrollTrigger.refresh();
         });
 
         return () => { tl.kill(); };
@@ -376,7 +380,7 @@ export function Hero() {
         const ctx = gsap.context(() => {
             if (shouldReduceMotion) return;
 
-            frameProxy.current.frame = 0;
+            frameProxy.current.frame = isMobile ? TOTAL_FRAMES - 1 : 0;
 
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -417,7 +421,7 @@ export function Hero() {
         >
             <div
                 ref={pinContainerRef}
-                className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-0"
+                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0"
             >
                 {/* Background Frame Sequence Layer - No max-width or padding restrictions */}
                 <div
@@ -483,7 +487,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[0.02em] md:tracking-normal leading-[1.3] md:leading-[1.05] mb-12 md:mb-10"
+                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[0.08em] md:tracking-[0.05em] leading-[1.3] md:leading-[1.05] mb-14 md:mb-10"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -507,7 +511,7 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-10 lg:mt-8 max-w-[650px]">
+                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-14 lg:mt-8 max-w-[650px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
