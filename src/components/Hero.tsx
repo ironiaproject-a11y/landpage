@@ -381,8 +381,8 @@ export function Hero() {
                     start: "top top",
                     end: "bottom bottom",
                     pin: pinContainerRef.current,
-                    pinType: isMobile ? "fixed" : "transform",
-                    scrub: isMobile ? 1.2 : 1.5,
+                    pinType: "transform",
+                    scrub: isMobile ? 1.0 : 1.5,
                     anticipatePin: 1,
                 }
             });
@@ -398,8 +398,8 @@ export function Hero() {
 
             // Wrapper parallax / scale in sync
             tl.fromTo(videoWrapperRef.current,
-                { scale: isMobile ? 0.8 : 1.15, yPercent: 0 },
-                { scale: isMobile ? 0.65 : 1.0, yPercent: isMobile ? -4 : -6, ease: "none" }, 0)
+                { scale: isMobile ? 1.15 : 1.15, yPercent: 0 },
+                { scale: isMobile ? 1.0 : 1.0, yPercent: isMobile ? -2 : -6, ease: "none" }, 0)
                 .to(contentWrapperRef.current, { y: -30, opacity: 0.8, ease: "none" }, 0)
                 .to(actionsRef.current, { scale: 0.97, opacity: 0.9, ease: "none" }, 0.1);
         }, sectionRef);
@@ -480,7 +480,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[0.02em] md:tracking-normal leading-[1.2] md:leading-[1.05] mb-8 md:mb-10"
+                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[0.02em] md:tracking-normal leading-[1.3] md:leading-[1.05] mb-12 md:mb-10"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -504,7 +504,7 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-6 lg:mt-8 max-w-[650px]">
+                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-10 lg:mt-8 max-w-[650px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
