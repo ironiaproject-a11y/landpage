@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 const TOTAL_FRAMES = 192;
 
 // Expose a draw(frameIdx) method directly — GSAP calls this on every tick
-type IntroSequenceHandle = { draw: (idx: number) => void };
+type IntroSequenceHandle = { draw: (idx: number, scaleMultiplier?: number) => void };
 
 const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(function IntroSequence({ isMobile }, ref) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,7 +55,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
     // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
-        draw(frameIdx: number) {
+        draw(frameIdx: number, scaleMultiplier: number = 1.0) {
             if (!loadedRef.current) return;
             const canvas = canvasRef.current;
             const ctx = canvas?.getContext('2d', { alpha: false });
@@ -77,6 +77,10 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 ctx.scale(dpr, dpr);
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = "high";
+            } else {
+                // Clear previous frame
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(0, 0, displayWidth, displayHeight);
             }
 
             const canvasAspect = displayWidth / displayHeight;
@@ -84,23 +88,26 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
 
             let drawWidth, drawHeight, offsetX, offsetY;
 
+            // Apply base calculation then scale internally
             if (isMobileView) {
                 if (canvasAspect > imgAspect) {
                     drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                    offsetX = 0; offsetY = (displayHeight - drawHeight) * 0.5;
                 } else {
                     drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                    offsetX = (displayWidth - drawWidth) * 0.5; offsetY = 0;
                 }
             } else {
                 if (canvasAspect > imgAspect) {
                     drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                    offsetX = (displayWidth - drawWidth) * 0.5; offsetY = 0;
                 } else {
                     drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                    offsetX = 0; offsetY = (displayHeight - drawHeight) * 0.5;
                 }
             }
+
+            // Apply the internal scale multiplier
+            drawWidth *= scaleMultiplier;
+            drawHeight *= scaleMultiplier;
+            offsetX = (displayWidth - drawWidth) * 0.5;
+            offsetY = (displayHeight - drawHeight) * 0.5;
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
@@ -312,10 +319,12 @@ export function Hero() {
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
     const isAnimating = useRef(false);
-    const frameProxy = useRef({ frame: 0 });
+    const frameProxy = useRef({ frame: 0, assetScale: 1.0 });
+    const sectionMounted = useRef(false);
 
     useEffect(() => {
         setMounted(true);
+        sectionMounted.current = true;
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
 
         if (typeof window !== "undefined") {
@@ -363,10 +372,11 @@ export function Hero() {
 
                 introTl.to(frameProxy.current, {
                     frame: TOTAL_FRAMES - 1,
+                    assetScale: 0.82, // Set base scale after intro
                     duration: isMobile ? 4.5 : 5.0,
                     ease: "power3.inOut",
                     onUpdate() {
-                        introRef.current?.draw(frameProxy.current.frame);
+                        introRef.current?.draw(frameProxy.current.frame, frameProxy.current.assetScale);
                         smoothedProgress.current = frameProxy.current.frame;
                         targetProgress.current = frameProxy.current.frame;
                     },
@@ -390,14 +400,18 @@ export function Hero() {
                         scrub: false,
                         onUpdate: (self) => {
                             targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
-                            // Trigger ticker rendering
+
+                            // Dynamically update asset scale based on scroll progress
+                            // Map 0 -> 1 progress to 0.82 -> 0.70 asset scale
+                            frameProxy.current.assetScale = 0.82 - (0.12 * self.progress);
+
                             if (!isAnimating.current) {
                                 isAnimating.current = true;
                             }
                         },
                         onLeave: () => {
-                            // Force final state to prevent lock stutter
                             targetProgress.current = endFrame;
+                            frameProxy.current.assetScale = 0.70;
                             isAnimating.current = true;
                         },
                         anticipatePin: 1.5,
@@ -410,12 +424,12 @@ export function Hero() {
                             trigger: sectionRef.current,
                             start: "top top",
                             end: "bottom bottom",
-                            scrub: 0.5, // Standardized scrub
+                            scrub: 0.5,
                         }
                     })
                         .fromTo(videoWrapperRef.current,
-                            { scale: 0.90, y: 0 },
-                            { scale: 0.82, y: isMobile ? 0 : -30, ease: "none", overwrite: "auto" }, 0)
+                            { scale: 1.0, y: 0 }, // ALWAYS full screen to avoid side borders
+                            { scale: 1.0, y: isMobile ? 0 : -30, ease: "none", overwrite: "auto" }, 0)
                         .to(contentWrapperRef.current, { y: isMobile ? -10 : -30, opacity: 0.8, ease: "none" }, 0)
                         .to(actionsRef.current, { scale: isMobile ? 1.0 : 0.97, opacity: 0.9, ease: "none" }, 0.1);
                 }
@@ -427,18 +441,21 @@ export function Hero() {
 
             // Ticker for smooth LERPing
             const tickerRender = () => {
-                if (!isAnimating.current) return;
+                if (!isAnimating.current || !sectionMounted.current) return;
 
                 const diff = targetProgress.current - smoothedProgress.current;
-                const lerpFactor = window.innerWidth < 768 ? 0.05 : 0.07; // Increased fluidity (lower factor)
+                // Higher precision for the last 1% to prevent lock-up
+                const isNearEnd = Math.abs(diff) < 2;
+                const lerpFactor = isNearEnd ? 0.15 : (window.innerWidth < 768 ? 0.05 : 0.07);
 
                 smoothedProgress.current += diff * lerpFactor;
 
                 if (introRef.current) {
-                    introRef.current.draw(smoothedProgress.current);
+                    // Always draw with current proxy state
+                    introRef.current.draw(smoothedProgress.current, frameProxy.current.assetScale);
                 }
 
-                if (Math.abs(diff) < 0.001) {
+                if (Math.abs(diff) < 0.0001) {
                     smoothedProgress.current = targetProgress.current;
                     isAnimating.current = false;
                 }
@@ -451,7 +468,10 @@ export function Hero() {
             };
         }, sectionRef);
 
-        return () => ctx.revert();
+        return () => {
+            sectionMounted.current = false;
+            ctx.revert();
+        };
     }, [mounted, canStartSequence]);
 
     return (
