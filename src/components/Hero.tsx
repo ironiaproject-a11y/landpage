@@ -119,8 +119,10 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
                 className={`w-full h-full object-contain transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     filter: isMobile ? 'brightness(0.5)' : 'brightness(0.34)',
-                    width: 'clamp(300px, 80vw, 1000px)',
-                    height: '70vh'
+                    width: '100%',
+                    height: isMobile ? '60vh' : '85vh',
+                    maxWidth: isMobile ? 'none' : '1600px',
+                    margin: '0 auto'
                 }}
             />
         </div>
@@ -211,8 +213,10 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
             style={{
                 cursor: 'none',
                 touchAction: 'none',
-                width: 'clamp(300px, 80vw, 1000px)',
-                height: '70vh',
+                width: '100%',
+                height: isMobile ? '60vh' : '85vh',
+                maxWidth: isMobile ? 'none' : '1600px',
+                margin: '0 auto',
                 containerType: 'inline-size'
             } as any}
         >
@@ -310,6 +314,9 @@ export function Hero() {
                     anticipatePin: 1
                 }
             })
+                .fromTo(videoWrapperRef.current,
+                    { scale: 0.8, opacity: 0.8 },
+                    { scale: 1.2, opacity: 1, ease: "none" }, 0)
                 .to(contentWrapperRef.current, { y: -30, opacity: 0.85, ease: "none" }, 0)
                 .to(actionsRef.current, { scale: 0.97, opacity: 0.95, ease: "none" }, 0.1);
         }, sectionRef);
@@ -320,7 +327,7 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full min-h-[65vh] lg:min-h-screen h-[75vh] lg:h-screen flex flex-col overflow-hidden bg-[#0a0a0a]"
+            className="relative w-full h-[150vh] md:h-[200vh] flex flex-col overflow-hidden bg-[#0a0a0a]"
         >
             <div
                 ref={pinContainerRef}
@@ -333,11 +340,7 @@ export function Hero() {
                 >
                     <div
                         ref={videoWrapperRef}
-                        className="absolute inset-0 z-0 origin-center will-change-transform"
-                        style={{
-                            transform: 'scale(1.02)',
-                            transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
-                        }}
+                        className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center"
                     >
                         {/* Radial Vignette Overlay */}
                         <div
