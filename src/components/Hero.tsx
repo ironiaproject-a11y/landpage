@@ -14,10 +14,9 @@ if (typeof window !== "undefined") {
 
 const TOTAL_FRAMES = 192;
 
-const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMobile: boolean }) => {
+const IntroSequence = ({ frameIndex, isMobile }: { frameIndex: { frame: number }, isMobile: boolean }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
-    const frameIndexRef = useRef({ frame: 0 });
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -51,7 +50,7 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
     const drawFrame = useCallback(() => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d', { alpha: false });
-        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndexRef.current.frame)));
+        const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndex.frame)));
         const img = framesRef.current[idx];
 
         if (canvas && ctx && img && img.complete) {
@@ -86,28 +85,14 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
-    }, []);
+    }, [frameIndex.frame]);
 
     useEffect(() => {
-        if (!loaded) return;
-
-        // Start drawing immediately when loaded to ensure first frame is visible
-        drawFrame();
-
-        gsap.to(frameIndexRef.current, {
-            frame: TOTAL_FRAMES - 1,
-            duration: 1.6, // Slightly faster rotation for cinematic feel
-            ease: "power2.inOut",
-            onUpdate: drawFrame,
-            onComplete: () => {
-                // Short delay to dwell on the final front-facing frame
-                setTimeout(onComplete, 200);
-            }
-        });
-    }, [loaded, drawFrame, onComplete]);
+        if (loaded) drawFrame();
+    }, [loaded, drawFrame]);
 
     return (
-        <div className="absolute inset-0 z-20 flex items-center justify-center">
+        <div className="absolute inset-0 z-0 flex items-center justify-center">
             {!loaded && (
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
@@ -120,9 +105,7 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
                 style={{
                     filter: isMobile ? 'brightness(0.5)' : 'brightness(0.34)',
                     width: '100%',
-                    height: isMobile ? '60vh' : '85vh',
-                    maxWidth: isMobile ? 'none' : '1600px',
-                    margin: '0 auto'
+                    height: '100%'
                 }}
             />
         </div>
@@ -214,9 +197,7 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
                 cursor: 'none',
                 touchAction: 'none',
                 width: '100%',
-                height: isMobile ? '60vh' : '85vh',
-                maxWidth: isMobile ? 'none' : '1600px',
-                margin: '0 auto',
+                height: '100%',
                 containerType: 'inline-size'
             } as any}
         >
@@ -269,11 +250,11 @@ export function Hero() {
     const [scannerAssetsLoaded, setScannerAssetsLoaded] = useState(false);
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const frameIndexRef = useRef({ frame: 0 });
     const shouldReduceMotion = useReducedMotion();
 
-    const { scrollY } = useScroll();
-    const videoY = useTransform(scrollY, [0, 600], [0, -140]);
-    const videoScale = useTransform(scrollY, [0, 600], [1, 1.08]);
+    // Force frame update for IntroSequence
+    const [, setTick] = useState(0);
 
     useEffect(() => {
         setMounted(true);
@@ -304,19 +285,34 @@ export function Hero() {
         const ctx = gsap.context(() => {
             if (shouldReduceMotion || isMobile) return;
 
-            gsap.timeline({
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=100%",
+                    end: "bottom bottom",
                     pin: pinContainerRef.current,
                     scrub: 1.2,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    onUpdate: (self) => {
+                        if (self.progress > 0.85 && phase === 'rotating') {
+                            setPhase('scanning');
+                        } else if (self.progress < 0.8 && phase === 'scanning') {
+                            setPhase('rotating');
+                        }
+                    }
                 }
-            })
+            });
+
+            tl.fromTo(frameIndexRef.current,
+                { frame: 0 },
+                {
+                    frame: TOTAL_FRAMES - 1,
+                    ease: "none",
+                    onUpdate: () => setTick(t => t + 1)
+                }, 0)
                 .fromTo(videoWrapperRef.current,
-                    { scale: 0.8, opacity: 0.8 },
-                    { scale: 1.2, opacity: 1, ease: "none" }, 0)
+                    { scale: 1.5, yPercent: 0 },
+                    { scale: 1.0, yPercent: -10, ease: "power1.inOut" }, 0)
                 .to(contentWrapperRef.current, { y: -30, opacity: 0.85, ease: "none" }, 0)
                 .to(actionsRef.current, { scale: 0.97, opacity: 0.95, ease: "none" }, 0.1);
         }, sectionRef);
@@ -327,16 +323,15 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-[150vh] md:h-[200vh] flex flex-col overflow-hidden bg-[#0a0a0a]"
+            className="relative w-full h-[300vh] flex flex-col bg-[#0a0a0a]"
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-full w-full flex items-center overflow-hidden"
+                className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-0"
             >
-                {/* Background Frame Sequence Layer */}
-                <m.div
+                {/* Background Frame Sequence Layer - No max-width or padding restrictions */}
+                <div
                     className="absolute inset-0 z-0 overflow-hidden"
-                    style={{ y: videoY, scale: videoScale }}
                 >
                     <div
                         ref={videoWrapperRef}
@@ -387,7 +382,7 @@ export function Hero() {
                                     className="absolute inset-0 flex items-center justify-center"
                                 >
                                     <IntroSequence
-                                        onComplete={() => setPhase('scanning')}
+                                        frameIndex={frameIndexRef.current}
                                         isMobile={isMobile}
                                     />
                                 </m.div>
@@ -407,15 +402,14 @@ export function Hero() {
                             )}
                         </AnimatePresence>
                     </div>
-                </m.div>
+                </div>
 
                 {/* Ambient Particles (Disabled for cleaner look) */}
                 {/* {!shouldReduceMotion && <AmbientParticles />} */}
 
-                {/* Main Content (Text) - Always on top */}
                 <div
                     ref={contentWrapperRef}
-                    className="relative z-[101] w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
+                    className="relative z-10 w-full flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none"
                     style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '120px 24px 100px' : '160px 6vw 140px', width: '100%', position: 'absolute', inset: 0, justifyContent: 'center' }}
                 >
                     <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
