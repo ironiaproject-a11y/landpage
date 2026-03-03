@@ -29,11 +29,17 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
             img.onload = () => {
                 imageElements[i] = img;
                 loadedCount++;
-                if (loadedCount === TOTAL_FRAMES) setLoaded(true);
+                if (loadedCount === TOTAL_FRAMES) {
+                    framesRef.current = imageElements;
+                    setLoaded(true);
+                }
             };
             img.onerror = () => {
                 loadedCount++;
-                if (loadedCount === TOTAL_FRAMES) setLoaded(true);
+                if (loadedCount === TOTAL_FRAMES) {
+                    framesRef.current = imageElements;
+                    setLoaded(true);
+                }
             };
             const paddedIndex = i.toString().padStart(3, '0');
             img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
@@ -85,13 +91,17 @@ const IntroSequence = ({ onComplete, isMobile }: { onComplete: () => void, isMob
     useEffect(() => {
         if (!loaded) return;
 
+        // Start drawing immediately when loaded to ensure first frame is visible
+        drawFrame();
+
         gsap.to(frameIndexRef.current, {
             frame: TOTAL_FRAMES - 1,
-            duration: 1.8,
+            duration: 1.6, // Slightly faster rotation for cinematic feel
             ease: "power2.inOut",
             onUpdate: drawFrame,
             onComplete: () => {
-                setTimeout(onComplete, 300);
+                // Short delay to dwell on the final front-facing frame
+                setTimeout(onComplete, 200);
             }
         });
     }, [loaded, drawFrame, onComplete]);
@@ -408,36 +418,42 @@ export function Hero() {
                     <div className="max-w-[90vw] lg:max-w-[850px] perspective-1000 w-full flex flex-col items-center lg:items-start relative">
                         <m.h1
                             ref={titleRef}
-                            initial={{ opacity: 0, y: 50, filter: "blur(14px)" }}
-                            animate={(mounted && canStartSequence) ? {
-                                opacity: 1,
-                                y: 0,
-                                filter: "blur(0px)"
-                            } : {
-                                opacity: 0,
-                                y: 50,
-                                filter: "blur(14px)"
-                            }}
-                            transition={{
-                                duration: 2.5,
-                                ease: [0.16, 1, 0.3, 1],
-                                delay: isMobile ? 1.5 : 4.5
-                            }}
-                            className="font-display text-[28px] md:text-[36px] lg:text-[77px] text-[var(--color-creme)] will-change-transform perspective-2000 font-black uppercase tracking-[0.05em]" style={{ lineHeight: isMobile ? 1.15 : 1.1, marginBottom: isMobile ? 52 : 40 }}
+                            initial={{ opacity: 0 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
+                            transition={{ duration: 0.1 }}
+                            className="font-display text-[42px] md:text-[56px] lg:text-[88px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-hero leading-[1.05] mb-12"
                         >
-                            <span className="block mb-1 lg:mb-2 text-glitch" data-text="Seu sorriso,">Seu sorriso,</span>
-                            <span className="block font-black text-[var(--color-creme)] text-glitch" data-text="sua assinatura.">sua assinatura.</span>
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "100%" }}
+                                    animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
+                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.5 : 4.5 }}
+                                    className="text-mask-reveal-inner"
+                                >
+                                    Seu sorriso,
+                                </m.span>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "100%" }}
+                                    animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
+                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.7 : 4.7 }}
+                                    className="text-mask-reveal-inner font-light italic"
+                                >
+                                    sua assinatura.
+                                </m.span>
+                            </span>
                         </m.h1>
 
                         <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
                             <m.p
                                 ref={descriptionRef}
-                                initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                                animate={(mounted && (scannerAssetsLoaded || phase === 'rotating') && canStartSequence) ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(6px)" }}
-                                transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="text-[16px] lg:text-[18px] font-semibold lg:font-normal text-center lg:text-left text-white/90"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={(mounted && (scannerAssetsLoaded || phase === 'rotating') && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
+                                transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="text-[17px] lg:text-[19px] font-medium text-center lg:text-left text-white leading-[1.6] body-text-refined"
                             >
-                                A harmonia perfeita entre ciência avançada e estética de <span className="italic font-editorial text-[var(--color-silver-bh)]">alta costura</span>.
+                                A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
@@ -451,8 +467,8 @@ export function Hero() {
                                     transition={{ delay: isMobile ? 0.6 : 4.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                                     whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
-                                    className="group relative flex items-center justify-center gap-3 bg-[#F5F5DC] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px] border border-transparent hover:border-[#F5F5DC] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.6)] transition-all duration-500"
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '16px 32px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
+                                    className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-[#0A0A0A] rounded-full font-bold shadow-xl lg:shadow-2xl overflow-hidden border border-transparent hover:scale-[1.02] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                                 >
                                     {/* Shimmer Effect */}
                                     <m.div

@@ -111,10 +111,13 @@ export function FAQ() {
                         >
                             Esclarecimentos
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-5xl md:text-7xl font-medium text-white leading-tight tracking-tight">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block">Dúvidas</span> <span className="title-line-inner text-gradient-silver inline-block">Frequentes</span>
-                            </div>
+                        <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                            <span className="text-mask-reveal">
+                                <span className="title-line-inner inline-block">Dúvidas</span>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <span className="title-line-inner text-gradient-silver inline-block italic font-light">Frequentes.</span>
+                            </span>
                         </h2>
                     </div>
 
@@ -137,8 +140,8 @@ export function FAQ() {
                                 >
                                     <div className="flex items-center gap-6">
                                         <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 border ${activeIndex === index
-                                            ? "bg-[var(--color-silver-bh)] border-[var(--color-silver-bh)] text-black shadow-glow-gold"
-                                            : "bg-white/5 border-white/10 text-[var(--color-silver-bh)]"
+                                            ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
+                                            : "bg-white/5 border-white/10 text-[var(--color-creme)]"
                                             }`}>
                                             <HelpCircle strokeWidth={1.2} className="w-5 h-5" />
                                         </div>
@@ -164,7 +167,7 @@ export function FAQ() {
                                             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                         >
                                             <div className="px-8 md:px-10 pb-10 md:pb-12 ml-18 md:ml-22">
-                                                <p className="text-[var(--color-text-secondary)] text-lg leading-relaxed font-light max-w-2xl">
+                                                <p className="text-white/60 text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
                                                     {faq.answer}
                                                 </p>
                                             </div>

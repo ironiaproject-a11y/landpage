@@ -72,8 +72,8 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-[12px] font-black text-white/90 tracking-[0.4em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-silver-bh)] font-black">.</span>
+                            <span className="font-display text-[16px] font-medium text-white/90 tracking-[0.2em] uppercase transition-all duration-700">
+                                Clínica<span className="text-[var(--color-creme)] font-light italic">.</span>
                             </span>
                         </a>
                     </Magnetic>
@@ -140,9 +140,9 @@ export function Navbar() {
                                     whileTap={{ scale: 0.95 }}
                                     animate={activeSection !== "" ? {
                                         boxShadow: isScrolled ? [
-                                            "0 0 0px rgba(199, 168, 107, 0)",
-                                            "0 0 20px rgba(199, 168, 107, 0.4)",
-                                            "0 0 0px rgba(199, 168, 107, 0)"
+                                            "0 0 0px rgba(245, 245, 220, 0)",
+                                            "0 0 20px rgba(245, 245, 220, 0.2)",
+                                            "0 0 0px rgba(245, 245, 220, 0)"
                                         ] : "none"
                                     } : {}}
                                     transition={{
@@ -151,7 +151,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-black shadow-none hover:shadow-glow-gold relative overflow-hidden"
+                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-creme relative overflow-hidden bg-[var(--color-creme)] text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"

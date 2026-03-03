@@ -106,20 +106,20 @@ export function Contact() {
                         >
                             Contato
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-4xl md:text-5xl font-medium text-white mb-8 leading-tight">
-                            <div className="block overflow-hidden pb-1">
+                        <h2 ref={titleRef} className="font-display text-[clamp(32px,4vw,56px)] font-medium text-white mb-8 leading-[1.1] uppercase tracking-hero">
+                            <span className="text-mask-reveal">
                                 <span className="title-line-inner inline-block">Vamos planejar seu</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver">novo sorriso</span>?
-                            </div>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">novo sorriso?</span>
+                            </span>
                         </h2>
                         <m.p
                             initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            whileInView={{ opacity: 0.8, y: 0 }}
                             viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-text-secondary)] mb-12 leading-relaxed"
+                            className="text-white font-medium leading-[1.6] mb-12 body-text-refined"
                         >
                             Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                         </m.p>
@@ -127,7 +127,7 @@ export function Contact() {
                         <div className="space-y-8">
                             <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
                                         <Phone strokeWidth={1.2} className="w-5 h-5" />
                                     </div>
                                 </Magnetic>
@@ -140,7 +140,7 @@ export function Contact() {
 
                             <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
                                         <Mail strokeWidth={1.2} className="w-5 h-5" />
                                     </div>
                                 </Magnetic>
@@ -153,7 +153,7 @@ export function Contact() {
 
                             <div className="flex items-start gap-4 group contact-info-item">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
                                         <MapPin strokeWidth={1.2} className="w-5 h-5" />
                                     </div>
                                 </Magnetic>

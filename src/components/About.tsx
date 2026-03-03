@@ -243,17 +243,33 @@ export function About() {
                             </span>
                         </m.div>
 
-                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,7.5vw,5.5rem)] font-black mb-10 text-white leading-[1] tracking-[0.05em] uppercase">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-glitch" data-text="Elevando o padrão da">Elevando o padrão da</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver font-black text-glitch" data-text="Odontologia Estética">Odontologia Estética</span>
-                            </div>
+                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,7.5vw,5.5rem)] font-medium mb-10 text-white leading-[1.05] tracking-hero uppercase">
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "110%" }}
+                                    whileInView={{ y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                    className="text-mask-reveal-inner text-white"
+                                >
+                                    Elevando o padrão da
+                                </m.span>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "110%" }}
+                                    whileInView={{ y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                                    className="text-mask-reveal-inner text-gradient-silver italic font-light"
+                                >
+                                    Odontologia Estética
+                                </m.span>
+                            </span>
                         </h2>
 
-                        <p ref={descriptionRef} className="text-subheadline-editorial mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8">
-                            Mais do que tratamentos, oferecemos <span className="font-bold font-display uppercase tracking-wider text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
+                        <p ref={descriptionRef} className="font-body text-[17px] lg:text-[19px] mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8 body-text-refined">
+                            Mais do que tratamentos, oferecemos <span className="font-medium font-display uppercase tracking-wider text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">

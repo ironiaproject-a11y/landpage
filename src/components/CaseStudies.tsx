@@ -195,19 +195,20 @@ export function CaseStudies() {
                     >
                         Casos Clínicos
                     </m.span>
-                    <h2 ref={titleRef} className="font-display text-5xl md:text-8xl font-medium text-white leading-[0.9] tracking-tight mb-8">
-                        <div className="block overflow-hidden pb-1">
+                    <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,88px)] font-medium text-white leading-[1.05] tracking-hero mb-8 uppercase">
+                        <span className="text-mask-reveal">
                             <span className="title-line-inner inline-block">Resultados que</span>
-                        </div>
-                        <div className="block overflow-hidden pb-1">
-                            <span className="title-line-inner inline-block text-gradient-silver">falam por si</span>.
-                        </div>
+                        </span>
+                        <span className="text-mask-reveal">
+                            <span className="title-line-inner inline-block text-gradient-silver italic font-light">falam por si.</span>
+                        </span>
                     </h2>
                     <m.p
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 0.8, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-lg md:text-xl text-[var(--color-text-secondary)] font-light leading-relaxed max-w-xl"
+                        className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-xl body-text-refined"
                     >
                         Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
                     </m.p>

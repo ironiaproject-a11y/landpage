@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter } from "next/font/google";
+import { Montserrat, Inter, Cormorant_Garamond } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -20,6 +20,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Clínica Premium | Odontologia de Alta Performance",
   description: "Transformando sorrisos com tecnologia de ponta, estética refinada e cuidado personalizado em São Paulo.",
@@ -31,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${montserrat.variable} ${inter.variable}`}>
+    <html lang="pt-br" className={`${montserrat.variable} ${inter.variable} ${cormorant.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <script

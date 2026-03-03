@@ -178,13 +178,29 @@ export function InstitutionalTrust() {
                         >
                             Fundamentos do Cuidado
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-white text-[clamp(48px,6vw,80px)] font-black tracking-[0.05em] leading-[1.0] uppercase">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-white text-glitch" data-text="A harmonia entre o">A harmonia entre o</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver font-black text-glitch" data-text="Rigor e a Sensibilidade">Rigor e a Sensibilidade</span>.
-                            </div>
+                        <h2 ref={titleRef} className="font-display text-white text-[clamp(42px,6vw,84px)] font-medium leading-[1.05] uppercase tracking-hero">
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "110%" }}
+                                    whileInView={{ y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                    className="text-mask-reveal-inner text-white"
+                                >
+                                    A harmonia entre o
+                                </m.span>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <m.span
+                                    initial={{ y: "110%" }}
+                                    whileInView={{ y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                                    className="text-mask-reveal-inner text-gradient-silver italic font-light"
+                                >
+                                    Rigor e a Sensibilidade.
+                                </m.span>
+                            </span>
                         </h2>
                     </div>
 
@@ -221,37 +237,37 @@ export function InstitutionalTrust() {
                                 sideHeight="12px"
                                 className="!bg-[var(--color-surface-dark)]/40 hover:!bg-[var(--color-surface)]/60 border-white/5 hover:border-[var(--color-silver-bh)]/20 transition-all duration-700 light-sweep"
                             >
-                                <div className="p-10 h-full flex flex-col justify-between relative overflow-hidden group/card shadow-2xl">
+                                <div className="p-10 h-full flex flex-col justify-between relative overflow-hidden group/card shadow-2xl card-luxury rounded-2xl">
                                     {/* Abstract Gradient Glow */}
-                                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-[var(--color-silver-bh)]/5 blur-[80px] rounded-full group-hover/card:bg-[var(--color-silver-bh)]/10 transition-colors duration-1000" />
+                                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-[var(--color-creme)]/5 blur-[80px] rounded-full group-hover/card:bg-[var(--color-creme)]/10 transition-colors duration-1000" />
 
                                     {/* Numerical Indicator - Editorial Style */}
                                     <div className="flex justify-between items-start z-10">
-                                        <div className="w-10 h-[1px] bg-[var(--color-silver-bh)]/30 mt-4 group-hover/card:w-16 group-hover/card:bg-[var(--color-silver-bh)] transition-all duration-700 origin-left" />
+                                        <div className="w-10 h-[1px] bg-[var(--color-creme)]/10 mt-4 group-hover/card:w-16 group-hover/card:bg-[var(--color-creme)]/30 transition-all duration-700 origin-left" />
                                         <m.span
                                             initial={{ opacity: 0, x: -10 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                                            className="font-display font-black text-6xl text-white/[0.03] group-hover/card:text-[var(--color-silver-bh)]/10 group-hover/card:scale-110 transition-all duration-1000 leading-none tracking-tighter"
+                                            className="font-display font-medium text-6xl text-white/[0.03] group-hover/card:text-[var(--color-creme)]/10 transition-all duration-1000 leading-none tracking-tighter"
                                         >
                                             {card.number}
                                         </m.span>
                                     </div>
 
                                     <div className="relative z-10 pt-12">
-                                        <h3 className="font-display text-white text-2xl font-black mb-6 group-hover/card:translate-x-2 transition-transform duration-500 uppercase tracking-wider">
+                                        <h3 className="font-display text-white text-2xl font-medium mb-6 group-hover/card:translate-x-2 transition-transform duration-500 uppercase tracking-wide">
                                             {card.title}
                                         </h3>
 
-                                        <p className="font-body text-[var(--color-text-tertiary)] text-sm leading-relaxed group-hover/card:text-[var(--color-text-secondary)] transition-colors duration-500 max-w-[90%] trust-card-subtitle">
+                                        <p className="font-body text-white/60 text-sm leading-[1.6] group-hover/card:text-white/80 transition-colors duration-500 max-w-[90%] body-text-refined">
                                             {card.subtitle}
                                         </p>
                                     </div>
 
                                     {/* Bottom Detail */}
                                     <div className="z-10 mt-8 group-hover/card:opacity-100 transition-opacity duration-700 trust-card-detail">
-                                        <div className="text-[9px] uppercase tracking-[0.3em] text-[var(--color-silver-bh)]">Pilar de Excelência</div>
+                                        <div className="text-[9px] uppercase tracking-[0.3em] text-[var(--color-creme)]/40">Pilar de Excelência</div>
                                     </div>
                                 </div>
                             </VisualContainer>

@@ -105,8 +105,8 @@ export function Footer() {
                                     <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <div className="overflow-hidden">
-                                    <h3 className="title-line-inner text-base font-display font-black tracking-[0.3em] text-white leading-tight uppercase">
-                                        Clínica.
+                                    <h3 className="title-line-inner text-lg font-display font-medium tracking-[0.15em] text-white leading-tight uppercase">
+                                        Clínica<span className="text-[var(--color-creme)]">.</span>
                                     </h3>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Especialidades</h4>
+                            <h4 className="title-line-inner text-xs font-display font-medium uppercase tracking-[0.2em] text-white/40">Especialidades</h4>
                         </div>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (

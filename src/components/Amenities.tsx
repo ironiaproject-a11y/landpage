@@ -205,11 +205,15 @@ export function Amenities() {
                         >
                             Hospitality
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-5xl md:text-7xl font-light text-white leading-[1.0] mb-12">
-                            <span className="block">Experiência</span>
-                            <span className="block text-gradient-silver italic font-medium">Cinco Estrelas.</span>
+                        <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] mb-12 uppercase tracking-hero">
+                            <span className="text-mask-reveal">
+                                <span className="title-line-inner inline-block">Experiência</span>
+                            </span>
+                            <span className="text-mask-reveal">
+                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">Cinco Estrelas.</span>
+                            </span>
                         </h2>
-                        <p className="amenities-desc text-lg text-[var(--color-text-dim)] font-light leading-relaxed mb-12 max-w-md">
+                        <p className="amenities-desc text-lg text-white/60 font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
                             Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
                         </p>
 

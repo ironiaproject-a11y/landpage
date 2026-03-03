@@ -160,10 +160,14 @@ export function Testimonials() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="depoimentos">
-            {/* Atmospheric Lighting Evolution */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] glow-blob-warm opacity-10 pointer-events-none" />
-            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] glow-blob opacity-20" />
+        <section
+            ref={sectionRef}
+            id="depoimentos"
+            className="relative py-24 md:py-32 overflow-hidden bg-[#0a0a0a]"
+        >
+            {/* Cremic Atmospheric Lighting */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[var(--color-creme)]/5 blur-[120px] pointer-events-none" />
+            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[var(--color-creme)]/5 blur-[100px]" />
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Evolution */}
@@ -176,13 +180,13 @@ export function Testimonials() {
                     >
                         Prova Social
                     </m.span>
-                    <h2 ref={titleRef} className="font-display text-5xl md:text-7xl font-medium text-white leading-[0.95] tracking-tight">
-                        <div className="block overflow-hidden pb-1">
+                    <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                        <span className="text-mask-reveal">
                             <span className="title-line-inner inline-block">Histórias de</span>
-                        </div>
-                        <div className="block overflow-hidden pb-1">
-                            <span className="title-line-inner inline-block text-gradient-silver">transformação real</span>.
-                        </div>
+                        </span>
+                        <span className="text-mask-reveal">
+                            <span className="title-line-inner inline-block text-gradient-silver italic font-light">transformação real.</span>
+                        </span>
                     </h2>
                 </div>
 
@@ -229,7 +233,7 @@ export function Testimonials() {
                                                 </div>
 
                                                 {/* Content Evolution */}
-                                                <p className="font-editorial text-2xl text-white/90 italic leading-[1.8] mb-12 flex-grow font-light">
+                                                <p className="font-display text-2xl text-white/90 italic leading-[1.8] mb-12 flex-grow font-light">
                                                     &quot;{testimonial.content}&quot;
                                                 </p>
 
@@ -257,6 +261,6 @@ export function Testimonials() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
