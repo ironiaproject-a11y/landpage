@@ -314,8 +314,9 @@ export function Hero() {
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
     const isAnimating = useRef(false);
-    const frameProxy = useRef({ frame: 0, letterSpacing: 0, textY: 0, opacity: 1 });
+    const frameProxy = useRef({ frame: 0, letterSpacing: 0, textY: 0, opacity: 1, glowScale: 1, glowOpacity: 0.05 });
     const sectionMounted = useRef(false);
+    const backlightRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -403,6 +404,10 @@ export function Hero() {
                             // Smooth fade out as we reach the bottom of the section
                             frameProxy.current.opacity = 1 - Math.max(0, (self.progress - 0.5) * 2);
 
+                            // Atmospheric Glow Interactions
+                            frameProxy.current.glowScale = 1 + (self.progress * 0.5); // Grows behind asset
+                            frameProxy.current.glowOpacity = 0.05 * (1 - self.progress); // Fades as we leave
+
                             if (!isAnimating.current) {
                                 isAnimating.current = true;
                             }
@@ -467,6 +472,14 @@ export function Hero() {
                     });
                 }
 
+                if (backlightRef.current) {
+                    gsap.set(backlightRef.current, {
+                        scale: frameProxy.current.glowScale,
+                        opacity: frameProxy.current.glowOpacity,
+                        y: frameProxy.current.textY * 0.5 // Slower parallax for depth
+                    });
+                }
+
                 if (introRef.current) {
                     // Always draw with current proxy state
                     introRef.current.draw(smoothedProgress.current);
@@ -502,17 +515,30 @@ export function Hero() {
                 className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform bg-black"
                 style={{ backgroundColor: '#000000' }}
             >
-                {/* Brand-Focused 360 Viewer Wrapper Container - Brute Force Integration */}
+                {/* Atmospheric Seamless 360 Viewer - No Box, Pure Void */}
                 <div
-                    className="relative w-[85vw] h-[85vh] max-w-[1600px] max-h-[1000px] z-0 overflow-hidden flex items-center justify-center bg-black"
-                    style={{ margin: 'auto', backgroundColor: '#000000', overflow: 'hidden !important' }}
+                    ref={videoWrapperRef}
+                    className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
                 >
+                    {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) */}
                     <div
-                        ref={videoWrapperRef}
-                        className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
-                        style={{ display: 'flex !important', justifyContent: 'center !important', alignItems: 'center !important' }}
+                        ref={backlightRef}
+                        className="absolute w-[120vw] h-[120vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.05) 0%, transparent 60%)',
+                            opacity: 0.05
+                        }}
+                    />
+
+                    {/* Radial Mask Container for "Bleeding" Video Edges */}
+                    <div
+                        className="relative w-full h-full flex items-center justify-center z-[5]"
+                        style={{
+                            maskImage: 'radial-gradient(circle at center, black 35%, transparent 75%)',
+                            WebkitMaskImage: 'radial-gradient(circle at center, black 35%, transparent 75%)'
+                        }}
                     >
-                        {/* Radial Vignette Overlay */}
+                        {/* Radial Vignette Overlay (Simplified for Atmospheric feel) */}
                         <div
                             className="absolute inset-0 z-[12] pointer-events-none transition-opacity duration-1500 hidden lg:block"
                             style={{
