@@ -335,6 +335,7 @@ export function Hero() {
             const timer = setTimeout(() => setCanStartSequence(true), 5000);
 
             if (isMobile) {
+                ScrollTrigger.config({ ignoreMobileResize: true });
                 ScrollTrigger.normalizeScroll(true);
             }
 
@@ -390,7 +391,6 @@ export function Hero() {
                     pinType: "transform",
                     scrub: isMobile ? 1.0 : 1.5,
                     anticipatePin: 1,
-                    ignoreMobileResize: true,
                 }
             });
 
