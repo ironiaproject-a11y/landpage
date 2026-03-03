@@ -24,13 +24,18 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
     useEffect(() => {
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
+        // On mobile, we only load even frames to save memory and improve performance
+        const skipFactor = isMobile ? 2 : 1;
+        const targetFrames = isMobile ? Math.ceil(TOTAL_FRAMES / skipFactor) : TOTAL_FRAMES;
 
         const loadFrame = (i: number) => {
+            if (isMobile && i % skipFactor !== 0) return;
+
             const img = new Image();
             img.onload = () => {
                 imageElements[i] = img;
                 loadedCount++;
-                if (loadedCount === TOTAL_FRAMES) {
+                if (loadedCount === targetFrames) {
                     framesRef.current = imageElements;
                     loadedRef.current = true;
                     setLoaded(true);
@@ -38,7 +43,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             };
             img.onerror = () => {
                 loadedCount++;
-                if (loadedCount === TOTAL_FRAMES) {
+                if (loadedCount === targetFrames) {
                     framesRef.current = imageElements;
                     loadedRef.current = true;
                     setLoaded(true);
@@ -49,7 +54,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
         };
 
         for (let i = 0; i < TOTAL_FRAMES; i++) loadFrame(i);
-    }, []);
+    }, [isMobile]);
 
     // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
@@ -57,7 +62,13 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             if (!loadedRef.current) return;
             const canvas = canvasRef.current;
             const ctx = canvas?.getContext('2d');
-            const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
+
+            // On mobile, find the nearest loaded frame
+            let idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
+            if (isMobile && idx % 2 !== 0) {
+                idx = Math.max(0, idx - 1);
+            }
+
             const img = framesRef.current[idx];
 
             if (canvas && ctx && img && img.complete) {
@@ -77,22 +88,39 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 const imgAspect = img.naturalWidth / img.naturalHeight;
 
                 let drawWidth, drawHeight, offsetX, offsetY;
-                if (canvasAspect > imgAspect) {
-                    drawHeight = displayHeight;
-                    drawWidth = displayHeight * imgAspect;
-                    offsetX = (displayWidth - drawWidth) / 2;
-                    offsetY = 0;
+
+                // MOBILE FIX: Use 'cover' scaling instead of 'contain'
+                if (isMobile) {
+                    if (canvasAspect > imgAspect) {
+                        drawWidth = displayWidth;
+                        drawHeight = displayWidth / imgAspect;
+                        offsetX = 0;
+                        offsetY = (displayHeight - drawHeight) / 2;
+                    } else {
+                        drawHeight = displayHeight;
+                        drawWidth = displayHeight * imgAspect;
+                        offsetX = (displayWidth - drawWidth) / 2;
+                        offsetY = 0;
+                    }
                 } else {
-                    drawWidth = displayWidth;
-                    drawHeight = displayWidth / imgAspect;
-                    offsetX = 0;
-                    offsetY = (displayHeight - drawHeight) / 2;
+                    // Desktop can keep 'contain' or a balanced look
+                    if (canvasAspect > imgAspect) {
+                        drawHeight = displayHeight;
+                        drawWidth = displayHeight * imgAspect;
+                        offsetX = (displayWidth - drawWidth) / 2;
+                        offsetY = 0;
+                    } else {
+                        drawWidth = displayWidth;
+                        drawHeight = displayWidth / imgAspect;
+                        offsetX = 0;
+                        offsetY = (displayHeight - drawHeight) / 2;
+                    }
                 }
 
                 ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             }
         }
-    }), []);
+    }), [isMobile]);
 
     // Draw the first frame when images are ready
     useEffect(() => {
@@ -110,31 +138,43 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 const canvasAspect = displayWidth / displayHeight;
                 const imgAspect = img.naturalWidth / img.naturalHeight;
                 let drawWidth, drawHeight, offsetX, offsetY;
-                if (canvasAspect > imgAspect) {
-                    drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                    offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
+
+                // Match the draw() logic for consistency
+                if (isMobile) {
+                    if (canvasAspect > imgAspect) {
+                        drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
+                        offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
+                    } else {
+                        drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
+                        offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
+                    }
                 } else {
-                    drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                    offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
+                    if (canvasAspect > imgAspect) {
+                        drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
+                        offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
+                    } else {
+                        drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
+                        offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
+                    }
                 }
                 ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             }
         }
-    }, [loaded]);
+    }, [loaded, isMobile]);
 
     return (
         <div className="absolute inset-0 z-0 flex items-center justify-center">
             {!loaded && (
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
-                    <span className="text-white/60 text-sm tracking-widest uppercase font-bold">Iniciando Biometria</span>
+                    <span className="text-white/60 text-sm tracking-widest uppercase font-bold text-center px-4">Otimizando Experiência Mobile</span>
                 </div>
             )}
             <canvas
                 ref={canvasRef}
                 className={`w-full h-full transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
-                    filter: isMobile ? 'brightness(0.6)' : 'brightness(0.72)',
+                    filter: isMobile ? 'brightness(0.65) contrast(1.1)' : 'brightness(0.72)',
                     width: '100%',
                     height: '100%'
                 }}
