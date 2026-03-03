@@ -160,10 +160,10 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 className={`w-full h-full object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     filter: isMobile ? 'brightness(0.65) contrast(1.1)' : 'brightness(0.72)',
-                    width: '100%',
-                    height: '100%',
+                    width: '100% !important',
+                    height: '100% !important',
                     objectFit: 'cover',
-                    transform: 'translateZ(0)',
+                    transform: 'scale(1.05) translateZ(0)',
                     backfaceVisibility: 'hidden'
                 }}
             />
@@ -474,14 +474,15 @@ export function Hero() {
                 className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform bg-black"
                 style={{ backgroundColor: '#000000' }}
             >
-                {/* Brand-Focused 360 Viewer Wrapper Container */}
+                {/* Brand-Focused 360 Viewer Wrapper Container - Brute Force Integration */}
                 <div
                     className="relative w-[85vw] h-[85vh] max-w-[1600px] max-h-[1000px] z-0 overflow-hidden flex items-center justify-center bg-black"
-                    style={{ margin: 'auto', backgroundColor: '#000000' }}
+                    style={{ margin: 'auto', backgroundColor: '#000000', overflow: 'hidden !important' }}
                 >
                     <div
                         ref={videoWrapperRef}
                         className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
+                        style={{ display: 'flex !important', justifyContent: 'center !important', alignItems: 'center !important' }}
                     >
                         {/* Radial Vignette Overlay */}
                         <div
@@ -534,7 +535,7 @@ export function Hero() {
                     style={{ padding: '0 5vw' }}
                 >
                     <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative">
-                        {/* Dominant Brand Element (Optional, since Navbar has it, but can be used for extra brand dominance) */}
+                        {/* Branded Atmospheric Overlay */}
                         <m.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
@@ -542,7 +543,7 @@ export function Hero() {
                             className="absolute top-[-15%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
                         >
                             <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
-                                IRONIA
+                                CLÍNICA.
                             </span>
                         </m.div>
 
