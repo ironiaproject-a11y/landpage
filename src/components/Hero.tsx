@@ -2,7 +2,7 @@
 
 import { m, useReducedMotion, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Magnetic } from "./Magnetic";
@@ -273,7 +273,7 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
                 containerType: 'inline-size'
             } as any}
         >
-            <Image
+            <NextImage
                 src="/assets/images/dente-estetica.webp"
                 alt="Aesthetic"
                 fill
@@ -287,7 +287,7 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
                     WebkitClipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`
                 } as any}
             >
-                <Image src="/assets/images/dente-raio-x.webp" alt="X-Ray" fill className="object-contain" priority />
+                <NextImage src="/assets/images/dente-raio-x.webp" alt="X-Ray" fill className="object-contain" priority />
             </div>
 
             <div
