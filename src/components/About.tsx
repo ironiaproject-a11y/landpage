@@ -238,12 +238,12 @@ export function About() {
                             className="flex items-center gap-4 mb-8"
                         >
                             <span className="w-12 h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent" />
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-extra-wide uppercase text-[10px] md:text-xs font-body">
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] md:text-xs font-body">
                                 Excelência e Tradição
                             </span>
                         </m.div>
 
-                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,7.5vw,5.5rem)] font-medium mb-10 text-white leading-[1.05] tracking-hero uppercase">
+                        <h2 ref={titleRef} className="font-display text-[clamp(28px,5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
                             <span className="text-mask-reveal">
                                 <m.span
                                     initial={{ y: "110%" }}
@@ -268,8 +268,8 @@ export function About() {
                             </span>
                         </h2>
 
-                        <p ref={descriptionRef} className="font-body text-[17px] lg:text-[19px] mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8 body-text-refined">
-                            Mais do que tratamentos, oferecemos <span className="font-medium font-display uppercase tracking-wider text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
+                        <p ref={descriptionRef} className="font-body text-[17px] lg:text-[18px] mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8 leading-[1.65] text-white/90 max-w-[650px] body-text-refined">
+                            Mais do que tratamentos, oferecemos <span className="font-medium font-display uppercase tracking-[0.08em] text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
@@ -292,7 +292,7 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.8 }}
-                            className="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-extra-wide rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500 font-body"
+                            className="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-[0.08em] min-h-[52px] rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500 font-body"
                         >
                             Descubra nossa tecnologia
                         </m.button>

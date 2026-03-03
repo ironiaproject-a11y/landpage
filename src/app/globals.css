@@ -55,9 +55,13 @@
   --gradient-dark: linear-gradient(to bottom, #0B0B0B, #121212);
 
   /* Typography - Precise Engineering */
-  --font-display: var(--font-cormorant), serif;
+  --font-display: var(--font-playfair), serif;
   --font-body: var(--font-inter), sans-serif;
-  --font-editorial: var(--font-montserrat), sans-serif;
+  --font-editorial: var(--font-playfair), serif;
+
+  /* Weights & Hierarchy */
+  --font-weight-heading: 500;
+  --font-weight-body: 400;
 
   /* Editorial Spacing - Aristocratic Tracking */
   --font-size-hero: clamp(32px, 8.5vw, 64px);
@@ -123,8 +127,10 @@ body {
   overflow-x: hidden;
   position: relative;
   cursor: none;
-  line-height: 1.65;
+  line-height: 1.6;
   letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
 /* Ensure interactive elements also hide cursor */
@@ -236,17 +242,15 @@ h5,
 h6 {
   font-family: var(--font-display);
   color: var(--color-text-light);
-  letter-spacing: var(--letter-spacing-primary);
-  font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
+  font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: var(--font-weight-heading);
 }
 
 h1 {
-  font-weight: 900;
-  letter-spacing: var(--letter-spacing-extra-wide);
-  line-height: var(--line-height-hero);
+  font-size: clamp(30px, 8vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
 
 .text-hero-editorial {
@@ -273,17 +277,17 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: -0.01em;
   line-height: 1.1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 h3 {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: -0.01em;
   line-height: 1.25;
 }
 

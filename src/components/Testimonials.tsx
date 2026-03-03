@@ -176,11 +176,11 @@ export function Testimonials() {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                        className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
+                        className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body"
                     >
                         Prova Social
                     </m.span>
-                    <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                    <h2 ref={titleRef} className="font-display text-[clamp(28px,6vw,48px)] font-medium text-white leading-[1.1] tracking-[-0.01em] uppercase">
                         <span className="text-mask-reveal">
                             <span className="title-line-inner inline-block">Histórias de</span>
                         </span>
@@ -233,7 +233,7 @@ export function Testimonials() {
                                                 </div>
 
                                                 {/* Content Evolution */}
-                                                <p className="font-display text-2xl text-white/90 italic leading-[1.8] mb-12 flex-grow font-light">
+                                                <p className="font-display text-[20px] md:text-2xl text-white/90 italic leading-[1.7] mb-12 flex-grow font-light">
                                                     &quot;{testimonial.content}&quot;
                                                 </p>
 
@@ -248,8 +248,8 @@ export function Testimonials() {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <h4 className="font-medium text-white text-lg tracking-tight">{testimonial.name}</h4>
-                                                        <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.2em] font-bold">{testimonial.role}</p>
+                                                        <h4 className="font-medium text-white text-lg tracking-tight font-display">{testimonial.name}</h4>
+                                                        <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold font-body">{testimonial.role}</p>
                                                     </div>
                                                 </div>
                                             </div>

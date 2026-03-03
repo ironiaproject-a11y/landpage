@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter, Cormorant_Garamond } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -7,12 +7,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { ClientSideExtras } from "@/components/ClientSideExtras";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,10 +15,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-cormorant",
+  weight: ["400", "500", "600"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -38,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${montserrat.variable} ${inter.variable} ${cormorant.variable}`}>
+    <html lang="pt-br" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <script

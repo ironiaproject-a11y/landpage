@@ -93,11 +93,11 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                                 <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
                             </div>
 
-                            <h3 className="font-display text-3xl md:text-4xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight">
+                            <h3 className="font-display text-2xl md:text-3xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight uppercase tracking-wide">
                                 {service.title}
                             </h3>
 
-                            <p className="text-[var(--color-text-secondary)] leading-relaxed text-base mb-10 font-light group-hover:text-white/90 transition-colors duration-700 service-card-description">
+                            <p className="text-[var(--color-text-secondary)] leading-[1.6] text-base mb-10 font-normal group-hover:text-white/90 transition-colors duration-700 service-card-description">
                                 {service.description}
                             </p>
 
@@ -105,7 +105,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                                 <m.div
                                     whileHover={{ x: 5 }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-extra-wide cursor-pointer transition-all duration-700 service-card-cta"
+                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.08em] cursor-pointer transition-all duration-700 service-card-cta"
                                 >
                                     <span className="font-body">Ver Protocolo</span>
                                     <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
@@ -352,11 +352,11 @@ export function Services() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[var(--color-silver-bh)] font-semibold tracking-extra-wide uppercase text-[10px] mb-8 block font-body"
+                    className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body"
                 >
                     Tratamentos de Elite
                 </m.span>
-                <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,85px)] font-medium text-white leading-[1.05] tracking-tight">
+                <h2 ref={titleRef} className="font-display text-[clamp(28px,6vw,48px)] font-medium text-white leading-[1.1] tracking-[-0.01em] mb-12">
                     <div className="block overflow-hidden pb-1">
                         <span className="title-line-inner inline-block">Soluções clínicas de</span>
                     </div>

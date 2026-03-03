@@ -110,7 +110,7 @@ export function Footer() {
                                     </h3>
                                 </div>
                             </div>
-                            <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-sm font-light text-sm opacity-60 group-hover/logo:opacity-100 transition-opacity duration-700 footer-reveal-item">
+                            <p className="text-[var(--color-text-secondary)] leading-[1.6] max-w-sm font-normal text-sm opacity-60 group-hover/logo:opacity-100 transition-opacity duration-700 footer-reveal-item body-text-refined">
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -141,7 +141,7 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Navegação</h4>
+                            <h4 className="title-line-inner text-[10px] font-bold uppercase tracking-[0.1em] text-white">Navegação</h4>
                         </div>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
@@ -161,7 +161,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-display font-medium uppercase tracking-[0.2em] text-white/40">Especialidades</h4>
+                            <h4 className="title-line-inner text-[10px] font-bold uppercase tracking-[0.1em] text-white/40">Especialidades</h4>
                         </div>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
@@ -181,7 +181,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <div className="overflow-hidden mb-8">
-                            <h4 className="title-line-inner text-xs font-black uppercase tracking-[0.3em] text-white">Onde Estamos</h4>
+                            <h4 className="title-line-inner text-[10px] font-bold uppercase tracking-[0.1em] text-white">Onde Estamos</h4>
                         </div>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">

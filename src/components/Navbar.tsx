@@ -98,7 +98,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="text-[11px] font-medium text-[var(--color-text-secondary)] uppercase tracking-widest font-body"
+                                                className="text-[11px] font-medium text-[var(--color-text-secondary)] uppercase tracking-[0.1em] font-body"
                                             >
                                                 {link.name}
                                             </m.div>
@@ -111,7 +111,7 @@ export function Navbar() {
                                                 }}
                                                 animate={activeSection === link.href ? "hover" : "initial"}
                                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="absolute inset-0 py-2 px-4 text-[11px] font-medium text-[var(--color-silver-bh)] uppercase tracking-widest font-body"
+                                                className="absolute inset-0 py-2 px-4 text-[11px] font-medium text-[var(--color-silver-bh)] uppercase tracking-[0.1em] font-body"
                                             >
                                                 {link.name}
                                             </m.div>
@@ -158,7 +158,7 @@ export function Navbar() {
                                         animate={{ translateX: ["-100%", "100%"] }}
                                         transition={{ repeat: Infinity, duration: 2, delay: 1, ease: "easeInOut" }}
                                     />
-                                    <span className="relative z-10">Agendar</span>
+                                    <span className="relative z-10 uppercase tracking-[0.08em]">Agendar</span>
                                 </m.button>
                             </Magnetic>
                         </div>

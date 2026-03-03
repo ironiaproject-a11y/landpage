@@ -421,7 +421,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[42px] md:text-[56px] lg:text-[88px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-hero leading-[1.05] mb-12"
+                            className="font-display text-[32px] md:text-[52px] lg:text-[72px] text-[var(--color-creme)] will-change-transform font-medium uppercase tracking-[-0.01em] leading-[1.05] mb-10"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -445,20 +445,20 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-4 lg:mt-5">
+                        <div className="overflow-hidden mb-0 lg:mb-10 w-full lg:pl-1 mt-6 lg:mt-8 max-w-[650px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={(mounted && (scannerAssetsLoaded || phase === 'rotating') && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: isMobile ? 1.2 : 4.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-[17px] lg:text-[19px] font-medium text-center lg:text-left text-white leading-[1.6] body-text-refined"
+                                className="text-[17px] lg:text-[18px] font-medium text-center lg:text-left text-white/90 leading-[1.65] body-text-refined"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[24px] lg:mt-9 pointer-events-auto" style={{ gap: isMobile ? 16 : 20 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start w-full px-5 lg:px-0 sm:w-auto mt-[40px] lg:mt-12 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
@@ -482,7 +482,7 @@ export function Hero() {
                                             delay: isMobile ? 2 : 7.5
                                         }}
                                     />
-                                    <span className="relative z-10 flex items-center gap-3 tracking-normal font-bold" style={{ fontSize: 'inherit' }}>
+                                    <span className="relative z-10 flex items-center gap-3 tracking-[0.08em] font-bold uppercase" style={{ fontSize: 'inherit' }}>
                                         Agendar Consulta
                                     </span>
                                 </m.button>
@@ -499,7 +499,7 @@ export function Hero() {
                                     style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
                                     className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
                                 >
-                                    <span className="tracking-normal font-semibold" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
+                                    <span className="tracking-[0.08em] font-semibold uppercase" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
                                 </m.button>
                             </Magnetic>
                         </div>

@@ -195,7 +195,7 @@ export function Stats() {
                                         whileInView={{ opacity: 0.9, x: 0 }}
                                         transition={{ duration: 0.8, delay: stat.delay + 0.4 }}
                                         viewport={{ once: true, margin: "-15%" }}
-                                        className="text-[var(--color-silver-bh)] font-body text-[11px] md:text-[12px] font-bold uppercase tracking-[0.5em] mb-4"
+                                        className="text-[var(--color-silver-bh)] font-body text-[11px] md:text-[12px] font-bold uppercase tracking-[0.08em] mb-4"
                                     >
                                         {stat.label}
                                     </m.h4>

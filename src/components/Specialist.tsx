@@ -219,7 +219,7 @@ export function Specialist() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
+                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body"
                         >
                             Corpo Clínico
                         </m.span>
@@ -315,8 +315,8 @@ export function Specialist() {
                                     </div>
 
                                     <div className="absolute bottom-12 left-12 z-20 op-desc-parallax will-change-transform [transform:translateZ(0)]">
-                                        <h4 className="text-white font-display text-3xl font-light tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.3em]">Especialista em Reabilitação Oral</p>
+                                        <h4 className="text-white font-display text-2xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.08em]">Especialista em Reabilitação Oral</p>
                                     </div>
                                 </div>
                             </VisualContainer>
@@ -328,7 +328,7 @@ export function Specialist() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
 
