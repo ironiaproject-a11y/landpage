@@ -508,7 +508,7 @@ export function Hero() {
         <section
             ref={sectionRef}
             className="relative w-full h-[300vh] flex flex-col bg-black overflow-x-hidden"
-            style={{ padding: '0 5vw', backgroundColor: '#000000' }} // Force absolute black
+            style={{ padding: 0, backgroundColor: '#000000' }} // Removed 5vw padding for absolute full-bleed
         >
             <div
                 ref={pinContainerRef}
