@@ -139,7 +139,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     height: '100% !important',
                     objectFit: 'cover',
                     transform: `scale(${isMobile ? 0.96 : 0.98}) translateZ(0)`, // Recovered presence per spec
-                    filter: `brightness(${isMobile ? 0.96 : 0.94}) contrast(0.98) saturate(0.98)`, // Improved contrast/brightness
+                    filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
@@ -413,9 +413,10 @@ export function Hero() {
                     onUpdate: (self) => {
                         targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
 
-                        // Dynamic letter spacing interaction
-                        frameProxy.current.letterSpacing = self.progress * 8;
-                        frameProxy.current.opacity = 1 - Math.max(0, (self.progress - 0.5) * 2);
+                        // Scroll Cinemático: Texto sobe e comprime levemente (tensão), sumindo de forma mais elegante
+                        frameProxy.current.letterSpacing = -(self.progress * 3);
+                        frameProxy.current.textY = -(self.progress * 150);
+                        frameProxy.current.opacity = 1 - Math.pow(self.progress, 1.5) * 1.5;
 
                         if (!isAnimating.current) {
                             isAnimating.current = true;
@@ -532,7 +533,8 @@ export function Hero() {
                     </div>
                 </div>
 
-                <div className="hero-overlay-fix absolute inset-0 pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.55)', zIndex: 1 }} />
+                {/* Removido o overlay escuro global para valorizar a luz do 3D */}
+                <div className="hero-overlay-fix absolute inset-0 pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.15)', zIndex: 1 }} />
 
                 {/* Ambient Particles (Disabled for cleaner look) */}
                 {/* {!shouldReduceMotion && <AmbientParticles />} */}
@@ -554,13 +556,13 @@ export function Hero() {
                         }}
                     />
 
-                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Layer 2) */}
+                    {/* Strategic Editorial Overlay - Vignette Suave, clareado no centro (Layer 2) */}
                     <div
                         className="absolute inset-0 z-[20] pointer-events-none"
                         style={{
                             background: isMobile
-                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.76) 35%, rgba(0,0,0,0.94) 70%)'
-                                : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.78) 34%, rgba(0,0,0,0.94) 70%)',
+                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.85) 85%)'
+                                : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.8) 85%)',
                             opacity: (mounted && canStartSequence) ? 1 : 0,
                             transition: 'opacity 1.5s ease-in-out'
                         }}
