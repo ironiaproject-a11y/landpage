@@ -398,21 +398,36 @@ export function Hero() {
                 const revealThreshold = TOTAL_FRAMES * (isMobile ? 0.35 : 0.85);
                 let revealed = false;
 
+                const eyebrowRef = { current: null as any };
+                const line1Ref = { current: null as any };
+                const line2Ref = { current: null as any };
+
                 const checkReveal = (currentFrame: number) => {
                     if (!revealed && currentFrame >= revealThreshold) {
                         revealed = true;
-                        gsap.timeline()
-                            .fromTo(titleRef.current,
-                                { y: 24, opacity: 0 },
-                                { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }
+                        const tl = gsap.timeline({
+                            defaults: { ease: "power4.out", duration: 1.4 }
+                        });
+
+                        tl.fromTo(".hero-eyebrow",
+                            { y: 15, opacity: 0 },
+                            { y: 0, opacity: 0.6, duration: 1.2 }
+                        )
+                            .fromTo(".hero-title-line-1",
+                                { y: 30, opacity: 0 },
+                                { y: 0, opacity: 1 }, "-=0.9"
+                            )
+                            .fromTo(".hero-title-line-2",
+                                { y: 20, opacity: 0 },
+                                { y: 0, opacity: 0.8 }, "-=1.1"
                             )
                             .fromTo(descriptionRef.current,
-                                { y: 20, opacity: 0, filter: "blur(8px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, "-=0.8"
+                                { y: 15, opacity: 0, filter: "blur(4px)" },
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.0 }, "-=1.0"
                             )
                             .fromTo(actionsRef.current,
-                                { y: 12, opacity: 0, scale: 0.98 },
-                                { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6"
+                                { y: 10, opacity: 0, scale: 0.98 },
+                                { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.7"
                             );
                     }
                 };
@@ -640,20 +655,14 @@ export function Hero() {
                         </m.div>
 
                         {/* Brand Eyebrow - The Anchor */}
-                        <m.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={(mounted && canStartSequence) ? { opacity: 0.6, y: 0 } : { opacity: 0, y: 10 }}
-                            transition={{ delay: 0.8, duration: 1.5, ease: "power2.out" }}
-                            className="mb-8"
+                        <div
+                            className="mb-8 opacity-0 hero-eyebrow"
                         >
                             <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.5em] text-white/80 uppercase">Estética de Alta Performance</span>
-                        </m.div>
+                        </div>
 
-                        <m.h1
+                        <h1
                             ref={titleRef}
-                            initial={{ opacity: 0 }}
-                            animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
-                            transition={{ duration: 0.1 }}
                             className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(2rem,7.5vw,5.5rem)] will-change-transform leading-[0.98] mb-12 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
                             style={{
                                 textShadow: '0 12px 35px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.3)',
@@ -665,9 +674,9 @@ export function Hero() {
                             }}
                         >
                             {/* Staggered Composition - Reduced Displacement for "Clean" look */}
-                            <span className="block font-black uppercase tracking-tight sm:mr-[10%]">Seu Sorriso,</span>
+                            <span className="block font-black uppercase tracking-tight sm:mr-[10%] opacity-0 hero-title-line-1">Seu Sorriso,</span>
                             <span
-                                className="block font-light italic lowercase tracking-[-0.01em] sm:ml-[10%] sm:-mt-2 opacity-80"
+                                className="block font-light italic lowercase tracking-[-0.01em] sm:ml-[10%] sm:-mt-2 opacity-0 hero-title-line-2"
                                 style={{
                                     fontFamily: 'var(--font-editorial)',
                                     backgroundImage: 'linear-gradient(to bottom, #FAF9F7, #CBD5E1)',
@@ -677,12 +686,12 @@ export function Hero() {
                             >
                                 sua assinatura
                             </span>
-                        </m.h1>
+                        </h1>
 
                         <div className="overflow-hidden w-full transform" style={{ marginBottom: '28px' }}>
-                            <m.p
+                            <p
                                 ref={descriptionRef}
-                                className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance"
+                                className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance opacity-0"
                                 style={{
                                     fontSize: isMobile ? '15px' : '16px',
                                     fontWeight: 600,
@@ -693,11 +702,11 @@ export function Hero() {
                                 }}
                             >
                                 Segurança clínica. Resultado natural.
-                            </m.p>
+                            </p>
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[4] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[4] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto opacity-0" style={{ gap: isMobile ? 16 : 24 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
