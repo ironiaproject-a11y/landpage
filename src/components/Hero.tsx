@@ -401,6 +401,8 @@ export function Hero() {
                 });
 
                 // Keep existing frame sync trigger
+                const startFrame = 0;
+                const endFrame = TOTAL_FRAMES - 1;
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
                     start: "top top",
@@ -420,258 +422,257 @@ export function Hero() {
                         }
                     }
                 });
-            }
 
                 return () => {
-                // Cleanup handled by ctx.revert()
+                    // Cleanup handled by ctx.revert()
+                };
+            });
+
+            // Ticker for smooth LERPing
+            const tickerRender = () => {
+                if (!isAnimating.current || !sectionMounted.current) return;
+
+                const diff = targetProgress.current - smoothedProgress.current;
+                // Higher precision for the last 1% to prevent lock-up
+                const isNearEnd = Math.abs(diff) < 2;
+                const lerpFactor = isNearEnd ? 0.15 : (window.innerWidth < 768 ? 0.05 : 0.07);
+
+                smoothedProgress.current += diff * lerpFactor;
+
+                if (titleRef.current) {
+                    gsap.set(titleRef.current, {
+                        letterSpacing: `${frameProxy.current.letterSpacing}px`,
+                        y: frameProxy.current.textY,
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
+                if (descriptionRef.current) {
+                    gsap.set(descriptionRef.current, {
+                        y: frameProxy.current.textY * 0.8, // Subtle parallax difference
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
+                if (actionsRef.current) {
+                    gsap.set(actionsRef.current, {
+                        opacity: Math.max(0, frameProxy.current.opacity)
+                    });
+                }
+
+                if (backlightRef.current) {
+                    gsap.set(backlightRef.current, {
+                        scale: frameProxy.current.glowScale,
+                        opacity: frameProxy.current.glowOpacity,
+                        y: frameProxy.current.textY * 0.5 // Slower parallax for depth
+                    });
+                }
+
+                if (introRef.current) {
+                    // Always draw with current proxy state
+                    introRef.current.draw(smoothedProgress.current);
+                }
+
+                if (Math.abs(diff) < 0.0001) {
+                    smoothedProgress.current = targetProgress.current;
+                    isAnimating.current = false;
+                }
             };
-        });
 
-        // Ticker for smooth LERPing
-        const tickerRender = () => {
-            if (!isAnimating.current || !sectionMounted.current) return;
+            gsap.ticker.add(tickerRender);
 
-            const diff = targetProgress.current - smoothedProgress.current;
-            // Higher precision for the last 1% to prevent lock-up
-            const isNearEnd = Math.abs(diff) < 2;
-            const lerpFactor = isNearEnd ? 0.15 : (window.innerWidth < 768 ? 0.05 : 0.07);
-
-            smoothedProgress.current += diff * lerpFactor;
-
-            if (titleRef.current) {
-                gsap.set(titleRef.current, {
-                    letterSpacing: `${frameProxy.current.letterSpacing}px`,
-                    y: frameProxy.current.textY,
-                    opacity: Math.max(0, frameProxy.current.opacity)
-                });
-            }
-            if (descriptionRef.current) {
-                gsap.set(descriptionRef.current, {
-                    y: frameProxy.current.textY * 0.8, // Subtle parallax difference
-                    opacity: Math.max(0, frameProxy.current.opacity)
-                });
-            }
-            if (actionsRef.current) {
-                gsap.set(actionsRef.current, {
-                    opacity: Math.max(0, frameProxy.current.opacity)
-                });
-            }
-
-            if (backlightRef.current) {
-                gsap.set(backlightRef.current, {
-                    scale: frameProxy.current.glowScale,
-                    opacity: frameProxy.current.glowOpacity,
-                    y: frameProxy.current.textY * 0.5 // Slower parallax for depth
-                });
-            }
-
-            if (introRef.current) {
-                // Always draw with current proxy state
-                introRef.current.draw(smoothedProgress.current);
-            }
-
-            if (Math.abs(diff) < 0.0001) {
-                smoothedProgress.current = targetProgress.current;
-                isAnimating.current = false;
-            }
-        };
-
-        gsap.ticker.add(tickerRender);
+            return () => {
+                gsap.ticker.remove(tickerRender);
+            };
+        }, sectionRef);
 
         return () => {
-            gsap.ticker.remove(tickerRender);
+            sectionMounted.current = false;
+            ctx.revert();
         };
-    }, sectionRef);
+    }, [mounted, canStartSequence]);
 
-    return () => {
-        sectionMounted.current = false;
-        ctx.revert();
-    };
-}, [mounted, canStartSequence]);
-
-return (
-    <section
-        ref={sectionRef}
-        className="hero-outer relative w-full h-[300vh] flex flex-col bg-black overflow-visible"
-        style={{ padding: '0 !important', margin: 0, backgroundColor: '#000000' }}
-    >
-        <div
-            ref={pinContainerRef}
-            className="hero-sticky sticky top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 overflow-hidden bg-black z-[1]"
-            style={{ maxWidth: 'none !important', padding: '0 !important', margin: 0 }}
+    return (
+        <section
+            ref={sectionRef}
+            className="hero-outer relative w-full h-[300vh] flex flex-col bg-black overflow-visible"
+            style={{ padding: '0 !important', margin: 0, backgroundColor: '#000000' }}
         >
-            {/* Atmospheric Seamless 360 Viewer - No Box, Pure Void */}
             <div
-                ref={videoWrapperRef}
-                className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
+                ref={pinContainerRef}
+                className="hero-sticky sticky top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 overflow-hidden bg-black z-[1]"
+                style={{ maxWidth: 'none !important', padding: '0 !important', margin: 0 }}
             >
-                {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
+                {/* Atmospheric Seamless 360 Viewer - No Box, Pure Void */}
                 <div
-                    ref={backlightRef}
-                    className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(255, 245, 220, 0.07) 0%, transparent 65%)', // Reduced intensity by subtle amount
-                        opacity: 0.07
-                    }}
-                />
-
-                {/* Radial Mask Container for "Bleeding" Video Edges - Tighter falloff for absolute invisibility */}
-                <div
-                    className="relative w-full h-full flex items-center justify-center z-[5]"
-                    style={{
-                        maskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)',
-                        WebkitMaskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)'
-                    }}
+                    ref={videoWrapperRef}
+                    className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
                 >
-                    {/* Frame sequence — always visible, driven by intro then scroll */}
-                    <IntroSequence
-                        ref={introRef}
-                        isMobile={isMobile}
-                    />
-                </div>
-            </div>
-
-            {/* Ambient Particles (Disabled for cleaner look) */}
-            {/* {!shouldReduceMotion && <AmbientParticles />} */}
-
-            <div
-                ref={contentWrapperRef}
-                className="absolute inset-0 z-[30] w-full flex flex-col items-center justify-center text-center pointer-events-none"
-                style={{ padding: '0 5vw' }}
-            >
-                {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
-                {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
-                <div
-                    className="absolute inset-0 z-[10] pointer-events-none"
-                    style={{
-                        background: 'radial-gradient(circle at 50% 44%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 18%, rgba(0,0,0,0) 45%)',
-                        mixBlendMode: 'screen',
-                        opacity: (mounted && canStartSequence) ? 1 : 0,
-                        transition: 'opacity 2s ease-in-out'
-                    }}
-                />
-
-                {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Layer 2) */}
-                <div
-                    className="absolute inset-0 z-[20] pointer-events-none"
-                    style={{
-                        background: isMobile
-                            ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.76) 35%, rgba(0,0,0,0.94) 70%)'
-                            : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.78) 34%, rgba(0,0,0,0.94) 70%)',
-                        opacity: (mounted && canStartSequence) ? 1 : 0,
-                        transition: 'opacity 1.5s ease-in-out'
-                    }}
-                />
-
-                <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative z-10">
-                    {/* Branded Atmospheric Overlay */}
-                    <m.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
-                        transition={{ delay: 5.5, duration: 2 }}
-                        className="absolute top-[-25%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
-                    >
-                        <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
-                            CLÍNICA.
-                        </span>
-                    </m.div>
-
-                    <m.h1
-                        ref={titleRef}
-                        initial={{ opacity: 0 }}
-                        animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
-                        transition={{ duration: 0.1 }}
-                        className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
+                    {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
+                    <div
+                        ref={backlightRef}
+                        className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
-                            textShadow: '0 4px 18px rgba(0,0,0,0.45)', // Editorial spec
-                            fontSize: isMobile ? '28px' : undefined,
-                            letterSpacing: isMobile ? '0.04em' : '0.05em',
-                            // Delay the reveal to match the 3D intro
-                            transitionDelay: isMobile ? '1.5s' : '4.5s'
+                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.07) 0%, transparent 65%)', // Reduced intensity by subtle amount
+                            opacity: 0.07
+                        }}
+                    />
+
+                    {/* Radial Mask Container for "Bleeding" Video Edges - Tighter falloff for absolute invisibility */}
+                    <div
+                        className="relative w-full h-full flex items-center justify-center z-[5]"
+                        style={{
+                            maskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)',
+                            WebkitMaskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)'
                         }}
                     >
-                        <span>Seu Sorriso,</span>
-                        <span className="font-light">sua assinatura</span>
-                    </m.h1>
-
-                    <div className="overflow-hidden w-full transform" style={{ marginBottom: '28px' }}>
-                        <m.p
-                            ref={descriptionRef}
-                            className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance"
-                            style={{
-                                fontSize: isMobile ? '15px' : '16px',
-                                fontWeight: 600,
-                                maxWidth: isMobile ? '320px' : '720px',
-                                margin: isMobile ? '12px auto 0px' : '14px auto 0px',
-                                textShadow: '0 2px 8px rgba(0,0,0,0.30)',
-                                textTransform: 'none'
-                            }}
-                        >
-                            Segurança clínica. Resultado natural.
-                        </m.p>
-                    </div>
-
-
-                    <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
-                        <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
-                            <m.button
-                                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.28)" } : {}}
-                                whileTap={{ scale: 0.95 }}
-                                style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', transform: 'translateZ(0)' }}
-                                className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                            >
-                                {/* Shimmer Effect */}
-                                <m.div
-                                    className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
-                                    initial={{ x: "-100%" }}
-                                    animate={{ x: "200%" }}
-                                    transition={{
-                                        repeat: Infinity,
-                                        duration: 3,
-                                        ease: "easeInOut",
-                                        delay: isMobile ? 2 : 7.5
-                                    }}
-                                />
-                                <span className="relative z-10 flex items-center gap-3 tracking-[0.08em] font-bold uppercase" style={{ fontSize: 'inherit' }}>
-                                    Agendar Consulta
-                                </span>
-                            </m.button>
-                        </Magnetic>
-
-                        <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
-                            <m.button
-                                onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
-                                whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
-                                whileTap={{ scale: 0.98 }}
-                                style={{
-                                    WebkitTapHighlightColor: 'transparent',
-                                    touchAction: 'manipulation',
-                                    background: 'rgba(11,11,11,0.28)', // Refined secondary CTA
-                                    border: '1px solid rgba(255,255,255,0.06)',
-                                    color: 'rgba(255,255,255,0.92)',
-                                    padding: '18px 36px',
-                                    minHeight: isMobile ? 56 : 52,
-                                    fontSize: isMobile ? 16 : 18,
-                                    width: isMobile ? '100%' : 'auto',
-                                    maxWidth: isMobile ? 420 : 'none',
-                                    backdropFilter: 'blur(6px)'
-                                }}
-                                className="group bg-gallery flex items-center justify-center gap-3 rounded-full transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
-                            >
-                                <span className="tracking-[0.08em] font-semibold uppercase" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
-                            </m.button>
-                        </Magnetic>
+                        {/* Frame sequence — always visible, driven by intro then scroll */}
+                        <IntroSequence
+                            ref={introRef}
+                            isMobile={isMobile}
+                        />
                     </div>
                 </div>
-            </div>
 
-            {/* Atmospheric Glows (Disabled for cleaner look) */}
-            {/* <div className="absolute top-[-10%] left-[-10%] w-[80%] lg:w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none" />
+                {/* Ambient Particles (Disabled for cleaner look) */}
+                {/* {!shouldReduceMotion && <AmbientParticles />} */}
+
+                <div
+                    ref={contentWrapperRef}
+                    className="absolute inset-0 z-[30] w-full flex flex-col items-center justify-center text-center pointer-events-none"
+                    style={{ padding: '0 5vw' }}
+                >
+                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
+                    {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
+                    <div
+                        className="absolute inset-0 z-[10] pointer-events-none"
+                        style={{
+                            background: 'radial-gradient(circle at 50% 44%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 18%, rgba(0,0,0,0) 45%)',
+                            mixBlendMode: 'screen',
+                            opacity: (mounted && canStartSequence) ? 1 : 0,
+                            transition: 'opacity 2s ease-in-out'
+                        }}
+                    />
+
+                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Layer 2) */}
+                    <div
+                        className="absolute inset-0 z-[20] pointer-events-none"
+                        style={{
+                            background: isMobile
+                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.76) 35%, rgba(0,0,0,0.94) 70%)'
+                                : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.78) 34%, rgba(0,0,0,0.94) 70%)',
+                            opacity: (mounted && canStartSequence) ? 1 : 0,
+                            transition: 'opacity 1.5s ease-in-out'
+                        }}
+                    />
+
+                    <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative z-10">
+                        {/* Branded Atmospheric Overlay */}
+                        <m.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
+                            transition={{ delay: 5.5, duration: 2 }}
+                            className="absolute top-[-25%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
+                        >
+                            <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
+                                CLÍNICA.
+                            </span>
+                        </m.div>
+
+                        <m.h1
+                            ref={titleRef}
+                            initial={{ opacity: 0 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
+                            transition={{ duration: 0.1 }}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
+                            style={{
+                                textShadow: '0 4px 18px rgba(0,0,0,0.45)', // Editorial spec
+                                fontSize: isMobile ? '28px' : undefined,
+                                letterSpacing: isMobile ? '0.04em' : '0.05em',
+                                // Delay the reveal to match the 3D intro
+                                transitionDelay: isMobile ? '1.5s' : '4.5s'
+                            }}
+                        >
+                            <span>Seu Sorriso,</span>
+                            <span className="font-light">sua assinatura</span>
+                        </m.h1>
+
+                        <div className="overflow-hidden w-full transform" style={{ marginBottom: '28px' }}>
+                            <m.p
+                                ref={descriptionRef}
+                                className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance"
+                                style={{
+                                    fontSize: isMobile ? '15px' : '16px',
+                                    fontWeight: 600,
+                                    maxWidth: isMobile ? '320px' : '720px',
+                                    margin: isMobile ? '12px auto 0px' : '14px auto 0px',
+                                    textShadow: '0 2px 8px rgba(0,0,0,0.30)',
+                                    textTransform: 'none'
+                                }}
+                            >
+                                Segurança clínica. Resultado natural.
+                            </m.p>
+                        </div>
+
+
+                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                <m.button
+                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.28)" } : {}}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', transform: 'translateZ(0)' }}
+                                    className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                                >
+                                    {/* Shimmer Effect */}
+                                    <m.div
+                                        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
+                                        initial={{ x: "-100%" }}
+                                        animate={{ x: "200%" }}
+                                        transition={{
+                                            repeat: Infinity,
+                                            duration: 3,
+                                            ease: "easeInOut",
+                                            delay: isMobile ? 2 : 7.5
+                                        }}
+                                    />
+                                    <span className="relative z-10 flex items-center gap-3 tracking-[0.08em] font-bold uppercase" style={{ fontSize: 'inherit' }}>
+                                        Agendar Consulta
+                                    </span>
+                                </m.button>
+                            </Magnetic>
+
+                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                <m.button
+                                    onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
+                                    whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
+                                    whileTap={{ scale: 0.98 }}
+                                    style={{
+                                        WebkitTapHighlightColor: 'transparent',
+                                        touchAction: 'manipulation',
+                                        background: 'rgba(11,11,11,0.28)', // Refined secondary CTA
+                                        border: '1px solid rgba(255,255,255,0.06)',
+                                        color: 'rgba(255,255,255,0.92)',
+                                        padding: '18px 36px',
+                                        minHeight: isMobile ? 56 : 52,
+                                        fontSize: isMobile ? 16 : 18,
+                                        width: isMobile ? '100%' : 'auto',
+                                        maxWidth: isMobile ? 420 : 'none',
+                                        backdropFilter: 'blur(6px)'
+                                    }}
+                                    className="group bg-gallery flex items-center justify-center gap-3 rounded-full transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
+                                >
+                                    <span className="tracking-[0.08em] font-semibold uppercase" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
+                                </m.button>
+                            </Magnetic>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Atmospheric Glows (Disabled for cleaner look) */}
+                {/* <div className="absolute top-[-10%] left-[-10%] w-[80%] lg:w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none" />
                 <div className="absolute bottom-[-10%] right-[-5%] w-[70%] lg:w-[40%] h-[40%] glow-blob opacity-10 pointer-events-none" /> */}
 
-            {/* Cinematic Progress Line (Desktop) (Disabled for cleaner look) */}
-            {/* {!isMobile && (
+                {/* Cinematic Progress Line (Desktop) (Disabled for cleaner look) */}
+                {/* {!isMobile && (
                     <div className="absolute right-12 top-1/2 -translate-y-1/2 h-32 w-[1px] bg-white/10 overflow-hidden z-50">
                         <div
                             ref={progressLineRef}
@@ -680,31 +681,31 @@ return (
                     </div>
                 )} */}
 
-            <m.div
-                ref={scrollHintRef}
-                initial={{ opacity: 0, x: "-50%" }}
-                animate={{ opacity: 0.6, x: "-50%" }}
-                transition={{ delay: isMobile ? 2.5 : 5, duration: 1.5 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
-            >
-                <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll</span>
-                <div className="relative w-px h-16 overflow-hidden">
-                    <div className="absolute inset-0 bg-white/10" />
-                    <m.div
-                        animate={{
-                            y: ["-100%", "100%"]
-                        }}
-                        transition={{
-                            duration: 1.8,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                        className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-silver-bh)] to-transparent"
-                    />
-                </div>
-            </m.div>
-        </div>
-    </section>
-);
+                <m.div
+                    ref={scrollHintRef}
+                    initial={{ opacity: 0, x: "-50%" }}
+                    animate={{ opacity: 0.6, x: "-50%" }}
+                    transition={{ delay: isMobile ? 2.5 : 5, duration: 1.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
+                >
+                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll</span>
+                    <div className="relative w-px h-16 overflow-hidden">
+                        <div className="absolute inset-0 bg-white/10" />
+                        <m.div
+                            animate={{
+                                y: ["-100%", "100%"]
+                            }}
+                            transition={{
+                                duration: 1.8,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }}
+                            className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-silver-bh)] to-transparent"
+                        />
+                    </div>
+                </m.div>
+            </div>
+        </section>
+    );
 }
 
