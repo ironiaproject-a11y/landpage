@@ -543,7 +543,7 @@ export function Hero() {
         >
             <div
                 ref={pinContainerRef}
-                className="hero-sticky sticky top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 overflow-hidden bg-black z-[1]"
+                className="hero-sticky sticky top-0 left-0 w-full h-[100vh] overflow-hidden bg-black z-[1]"
                 style={{ maxWidth: 'none !important', padding: '0 !important', margin: 0 }}
             >
                 {/* Atmospheric Seamless 360 Viewer - No Box, Pure Void */}
