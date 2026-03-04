@@ -392,7 +392,7 @@ export function Hero() {
                         end: "bottom bottom",
                         pin: pinContainerRef.current,
                         pinType: isMobile ? "fixed" : "transform",
-                        scrub: false,
+                        scrub: isMobile ? 1 : 0.3,
                         onUpdate: (self) => {
                             targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
 
