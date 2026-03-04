@@ -2,16 +2,16 @@
 
 import dynamic from "next/dynamic";
 
-const Cursor = dynamic(() => import("@/components/Cursor").then(mod => mod.Cursor), { ssr: false });
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton").then(mod => mod.WhatsAppButton), {
-    ssr: false,
-});
+const Cursor = dynamic(() => import("./Cursor").then(mod => mod.Cursor), { ssr: false });
+const WhatsAppButton = dynamic(() => import("./WhatsAppButton").then(mod => mod.WhatsAppButton), { ssr: false });
+const BackToTop = dynamic(() => import("./BackToTop").then(mod => mod.BackToTop), { ssr: false });
 
-export function ClientSideExtras() {
+export default function ClientSideExtras() {
     return (
         <>
             <Cursor />
             <WhatsAppButton />
+            <BackToTop />
         </>
     );
 }

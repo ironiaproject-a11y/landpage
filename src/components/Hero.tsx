@@ -594,8 +594,16 @@ export function Hero() {
                     className="absolute inset-0 z-[3] w-full flex flex-col items-center justify-center text-center pointer-events-none"
                     style={{ padding: '0 5vw' }}
                 >
-                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
+                    <div
+                        className="absolute inset-0 z-[11] pointer-events-none"
+                        style={{
+                            background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%)',
+                            opacity: (mounted && canStartSequence) ? 1 : 0,
+                            transition: 'opacity 2.5s ease-in-out'
+                        }}
+                    />
+
                     <div
                         className="absolute inset-0 z-[10] pointer-events-none"
                         style={{
@@ -622,11 +630,11 @@ export function Hero() {
                         {/* Branded Atmospheric Overlay */}
                         <m.div
                             initial={{ opacity: 0, y: 10 }}
-                            animate={(mounted && canStartSequence) ? { opacity: 0.1, y: 0 } : { opacity: 0, y: 10 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 0.15, y: 0 } : { opacity: 0, y: 10 }}
                             transition={{ delay: 5.5, duration: 2 }}
                             className="absolute top-[-25%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
                         >
-                            <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-10">
+                            <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-15">
                                 CLÍNICA.
                             </span>
                         </m.div>
@@ -636,10 +644,10 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-bold uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
                             style={{
-                                textShadow: '0 4px 24px rgba(0,0,0,0.8)',
-                                fontSize: isMobile ? 'clamp(1.9rem, 9.5vw, 3.2rem)' : undefined,
+                                textShadow: '0 4px 32px rgba(0,0,0,0.95)',
+                                fontSize: isMobile ? 'clamp(2.1rem, 10vw, 3.5rem)' : undefined,
                                 // Reveal timing is now handled by checkReveal function
                                 transition: 'none'
                             }}
@@ -737,11 +745,19 @@ export function Hero() {
                 <m.div
                     ref={scrollHintRef}
                     initial={{ opacity: 0, x: "-50%" }}
-                    animate={{ opacity: 0.6, x: "-50%" }}
-                    transition={{ delay: isMobile ? 2.5 : 5, duration: 1.5 }}
+                    animate={{
+                        opacity: [0.4, 0.8, 0.4],
+                        x: "-50%",
+                        y: [0, 5, 0]
+                    }}
+                    transition={{
+                        opacity: { repeat: Infinity, duration: 3, ease: "easeInOut" },
+                        y: { repeat: Infinity, duration: 3, ease: "easeInOut" },
+                        delay: isMobile ? 2.5 : 5
+                    }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll</span>
+                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold">Scroll</span>
                     <div className="relative w-px h-16 overflow-hidden">
                         <div className="absolute inset-0 bg-white/10" />
                         <m.div
@@ -749,11 +765,11 @@ export function Hero() {
                                 y: ["-100%", "100%"]
                             }}
                             transition={{
-                                duration: 1.8,
+                                duration: 2.5,
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}
-                            className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-silver-bh)] to-transparent"
+                            className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-accent)] to-transparent"
                         />
                     </div>
                 </m.div>

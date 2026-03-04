@@ -62,22 +62,22 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 </div>
 
                 {/* Content Section */}
-                <div className="p-8 md:p-10 flex flex-col flex-grow">
+                <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-[var(--color-silver-bh)] font-display text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">Pilar {service.tag}</span>
-                        <div className="h-px bg-white/5 flex-grow" />
+                        <span className="text-[var(--color-accent)] font-display text-[10px] font-bold tracking-[0.2em] uppercase opacity-80">Pilar {service.tag}</span>
+                        <div className="h-px bg-[var(--color-accent)]/20 flex-grow" />
                     </div>
 
-                    <h3 className="font-display text-2xl font-medium mb-4 text-white group-hover:text-[var(--color-silver-bh)] transition-colors duration-700 uppercase tracking-wide">
+                    <h3 className="font-display text-2xl font-bold mb-4 text-white group-hover:text-[var(--color-accent)] transition-colors duration-700 uppercase tracking-wide">
                         {service.title}
                     </h3>
 
-                    <p className="text-white/60 leading-[1.6] text-sm mb-6 md:mb-10 font-light body-text-refined">
+                    <p className="text-white/70 leading-[1.7] text-sm mb-8 md:mb-12 font-light body-text-refined">
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-3 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] group-hover:gap-5 transition-all duration-700">
+                        <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full border border-[var(--color-accent)]/40 text-[var(--color-accent)] text-[11px] font-bold uppercase tracking-[0.2em] group-hover:bg-[var(--color-accent)] group-hover:text-black transition-all duration-500">
                             <span>Ver Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -330,15 +330,16 @@ export function Services() {
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 md:gap-y-32">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
                 {
                     services.map((service, index) => (
-                        <ServiceCard
-                            key={index}
-                            service={service}
-                            index={index}
-                            isMobile={isMobile}
-                        />
+                        <div key={index} className="service-card-wrapper h-full">
+                            <ServiceCard
+                                service={service}
+                                index={index}
+                                isMobile={isMobile}
+                            />
+                        </div>
                     ))
                 }
             </div>

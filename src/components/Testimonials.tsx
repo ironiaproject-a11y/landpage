@@ -192,18 +192,18 @@ export function Testimonials() {
                     <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] testimonials-marquee">
                         <m.div
                             animate={{
-                                x: ["0%", "-50%"],
+                                x: ["0%", "-100%"],
                             }}
                             whileHover={{ animationPlayState: "paused" }}
                             transition={{
-                                duration: 35,
+                                duration: 25,
                                 ease: "linear",
                                 repeat: Infinity,
                             }}
                             className="flex gap-6 md:gap-10 pr-10 marquee-inner will-change-transform"
                             style={{ width: "max-content" }}
                         >
-                            {[...testimonials, ...testimonials].map((testimonial, index) => (
+                            {testimonials.map((testimonial, index) => (
                                 <div
                                     key={index}
                                     className="testimonial-card w-[320px] md:w-[450px] shrink-0 h-full"

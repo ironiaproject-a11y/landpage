@@ -98,11 +98,14 @@
   --shadow-glow-creme: 0 0 20px rgba(245, 245, 220, 0.15);
   --shadow-glow-creme-strong: 0 0 35px rgba(245, 245, 220, 0.25);
 
-  /* Curvature - 2026 Organic Design */
+  /* Organic Shapes */
   --radius-organic-sm: 1rem;
   --radius-organic-md: 2rem;
   --radius-organic-lg: 3.5rem;
   --radius-organic-pill: 9999px;
+
+  /* Accent Color - Teal */
+  --color-accent: #0d9488;
 
   /* Lighting Blobs - Purified Creme */
   --glow-blob: radial-gradient(circle at center, rgba(245, 245, 220, 0.03) 0%, transparent 70%);
