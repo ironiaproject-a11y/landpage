@@ -87,8 +87,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Define the internal scale factor (e.g., 0.85 of viewport)
-            const DRAW_SCALE = isMobile ? 0.85 : 0.9;
+            // Define the internal scale factor (e.g., 1.05 of viewport to prevent gaps)
+            const DRAW_SCALE = isMobile ? 1.05 : 0.95;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
@@ -138,7 +138,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `scale(${isMobile ? 0.96 : 0.98}) translateZ(0)`, // Recovered presence per spec
+                    transform: `scale(${isMobile ? 1.0 : 0.98}) translateZ(0)`, // Removed mobile reduction to prevent gaps
                     filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
@@ -385,9 +385,10 @@ export function Hero() {
                     }
                 };
 
-                // Sync with rotation and depth
+                // Sync with rotation and depth (Prevents "opening sides" by scaling while rotating)
                 gsap.to(videoWrapperRef.current, {
-                    rotation: isMobile ? 5 : 20, // Light adjust for presence
+                    rotation: isMobile ? 0 : 5, // Avoid "crooked" look on mobile
+                    scale: isMobile ? 1.0 : 1.15, // Scale up on desktop to cover rotation gaps
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
