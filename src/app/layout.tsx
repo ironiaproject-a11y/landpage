@@ -6,7 +6,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Preloader } from "@/components/Preloader";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import { ClientSideExtras } from "@/components/ClientSideExtras";
+import ClientSideExtras from "@/components/ClientSideExtras";
 
 
 
