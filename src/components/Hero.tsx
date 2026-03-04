@@ -23,35 +23,61 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
     const loadedRef = useRef(false);
 
     useEffect(() => {
+        const targetFrames = isMobile ? Math.ceil(TOTAL_FRAMES / 2) : TOTAL_FRAMES;
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
-        const targetFrames = TOTAL_FRAMES;
 
         const loadFrame = (i: number) => {
-            const img = new Image();
-            img.onload = () => {
-                imageElements[i] = img;
-                loadedCount++;
-                if (loadedCount === targetFrames) {
-                    framesRef.current = imageElements;
-                    loadedRef.current = true;
-                    setLoaded(true);
-                }
-            };
-            img.onerror = () => {
-                loadedCount++;
-                if (loadedCount === targetFrames) {
-                    framesRef.current = imageElements;
-                    loadedRef.current = true;
-                    setLoaded(true);
-                }
-            };
-            const paddedIndex = i.toString().padStart(3, '0');
-            img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
+            return new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    imageElements[i] = img;
+                    loadedCount++;
+                    if (loadedCount === 1) { // Redraw first frame immediately
+                        framesRef.current = imageElements;
+                        (ref as any)?.current?.draw(0);
+                    }
+                    if (loadedCount === targetFrames || (isMobile && loadedCount === Math.ceil(TOTAL_FRAMES / 2))) {
+                        framesRef.current = imageElements;
+                        loadedRef.current = true;
+                        setLoaded(true);
+                    }
+                    resolve();
+                };
+                img.onerror = () => {
+                    loadedCount++;
+                    resolve();
+                };
+                const paddedIndex = i.toString().padStart(3, '0');
+                img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
+            });
         };
 
-        for (let i = 0; i < TOTAL_FRAMES; i++) loadFrame(i);
-    }, []);
+        const loadInBatches = async () => {
+            // Priority 1: First 10 frames
+            const priorityBatches = [];
+            for (let i = 0; i < Math.min(10, TOTAL_FRAMES); i++) {
+                priorityBatches.push(loadFrame(i));
+            }
+            await Promise.all(priorityBatches);
+
+            // Priority 2: Remaining frames in batches
+            const batchSize = isMobile ? 10 : 20;
+            for (let i = 10; i < TOTAL_FRAMES; i += batchSize) {
+                // If mobile, we can skip some frames to reduce payload
+                const currentBatch = [];
+                for (let j = i; j < Math.min(i + batchSize, TOTAL_FRAMES); j++) {
+                    if (isMobile && j % 2 !== 0) continue; // Skip every other frame on mobile
+                    currentBatch.push(loadFrame(j));
+                }
+                await Promise.all(currentBatch);
+                // Allow some breathing room for the main thread
+                await new Promise(r => setTimeout(r, 10));
+            }
+        };
+
+        loadInBatches();
+    }, [isMobile, ref]);
 
     // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
@@ -63,7 +89,14 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             if (!canvas || !ctx) return;
 
             const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIdx)));
-            const img = framesRef.current[idx];
+            let img = framesRef.current[idx];
+
+            // Fallback for skipped frames on mobile
+            if (!img && isMobile) {
+                const prevIdx = Math.floor(idx / 2) * 2;
+                img = framesRef.current[prevIdx];
+            }
+
             if (!img || !img.complete) return;
 
             const dpr = window.devicePixelRatio || 1;
@@ -160,17 +193,8 @@ const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile:
     const [isAutoAnimating, setIsAutoAnimating] = useState(true);
 
     useEffect(() => {
-        const estetica = new Image();
-        const raiox = new Image();
-        let loadedCount = 0;
-        const handleLoad = () => {
-            loadedCount++;
-            if (loadedCount === 2) onLoaded();
-        };
-        estetica.onload = handleLoad;
-        raiox.onload = handleLoad;
-        estetica.src = "/assets/images/dente-estetica.webp";
-        raiox.src = "/assets/images/dente-raio-x.webp";
+        // We rely on NextImage's priority prop for these critical assets
+        onLoaded();
     }, [onLoaded]);
 
     useEffect(() => {

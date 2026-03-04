@@ -36,6 +36,12 @@ export default function RootLayout({
     <html lang="pt-br" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+        {/* Preload Critical Assets */}
+        <link rel="preload" href="/hero-background.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/implant-3d.png" as="image" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
