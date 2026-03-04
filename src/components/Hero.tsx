@@ -553,7 +553,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[clamp(2rem,6vw,5.5rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.05em] leading-[1.05] mb-[50px] text-shadow-luxury transform -translate-y-[30px]"
+                            className="font-display text-[clamp(2.2rem,7vw,5.8rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.12em] uppercase leading-[1.1] mb-6 text-shadow-luxury transform -translate-y-[15px]"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -570,20 +570,20 @@ export function Hero() {
                                     initial={{ y: "100%" }}
                                     animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
                                     transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.8 : 4.8 }}
-                                    className="text-mask-reveal-inner font-light italic"
+                                    className="text-mask-reveal-inner font-light"
                                 >
-                                    sua assinatura.
+                                    sua assinatura
                                 </m.span>
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-12 w-full max-w-[700px] transform translate-y-[20px]">
+                        <div className="overflow-hidden mb-16 w-full max-w-[600px] transform translate-y-[5px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={(mounted && canStartSequence) ? { opacity: 0.8, y: 0 } : { opacity: 0, y: 20 }}
+                                animate={(mounted && canStartSequence) ? { opacity: 0.7, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: isMobile ? 1.2 : 5.2, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-[18px] lg:text-[20px] font-medium text-center text-white/90 leading-[1.75] body-text-refined px-4"
+                                className="text-[15px] lg:text-[16px] font-normal tracking-[0.05em] text-center text-white/80 leading-[1.8] body-text-refined px-4 text-balance"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
