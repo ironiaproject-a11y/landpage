@@ -138,8 +138,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `scale(${isMobile ? 0.94 : 0.96}) translateZ(0)`, // Cinematic scaling per spec
-                    filter: `brightness(${isMobile ? 0.78 : 0.82}) contrast(0.95) saturate(0.92)`, // Cinematic filters per spec
+                    transform: `scale(${isMobile ? 0.96 : 0.98}) translateZ(0)`, // Recovered presence per spec
+                    filter: `brightness(${isMobile ? 0.96 : 0.94}) contrast(0.98) saturate(0.98)`, // Improved contrast/brightness
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
@@ -531,17 +531,30 @@ export function Hero() {
 
                 <div
                     ref={contentWrapperRef}
-                    className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center text-center pointer-events-none"
+                    className="absolute inset-0 z-[30] w-full flex flex-col items-center justify-center text-center pointer-events-none"
                     style={{ padding: '0 5vw' }}
                 >
                     {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
-                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Technical Spec 4-stop) */}
+                    {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
-                        className="absolute inset-0 z-[1] pointer-events-none"
+                        className="absolute inset-0 z-[10] pointer-events-none"
+                        style={{
+                            background: 'radial-gradient(circle at 50% 44%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 18%, rgba(0,0,0,0) 45%)',
+                            mixBlendMode: 'screen',
+                            opacity: (mounted && canStartSequence) ? 1 : 0,
+                            transition: 'opacity 2s ease-in-out'
+                        }}
+                    />
+
+                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Layer 2) */}
+                    <div
+                        className="absolute inset-0 z-[20] pointer-events-none"
                         style={{
                             background: isMobile
-                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.88) 28%, rgba(0,0,0,0.98) 60%)'
-                                : 'radial-gradient(circle at 50% 42%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.80) 25%, rgba(0,0,0,0.92) 60%, rgba(0,0,0,0.98) 100%)',
+                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.76) 35%, rgba(0,0,0,0.94) 70%)'
+                                : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.78) 34%, rgba(0,0,0,0.94) 70%)',
+                            opacity: (mounted && canStartSequence) ? 1 : 0,
+                            transition: 'opacity 1.5s ease-in-out'
                         }}
                     />
 
@@ -579,20 +592,20 @@ export function Hero() {
                         <div className="overflow-hidden w-full transform translate-y-[0px]" style={{ marginBottom: '28px' }}>
                             <m.p
                                 ref={descriptionRef}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={(mounted && canStartSequence) ? { opacity: 0.95, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ delay: isMobile ? 1.2 : 5.2, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="font-semibold tracking-[0.02em] text-center text-white leading-[1.65] body-text-refined px-4 text-balance"
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={(mounted && canStartSequence) ? { opacity: 0.92, y: 0 } : { opacity: 0, y: 15 }}
+                                transition={{ delay: isMobile ? 1.4 : 5.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance"
                                 style={{
-                                    fontSize: isMobile ? '15px' : '17px',
+                                    fontSize: isMobile ? '15px' : '16px',
                                     fontWeight: 600,
-                                    opacity: 0.95,
                                     maxWidth: isMobile ? '320px' : '720px',
-                                    margin: '18px auto 0px',
-                                    textShadow: '0 2px 10px rgba(0,0,0,0.32)'
+                                    margin: isMobile ? '12px auto 0px' : '14px auto 0px',
+                                    textShadow: '0 2px 8px rgba(0,0,0,0.30)',
+                                    textTransform: 'none'
                                 }}
                             >
-                                A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
+                                Segurança clínica. Resultado natural.
                             </m.p>
                         </div>
 
