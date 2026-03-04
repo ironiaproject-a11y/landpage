@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, Phone, Instagram, Facebook, Linkedin } from "lucide-react";
 import { Magnetic } from "./Magnetic";
 
@@ -11,6 +11,18 @@ export function Navbar() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [activeSection, setActiveSection] = useState("");
     const { scrollY } = useScroll();
+
+    // Scroll lock for mobile menu
+    useEffect(() => {
+        if (isMobileOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isMobileOpen]);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;

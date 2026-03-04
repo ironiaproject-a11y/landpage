@@ -27,10 +27,6 @@ export function Contact() {
         setMounted(true);
     }, []);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
     return (
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="contato">
             <div className="container mx-auto px-6 relative z-10">
@@ -80,7 +76,7 @@ export function Contact() {
                     </div>
 
                     <div className="lg:w-2/3">
-                        <LuxuryCard delay={0.2} interactive={false} innerClassName="p-10 md:p-14">
+                        <LuxuryCard delay={0.2} interactive={false} innerClassName="p-6 py-10 md:p-14">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();

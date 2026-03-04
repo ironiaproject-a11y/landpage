@@ -97,7 +97,7 @@ export function Footer() {
     return (
         <footer ref={sectionRef} className="bg-[#050505] border-t border-white/5 relative overflow-hidden">
             <div className="container mx-auto px-6 pt-24 pb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 md:gap-12 mb-20">
                     {/* Brand Section */}
                     <div className="lg:col-span-4 transition-all">
                         <div className="space-y-8">
