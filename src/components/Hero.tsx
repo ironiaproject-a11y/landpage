@@ -66,15 +66,17 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const img = framesRef.current[idx];
             if (!img || !img.complete) return;
 
-            const isMobileView = window.innerWidth < 768;
-            const dpr = Math.min(window.devicePixelRatio || 1, isMobileView ? 1.5 : 2);
-            const displayWidth = canvas.clientWidth;
-            const displayHeight = canvas.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+            const displayWidth = window.innerWidth;
+            const displayHeight = window.innerHeight;
 
-            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
-                canvas.width = displayWidth * dpr;
-                canvas.height = displayHeight * dpr;
-                ctx.scale(dpr, dpr);
+            // User-Suggested Resize Logic for DPR Accuracy
+            if (canvas.width !== Math.floor(displayWidth * dpr) || canvas.height !== Math.floor(displayHeight * dpr)) {
+                canvas.style.width = displayWidth + 'px';
+                canvas.style.height = displayHeight + 'px';
+                canvas.width = Math.floor(displayWidth * dpr);
+                canvas.height = Math.floor(displayHeight * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Correctly scale the context
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = "high";
             }
@@ -86,13 +88,11 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             let drawWidth, drawHeight, offsetX, offsetY;
 
             if (canvasAspect > imgAspect) {
-                // Canvas is wider than image aspect
                 drawWidth = displayWidth;
                 drawHeight = displayWidth / imgAspect;
                 offsetX = 0;
                 offsetY = (displayHeight - drawHeight) * 0.5;
             } else {
-                // Canvas is taller than image aspect
                 drawHeight = displayHeight;
                 drawWidth = displayHeight * imgAspect;
                 offsetX = (displayWidth - drawWidth) * 0.5;
@@ -107,45 +107,15 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
         }
     }), []);
 
-    // Draw the first frame when images are ready
+    // Initial draw when loaded
     useEffect(() => {
         if (loaded && canvasRef.current) {
             const canvas = canvasRef.current;
-            const ctx = canvas.getContext('2d');
-            const img = framesRef.current[0];
-            if (ctx && img && img.complete) {
-                const isMobileView = window.innerWidth < 768;
-                const dpr = Math.min(window.devicePixelRatio || 1, isMobileView ? 1.5 : 3);
-                canvas.width = canvas.clientWidth * dpr;
-                canvas.height = canvas.clientHeight * dpr;
-                ctx.scale(dpr, dpr);
-                const displayWidth = canvas.clientWidth;
-                const displayHeight = canvas.clientHeight;
-                const canvasAspect = displayWidth / displayHeight;
-                const imgAspect = img.naturalWidth / img.naturalHeight;
-                let drawWidth, drawHeight, offsetX, offsetY;
-
-                if (isMobileView) {
-                    if (canvasAspect > imgAspect) {
-                        drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                        offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
-                    } else {
-                        drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                        offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
-                    }
-                } else {
-                    if (canvasAspect > imgAspect) {
-                        drawHeight = displayHeight; drawWidth = displayHeight * imgAspect;
-                        offsetX = (displayWidth - drawWidth) / 2; offsetY = 0;
-                    } else {
-                        drawWidth = displayWidth; drawHeight = displayWidth / imgAspect;
-                        offsetX = 0; offsetY = (displayHeight - drawHeight) / 2;
-                    }
-                }
-                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-            }
+            const handle = (ref as any)?.current;
+            if (handle?.draw) handle.draw(0);
         }
-    }, [loaded]);
+    }, [loaded, ref]);
+
 
     return (
         <div className="absolute inset-0 z-0 flex items-center justify-center">
@@ -509,13 +479,13 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-[100vw] left-1/2 -translate-x-1/2 h-[300vh] flex flex-col bg-black overflow-x-hidden"
-            style={{ padding: 0, backgroundColor: '#000000' }}
+            className="hero-outer relative w-full h-[300vh] flex flex-col bg-black overflow-visible"
+            style={{ padding: '0 !important', margin: 0, backgroundColor: '#000000' }}
         >
             <div
                 ref={pinContainerRef}
-                className="relative h-screen w-full flex items-center justify-center overflow-hidden z-0 will-change-transform bg-black"
-                style={{ backgroundColor: '#000000' }}
+                className="hero-sticky sticky top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 overflow-hidden bg-black z-[1]"
+                style={{ maxWidth: 'none !important', padding: '0 !important', margin: 0 }}
             >
                 {/* Atmospheric Seamless 360 Viewer - No Box, Pure Void */}
                 <div
