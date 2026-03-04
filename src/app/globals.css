@@ -337,6 +337,14 @@ section {
   contain-intrinsic-size: 1px 1000px;
 }
 
+@media (max-width: 767px) {
+  section {
+    padding-top: 4rem;
+    /* 64px — respira sem desperdiçar espaço */
+    padding-bottom: 4rem;
+  }
+}
+
 .luxury-surface {
   @apply bg-[#121212]/40 backdrop-blur-xl border border-white/5 shadow-2xl;
   transition: all 0.7s cubic-bezier(0.2, 0, 0, 1);

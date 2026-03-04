@@ -108,16 +108,16 @@ export function FAQ() {
 
                                     <button
                                         onClick={() => setActiveIndex(activeIndex === index ? null : index)}
-                                        className="w-full p-8 md:p-10 flex items-center justify-between text-left group"
+                                        className="w-full p-5 md:p-10 flex items-start md:items-center justify-between text-left group"
                                     >
-                                        <div className="flex items-center gap-6">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 border ${activeIndex === index
+                                        <div className="flex items-start md:items-center gap-4 md:gap-6">
+                                            <div className={`w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 border shrink-0 mt-0.5 md:mt-0 ${activeIndex === index
                                                 ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
                                                 : "bg-white/5 border-white/10 text-[var(--color-creme)]"
                                                 }`}>
-                                                <HelpCircle strokeWidth={1.2} className="w-5 h-5" />
+                                                <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-xl md:text-2xl font-medium text-white tracking-tight group-hover:text-[var(--color-silver-bh)] transition-colors">
+                                            <span className="text-base md:text-2xl font-medium text-white tracking-tight group-hover:text-[var(--color-silver-bh)] transition-colors leading-[1.35]">
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -138,8 +138,8 @@ export function FAQ() {
                                                 exit={{ height: 0, opacity: 0 }}
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
-                                                <div className="px-8 md:px-10 pb-10 md:pb-12 ml-18 md:ml-22">
-                                                    <p className="text-white/60 text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
+                                                <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
+                                                    <p className="text-white/60 text-sm md:text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
                                                         {faq.answer}
                                                     </p>
                                                 </div>
@@ -165,7 +165,7 @@ export function FAQ() {
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => window.open('https://wa.me/551837433000', '_blank')}
-                            className="btn-luxury-ghost inline-flex items-center gap-4 px-12"
+                            className="btn-luxury-ghost inline-flex items-center gap-4 px-6 md:px-12"
                         >
                             Falar com um Especialista
                         </m.button>

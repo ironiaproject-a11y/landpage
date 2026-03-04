@@ -284,7 +284,7 @@ export function Specialist() {
                                         alt="Dr. Ricardo Alessandro"
                                         width={800}
                                         height={1000}
-                                        className="w-full h-[400px] md:h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 

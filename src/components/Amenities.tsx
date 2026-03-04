@@ -187,7 +187,7 @@ export function Amenities() {
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="experiencia-vip">
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row gap-20 items-start">
+                <div className="flex flex-col lg:flex-row gap-10 lg:gap-20 items-start">
 
                     {/* Left Column: Context & Sticky Image */}
                     <div className="lg:w-5/12 sticky top-32">

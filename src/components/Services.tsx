@@ -72,7 +72,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         {service.title}
                     </h3>
 
-                    <p className="text-white/60 leading-[1.6] text-sm mb-10 font-light body-text-refined">
+                    <p className="text-white/60 leading-[1.6] text-sm mb-6 md:mb-10 font-light body-text-refined">
                         {service.description}
                     </p>
 
@@ -312,7 +312,7 @@ export function Services() {
                 style={{ opacity: 0 }}
             />
 
-            <div className="max-w-4xl mb-24">
+            <div className="max-w-4xl mb-16 md:mb-24 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
                     <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                         Tratamentos de Elite
@@ -330,7 +330,7 @@ export function Services() {
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16 md:gap-y-32">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 md:gap-y-32">
                 {
                     services.map((service, index) => (
                         <ServiceCard

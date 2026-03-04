@@ -23,31 +23,34 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
     const loadedRef = useRef(false);
 
     useEffect(() => {
-        const targetFrames = isMobile ? Math.ceil(TOTAL_FRAMES / 2) : TOTAL_FRAMES;
+        const targetFrames = isMobile ? 101 : TOTAL_FRAMES;
         const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
 
         const loadFrame = (i: number) => {
             return new Promise<void>((resolve) => {
                 const img = new Image();
-                img.onload = () => {
-                    imageElements[i] = img;
+
+                const checkDone = () => {
                     loadedCount++;
                     if (loadedCount === 1) { // Redraw first frame immediately
                         framesRef.current = imageElements;
                         (ref as any)?.current?.draw(0);
                     }
-                    if (loadedCount === targetFrames || (isMobile && loadedCount === Math.ceil(TOTAL_FRAMES / 2))) {
+                    if (loadedCount >= targetFrames) {
                         framesRef.current = imageElements;
                         loadedRef.current = true;
                         setLoaded(true);
                     }
                     resolve();
                 };
-                img.onerror = () => {
-                    loadedCount++;
-                    resolve();
+
+                img.onload = () => {
+                    imageElements[i] = img;
+                    checkDone();
                 };
+
+                img.onerror = checkDone;
                 const paddedIndex = i.toString().padStart(3, '0');
                 img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
             });
@@ -442,8 +445,6 @@ export function Hero() {
                     trigger: sectionRef.current,
                     start: "top top",
                     end: "bottom bottom",
-                    pin: pinContainerRef.current,
-                    pinType: isMobile ? "fixed" : "transform",
                     scrub: isMobile ? 1 : 0.3,
                     onUpdate: (self) => {
                         targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
@@ -561,8 +562,12 @@ export function Hero() {
                     <div
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
-                            maskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)',
-                            WebkitMaskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)'
+                            maskImage: isMobile
+                                ? 'radial-gradient(circle at center, black 28%, transparent 78%)'
+                                : 'radial-gradient(circle at center, black 15%, transparent 65%)',
+                            WebkitMaskImage: isMobile
+                                ? 'radial-gradient(circle at center, black 28%, transparent 78%)'
+                                : 'radial-gradient(circle at center, black 15%, transparent 65%)'
                         }}
                     >
                         {/* Frame sequence — always visible, driven by intro then scroll */}
@@ -629,7 +634,7 @@ export function Hero() {
                             className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
                             style={{
                                 textShadow: '0 4px 24px rgba(0,0,0,0.8)',
-                                fontSize: isMobile ? '28px' : undefined,
+                                fontSize: isMobile ? 'clamp(1.9rem, 9.5vw, 3.2rem)' : undefined,
                                 // Reveal timing is now handled by checkReveal function
                                 transition: 'none'
                             }}
@@ -645,8 +650,8 @@ export function Hero() {
                                 style={{
                                     fontSize: isMobile ? '15px' : '16px',
                                     fontWeight: 600,
-                                    maxWidth: isMobile ? '320px' : '720px',
-                                    margin: isMobile ? '12px auto 0px' : '14px auto 0px',
+                                    maxWidth: isMobile ? 'min(90vw, 380px)' : '720px',
+                                    margin: isMobile ? '10px auto 0px' : '14px auto 0px',
                                     textShadow: '0 2px 8px rgba(0,0,0,0.30)',
                                     textTransform: 'none'
                                 }}
