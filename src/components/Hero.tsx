@@ -70,39 +70,40 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const displayWidth = window.innerWidth;
             const displayHeight = window.innerHeight;
 
-            // User-Suggested Resize Logic for DPR Accuracy
+            // 1) Resize canvas with DPR (User Guide)
             if (canvas.width !== Math.floor(displayWidth * dpr) || canvas.height !== Math.floor(displayHeight * dpr)) {
                 canvas.style.width = displayWidth + 'px';
                 canvas.style.height = displayHeight + 'px';
                 canvas.width = Math.floor(displayWidth * dpr);
                 canvas.height = Math.floor(displayHeight * dpr);
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Correctly scale the context
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Correctly scale the context for CSS pixels
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = "high";
             }
 
-            // Object-Fit: Cover algorithm
-            const imgAspect = img.naturalWidth / img.naturalHeight;
-            const canvasAspect = displayWidth / displayHeight;
+            // 2) Functional drawCoverImage (equivalente a object-fit: cover)
+            const canvasWidth = displayWidth;
+            const canvasHeight = displayHeight;
+            const canvasRatio = canvasWidth / canvasHeight;
+            const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            let drawWidth, drawHeight, offsetX, offsetY;
+            let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
-            if (canvasAspect > imgAspect) {
-                drawWidth = displayWidth;
-                drawHeight = displayWidth / imgAspect;
-                offsetX = 0;
-                offsetY = (displayHeight - drawHeight) * 0.5;
+            if (canvasRatio > imgRatio) {
+                // canvas mais largo → escalar pela largura (cortar verticalmente)
+                drawWidth = canvasWidth;
+                drawHeight = canvasWidth / imgRatio;
+                offsetY = (canvasHeight - drawHeight) / 2;
             } else {
-                drawHeight = displayHeight;
-                drawWidth = displayHeight * imgAspect;
-                offsetX = (displayWidth - drawWidth) * 0.5;
-                offsetY = 0;
+                // canvas mais alto → escalar pela altura (cortar lateralmente)
+                drawHeight = canvasHeight;
+                drawWidth = canvasHeight * imgRatio;
+                offsetX = (canvasWidth - drawWidth) / 2;
             }
 
-            // Clear with absolute black to avoid any visible seams
+            // Clean & Draw using CSS pixels (already normalized by setTransform)
             ctx.fillStyle = '#000000';
-            ctx.fillRect(0, 0, displayWidth, displayHeight);
-
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
     }), []);
@@ -132,7 +133,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `scale(${isMobile ? 0.8 : 0.85}) translateZ(0)`,
+                    transform: `translateZ(0)`, // Removed scale(0.85) for absolute viewport fill
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
