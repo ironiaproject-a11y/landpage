@@ -482,7 +482,7 @@ export function Hero() {
                     return;
                 }
 
-                const lerpFactor = isMobile ? 0.08 : 0.1; // Increased for snappier feel
+                const lerpFactor = isMobile ? 0.08 : 0.12; // Adjusted for buttery response to smooth scroll
                 smoothedProgress.current += diff * lerpFactor;
 
                 if (titleRef.current) {
