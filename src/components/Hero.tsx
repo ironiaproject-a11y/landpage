@@ -563,33 +563,17 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100"
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
                             style={{
                                 textShadow: '0 4px 18px rgba(0,0,0,0.45)', // Editorial spec
                                 fontSize: isMobile ? '28px' : undefined,
-                                letterSpacing: isMobile ? '0.04em' : '0.05em'
+                                letterSpacing: isMobile ? '0.04em' : '0.05em',
+                                // Delay the reveal to match the 3D intro
+                                transitionDelay: isMobile ? '1.5s' : '4.5s'
                             }}
                         >
-                            <span className="text-mask-reveal">
-                                <m.span
-                                    initial={{ y: "100%" }}
-                                    animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
-                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.5 : 4.5 }}
-                                    className="text-mask-reveal-inner"
-                                >
-                                    Seu Sorriso,
-                                </m.span>
-                            </span>
-                            <span className="text-mask-reveal">
-                                <m.span
-                                    initial={{ y: "100%" }}
-                                    animate={(mounted && canStartSequence) ? { y: 0 } : { y: "100%" }}
-                                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: isMobile ? 1.8 : 4.8 }}
-                                    className="text-mask-reveal-inner font-light"
-                                >
-                                    sua assinatura
-                                </m.span>
-                            </span>
+                            <span>Seu Sorriso,</span>
+                            <span className="font-light">sua assinatura</span>
                         </m.h1>
 
                         <div className="overflow-hidden w-full transform translate-y-[0px]" style={{ marginBottom: '28px' }}>
