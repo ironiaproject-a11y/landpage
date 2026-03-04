@@ -147,7 +147,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
-    }), []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }), [isMobile]);
 
     // Initial draw when loaded
     useEffect(() => {
@@ -350,6 +351,7 @@ export function Hero() {
                 clearTimeout(timer);
             };
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Phase 1 & 2 — Animation Orchestration
@@ -530,6 +532,7 @@ export function Hero() {
             sectionMounted.current = false;
             ctx.revert();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mounted, canStartSequence]);
 
     return (
