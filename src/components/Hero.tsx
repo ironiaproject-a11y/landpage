@@ -532,12 +532,14 @@ export function Hero() {
                     </div>
                 </div>
 
+                <div className="hero-overlay-fix absolute inset-0 pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.55)', zIndex: 1 }} />
+
                 {/* Ambient Particles (Disabled for cleaner look) */}
                 {/* {!shouldReduceMotion && <AmbientParticles />} */}
 
                 <div
                     ref={contentWrapperRef}
-                    className="absolute inset-0 z-[30] w-full flex flex-col items-center justify-center text-center pointer-events-none"
+                    className="absolute inset-0 z-[3] w-full flex flex-col items-center justify-center text-center pointer-events-none"
                     style={{ padding: '0 5vw' }}
                 >
                     {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
@@ -584,7 +586,7 @@ export function Hero() {
                             transition={{ duration: 0.1 }}
                             className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
                             style={{
-                                textShadow: '0 4px 18px rgba(0,0,0,0.45)', // Editorial spec
+                                textShadow: '0 4px 24px rgba(0,0,0,0.8)',
                                 fontSize: isMobile ? '28px' : undefined,
                                 letterSpacing: isMobile ? '0.04em' : '0.05em',
                                 // Delay the reveal to match the 3D intro
@@ -613,7 +615,7 @@ export function Hero() {
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[60] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[4] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto" style={{ gap: isMobile ? 16 : 24 }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
