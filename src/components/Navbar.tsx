@@ -185,13 +185,20 @@ export function Navbar() {
                         </div>
                     </div>
 
-                    {/* Mobile Toggle */}
-                    <button
-                        className="md:hidden relative z-50 text-white"
-                        onClick={() => setIsMobileOpen(!isMobileOpen)}
-                    >
-                        {isMobileOpen ? <X strokeWidth={1.2} /> : <Menu strokeWidth={1.2} />}
-                    </button>
+                    {/* Mobile Toggle - Only visible after scroll for maximum minimalism in Hero */}
+                    <AnimatePresence>
+                        {isScrolled && (
+                            <m.button
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                className="md:hidden relative z-50 text-white"
+                                onClick={() => setIsMobileOpen(!isMobileOpen)}
+                            >
+                                {isMobileOpen ? <X strokeWidth={1.2} /> : <Menu strokeWidth={1.2} />}
+                            </m.button>
+                        )}
+                    </AnimatePresence>
                 </div>
             </m.nav>
 

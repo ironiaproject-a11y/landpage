@@ -384,21 +384,21 @@ export function Hero() {
                             defaults: { ease: "power4.out", duration: 1.4 }
                         });
 
-                        tl.fromTo(".hero-eyebrow",
-                            { y: 15, opacity: 0 },
-                            { y: 0, opacity: 0.6, duration: 1.2 }
+                        tl.fromTo(titleRef.current,
+                            { y: 30, opacity: 0 },
+                            { y: 0, opacity: 1 }, "-=0.9"
                         )
                             .fromTo(".hero-title-line-1",
-                                { y: 30, opacity: 0 },
-                                { y: 0, opacity: 1 }, "-=0.9"
+                                { y: 20, opacity: 0 },
+                                { y: 0, opacity: 1 }, "-=1.1"
                             )
                             .fromTo(".hero-title-line-2",
-                                { y: 20, opacity: 0 },
-                                { y: 0, opacity: 0.8 }, "-=1.1"
+                                { y: 15, opacity: 0 },
+                                { y: 0, opacity: 1 }, "-=1.1"
                             )
                             .fromTo(descriptionRef.current,
                                 { y: 15, opacity: 0, filter: "blur(4px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.0 }, "-=1.0"
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.1 }, "-=1.0"
                             )
                             .fromTo(actionsRef.current,
                                 { y: 10, opacity: 0, scale: 0.98 },
@@ -656,62 +656,40 @@ export function Hero() {
 
                     <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative z-10">
                         {/* Branded Atmospheric Overlay */}
-                        <m.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={(mounted && canStartSequence) ? { opacity: 0.15, y: 0 } : { opacity: 0, y: 10 }}
-                            transition={{ delay: 5.5, duration: 2 }}
-                            className="absolute top-[-25%] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none select-none"
-                        >
-                            <span className="font-display text-[12vw] font-black text-white uppercase tracking-[0.2em] opacity-15">
-                                CLÍNICA.
-                            </span>
-                        </m.div>
+
 
                         {/* Brand Eyebrow - The Anchor */}
-                        <div
-                            className="mb-8 opacity-0 hero-eyebrow"
-                        >
-                            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.5em] text-white/80 uppercase">Estética de Alta Performance</span>
-                        </div>
+
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(2rem,7.5vw,5.5rem)] will-change-transform leading-[0.98] mb-12 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-sans text-center will-change-transform leading-[1.2] mb-4 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
                             style={{
-                                textShadow: '0 12px 35px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.3)',
-                                fontSize: isMobile ? 'clamp(2.4rem, 10vw, 3.2rem)' : undefined,
-                                background: 'linear-gradient(to bottom, #FFFFFF 0%, #E5E7EB 50%, #D1D5DB 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                transition: 'none'
+                                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                                fontSize: isMobile ? '4rem' : '6rem',
+                                letterSpacing: '-0.02em',
+                                color: 'white'
                             }}
                         >
-                            {/* Staggered Composition - Reduced Displacement for "Clean" look */}
-                            <span className="block font-black uppercase tracking-tight sm:mr-[10%] opacity-0 hero-title-line-1">Seu Sorriso,</span>
+                            <span className="font-bold uppercase opacity-0 hero-title-line-1">Seu Sorriso,</span>
                             <span
-                                className="block font-light italic lowercase tracking-[-0.01em] sm:ml-[10%] sm:-mt-2 opacity-0 hero-title-line-2"
+                                className="font-light italic lowercase opacity-0 hero-title-line-2"
                                 style={{
                                     fontFamily: 'var(--font-editorial)',
-                                    backgroundImage: 'linear-gradient(to bottom, #FAF9F7, #CBD5E1)',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent'
                                 }}
                             >
                                 sua assinatura
                             </span>
                         </h1>
 
-                        <div className="overflow-hidden w-full transform" style={{ marginBottom: '28px' }}>
+                        <div className="overflow-hidden w-full transform mb-12">
                             <p
                                 ref={descriptionRef}
-                                className="font-semibold tracking-[0.02em] text-center text-[#FBFBF9] leading-[1.4] body-text-refined px-4 text-balance opacity-0"
+                                className="font-normal text-center text-[#D1D5DB] leading-[1.4] opacity-0"
                                 style={{
-                                    fontSize: isMobile ? '15px' : '16px',
-                                    fontWeight: 600,
-                                    maxWidth: isMobile ? 'min(90vw, 380px)' : '720px',
-                                    margin: isMobile ? '10px auto 0px' : '14px auto 0px',
-                                    textShadow: '0 2px 8px rgba(0,0,0,0.30)',
-                                    textTransform: 'none'
+                                    fontSize: '1.5rem',
+                                    maxWidth: isMobile ? 'min(90vw, 450px)' : '800px',
+                                    margin: '1rem auto 0',
                                 }}
                             >
                                 Segurança clínica. Resultado natural.
@@ -719,54 +697,60 @@ export function Hero() {
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[4] py-2 flex flex-col sm:flex-row items-center justify-center w-full px-5 pointer-events-auto opacity-0" style={{ gap: isMobile ? 16 : 24 }}>
+                        <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4">
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.28)" } : {}}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', transform: 'translateZ(0)' }}
-                                    className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                                    whileHover={{
+                                        y: -2,
+                                        scale: 1.05,
+                                        background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
+                                        boxShadow: "0 8px 40px rgba(0,0,0,0.2)"
+                                    }}
+                                    whileTap={{ scale: 0.98 }}
+                                    style={{
+                                        padding: '1rem 2.5rem',
+                                        borderRadius: '9999px',
+                                        background: 'rgba(255,255,255,0.1)',
+                                        backdropFilter: 'blur(10px)',
+                                        WebkitBackdropFilter: 'blur(10px)',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        color: 'white',
+                                        fontWeight: 600,
+                                        width: isMobile ? '100%' : 'auto',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    className="group relative flex items-center justify-center"
                                 >
-                                    {/* Shimmer Effect */}
-                                    <m.div
-                                        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
-                                        initial={{ x: "-100%" }}
-                                        animate={{ x: "200%" }}
-                                        transition={{
-                                            repeat: Infinity,
-                                            duration: 3,
-                                            ease: "easeInOut",
-                                            delay: isMobile ? 2 : 7.5
-                                        }}
-                                    />
-                                    <span className="relative z-10 flex items-center gap-3 tracking-[0.08em] font-bold uppercase" style={{ fontSize: 'inherit' }}>
-                                        Agendar Consulta
-                                    </span>
+                                    <span className="relative z-10">Agendar Consulta</span>
                                 </m.button>
                             </Magnetic>
 
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
-                                    whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
+                                    whileHover={{
+                                        y: -2,
+                                        scale: 1.05,
+                                        background: 'rgba(255,255,255,0.2)',
+                                        boxShadow: "0 8px 40px rgba(0,0,0,0.2)"
+                                    }}
                                     whileTap={{ scale: 0.98 }}
                                     style={{
-                                        WebkitTapHighlightColor: 'transparent',
-                                        touchAction: 'manipulation',
-                                        background: 'rgba(11,11,11,0.28)', // Refined secondary CTA
-                                        border: '1px solid rgba(255,255,255,0.06)',
-                                        color: 'rgba(255,255,255,0.92)',
-                                        padding: '18px 36px',
-                                        minHeight: isMobile ? 56 : 52,
-                                        fontSize: isMobile ? 16 : 18,
+                                        padding: '1rem 2.5rem',
+                                        borderRadius: '9999px',
+                                        background: 'transparent',
+                                        backdropFilter: 'blur(10px)',
+                                        WebkitBackdropFilter: 'blur(10px)',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        color: 'white',
+                                        fontWeight: 600,
                                         width: isMobile ? '100%' : 'auto',
-                                        maxWidth: isMobile ? 420 : 'none',
-                                        backdropFilter: 'blur(6px)'
+                                        transition: 'all 0.3s ease'
                                     }}
-                                    className="group bg-gallery flex items-center justify-center gap-3 rounded-full transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
+                                    className="group flex items-center justify-center"
                                 >
-                                    <span className="tracking-[0.08em] font-semibold uppercase" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
+                                    <span>Galeria de Resultados</span>
                                 </m.button>
                             </Magnetic>
                         </div>
@@ -791,32 +775,19 @@ export function Hero() {
                     ref={scrollHintRef}
                     initial={{ opacity: 0, x: "-50%" }}
                     animate={{
-                        opacity: [0.4, 0.8, 0.4],
+                        opacity: [0.35, 0.7, 0.35],
                         x: "-50%",
                         y: [0, 5, 0]
                     }}
                     transition={{
                         opacity: { repeat: Infinity, duration: 3, ease: "easeInOut" },
                         y: { repeat: Infinity, duration: 3, ease: "easeInOut" },
-                        delay: isMobile ? 2.5 : 5
+                        delay: 5
                     }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-4"
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[30] pointer-events-none"
+                    style={{ opacity: 0.7 }}
                 >
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold">Scroll</span>
-                    <div className="relative w-px h-16 overflow-hidden">
-                        <div className="absolute inset-0 bg-white/10" />
-                        <m.div
-                            animate={{
-                                y: ["-100%", "100%"]
-                            }}
-                            transition={{
-                                duration: 2.5,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                            className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-accent)] to-transparent"
-                        />
-                    </div>
+                    <span className="uppercase text-white text-[10px] tracking-[0.4em] font-light">Scroll</span>
                 </m.div>
 
                 {/* Vertical Cinematic Depth Gradient (Final Polish) */}
