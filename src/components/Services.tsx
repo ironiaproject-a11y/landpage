@@ -64,21 +64,21 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-[var(--color-accent)] font-display text-[10px] font-bold tracking-[0.2em] uppercase opacity-80">Pilar {service.tag}</span>
-                        <div className="h-px bg-[var(--color-accent)]/20 flex-grow" />
+                        <span className="text-white/40 font-display text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
+                        <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
                     <h3 className="font-display text-2xl font-bold mb-4 text-white group-hover:text-[var(--color-accent)] transition-colors duration-700 uppercase tracking-wide">
                         {service.title}
                     </h3>
 
-                    <p className="text-white/70 leading-[1.7] text-sm mb-8 md:mb-12 font-light body-text-refined">
+                    <p className="text-white/60 leading-[1.7] text-sm mb-8 md:mb-12 font-light body-text-refined">
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full border border-[var(--color-accent)]/40 text-[var(--color-accent)] text-[11px] font-bold uppercase tracking-[0.2em] group-hover:bg-[var(--color-accent)] group-hover:text-black transition-all duration-500">
-                            <span>Ver Protocolo</span>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-[0.3em] group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white transition-all duration-500">
+                            <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
                     </div>

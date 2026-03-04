@@ -34,13 +34,17 @@ export function BackToTop() {
                     initial={{ opacity: 0, scale: 0.5, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
-                    whileHover={{ scale: 1.1, backgroundColor: "#0b736b" }}
+                    whileHover={{
+                        scale: 1.1,
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        borderColor: "rgba(255, 255, 255, 0.3)"
+                    }}
                     whileTap={{ scale: 0.9 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-[100] w-12 h-12 flex items-center justify-center bg-[var(--color-accent)] text-white rounded-full shadow-2xl transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-black"
+                    className="fixed bottom-8 right-8 z-[100] w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-white/20"
                     aria-label="Back to top"
                 >
-                    <ChevronUp className="w-6 h-6" />
+                    <ChevronUp className="w-5 h-5 opacity-80" />
                 </m.button>
             )}
         </AnimatePresence>

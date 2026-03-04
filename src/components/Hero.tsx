@@ -644,10 +644,13 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-bold uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] will-change-transform font-bold uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
                             style={{
-                                textShadow: '0 4px 32px rgba(0,0,0,0.95)',
+                                textShadow: '0 10px 40px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5)',
                                 fontSize: isMobile ? 'clamp(2.1rem, 10vw, 3.5rem)' : undefined,
+                                background: 'linear-gradient(to bottom, #FFFFFF 0%, #E5E7EB 50%, #D1D5DB 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
                                 // Reveal timing is now handled by checkReveal function
                                 transition: 'none'
                             }}
@@ -773,6 +776,16 @@ export function Hero() {
                         />
                     </div>
                 </m.div>
+
+                {/* Vertical Cinematic Depth Gradient (Final Polish) */}
+                <div
+                    className="absolute inset-x-0 top-0 h-[40vh] z-[12] pointer-events-none"
+                    style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)' }}
+                />
+                <div
+                    className="absolute inset-x-0 bottom-0 h-[30vh] z-[12] pointer-events-none"
+                    style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)' }}
+                />
             </div>
         </section>
     );

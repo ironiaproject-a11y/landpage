@@ -104,8 +104,8 @@
   --radius-organic-lg: 3.5rem;
   --radius-organic-pill: 9999px;
 
-  /* Accent Color - Teal */
-  --color-accent: #0d9488;
+  /* Accent Color - Platinum Silver (Professional Refinement) */
+  --color-accent: #CBD5E1;
 
   /* Lighting Blobs - Purified Creme */
   --glow-blob: radial-gradient(circle at center, rgba(245, 245, 220, 0.03) 0%, transparent 70%);
@@ -349,13 +349,13 @@ section {
 }
 
 .luxury-surface {
-  @apply bg-[#121212]/40 backdrop-blur-xl border border-white/5 shadow-2xl;
-  transition: all 0.7s cubic-bezier(0.2, 0, 0, 1);
+  @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  transition: all 0.8s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .luxury-surface:hover {
-  @apply bg-[#121212]/60 border-white/10 -translate-y-1;
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 245, 220, 0.05);
+  @apply bg-black/60 border-white/10 -translate-y-1;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 255, 255, 0.05);
 }
 
 .body-text-refined {
