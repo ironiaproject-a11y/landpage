@@ -354,6 +354,7 @@ export function Hero() {
                         introRef.current?.draw(frameProxy.current.frame);
                         smoothedProgress.current = frameProxy.current.frame;
                         targetProgress.current = frameProxy.current.frame;
+                        checkReveal(frameProxy.current.frame);
                     },
                     onComplete: () => {
                         setIntroFinished(true);
@@ -361,20 +362,28 @@ export function Hero() {
                     }
                 });
 
-                // Initial Multi-Layer Reveal (Coordinated entry)
-                gsap.timeline({ delay: isMobile ? 1.5 : 4.5 })
-                    .fromTo(titleRef.current,
-                        { y: 24, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.75, ease: "power3.out" }
-                    )
-                    .fromTo(descriptionRef.current,
-                        { y: 20, opacity: 0, filter: "blur(6px)" },
-                        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.65, ease: "power3.out" }, "-=0.25"
-                    )
-                    .fromTo(actionsRef.current,
-                        { y: 12, opacity: 0, scale: 0.98 },
-                        { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "back.out(0.4)" }, "-=0.2"
-                    );
+                // Coordinated reveal triggered during intro
+                const revealThreshold = TOTAL_FRAMES * (isMobile ? 0.35 : 0.85);
+                let revealed = false;
+
+                const checkReveal = (currentFrame: number) => {
+                    if (!revealed && currentFrame >= revealThreshold) {
+                        revealed = true;
+                        gsap.timeline()
+                            .fromTo(titleRef.current,
+                                { y: 24, opacity: 0 },
+                                { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }
+                            )
+                            .fromTo(descriptionRef.current,
+                                { y: 20, opacity: 0, filter: "blur(8px)" },
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, "-=0.8"
+                            )
+                            .fromTo(actionsRef.current,
+                                { y: 12, opacity: 0, scale: 0.98 },
+                                { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6"
+                            );
+                    }
+                };
 
                 // Sync with rotation and depth
                 gsap.to(videoWrapperRef.current, {
@@ -512,8 +521,8 @@ export function Hero() {
                         ref={backlightRef}
                         className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
-                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.07) 0%, transparent 65%)', // Reduced intensity by subtle amount
-                            opacity: 0.07
+                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.12) 0%, transparent 70%)',
+                            opacity: 0.12
                         }}
                     />
 
@@ -590,9 +599,8 @@ export function Hero() {
                             style={{
                                 textShadow: '0 4px 24px rgba(0,0,0,0.8)',
                                 fontSize: isMobile ? '28px' : undefined,
-                                letterSpacing: isMobile ? '0.04em' : '0.05em',
-                                // Delay the reveal to match the 3D intro
-                                transitionDelay: isMobile ? '1.5s' : '4.5s'
+                                // Reveal timing is now handled by checkReveal function
+                                transition: 'none'
                             }}
                         >
                             <span>Seu Sorriso,</span>
