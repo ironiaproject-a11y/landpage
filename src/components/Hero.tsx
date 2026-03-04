@@ -157,14 +157,16 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             )}
             <canvas
                 ref={canvasRef}
-                className={`w-full h-full object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                className="w-full h-full object-cover transition-opacity duration-700"
                 style={{
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
                     transform: `scale(${isMobile ? 0.8 : 0.85}) translateZ(0)`,
                     backfaceVisibility: 'hidden',
-                    mixBlendMode: 'screen' // Black becomes 100% transparent, only highlights are "added"
+                    mixBlendMode: 'screen',
+                    backgroundColor: 'transparent',
+                    opacity: loaded ? 1 : 0
                 }}
             />
         </div>
@@ -507,8 +509,8 @@ export function Hero() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-[300vh] flex flex-col bg-black overflow-x-hidden"
-            style={{ padding: 0, backgroundColor: '#000000' }} // Removed 5vw padding for absolute full-bleed
+            className="relative w-[100vw] left-1/2 -translate-x-1/2 h-[300vh] flex flex-col bg-black overflow-x-hidden"
+            style={{ padding: 0, backgroundColor: '#000000' }}
         >
             <div
                 ref={pinContainerRef}
