@@ -1,6 +1,7 @@
 "use client";
 
-import { m } from "framer-motion";
+import { PremiumReveal } from "./PremiumReveal";
+import { LuxuryCard } from "./LuxuryCard";
 import { ArrowRight, Calendar } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -67,7 +68,7 @@ export function CTA() {
     }, [mounted]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 relative overflow-hidden bg-[var(--color-deep-black)]">
+        <section ref={sectionRef} className="py-16 md:py-32 relative overflow-hidden bg-[var(--color-deep-black)]">
             {/* Background Texture */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 
@@ -75,79 +76,58 @@ export function CTA() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] aspect-square bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_70%)] pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10 text-center">
-                <m.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-10%" }}
-                    transition={{
-                        duration: 1.2,
-                        ease: [0.22, 1, 0.36, 1]
-                    }}
-                    className="cta-glass-panel max-w-4xl mx-auto glass-panel rounded-organic-lg p-10 md:p-24 relative overflow-hidden"
+                <LuxuryCard
+                    className="cta-glass-panel max-w-4xl mx-auto border-white/5"
+                    innerClassName="p-10 md:p-24"
+                    glowColor="rgba(245, 245, 220, 0.08)"
                 >
                     {/* Decorative shine evolution */}
                     <div className="absolute -top-[200px] -right-[200px] w-[500px] h-[500px] glow-blob-warm opacity-40" />
                     <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] glow-blob opacity-20" />
 
-                    <m.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[var(--color-silver-bh)]/5 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] border border-[var(--color-silver-bh)]/10 mb-12"
-                    >
-                        <Calendar strokeWidth={1.2} className="w-3.5 h-3.5" />
-                        Agenda Aberta 2026
-                    </m.div>
+                    <PremiumReveal type="fade" direction="top" delay={0.2}>
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[var(--color-silver-bh)]/5 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] border border-[var(--color-silver-bh)]/10 mb-12">
+                            <Calendar strokeWidth={1.2} className="w-3.5 h-3.5" />
+                            Agenda Aberta 2026
+                        </div>
+                    </PremiumReveal>
 
-                    <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,96px)] font-medium text-white mb-10 leading-[1.05] tracking-hero uppercase">
-                        <span className="text-mask-reveal">
-                            <span className="title-line-inner inline-block">Seu novo sorriso</span>
-                        </span>
-                        <span className="text-mask-reveal">
-                            <span className="title-line-inner inline-block text-gradient-silver italic font-light">começa hoje.</span>
-                        </span>
-                    </h2>
+                    <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                        <h2 className="font-display text-[clamp(42px,7vw,96px)] font-medium text-white mb-10 leading-[1.05] tracking-hero uppercase">
+                            Seu novo sorriso<br />
+                            <span className="text-gradient-silver italic font-light">começa hoje.</span>
+                        </h2>
+                    </PremiumReveal>
 
-                    <m.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 0.8, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-2xl mx-auto mb-16 body-text-refined"
-                    >
-                        Agende uma avaliação detalhada e descubra como nosso protocolo <span className="italic font-display font-light text-white">exclusivo</span> pode transformar sua autoestima.
-                    </m.p>
+                    <PremiumReveal type="fade" delay={0.5}>
+                        <p className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-2xl mx-auto mb-16 body-text-refined">
+                            Agende uma avaliação detalhada e descubra como nosso protocolo <span className="italic font-display font-light text-white">exclusivo</span> pode transformar sua autoestima.
+                        </p>
+                    </PremiumReveal>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
                         <Magnetic strength={0.2} range={100}>
-                            <m.button
-                                whileHover={{ y: -10, scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                            <button
                                 onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="btn-luxury-primary group flex items-center justify-center gap-4"
+                                className="btn-luxury-primary group flex items-center justify-center gap-4 py-4 px-8 rounded-full"
                             >
                                 <span className="relative z-10 flex items-center gap-2">
                                     Agendar Avaliação
                                     <ArrowRight strokeWidth={1.2} className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500 ease-out" />
                                 </span>
-                            </m.button>
+                            </button>
                         </Magnetic>
 
                         <Magnetic strength={0.2} range={100}>
-                            <m.button
-                                whileHover={{ y: -10, scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                            <button
                                 onClick={() => window.open(generateWhatsAppUrl(DEFAULT_MESSAGE), '_blank')}
-                                className="btn-luxury-ghost group flex items-center justify-center gap-4"
+                                className="btn-luxury-ghost group flex items-center justify-center gap-4 py-4 px-8 rounded-full"
                             >
                                 Falar com Concierge
-                            </m.button>
+                            </button>
                         </Magnetic>
                     </div>
-                </m.div>
+                </LuxuryCard>
             </div>
         </section>
     );

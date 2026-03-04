@@ -2,7 +2,7 @@
 
 import { m } from "framer-motion";
 import { Coffee, ShieldCheck, Car, Heart, Sparkles, Clock } from "lucide-react";
-import VisualContainer from "./VisualContainer";
+import { PremiumReveal } from "./PremiumReveal";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -186,51 +186,48 @@ export function Amenities() {
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="experiencia-vip">
-            {/* Ambient Lighting Pulse */}
-            <div
-                ref={glowRef}
-                className="absolute top-1/2 left-0 w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none -z-10"
-                style={{ filter: "blur(120px)" }}
-            />
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-20 items-start">
 
                     {/* Left Column: Context & Sticky Image */}
                     <div className="lg:w-5/12 sticky top-32">
-                        <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
-                        >
-                            Hospitality
-                        </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] mb-12 uppercase tracking-hero">
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner inline-block">Experiência</span>
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                                Hospitality
                             </span>
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">Cinco Estrelas.</span>
-                            </span>
+                        </PremiumReveal>
+
+                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] mb-12 uppercase tracking-hero">
+                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                <span>Experiência</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-gradient-silver italic font-light block mt-2">Cinco Estrelas.</span>
+                            </PremiumReveal>
                         </h2>
-                        <p className="amenities-desc text-lg text-white/60 font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
-                            Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
-                        </p>
+
+                        <PremiumReveal direction="bottom" delay={0.4}>
+                            <p className="text-lg text-white/60 font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
+                                Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
+                            </p>
+                        </PremiumReveal>
 
                         {/* Concept Image - Changes on Hover */}
-                        <div className="hidden lg:block relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/5 bg-[#121212]">
-                            <Image
-                                src="/assets/images/luxury-lounge.png"
-                                alt="Lounge Private"
-                                fill
-                                className="object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 lounge-image-parallax"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
-                            <div className="absolute bottom-8 left-8 z-20">
-                                <div className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-silver-bh)] mb-2">Ambiente</div>
-                                <div className="text-2xl font-display text-white">Lounge Private</div>
+                        <PremiumReveal type="mask" direction="right" delay={0.5} className="hidden lg:block rounded-[2rem]">
+                            <div className="relative w-full aspect-[4/5] overflow-hidden border border-white/5 bg-[#121212]">
+                                <Image
+                                    src="/assets/images/luxury-lounge.png"
+                                    alt="Lounge Private"
+                                    fill
+                                    className="object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 lounge-image-parallax"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
+                                <div className="absolute bottom-8 left-8 z-20">
+                                    <div className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-silver-bh)] mb-2">Ambiente</div>
+                                    <div className="text-2xl font-display text-white">Lounge Private</div>
+                                </div>
                             </div>
-                        </div>
+                        </PremiumReveal>
                     </div>
 
                     {/* Right Column: The "Menu" of Amenities */}

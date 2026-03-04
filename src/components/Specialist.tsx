@@ -3,7 +3,8 @@
 import { m } from "framer-motion";
 import { Medal, Globe, Quote } from "lucide-react";
 import { Magnetic } from "./Magnetic";
-import VisualContainer from "./VisualContainer";
+import { PremiumReveal } from "./PremiumReveal";
+import { LuxuryCard } from "./LuxuryCard";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -203,7 +204,7 @@ export function Specialist() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+        <section ref={sectionRef} className="py-16 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
             {/* Background overlay for blur effect */}
             <div
                 ref={backgroundRef}
@@ -214,23 +215,18 @@ export function Specialist() {
                 <div className="flex flex-col lg:flex-row items-center gap-20">
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
-                        <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body"
-                        >
-                            Corpo Clínico
-                        </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(28px,5.5vw,48px)] font-medium text-white mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block">A ciência por trás do seu</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">melhor sorriso</span>.
-                            </div>
-                        </h2>
+                        <PremiumReveal type="fade" direction="top" duration={1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body">
+                                Corpo Clínico
+                            </span>
+                        </PremiumReveal>
+
+                        <PremiumReveal type="mask" direction="bottom">
+                            <h2 className="font-display text-[clamp(28px,5.5vw,48px)] font-medium text-white mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
+                                A ciência por trás do seu<br />
+                                <span className="text-gradient-silver italic font-light">melhor sorriso</span>.
+                            </h2>
+                        </PremiumReveal>
 
                         <div ref={credentialsRef} className="space-y-8 mb-12">
                             <div className="credential-item flex items-start gap-6 group">
@@ -257,74 +253,55 @@ export function Specialist() {
                             </div>
                         </div>
 
-                        <div ref={quoteRef} className="opacity-0">
-                            <VisualContainer
-                                width="100%"
-                                height="auto"
-                                hoverColor="rgba(255, 255, 255, 0.1)"
-                                sideHeight="15px"
-                            >
-                                <div className="p-10 relative overflow-hidden h-full">
-                                    <Quote strokeWidth={1.2} className="absolute top-6 right-8 w-12 h-12 text-[var(--color-silver-bh)]/10" />
-                                    <p className="font-editorial text-xl md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10" style={{ textShadow: "0 4px 15px rgba(0,0,0,0.4)" }}>
-                                        &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
-                                    </p>
-                                    <div className="relative z-10">
-                                        <h4 className="text-white font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                        <PremiumReveal type="fade" delay={0.4}>
+                            <div ref={quoteRef}>
+                                <LuxuryCard
+                                    glowColor="rgba(212, 175, 55, 0.08)"
+                                    className="border-white/5"
+                                    innerClassName="p-8 md:p-10"
+                                >
+                                    <div className="relative overflow-hidden h-full">
+                                        <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-silver-bh)]/10" />
+                                        <p className="font-editorial text-xl md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10">
+                                            &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
+                                        </p>
+                                        <div className="relative z-10">
+                                            <h4 className="text-white font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
+                                            <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </VisualContainer>
-                        </div>
+                                </LuxuryCard>
+                            </div>
+                        </PremiumReveal>
                     </div>
 
-                    {/* Right: Cinematic Portrait */}
                     <div className="lg:w-1/2 order-1 lg:order-2">
-                        <m.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, margin: "-10%" }}
-                            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                            className="relative dr-portrait-wrapper will-change-transform [transform:translateZ(0)]"
-                        >
-                            <VisualContainer
-                                width="100%"
-                                height="auto"
-                                hoverColor="rgba(255, 255, 255, 0.05)"
-                                sideHeight="20px"
-                                className="!rounded-[3rem] overflow-hidden border-white/10"
-                            >
-                                <div className="relative dr-portrait-inner">
+                        <div className="relative dr-portrait-wrapper will-change-transform [transform:translateZ(0)]">
+                            <PremiumReveal type="mask" direction="bottom" duration={1.5}>
+                                <div className="relative rounded-[2rem] overflow-hidden border border-white/10 dr-portrait-inner">
                                     <Image
                                         src="/assets/images/dr-ricardo.png"
                                         alt="Dr. Ricardo Alessandro"
                                         width={800}
                                         height={1000}
-                                        className="w-full h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-[400px] md:h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                                     />
-                                    {/* Selective dark gradient for text contrast over white coat */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/95 via-black/40 to-transparent opacity-100" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
-                                    {/* Floating Counter Badge - Integrated into VisualContainer layers if needed, 
-                                        but keep as child for translateZ effect via VisualContainer mapping if possible.
-                                        VisualContainer maps children to translateZ layers.
-                                    */}
-                                    <div className="absolute top-12 right-12 glass-panel p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
-                                        <p className="text-[var(--color-silver-bh)] font-display text-4xl font-bold tracking-tight">15</p>
+                                    <div className="absolute top-8 right-8 glass-panel p-4 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
+                                        <p className="text-[var(--color-silver-bh)] font-display text-3xl md:text-4xl font-bold tracking-tight">15</p>
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 
-                                    <div className="absolute bottom-12 left-12 z-20 op-desc-parallax will-change-transform [transform:translateZ(0)]">
-                                        <h4 className="text-white font-display text-2xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                    <div className="absolute bottom-8 left-8 z-20 op-desc-parallax">
+                                        <h4 className="text-white font-display text-xl md:text-2xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
                                         <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.08em]">Especialista em Reabilitação Oral</p>
                                     </div>
                                 </div>
-                            </VisualContainer>
+                            </PremiumReveal>
 
-                            {/* Ambient Glows */}
-                            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[var(--color-silver-bh)]/10 blur-[120px] pointer-events-none -z-10" />
-                            <div className="absolute -top-20 -left-20 w-64 h-64 bg-[var(--color-silver-bh)]/5 blur-[100px] pointer-events-none -z-10" />
-                        </m.div>
+                            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-[var(--color-silver-bh)]/5 blur-[100px] pointer-events-none -z-10" />
+                        </div>
                     </div>
                 </div>
             </div>

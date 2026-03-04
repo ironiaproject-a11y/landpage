@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { m } from "framer-motion";
+import { PremiumReveal } from "./PremiumReveal";
+import { m, useScroll, useTransform, useSpring } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -175,9 +176,11 @@ export function Stats() {
                                             viewport={{ once: true, margin: "-15%" }}
                                             className="relative"
                                         >
-                                            <span className="text-[var(--color-creme)] font-editorial text-4xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
-                                                Essência
-                                            </span>
+                                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                                <span className="text-[var(--color-creme)] font-editorial text-4xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
+                                                    Essência
+                                                </span>
+                                            </PremiumReveal>
                                             <div className="absolute -inset-4 bg-[var(--color-creme)]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                                         </m.div>
                                     )}

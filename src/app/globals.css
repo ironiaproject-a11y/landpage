@@ -171,10 +171,10 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.2;
+  opacity: 0.15;
   mix-blend-mode: overlay;
   animation: grain-animation 12s steps(10) infinite;
 }
@@ -184,10 +184,10 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 @media (max-width: 1024px) {
@@ -320,8 +320,17 @@ h3 {
 
 /* Global Section Spacing (+20%) */
 section {
-  padding-top: clamp(6rem, 12vw, 12rem) !important;
-  padding-bottom: clamp(6rem, 12vw, 12rem) !important;
+  @apply py-20 md:py-40;
+}
+
+.luxury-surface {
+  @apply bg-[#121212]/40 backdrop-blur-xl border border-white/5 shadow-2xl;
+  transition: all 0.7s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.luxury-surface:hover {
+  @apply bg-[#121212]/60 border-white/10 -translate-y-1;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 245, 220, 0.05);
 }
 
 .body-text-refined {

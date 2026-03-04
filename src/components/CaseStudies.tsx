@@ -4,6 +4,8 @@ import { m } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { MediaCard } from "./MediaCard";
 import { useRef, useEffect, useState } from "react";
+import { LuxuryCard } from "./LuxuryCard";
+import { PremiumReveal } from "./PremiumReveal";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -31,15 +33,12 @@ interface ResultCaseItem {
 function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
     const [isVideoActive, setIsVideoActive] = useState(false);
     return (
-        <m.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="case-study-card light-sweep max-w-5xl w-full overflow-hidden rounded-organic-md border border-white/10 shadow-2xl bg-black"
+        <LuxuryCard
+            delay={0.2}
+            innerClassName="p-0"
+            className="max-w-5xl w-full"
+            interactive={true}
         >
-            {/* Video container — agora ocupa o card inteiro para um look "limpo" */}
             <div
                 className="relative w-full h-full"
                 onMouseEnter={() => setIsVideoActive(true)}
@@ -47,34 +46,27 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                 onTouchStart={() => setIsVideoActive(true)}
                 onTouchEnd={() => setIsVideoActive(false)}
             >
-                {/* Overlay esquerdo — "Antes" */}
-                <div className="absolute top-3 left-3 md:top-4 md:left-4 w-[80px] md:w-[100px] h-[30px] md:h-[36px] bg-black/60 backdrop-blur-md rounded-full z-30 pointer-events-none border border-white/10 flex items-center justify-center shadow-lg">
-                    <span className="text-[9px] md:text-[11px] text-white font-semibold uppercase tracking-[0.2em]">Antes</span>
+                {/* Labels */}
+                <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
+                    <span className="text-[10px] text-white font-bold uppercase tracking-[0.2em]">Antes</span>
                 </div>
-
-                {/* Overlay direito — "Depois" */}
-                <div className="absolute top-3 right-3 md:top-4 md:right-4 w-[80px] md:w-[100px] h-[30px] md:h-[36px] bg-black/60 backdrop-blur-md rounded-full z-30 pointer-events-none border border-white/10 flex items-center justify-center shadow-lg">
-                    <span className="text-[9px] md:text-[11px] text-white font-semibold uppercase tracking-[0.2em]">Depois</span>
+                <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
+                    <span className="text-[10px] text-white font-bold uppercase tracking-[0.2em]">Depois</span>
                 </div>
-
-                {/* Overlay inferior — cobre labels ou marcas d'água extras no fundo do vídeo */}
-                <div className="absolute bottom-0 left-0 w-full h-[50px] bg-black z-30 pointer-events-none" />
-                <div className="absolute bottom-[50px] left-0 w-full h-[30px] bg-gradient-to-t from-black to-transparent z-30 pointer-events-none" />
-
 
                 <MediaCard
                     mp4Src={item.video}
                     posterSrc={item.poster}
                     alt={item.title}
-                    ariaLabel={`Projeto: ${item.title}`}
-                    aspectRatio="aspect-video"
+                    ariaLabel={item.title}
                     playing={isVideoActive}
-                    onPlay={() => setIsVideoActive(true)}
-                    onPause={() => setIsVideoActive(false)}
-                    className="w-full h-full object-cover scale-[1.01]" // Pequeno scale para garantir preenchimento total
+                    className="w-full h-full object-cover scale-[1.01]"
                 />
+
+                {/* Bottom Mask for cleaner look */}
+                <div className="absolute bottom-0 left-0 w-full h-12 bg-black z-30" />
             </div>
-        </m.div>
+        </LuxuryCard>
     );
 }
 
@@ -186,32 +178,26 @@ export function CaseStudies() {
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-3xl mb-16 md:mb-32">
-                    <m.span
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                        transition={{ duration: 1 }}
-                        className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block font-body"
-                    >
-                        Casos Clínicos
-                    </m.span>
-                    <h2 ref={titleRef} className="font-display text-[clamp(28px,7vw,88px)] font-medium text-white leading-[1.05] tracking-hero mb-8 uppercase">
-                        <span className="text-mask-reveal">
-                            <span className="title-line-inner inline-block">Resultados que</span>
+                    <PremiumReveal direction="bottom" delay={0.1}>
+                        <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            Casos Clínicos
                         </span>
-                        <span className="text-mask-reveal">
-                            <span className="title-line-inner inline-block text-gradient-silver italic font-light">falam por si.</span>
-                        </span>
+                    </PremiumReveal>
+
+                    <h2 className="font-display text-[clamp(28px,7vw,88px)] font-medium text-white leading-[1.05] tracking-hero mb-8 uppercase">
+                        <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                            <span>Resultados que</span>
+                        </PremiumReveal>
+                        <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                            <span className="text-gradient-silver italic font-light block mt-2">falam por si.</span>
+                        </PremiumReveal>
                     </h2>
-                    <m.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 0.8, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-xl body-text-refined"
-                    >
-                        Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
-                    </m.p>
+
+                    <PremiumReveal direction="bottom" delay={0.4}>
+                        <p className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-xl body-text-refined">
+                            Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
+                        </p>
+                    </PremiumReveal>
                 </div>
 
                 <div className="flex justify-center">

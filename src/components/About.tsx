@@ -1,6 +1,7 @@
 "use client";
 
 import { m, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { PremiumReveal } from "./PremiumReveal";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
@@ -14,8 +15,6 @@ if (typeof window !== "undefined") {
 
 export function About() {
     const sectionRef = useRef<HTMLElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const descriptionRef = useRef<HTMLParagraphElement>(null);
     const imageWrapperRef = useRef<HTMLDivElement>(null);
     const revealShadeRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
@@ -80,7 +79,7 @@ export function About() {
                 tl.to(revealShadeRef.current, {
                     scaleY: 0,
                     transformOrigin: "top", // Reveals from bottom to top
-                    duration: isMobile ? 1.8 : 1.8,
+                    duration: 1.8,
                     ease: "power4.inOut"
                 });
             }
@@ -92,32 +91,6 @@ export function About() {
                 "-=1.6"
             );
 
-            // 3. Title Lines
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
-            if (titleLines.length > 0) {
-                tl.fromTo(titleLines,
-                    { y: "100%", skewY: 5, opacity: 0 },
-                    {
-                        y: 0,
-                        skewY: 0,
-                        opacity: 1,
-                        stagger: isMobile ? 0.05 : 0.1,
-                        duration: isMobile ? 0.7 : 1,
-                        ease: "power4.out"
-                    },
-                    "-=1.5"
-                );
-            }
-
-            // 4. Description & Elements
-            if (descriptionRef.current) {
-                tl.fromTo(descriptionRef.current,
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
-                    "-=1.2"
-                );
-            }
-
             tl.fromTo(".about-list-item",
                 { opacity: 0, y: 15 },
                 { opacity: 1, y: 0, stagger: 0.05, duration: 0.8, ease: "power2.out" },
@@ -125,9 +98,9 @@ export function About() {
             );
 
             // Continuous Parallax Effects
-            const speedMult = isMobile ? 0.45 : 1; // Greatly increased for mobile
+            const speedMult = isMobile ? 0.45 : 1;
 
-            // Image Container Parallax (Vertical drift)
+            // Image Container Parallax
             gsap.to(".about-image-wrapper", {
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -139,33 +112,6 @@ export function About() {
                 ease: "none"
             });
 
-            // Decorations
-            gsap.to(".about-decoration-blob", {
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 2,
-                },
-                y: -120 * speedMult,
-                rotation: 45,
-                ease: "none"
-            });
-
-            // Floating ring
-            gsap.to(".about-decoration-ring", {
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1.5,
-                },
-                y: 80 * speedMult,
-                scale: 1.1,
-                ease: "none"
-            });
-
-
         }, sectionRef);
 
         return () => ctx.revert();
@@ -173,19 +119,9 @@ export function About() {
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="sobre">
-            {/* Ambient Background Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-
-            <m.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="container mx-auto px-6 relative z-10"
-            >
+            <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                    {/* Image Side - Desktop Tilt & Parallax */}
+                    {/* Image Side */}
                     <m.div
                         className="w-full lg:w-1/2 relative group"
                         style={!isMobile ? { perspective: 1000 } : {}}
@@ -197,13 +133,7 @@ export function About() {
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
-                            {/* Cinematic Reveal Shade */}
-                            <div
-                                ref={revealShadeRef}
-                                className="absolute inset-0 bg-neutral-900 z-30"
-                            />
-
-                            {/* Main Image with Zoom Effect */}
+                            <div ref={revealShadeRef} className="absolute inset-0 bg-neutral-900 z-30" />
                             <div className="relative w-full h-[400px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
@@ -213,80 +143,44 @@ export function About() {
                                     priority
                                     sizes="(max-width: 1024px) 100vw, 800px"
                                 />
-                                {/* Glass Overlay on Hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                             </div>
-
-                            {/* Floating ring decoration inside tilt container */}
-                            <div
-                                className="absolute -top-10 -right-10 w-40 h-40 border border-white/10 rounded-full about-decoration-ring pointer-events-none z-20 backdrop-blur-[2px] bg-white/5"
-                                style={!isMobile ? { transform: "translateZ(50px)" } : {}}
-                            />
                         </m.div>
-
-                        {/* External decorative blob */}
-                        <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-gradient-to-br from-[var(--color-silver-bh)]/20 to-transparent blur-3xl rounded-full about-decoration-blob pointer-events-none -z-10" />
                     </m.div>
 
                     {/* Content Side */}
                     <div className="w-full lg:w-1/2 flex flex-col items-start">
-                        <m.div
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className="flex items-center gap-4 mb-8"
-                        >
-                            <span className="w-12 h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent" />
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] md:text-xs font-body">
-                                Excelência e Tradição
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                                Excelência Master
                             </span>
-                        </m.div>
+                        </PremiumReveal>
 
-                        <h2 ref={titleRef} className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
-                            <span className="text-mask-reveal">
-                                <m.span
-                                    initial={{ y: "110%" }}
-                                    whileInView={{ y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                                    className="text-mask-reveal-inner text-white"
-                                >
-                                    Elevando o padrão da
-                                </m.span>
-                            </span>
-                            <span className="text-mask-reveal">
-                                <m.span
-                                    initial={{ y: "110%" }}
-                                    whileInView={{ y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                                    className="text-mask-reveal-inner text-gradient-silver italic font-light"
-                                >
-                                    Odontologia Estética
-                                </m.span>
-                            </span>
+                        <h2 className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                <span>Redefinindo o Conceito de</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-gradient-silver italic font-light block mt-2">Luxo Odontológico.</span>
+                            </PremiumReveal>
                         </h2>
 
-                        <p ref={descriptionRef} className="font-body text-[17px] lg:text-[18px] mb-12 border-l border-[var(--color-silver-bh)]/20 pl-8 leading-[1.65] text-white/90 max-w-[650px] body-text-refined">
-                            Mais do que tratamentos, oferecemos <span className="font-medium font-display uppercase tracking-[0.08em] text-white">confiança, conforto e segurança</span> em cada etapa do cuidado com quem você mais ama.
-                        </p>
+                        <PremiumReveal direction="bottom" delay={0.4}>
+                            <p className="text-lg text-white/70 font-light leading-relaxed mb-10 body-text-refined">
+                                Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico.
+                            </p>
+                        </PremiumReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
                             {highlights.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-white/20 transition-colors cursor-default"
-                                >
-                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] group-hover:border-[var(--color-silver-bh)] transition-all duration-500">
-                                        <ArrowUpRight strokeWidth={1.5} className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-white/20 transition-colors">
+                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] transition-all">
+                                        <ArrowUpRight className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-white/80 font-medium text-sm tracking-wide group-hover:text-white transition-colors">{item}</span>
+                                    <span className="text-white/80 font-medium text-sm tracking-wide group-hover:text-white">{item}</span>
                                 </div>
                             ))}
                         </div>
 
-                        {/* Primary CTA suggestion */}
                         <m.button
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -298,8 +192,7 @@ export function About() {
                         </m.button>
                     </div>
                 </div>
-            </m.div>
+            </div>
         </section>
     );
 }
-

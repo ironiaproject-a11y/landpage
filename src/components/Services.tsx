@@ -8,6 +8,8 @@ import Image from "next/image";
 import { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LuxuryCard } from "./LuxuryCard";
+import { PremiumReveal } from "./PremiumReveal";
 import { Magnetic } from "./Magnetic";
 import { MediaCard } from "./MediaCard";
 
@@ -32,93 +34,57 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     const handlePauseInternal = useCallback(() => setIsVideoActive(false), []);
 
     return (
-        <m.div
-            initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            viewport={{
-                once: false,
-                margin: "0px 0px -100px 0px",
-                amount: isMobile ? 0.01 : 0.3
-            }}
-            className={clsx(
-                "group relative spotlight-card transition-all duration-700 ease-[0.22,1,0.36,1] hover:-translate-y-4"
-            )}
+        <LuxuryCard
+            delay={index * 0.1}
+            className="h-full"
+            innerClassName="p-0" // We'll handle padding internally for media alignment
         >
-            <m.div
-                className="service-card-wrapper will-change-transform"
-                whileTap={isMobile ? { scale: 1.05, z: 50, transition: { duration: 0.4 } } : {}}
+            <div
+                className="flex flex-col h-full cursor-pointer"
+                onMouseEnter={() => setIsVideoActive(true)}
+                onMouseLeave={() => setIsVideoActive(false)}
+                onTouchStart={() => setIsVideoActive(true)}
+                onTouchEnd={() => setIsVideoActive(false)}
             >
-                <VisualContainer
-                    width="100%"
-                    height="auto"
-                    hoverColor="rgba(245, 245, 220, 0.12)"
-                    sideHeight="12px"
-                    className={clsx(isMobile && isVideoActive && "border-[var(--color-silver-bh)]/30 shadow-[0_0_40px_rgba(203,213,225,0.15)]")}
-                >
-                    <div
-                        className="p-8 md:p-12 flex flex-col h-full cursor-pointer"
-                        onMouseEnter={() => setIsVideoActive(true)}
-                        onMouseLeave={() => setIsVideoActive(false)}
-                        onTouchStart={() => setIsVideoActive(true)}
-                        onTouchEnd={() => setIsVideoActive(false)}
-                    >
-                        {/* High-Performance Media Card */}
-                        <div className="relative mb-12 overflow-hidden rounded-xl">
-                            <div className="transform transition-transform duration-700 ease-[0.22,1,0.36,1] group-hover:scale-[1.05]">
-                                <MediaCard
-                                    mp4Src={service.video}
-                                    webmSrc={service.video.replace('.mp4', '.webm')}
-                                    posterSrc={service.image}
-                                    alt={service.title}
-                                    ariaLabel={`Ver detalhes de ${service.title}`}
-                                    className="shadow-2xl"
-                                    onPlay={handlePlayInternal}
-                                    onPause={handlePauseInternal}
-                                    playing={isVideoActive}
-                                />
-                            </div>
+                {/* Media Section */}
+                <div className="relative overflow-hidden rounded-t-2xl p-6">
+                    <div className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.05]">
+                        <MediaCard
+                            mp4Src={service.video}
+                            webmSrc={service.video.replace('.mp4', '.webm')}
+                            posterSrc={service.image}
+                            alt={service.title}
+                            ariaLabel={service.title}
+                            className="shadow-2xl rounded-xl overflow-hidden"
+                            playing={isVideoActive}
+                        />
+                    </div>
+                </div>
 
-                            {/* Floating Tag */}
-                            <div className="absolute top-6 right-6 w-12 h-12 rounded-full glass-panel flex items-center justify-center border-white/10 backdrop-blur-2xl service-tag-parallax service-icon-rotate z-[20]">
-                                <span className="text-[var(--color-silver-bh)] font-display text-xs font-bold">
-                                    {service.tag}
-                                </span>
-                            </div>
-                        </div>
+                {/* Content Section */}
+                <div className="p-8 md:p-10 flex flex-col flex-grow">
+                    <div className="flex items-center gap-4 mb-6">
+                        <span className="text-[var(--color-silver-bh)] font-display text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">Pilar {service.tag}</span>
+                        <div className="h-px bg-white/5 flex-grow" />
+                    </div>
 
-                        {/* Content Section */}
-                        <div className="flex-grow">
-                            <div className="flex items-center gap-6 mb-8">
-                                <div className="h-[1px] bg-gradient-to-r from-[var(--color-silver-bh)]/30 to-transparent flex-grow" />
-                            </div>
+                    <h3 className="font-display text-2xl font-medium mb-4 text-white group-hover:text-[var(--color-silver-bh)] transition-colors duration-700 uppercase tracking-wide">
+                        {service.title}
+                    </h3>
 
-                            <h3 className="font-display text-2xl md:text-3xl font-medium mb-6 text-white group-hover:text-[var(--color-silver-bh)] transition-all duration-700 delay-100 leading-tight uppercase tracking-wide">
-                                {service.title}
-                            </h3>
+                    <p className="text-white/60 leading-[1.6] text-sm mb-10 font-light body-text-refined">
+                        {service.description}
+                    </p>
 
-                            <p className="text-[var(--color-text-secondary)] leading-[1.6] text-base mb-10 font-normal group-hover:text-white/90 transition-colors duration-700 service-card-description">
-                                {service.description}
-                            </p>
-
-                            <Magnetic strength={0.2} range={60}>
-                                <m.div
-                                    whileHover={{ x: 5 }}
-                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="inline-flex items-center gap-4 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.08em] cursor-pointer transition-all duration-700 service-card-cta"
-                                >
-                                    <span className="font-body">Ver Protocolo</span>
-                                    <ArrowRight strokeWidth={1.2} className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-700" />
-                                </m.div>
-                            </Magnetic>
+                    <div className="mt-auto">
+                        <div className="inline-flex items-center gap-3 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] group-hover:gap-5 transition-all duration-700">
+                            <span>Ver Protocolo</span>
+                            <ArrowRight className="w-4 h-4" />
                         </div>
                     </div>
-                </VisualContainer>
-
-                {/* Hover Shadow Glow - Silver Clinical Enhanced for Relief */}
-                <div className="absolute -inset-10 bg-[var(--color-silver-bh)]/10 blur-[130px] rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
-            </m.div>
-        </m.div>
+                </div>
+            </div>
+        </LuxuryCard>
     );
 }
 
@@ -346,23 +312,20 @@ export function Services() {
                 style={{ opacity: 0 }}
             />
 
-            <div className="max-w-4xl mb-16 md:mb-24">
-                <m.span
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body"
-                >
-                    Tratamentos de Elite
-                </m.span>
-                <h2 ref={titleRef} className="font-display text-[clamp(28px,6vw,48px)] font-medium text-white leading-[1.1] tracking-[-0.01em] mb-12">
-                    <div className="block overflow-hidden pb-1">
-                        <span className="title-line-inner inline-block">Soluções clínicas de</span>
-                    </div>
-                    <div className="block overflow-hidden pb-1">
-                        <span className="title-line-inner inline-block text-gradient-silver italic font-light">extrema precisão</span>.
-                    </div>
+            <div className="max-w-4xl mb-24">
+                <PremiumReveal direction="bottom" delay={0.1}>
+                    <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                        Tratamentos de Elite
+                    </span>
+                </PremiumReveal>
+
+                <h2 className="font-display text-[clamp(28px,6vw,56px)] font-medium text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                    <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                        <span>Soluções clínicas de</span>
+                    </PremiumReveal>
+                    <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                        <span className="text-gradient-silver italic font-light block mt-2">extrema precisão.</span>
+                    </PremiumReveal>
                 </h2>
             </div>
 

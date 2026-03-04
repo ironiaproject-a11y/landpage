@@ -3,6 +3,7 @@
 import { m, AnimatePresence } from "framer-motion";
 import { Plus, Minus, HelpCircle } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { PremiumReveal } from "./PremiumReveal";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -53,27 +54,6 @@ export function FAQ() {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
-
-            if (titleLines.length > 0) {
-                gsap.fromTo(titleLines,
-                    { y: "110%", skewY: 7, opacity: 0 },
-                    {
-                        scrollTrigger: {
-                            trigger: titleRef.current,
-                            start: isMobile ? "top 95%" : "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
-                        y: 0,
-                        skewY: 0,
-                        opacity: 1,
-                        stagger: isMobile ? 0.08 : 0.15,
-                        duration: isMobile ? 0.8 : 1.2,
-                        ease: "power4.out"
-                    }
-                );
-            }
-
             // Desktop-only cinematic scroll effects
             if (!isMobile) {
                 gsap.to(".faq-glow", {
@@ -102,79 +82,72 @@ export function FAQ() {
                 <div className="max-w-4xl mx-auto">
                     {/* Header */}
                     <div className="text-center mb-16 md:mb-24">
-                        <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block"
-                        >
-                            Esclarecimentos
-                        </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner inline-block">Dúvidas</span>
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                                Esclarecimentos
                             </span>
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner text-gradient-silver inline-block italic font-light">Frequentes.</span>
-                            </span>
+                        </PremiumReveal>
+
+                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                <span>Dúvidas</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-gradient-silver italic font-light block mt-2">Frequentes.</span>
+                            </PremiumReveal>
                         </h2>
                     </div>
 
-                    {/* FAQ Accordion */}
-                    <div className="space-y-4 mb-20">
+                    <div className="max-w-3xl mx-auto space-y-4 mb-20">
                         {faqs.map((faq, index) => (
-                            <m.div
-                                key={index}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                                transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className={`glass-panel overflow-hidden transition-all duration-500 rounded-organic-md active:scale-[0.98] md:active:scale-[0.99] touch-manipulation cursor-pointer ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05]" : "border-white/5"
-                                    }`}
-                            >
-
-                                <button
-                                    onClick={() => setActiveIndex(activeIndex === index ? null : index)}
-                                    className="w-full p-8 md:p-10 flex items-center justify-between text-left group"
+                            <PremiumReveal key={index} direction="bottom" delay={0.1 + index * 0.05}>
+                                <div
+                                    className={`glass-panel overflow-hidden transition-all duration-500 rounded-2xl active:scale-[0.98] cursor-pointer ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05] shadow-[0_0_40px_rgba(255,255,255,0.03)]" : "border-white/5"
+                                        }`}
                                 >
-                                    <div className="flex items-center gap-6">
-                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 border ${activeIndex === index
-                                            ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
-                                            : "bg-white/5 border-white/10 text-[var(--color-creme)]"
-                                            }`}>
-                                            <HelpCircle strokeWidth={1.2} className="w-5 h-5" />
-                                        </div>
-                                        <span className="text-xl md:text-2xl font-medium text-white tracking-tight group-hover:text-[var(--color-silver-bh)] transition-colors">
-                                            {faq.question}
-                                        </span>
-                                    </div>
-                                    <div className="ml-4 transition-transform duration-500 min-w-[24px]">
-                                        {activeIndex === index ? (
-                                            <Minus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]" />
-                                        ) : (
-                                            <Plus strokeWidth={1.2} className="w-6 h-6 text-white/20 group-hover:text-white/60" />
-                                        )}
-                                    </div>
-                                </button>
 
-                                <AnimatePresence>
-                                    {activeIndex === index && (
-                                        <m.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                        >
-                                            <div className="px-8 md:px-10 pb-10 md:pb-12 ml-18 md:ml-22">
-                                                <p className="text-white/60 text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
-                                                    {faq.answer}
-                                                </p>
+                                    <button
+                                        onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+                                        className="w-full p-8 md:p-10 flex items-center justify-between text-left group"
+                                    >
+                                        <div className="flex items-center gap-6">
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 border ${activeIndex === index
+                                                ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
+                                                : "bg-white/5 border-white/10 text-[var(--color-creme)]"
+                                                }`}>
+                                                <HelpCircle strokeWidth={1.2} className="w-5 h-5" />
                                             </div>
-                                        </m.div>
-                                    )}
-                                </AnimatePresence>
-                            </m.div>
+                                            <span className="text-xl md:text-2xl font-medium text-white tracking-tight group-hover:text-[var(--color-silver-bh)] transition-colors">
+                                                {faq.question}
+                                            </span>
+                                        </div>
+                                        <div className="ml-4 transition-transform duration-500 min-w-[24px]">
+                                            {activeIndex === index ? (
+                                                <Minus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]" />
+                                            ) : (
+                                                <Plus strokeWidth={1.2} className="w-6 h-6 text-white/20 group-hover:text-white/60" />
+                                            )}
+                                        </div>
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {activeIndex === index && (
+                                            <m.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                            >
+                                                <div className="px-8 md:px-10 pb-10 md:pb-12 ml-18 md:ml-22">
+                                                    <p className="text-white/60 text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
+                                                        {faq.answer}
+                                                    </p>
+                                                </div>
+                                            </m.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            </PremiumReveal>
                         ))}
                     </div>
 

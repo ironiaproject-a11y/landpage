@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { Magnetic } from "./Magnetic";
+import { LuxuryCard } from "./LuxuryCard";
+import { PremiumReveal } from "./PremiumReveal";
 import { COMPANY_PHONE, COMPANY_EMAIL } from "@/config/constants";
 import { generateWhatsAppUrl } from "@/utils/whatsapp";
 import clsx from "clsx";
@@ -26,70 +28,8 @@ export function Contact() {
     }, []);
 
     useEffect(() => {
-        if (!mounted) return;
-
-        const ctx = gsap.context(() => {
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
-
-            if (titleLines.length > 0) {
-                gsap.fromTo(titleLines,
-                    { y: "110%", skewY: 7, opacity: 0 },
-                    {
-                        scrollTrigger: {
-                            trigger: titleRef.current,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
-                        y: 0,
-                        skewY: 0,
-                        opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
-                        ease: "power4.out"
-                    }
-                );
-            }
-
-            // Animate Contact Info Items
-            const infoItems = gsap.utils.toArray(".contact-info-item");
-            gsap.fromTo(infoItems,
-                { opacity: 0, x: -20 },
-                {
-                    scrollTrigger: {
-                        trigger: ".contact-info-item",
-                        start: "top 90%",
-                        toggleActions: "play none none reverse"
-                    },
-                    opacity: 1,
-                    x: 0,
-                    stagger: 0.15,
-                    duration: 1,
-                    ease: "power3.out"
-                }
-            );
-
-            // Animate Form Labels
-            const formLabels = gsap.utils.toArray(".form-label-reveal");
-            gsap.fromTo(formLabels,
-                { opacity: 0, x: -10 },
-                {
-                    scrollTrigger: {
-                        trigger: ".glass-panel",
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    opacity: 1,
-                    x: 0,
-                    stagger: 0.1,
-                    duration: 1,
-                    delay: 0.5,
-                    ease: "power2.out"
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, [mounted]);
+        setMounted(true);
+    }, []);
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="contato">
@@ -97,195 +37,139 @@ export function Contact() {
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
                     {/* Info Side */}
                     <div className="lg:w-1/3">
-                        <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.2em] uppercase text-xs mb-6 block"
-                        >
-                            Contato
-                        </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(32px,4vw,56px)] font-medium text-white mb-8 leading-[1.1] uppercase tracking-hero">
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner inline-block">Vamos planejar seu</span>
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                                Contato
                             </span>
-                            <span className="text-mask-reveal">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-light">novo sorriso?</span>
-                            </span>
+                        </PremiumReveal>
+
+                        <h2 className="font-display text-[clamp(32px,4vw,56px)] font-medium text-white mb-8 leading-[1.1] uppercase tracking-hero">
+                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                <span>Vamos planejar seu</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-gradient-silver italic font-light block mt-2">novo sorriso?</span>
+                            </PremiumReveal>
                         </h2>
-                        <m.p
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 0.8, y: 0 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-white font-medium leading-[1.6] mb-12 body-text-refined"
-                        >
-                            Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
-                        </m.p>
 
-                        <div className="space-y-8">
-                            <div className="flex items-start gap-4 group contact-info-item">
-                                <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
-                                        <Phone strokeWidth={1.2} className="w-5 h-5" />
-                                    </div>
-                                </Magnetic>
-                                <div>
-                                    <h4 className="text-white font-bold mb-1">Telefone</h4>
-                                    <a href={`tel:${COMPANY_PHONE.replace(/\D/g, '')}`} className="text-[var(--color-text-secondary)] hover:text-white transition-colors cursor-pointer">{COMPANY_PHONE}</a>
-                                    <p className="text-[var(--color-text-tertiary)] text-xs mt-1">Geral</p>
-                                </div>
-                            </div>
+                        <PremiumReveal direction="bottom" delay={0.4}>
+                            <p className="text-base text-white/70 font-light leading-[1.6] mb-12 body-text-refined">
+                                Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
+                            </p>
+                        </PremiumReveal>
 
-                            <div className="flex items-start gap-4 group contact-info-item">
-                                <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
-                                        <Mail strokeWidth={1.2} className="w-5 h-5" />
+                        <div className="space-y-6">
+                            {[
+                                { icon: Phone, title: "Telefone", value: COMPANY_PHONE, href: `tel:${COMPANY_PHONE.replace(/\D/g, '')}`, sub: "Atendimento Geral" },
+                                { icon: Mail, title: "Email", value: COMPANY_EMAIL, href: `mailto:${COMPANY_EMAIL}`, sub: "Retorno em 24h" },
+                                { icon: MapPin, title: "Endereço", value: "Centro, Pereira Barreto - SP", href: "#", sub: "Brasil" }
+                            ].map((item, i) => (
+                                <PremiumReveal key={i} direction="left" delay={0.5 + i * 0.1}>
+                                    <div className="flex items-center gap-5 group p-2">
+                                        <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[var(--color-silver-bh)] group-hover:bg-[var(--color-silver-bh)] group-hover:text-black transition-all duration-500">
+                                            <item.icon strokeWidth={1.5} className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
+                                            <a href={item.href} className="text-white hover:text-[var(--color-silver-bh)] transition-colors text-sm font-medium">{item.value}</a>
+                                        </div>
                                     </div>
-                                </Magnetic>
-                                <div>
-                                    <h4 className="text-white font-bold mb-1">Email</h4>
-                                    <a href={`mailto:${COMPANY_EMAIL}`} className="text-[var(--color-text-secondary)] hover:text-white transition-colors cursor-pointer">{COMPANY_EMAIL}</a>
-                                    <p className="text-[var(--color-text-tertiary)] text-xs mt-1">24h retorno</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-4 group contact-info-item">
-                                <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-creme)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-creme)] group-hover:text-black shadow-level-1">
-                                        <MapPin strokeWidth={1.2} className="w-5 h-5" />
-                                    </div>
-                                </Magnetic>
-                                <div>
-                                    <h4 className="text-white font-bold mb-1">Endereço</h4>
-                                    <p className="text-[var(--color-text-secondary)]">Centro, Pereira Barreto - SP</p>
-                                    <p className="text-[var(--color-text-secondary)]">Brasil</p>
-                                </div>
-                            </div>
+                                </PremiumReveal>
+                            ))}
                         </div>
                     </div>
 
-                    <m.div
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                        transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:w-2/3"
-                    >
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                if (formStatus !== "idle") return;
+                    <div className="lg:w-2/3">
+                        <LuxuryCard delay={0.2} interactive={false} innerClassName="p-10 md:p-14">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    if (formStatus !== "idle") return;
 
-                                setFormStatus("sending");
+                                    setFormStatus("sending");
 
-                                const form = e.target as HTMLFormElement;
-                                const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-                                const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
-                                const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-                                const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+                                    const form = e.target as HTMLFormElement;
+                                    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+                                    const phone = (form.elements.namedItem('phone') as HTMLInputElement).value;
+                                    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+                                    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
 
-                                const text = `*Nova Solicitação via Site*\n\n*Nome:* ${name}\n*Telefone:* ${phone}\n*Email:* ${email}\n*Mensagem:* ${message}`;
+                                    const text = `*Nova Solicitação via Site*\n\n*Nome:* ${name}\n*Telefone:* ${phone}\n*Email:* ${email}\n*Mensagem:* ${message}`;
 
-                                setTimeout(() => {
-                                    window.open(generateWhatsAppUrl(text), '_blank');
-                                    setFormStatus("sent");
-                                    form.reset();
-                                    setTimeout(() => setFormStatus("idle"), 5000);
-                                }, 1500);
-                            }}
-                            className="glass-panel rounded-organic-md p-10 md:p-16 relative overflow-hidden group/form"
-                        >
-                            {/* Lighting Blob Evolution */}
-                            <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] glow-blob-warm opacity-20 pointer-events-none transition-transform duration-1000 group-focus-within/form:scale-125" />
-                            <div className="absolute bottom-0 left-0 w-[30%] h-[30%] glow-blob opacity-10 pointer-events-none" />
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-                                <div className="space-y-4 group/input">
-                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Nome</label>
-                                    <input
-                                        name="name"
-                                        type="text"
-                                        required
-                                        placeholder="Seu nome completo"
-                                        className="w-full bg-white/[0.02] border border-white/10 rounded-organic-sm px-10 py-6 text-white placeholder:text-white/5 focus:outline-none focus:border-[var(--color-silver-bh)] focus:bg-white/[0.05] transition-all font-body text-base ring-0 focus:ring-4 focus:ring-[var(--color-silver-bh)]/5 shadow-inner"
-                                    />
-                                </div>
-                                <div className="space-y-4 group/input">
-                                    <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Telefone</label>
-                                    <input
-                                        name="phone"
-                                        type="tel"
-                                        required
-                                        placeholder="(11) 99999-9999"
-                                        className="w-full bg-white/[0.02] border border-white/10 rounded-organic-sm px-10 py-6 text-white placeholder:text-white/5 focus:outline-none focus:border-[var(--color-silver-bh)] focus:bg-white/[0.05] transition-all font-body text-base ring-0 focus:ring-4 focus:ring-[var(--color-silver-bh)]/5 shadow-inner"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-4 mb-12 group/input">
-                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Email</label>
-                                <input
-                                    name="email"
-                                    type="email"
-                                    required
-                                    placeholder="seu@email.com"
-                                    className="w-full bg-white/[0.02] border border-white/10 rounded-organic-sm px-10 py-6 text-white placeholder:text-white/5 focus:outline-none focus:border-[var(--color-silver-bh)] focus:bg-white/[0.05] transition-all font-body text-base ring-0 focus:ring-4 focus:ring-[var(--color-silver-bh)]/5 shadow-inner"
-                                />
-                            </div>
-
-                            <div className="space-y-4 mb-14 group/input">
-                                <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] ml-2 group-focus-within/input:text-[var(--color-silver-bh)] group-focus-within/input:translate-x-2 transition-all duration-500 block form-label-reveal">Mensagem</label>
-                                <textarea
-                                    name="message"
-                                    rows={5}
-                                    placeholder="Como podemos ajudar?"
-                                    className="w-full bg-white/[0.02] border border-white/10 rounded-organic-sm px-10 py-6 text-white placeholder:text-white/5 focus:outline-none focus:border-[var(--color-silver-bh)] focus:bg-white/[0.05] transition-all resize-none font-body text-base ring-0 focus:ring-4 focus:ring-[var(--color-silver-bh)]/5 shadow-inner"
-                                />
-                            </div>
-
-                            <m.button
-                                whileHover={formStatus === "idle" ? { scale: 1.02, y: -5 } : {}}
-                                whileTap={formStatus === "idle" ? { scale: 0.99 } : {}}
-                                transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                                data-cursor="magnetic"
-                                type="submit"
-                                disabled={formStatus !== "idle"}
-                                className={clsx(
-                                    "btn-luxury-primary w-full group flex items-center justify-center gap-4 overflow-hidden transition-all duration-500",
-                                    formStatus === "sent" && "bg-green-500/20 text-green-400 border-green-500/30"
-                                )}
+                                    setTimeout(() => {
+                                        window.open(generateWhatsAppUrl(text), '_blank');
+                                        setFormStatus("sent");
+                                        form.reset();
+                                        setTimeout(() => setFormStatus("idle"), 5000);
+                                    }, 1500);
+                                }}
+                                className="relative z-10 space-y-10"
                             >
-                                <AnimatePresence mode="wait">
-                                    <m.span
-                                        key={formStatus}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        className="relative z-10 flex items-center gap-4"
-                                    >
-                                        {formStatus === "idle" && (
-                                            <>
-                                                Enviar Mensagem
-                                                <Send strokeWidth={1.2} className="w-5 h-5 group-hover:translate-x-3 group-hover:-translate-y-3 transition-transform duration-700 ease-out" />
-                                            </>
-                                        )}
-                                        {formStatus === "sending" && "Processando..."}
-                                        {formStatus === "sent" && "Mensagem Enviada com Sucesso!"}
-                                    </m.span>
-                                </AnimatePresence>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Nome</label>
+                                        <input
+                                            name="name"
+                                            type="text"
+                                            required
+                                            placeholder="Seu nome"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all font-body text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">WhatsApp</label>
+                                        <input
+                                            name="phone"
+                                            type="tel"
+                                            required
+                                            placeholder="(00) 0 0000-0000"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all font-body text-sm"
+                                        />
+                                    </div>
+                                </div>
 
-                                {formStatus === "idle" && (
-                                    <m.div
-                                        className="absolute inset-0 bg-white/10 translate-x-[-100%]"
-                                        whileHover={{ translateX: "100%" }}
-                                        transition={{ duration: 1, ease: "easeInOut" }}
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Email</label>
+                                    <input
+                                        name="email"
+                                        type="email"
+                                        required
+                                        placeholder="seu@email.com"
+                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all font-body text-sm"
                                     />
-                                )}
-                            </m.button>
-                        </form>
-                    </m.div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
+                                    <textarea
+                                        name="message"
+                                        rows={4}
+                                        placeholder="Descreva brevemente seu objetivo..."
+                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all resize-none font-body text-sm"
+                                    />
+                                </div>
+
+                                <m.button
+                                    whileHover={formStatus === "idle" ? { y: -2 } : {}}
+                                    whileTap={formStatus === "idle" ? { scale: 0.98 } : {}}
+                                    disabled={formStatus !== "idle"}
+                                    type="submit"
+                                    className={clsx(
+                                        "w-full py-6 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-500",
+                                        formStatus === "idle" ? "bg-white text-black hover:bg-[var(--color-silver-bh)]" : "bg-white/10 text-white/40 cursor-wait"
+                                    )}
+                                >
+                                    <AnimatePresence mode="wait">
+                                        <m.span key={formStatus} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                                            {formStatus === "idle" && "Solicitar Agendamento de Luxo"}
+                                            {formStatus === "sending" && "Enviando Requisição..."}
+                                            {formStatus === "sent" && "Solicitação Confirmada"}
+                                        </m.span>
+                                    </AnimatePresence>
+                                </m.button>
+                            </form>
+                        </LuxuryCard>
+                    </div>
                 </div>
             </div>
 
