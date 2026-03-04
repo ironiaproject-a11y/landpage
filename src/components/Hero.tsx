@@ -373,34 +373,9 @@ export function Hero() {
                 // Reset frame proxy
                 frameProxy.current.frame = 0;
 
-                // Intro Timeline
-                const introTl = gsap.timeline({
-                    onComplete: () => setIntroFinished(true)
-                });
-
-                introTl.to(frameProxy.current, {
-                    frame: TOTAL_FRAMES - 1,
-                    duration: isMobile ? 4.5 : 5.0,
-                    ease: "power3.inOut",
-                    onUpdate() {
-                        introRef.current?.draw(frameProxy.current.frame);
-                        smoothedProgress.current = frameProxy.current.frame;
-                        targetProgress.current = frameProxy.current.frame;
-                        checkReveal(frameProxy.current.frame);
-                    },
-                    onComplete: () => {
-                        setIntroFinished(true);
-                        ScrollTrigger.refresh();
-                    }
-                });
-
                 // Coordinated reveal triggered during intro
                 const revealThreshold = TOTAL_FRAMES * (isMobile ? 0.35 : 0.85);
                 let revealed = false;
-
-                const eyebrowRef = { current: null as any };
-                const line1Ref = { current: null as any };
-                const line2Ref = { current: null as any };
 
                 const checkReveal = (currentFrame: number) => {
                     if (!revealed && currentFrame >= revealThreshold) {
@@ -431,6 +406,27 @@ export function Hero() {
                             );
                     }
                 };
+
+                // Intro Timeline
+                const introTl = gsap.timeline({
+                    onComplete: () => setIntroFinished(true)
+                });
+
+                introTl.to(frameProxy.current, {
+                    frame: TOTAL_FRAMES - 1,
+                    duration: isMobile ? 4.5 : 5.0,
+                    ease: "power3.inOut",
+                    onUpdate() {
+                        introRef.current?.draw(frameProxy.current.frame);
+                        smoothedProgress.current = frameProxy.current.frame;
+                        targetProgress.current = frameProxy.current.frame;
+                        checkReveal(frameProxy.current.frame);
+                    },
+                    onComplete: () => {
+                        setIntroFinished(true);
+                        ScrollTrigger.refresh();
+                    }
+                });
 
                 // Sync with rotation and depth (Aggressively smaller for "background" feel)
                 gsap.to(videoWrapperRef.current, {
@@ -483,6 +479,10 @@ export function Hero() {
                     // Cleanup handled by ctx.revert()
                 };
             });
+
+            // Shared constants (re-declared for ticker scope)
+            const startFrame = 0;
+            const endFrame = TOTAL_FRAMES - 1;
 
             // Ticker for smooth LERPing
             const tickerRender = () => {
