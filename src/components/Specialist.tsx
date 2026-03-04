@@ -212,7 +212,7 @@ export function Specialist() {
                 style={{ opacity: 0 }}
             />
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-20">
+                <div className="flex flex-col lg:flex-row items-start gap-20">
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
                         <PremiumReveal type="fade" direction="top" duration={1}>

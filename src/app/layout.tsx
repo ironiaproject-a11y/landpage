@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { Preloader } from "@/components/Preloader";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { ClientSideExtras } from "@/components/ClientSideExtras";
@@ -88,6 +89,7 @@ export default function RootLayout({
       <body className="antialiased">
         <SmoothScroll>
           <MotionProvider>
+            <Preloader />
             <ScrollProgress />
             <ClientSideExtras />
             <Navbar />
