@@ -133,7 +133,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `translateZ(0)`, // Removed scale(0.85) for absolute viewport fill
+                    transform: `scale(${isMobile ? 0.85 : 0.9}) translateZ(0)`,
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
