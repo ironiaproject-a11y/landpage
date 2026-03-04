@@ -9,8 +9,17 @@ export function Navbar() {
     const [isHidden, setIsHidden] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const [activeSection, setActiveSection] = useState("");
     const { scrollY } = useScroll();
+
+    useEffect(() => {
+        const handleReveal = () => setIsVisible(true);
+        window.addEventListener("preloader-exiting", handleReveal);
+        // Fallback for cases where preloader might already be gone
+        if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
+        return () => window.removeEventListener("preloader-exiting", handleReveal);
+    }, []);
 
     // Scroll lock for mobile menu
     useEffect(() => {
@@ -70,7 +79,7 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-20 pb-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-20 pb-8 bg-transparent"
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">

@@ -9,9 +9,17 @@ export function Cursor() {
     const [isMagnetic, setIsMagnetic] = useState(false);
     const [isTextHovered, setIsTextHovered] = useState(false);
     const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+    const [isVisible, setIsVisible] = useState(false);
 
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
+
+    useEffect(() => {
+        const handleReveal = () => setIsVisible(true);
+        window.addEventListener("preloader-finished", handleReveal);
+        if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
+        return () => window.removeEventListener("preloader-finished", handleReveal);
+    }, []);
 
     // Enhanced spring configs for smoother magnetic effect
     const magneticSpringConfig = { damping: 20, stiffness: 200 };
@@ -98,7 +106,7 @@ export function Cursor() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    if (isMobile) return null;
+    if (isMobile || !isVisible) return null;
 
     return (
         <>

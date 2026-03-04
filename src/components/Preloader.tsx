@@ -7,6 +7,7 @@ export function Preloader() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        (window as any).__PRELOADER_ACTIVE__ = true;
         let minTimeElapsed = false;
         let assetsLoaded = (window as any).__HERO_ASSETS_LOADED__ || false;
 
@@ -14,13 +15,18 @@ export function Preloader() {
             if (minTimeElapsed && assetsLoaded) {
                 window.dispatchEvent(new CustomEvent("preloader-exiting"));
                 setIsLoading(false);
+                // Dispatch finished after transition duration (1.4s)
+                setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent("preloader-finished"));
+                    (window as any).__PRELOADER_ACTIVE__ = false;
+                }, 1400);
             }
         };
 
         const timer = setTimeout(() => {
             minTimeElapsed = true;
             checkExit();
-        }, 1800); // Shorter minimum wait for perceived speed
+        }, 2200); // 2.2s for a more premium presence
 
         const handleAssetsLoaded = () => {
             assetsLoaded = true;
@@ -29,17 +35,18 @@ export function Preloader() {
 
         window.addEventListener("hero-assets-loaded", handleAssetsLoaded);
 
-        // Failsafe timeout to force loading finish after 5 seconds
+        // Failsafe timeout to force loading finish after 6 seconds
         const safetyTimer = setTimeout(() => {
             assetsLoaded = true;
             minTimeElapsed = true;
             checkExit();
-        }, 5000);
+        }, 6000);
 
         return () => {
             clearTimeout(timer);
             clearTimeout(safetyTimer);
             window.removeEventListener("hero-assets-loaded", handleAssetsLoaded);
+            (window as any).__PRELOADER_ACTIVE__ = false;
         };
     }, []);
 

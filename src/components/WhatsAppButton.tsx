@@ -11,16 +11,24 @@ export function WhatsAppButton() {
     const whatsappUrl = generateWhatsAppUrl(DEFAULT_MESSAGE);
     const [isHovered, setIsHovered] = useState(false);
     const [showProactive, setShowProactive] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        const handleReveal = () => setIsVisible(true);
+        window.addEventListener("preloader-exiting", handleReveal);
+        if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
+
         const timer = setTimeout(() => {
             setShowProactive(true);
-        }, 5000);
-        return () => clearTimeout(timer);
+        }, 8000); // Wait longer after reveal
+        return () => {
+            window.removeEventListener("preloader-exiting", handleReveal);
+            clearTimeout(timer);
+        };
     }, []);
 
     return (
-        <div className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[100]">
+        <div className={`fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[100] transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"}`}>
             <Magnetic strength={isHovered ? 0.4 : 0.1} range={100}>
                 <m.a
                     href={whatsappUrl}

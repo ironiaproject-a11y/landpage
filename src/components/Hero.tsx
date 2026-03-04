@@ -36,6 +36,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     if (loadedCount === 1) { // Redraw first frame immediately
                         framesRef.current = imageElements;
                         (ref as any)?.current?.draw(0);
+                        // Notify that critical assets are ready for preloader exit
+                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
                     }
                     if (loadedCount >= targetFrames) {
                         framesRef.current = imageElements;
