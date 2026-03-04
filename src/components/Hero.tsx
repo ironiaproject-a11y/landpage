@@ -159,12 +159,12 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 ref={canvasRef}
                 className={`w-full h-full object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                 style={{
-                    filter: isMobile ? 'brightness(0.65) contrast(1.1)' : 'brightness(0.72)',
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
                     transform: `scale(${isMobile ? 0.8 : 0.85}) translateZ(0)`,
-                    backfaceVisibility: 'hidden'
+                    backfaceVisibility: 'hidden',
+                    mixBlendMode: 'screen' // Black becomes 100% transparent, only highlights are "added"
                 }}
             />
         </div>
@@ -530,7 +530,7 @@ export function Hero() {
                         }}
                     />
 
-                    {/* Radial Mask Container for "Bleeding" Video Edges - More aggressive for 0.85x scale to hide edges */}
+                    {/* Radial Mask Container for "Bleeding" Video Edges - Tighter falloff for absolute invisibility */}
                     <div
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
