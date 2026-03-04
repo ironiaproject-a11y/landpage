@@ -138,11 +138,13 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `translateZ(0)`, // CSS scale removed to keep canvas flush with background
+                    transform: `scale(${isMobile ? 0.94 : 0.96}) translateZ(0)`, // Cinematic scaling per spec
+                    filter: `brightness(${isMobile ? 0.78 : 0.82}) contrast(0.95) saturate(0.92)`, // Cinematic filters per spec
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
-                    opacity: loaded ? 1 : 0
+                    opacity: loaded ? 1 : 0,
+                    transition: 'transform 0.45s ease, filter 0.45s ease'
                 }}
             />
         </div>
@@ -533,11 +535,13 @@ export function Hero() {
                     style={{ padding: '0 5vw' }}
                 >
                     {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
+                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Technical Spec 4-stop) */}
                     <div
-                        className="absolute inset-0 z-0 pointer-events-none"
+                        className="absolute inset-0 z-[1] pointer-events-none"
                         style={{
-                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.9) 100%)',
-                            opacity: 0.8 // Fine-tuned for atmospheric depth
+                            background: isMobile
+                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.88) 28%, rgba(0,0,0,0.98) 60%)'
+                                : 'radial-gradient(circle at 50% 42%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.80) 25%, rgba(0,0,0,0.92) 60%, rgba(0,0,0,0.98) 100%)',
                         }}
                     />
 
@@ -559,7 +563,12 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[clamp(2.2rem,7vw,5.8rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.1] mb-8 text-shadow-luxury transform -translate-y-[15px] !opacity-100"
+                            className="font-display text-[clamp(1.75rem,7vw,5.8rem)] text-[#FBFBF9] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100"
+                            style={{
+                                textShadow: '0 4px 18px rgba(0,0,0,0.45)', // Editorial spec
+                                fontSize: isMobile ? '28px' : undefined,
+                                letterSpacing: isMobile ? '0.04em' : '0.05em'
+                            }}
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -583,13 +592,21 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-16 w-full max-w-[650px] transform translate-y-[0px]">
+                        <div className="overflow-hidden w-full transform translate-y-[0px]" style={{ marginBottom: '28px' }}>
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={(mounted && canStartSequence) ? { opacity: 0.9, y: 0 } : { opacity: 0, y: 20 }}
+                                animate={(mounted && canStartSequence) ? { opacity: 0.95, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: isMobile ? 1.2 : 5.2, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-[15px] lg:text-[17px] font-medium tracking-[0.02em] text-center text-white/95 leading-[1.65] body-text-refined px-4 text-balance"
+                                className="font-semibold tracking-[0.02em] text-center text-white leading-[1.65] body-text-refined px-4 text-balance"
+                                style={{
+                                    fontSize: isMobile ? '15px' : '17px',
+                                    fontWeight: 600,
+                                    opacity: 0.95,
+                                    maxWidth: isMobile ? '320px' : '720px',
+                                    margin: '18px auto 0px',
+                                    textShadow: '0 2px 10px rgba(0,0,0,0.32)'
+                                }}
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
@@ -603,9 +620,9 @@ export function Hero() {
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
                                     transition={{ delay: isMobile ? 0.6 : 5.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.25)" } : {}}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.28)" } : {}}
                                     whileTap={{ scale: 0.95 }}
-                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto' }}
+                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', transform: 'translateZ(0)' }}
                                     className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                                 >
                                     {/* Shimmer Effect */}
@@ -630,12 +647,24 @@ export function Hero() {
                                 <m.button
                                     onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
                                     initial={{ opacity: 0, y: 10 }}
-                                    animate={(canStartSequence) ? { opacity: 0.85, y: 0 } : { opacity: 0, y: 10 }}
+                                    animate={(canStartSequence) ? { opacity: 0.92, y: 0 } : { opacity: 0, y: 10 }}
                                     transition={{ delay: isMobile ? 0.9 : 4.7, duration: 1.5 }}
                                     whileHover={!isMobile ? { y: -3, scale: 1.01, opacity: 1 } : {}}
                                     whileTap={{ scale: 0.98 }}
-                                    style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)', padding: '16px 32px', minHeight: isMobile ? 56 : 52, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 420 : 'none' }}
-                                    className="group flex items-center justify-center gap-3 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
+                                    style={{
+                                        WebkitTapHighlightColor: 'transparent',
+                                        touchAction: 'manipulation',
+                                        background: 'rgba(11,11,11,0.28)', // Refined secondary CTA
+                                        border: '1px solid rgba(255,255,255,0.06)',
+                                        color: 'rgba(255,255,255,0.92)',
+                                        padding: '18px 36px',
+                                        minHeight: isMobile ? 56 : 52,
+                                        fontSize: isMobile ? 16 : 18,
+                                        width: isMobile ? '100%' : 'auto',
+                                        maxWidth: isMobile ? 420 : 'none',
+                                        backdropFilter: 'blur(6px)'
+                                    }}
+                                    className="group bg-gallery flex items-center justify-center gap-3 rounded-full transition-all hover:bg-white/10 hover:border-white/30 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#C7A86B]/40 focus-visible:outline-offset-[3px]"
                                 >
                                     <span className="tracking-[0.08em] font-semibold uppercase" style={{ fontSize: 'inherit' }}>Galeria de Resultados</span>
                                 </m.button>
