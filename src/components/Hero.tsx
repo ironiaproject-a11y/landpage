@@ -125,8 +125,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Define the internal scale factor (slightly reduced for better balance)
-            const DRAW_SCALE = isMobile ? 0.90 : 0.85;
+            // Aggressively reduced scale to push the dente into the deep background
+            const DRAW_SCALE = isMobile ? 0.70 : 0.60;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
@@ -417,10 +417,10 @@ export function Hero() {
                     }
                 };
 
-                // Sync with rotation and depth (Prevents "opening sides" by scaling while rotating)
+                // Sync with rotation and depth (Aggressively smaller for "background" feel)
                 gsap.to(videoWrapperRef.current, {
-                    rotation: isMobile ? 0 : 5, // Avoid "crooked" look on mobile
-                    scale: isMobile ? 0.95 : 1.05, // Scaled down slightly for better balance
+                    rotation: isMobile ? 0 : 5,
+                    scale: isMobile ? 0.80 : 0.90,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -559,7 +559,7 @@ export function Hero() {
                         className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
                             background: 'radial-gradient(circle, rgba(255, 245, 220, 0.12) 0%, transparent 70%)',
-                            opacity: 0.12
+                            opacity: 0.08
                         }}
                     />
 
@@ -568,11 +568,11 @@ export function Hero() {
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
                             maskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 25%, transparent 75%)'
-                                : 'radial-gradient(circle at center, black 12%, transparent 62%)',
+                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
+                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
                             WebkitMaskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 25%, transparent 75%)'
-                                : 'radial-gradient(circle at center, black 12%, transparent 62%)'
+                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
+                                : 'radial-gradient(circle at center, black 10%, transparent 55%)'
                         }}
                     >
                         {/* Frame sequence — always visible, driven by intro then scroll */}
