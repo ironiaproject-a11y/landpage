@@ -490,45 +490,58 @@ export function Hero() {
 
                 const diff = targetProgress.current - smoothedProgress.current;
 
-                // Optimized LERP for maximum fluidity
                 if (Math.abs(diff) < 0.001) {
                     smoothedProgress.current = targetProgress.current;
                     isAnimating.current = false;
                     return;
                 }
 
-                const lerpFactor = isMobile ? 0.08 : 0.12; // Adjusted for buttery response to smooth scroll
+                const lerpFactor = isMobile ? 0.08 : 0.12;
                 smoothedProgress.current += diff * lerpFactor;
 
+                // Scroll Cinemático: Dissolve Atmosférico (Tracking + Scale + Fade)
+                // Usando ScrollTrigger progress (self.progress salvo no proxy)
+                const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
+
                 if (titleRef.current) {
-                    gsap.set(titleRef.current, {
-                        letterSpacing: `${frameProxy.current.letterSpacing}px`,
-                        y: frameProxy.current.textY,
-                        opacity: Math.max(0, frameProxy.current.opacity)
+                    const tracking = scrollProgress * 15; // Expansão elegante
+                    const scale = 1 + scrollProgress * 0.1; // "Câmera atravessando o texto"
+                    const opacity = Math.max(0, 1 - Math.pow(scrollProgress, 1.2) * 2);
+
+                    // Aplica na Primeira Linha
+                    gsap.set(".hero-title-line-1", {
+                        letterSpacing: `${tracking}px`,
+                        scale: scale,
+                        opacity: opacity,
+                        y: -(scrollProgress * 20) // Movimento vertical mínimo para não 'bater'
+                    });
+
+                    // Aplica na Segunda Linha (com leve atraso/parallax no dissolve)
+                    gsap.set(".hero-title-line-2", {
+                        letterSpacing: `${tracking * 0.8}px`,
+                        scale: 1 + scrollProgress * 0.08,
+                        opacity: Math.max(0, 1 - Math.pow(scrollProgress, 0.8) * 1.5),
+                        y: -(scrollProgress * 40)
                     });
                 }
-                if (descriptionRef.current) {
-                    gsap.set(descriptionRef.current, {
-                        y: frameProxy.current.textY * 0.8, // Subtle parallax difference
-                        opacity: Math.max(0, frameProxy.current.opacity)
-                    });
-                }
-                if (actionsRef.current) {
-                    gsap.set(actionsRef.current, {
-                        opacity: Math.max(0, frameProxy.current.opacity)
+
+                if (descriptionRef.current || actionsRef.current) {
+                    const contentOpacity = Math.max(0, 1 - scrollProgress * 3);
+                    gsap.set([descriptionRef.current, actionsRef.current], {
+                        opacity: contentOpacity,
+                        y: -(scrollProgress * 60)
                     });
                 }
 
                 if (backlightRef.current) {
                     gsap.set(backlightRef.current, {
-                        scale: frameProxy.current.glowScale,
-                        opacity: frameProxy.current.glowOpacity,
-                        y: frameProxy.current.textY * 0.5 // Slower parallax for depth
+                        scale: 1 + scrollProgress * 0.5,
+                        opacity: 0.08 * (1 - scrollProgress),
+                        y: -(scrollProgress * 100)
                     });
                 }
 
                 if (introRef.current) {
-                    // Always draw with current proxy state
                     introRef.current.draw(smoothedProgress.current);
                 }
 
