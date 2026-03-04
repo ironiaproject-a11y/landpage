@@ -260,9 +260,9 @@ export function Specialist() {
                                     className="border-white/5"
                                     innerClassName="p-8 md:p-10"
                                 >
-                                    <div className="relative overflow-hidden h-full">
+                                    <div className="relative">
                                         <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-silver-bh)]/10" />
-                                        <p className="font-editorial text-xl md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10">
+                                        <p className="font-editorial text-lg md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">
@@ -284,7 +284,7 @@ export function Specialist() {
                                         alt="Dr. Ricardo Alessandro"
                                         width={800}
                                         height={1000}
-                                        className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
