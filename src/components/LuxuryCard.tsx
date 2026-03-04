@@ -52,7 +52,7 @@ export function LuxuryCard({
                 />
             )}
 
-            <div className={cn("relative z-10 w-full h-full", !innerClassName && "p-8 md:p-10", innerClassName)}>
+            <div className={cn("relative z-10 w-full", !innerClassName && "p-8 md:p-10", innerClassName)}>
                 {children}
             </div>
         </m.div>
