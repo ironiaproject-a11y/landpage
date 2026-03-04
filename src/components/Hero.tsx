@@ -654,20 +654,20 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(2.5rem,9vw,6.5rem)] will-change-transform leading-[0.95] mb-10 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(2rem,7.5vw,5.5rem)] will-change-transform leading-[0.98] mb-12 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
                             style={{
-                                textShadow: '0 15px 50px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.4)',
-                                fontSize: isMobile ? 'clamp(2.8rem, 12vw, 4rem)' : undefined,
+                                textShadow: '0 12px 35px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.3)',
+                                fontSize: isMobile ? 'clamp(2.4rem, 10vw, 3.2rem)' : undefined,
                                 background: 'linear-gradient(to bottom, #FFFFFF 0%, #E5E7EB 50%, #D1D5DB 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 transition: 'none'
                             }}
                         >
-                            {/* Staggered Composition */}
-                            <span className="block font-black uppercase tracking-tight sm:mr-[15%]">Seu Sorriso,</span>
+                            {/* Staggered Composition - Reduced Displacement for "Clean" look */}
+                            <span className="block font-black uppercase tracking-tight sm:mr-[10%]">Seu Sorriso,</span>
                             <span
-                                className="block font-light italic lowercase tracking-[-0.02em] sm:ml-[15%] sm:-mt-4 opacity-90"
+                                className="block font-light italic lowercase tracking-[-0.01em] sm:ml-[10%] sm:-mt-2 opacity-80"
                                 style={{
                                     fontFamily: 'var(--font-editorial)',
                                     backgroundImage: 'linear-gradient(to bottom, #FAF9F7, #CBD5E1)',
