@@ -503,8 +503,8 @@ export function Hero() {
                         ref={backlightRef}
                         className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
-                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.08) 0%, transparent 65%)',
-                            opacity: 0.08
+                            background: 'radial-gradient(circle, rgba(255, 245, 220, 0.07) 0%, transparent 65%)', // Reduced intensity by subtle amount
+                            opacity: 0.07
                         }}
                     />
 
@@ -532,8 +532,14 @@ export function Hero() {
                     className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center text-center pointer-events-none"
                     style={{ padding: '0 5vw' }}
                 >
-                    {/* Subtle Radial Black Gradient for Legibility - Zero Purple Policy */}
-                    <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.15)_0%,transparent_70%)]" />
+                    {/* Strategic Editorial Overlay - Contrast for Headline Dominance (Awwwards Style) */}
+                    <div
+                        className="absolute inset-0 z-0 pointer-events-none"
+                        style={{
+                            background: 'radial-gradient(circle at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.9) 100%)',
+                            opacity: 0.8 // Fine-tuned for atmospheric depth
+                        }}
+                    />
 
                     <div className="max-w-[95vw] lg:max-w-[1100px] perspective-1000 w-full flex flex-col items-center relative z-10">
                         {/* Branded Atmospheric Overlay */}
@@ -553,7 +559,7 @@ export function Hero() {
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className="font-display text-[clamp(2.2rem,7vw,5.8rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.12em] uppercase leading-[1.1] mb-6 text-shadow-luxury transform -translate-y-[15px]"
+                            className="font-display text-[clamp(2.2rem,7vw,5.8rem)] text-[var(--color-creme)] will-change-transform font-medium tracking-[0.05em] uppercase leading-[1.1] mb-8 text-shadow-luxury transform -translate-y-[15px] !opacity-100"
                         >
                             <span className="text-mask-reveal">
                                 <m.span
@@ -577,13 +583,13 @@ export function Hero() {
                             </span>
                         </m.h1>
 
-                        <div className="overflow-hidden mb-16 w-full max-w-[600px] transform translate-y-[5px]">
+                        <div className="overflow-hidden mb-16 w-full max-w-[650px] transform translate-y-[0px]">
                             <m.p
                                 ref={descriptionRef}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={(mounted && canStartSequence) ? { opacity: 0.7, y: 0 } : { opacity: 0, y: 20 }}
+                                animate={(mounted && canStartSequence) ? { opacity: 0.9, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: isMobile ? 1.2 : 5.2, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-[15px] lg:text-[16px] font-normal tracking-[0.05em] text-center text-white/80 leading-[1.8] body-text-refined px-4 text-balance"
+                                className="text-[15px] lg:text-[17px] font-medium tracking-[0.02em] text-center text-white/95 leading-[1.65] body-text-refined px-4 text-balance"
                             >
                                 A harmonia perfeita entre ciência avançada e estética de <span className="font-semibold font-display uppercase tracking-widest text-[var(--color-silver-bh)]">alta costura</span>.
                             </m.p>
@@ -597,7 +603,7 @@ export function Hero() {
                                     initial={{ opacity: 0, scale: 0.96, y: 10 }}
                                     animate={(mounted && canStartSequence) ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
                                     transition={{ delay: isMobile ? 0.6 : 5.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.6)" } : {}}
+                                    whileHover={!isMobile ? { y: -5, scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.25)" } : {}}
                                     whileTap={{ scale: 0.95 }}
                                     style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation', padding: '18px 42px', minHeight: isMobile ? 60 : 56, fontSize: isMobile ? 16 : 18, width: isMobile ? '100%' : 'auto' }}
                                     className="group relative flex items-center justify-center gap-3 bg-[var(--color-creme)] text-black rounded-full font-black shadow-2xl overflow-hidden border border-transparent hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
