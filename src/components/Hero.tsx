@@ -530,48 +530,14 @@ export function Hero() {
                         }}
                     />
 
-                    {/* Radial Mask Container for "Bleeding" Video Edges - Optimized for smaller scale */}
+                    {/* Radial Mask Container for "Bleeding" Video Edges - More aggressive for 0.85x scale to hide edges */}
                     <div
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
-                            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)',
-                            WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
+                            maskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)',
+                            WebkitMaskImage: 'radial-gradient(circle at center, black 15%, transparent 65%)'
                         }}
                     >
-                        {/* Radial Vignette Overlay (Simplified for Atmospheric feel) */}
-                        <div
-                            className="absolute inset-0 z-[12] pointer-events-none transition-opacity duration-1500 hidden lg:block"
-                            style={{
-                                background: 'radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%)'
-                            }}
-                        />
-
-                        {/* Dark Base Overlay for contrast */}
-                        <div
-                            className="absolute inset-0 z-[9] pointer-events-none hidden lg:block"
-                            style={{ background: 'rgba(0,0,0,0.40)' }}
-                        />
-
-                        {/* Refined Cinematic Overlay Gradient */}
-                        <div
-                            className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1500 hidden lg:block"
-                            style={{
-                                background: 'linear-gradient(90deg, rgba(11,11,11,0.52) 0%, rgba(11,11,11,0.30) 55%, rgba(11,11,11,0.18) 100%)'
-                            }}
-                        />
-
-                        {/* Dark Overlay (Animated on Scroll) */}
-                        <div
-                            ref={overlayDarkRef}
-                            className="overlay-dark absolute inset-0 z-[11] bg-black/0 pointer-events-none hidden lg:block"
-                            style={{ opacity: 0 }}
-                        />
-
-                        {/* Bottom Cinematic Fade Transition */}
-                        <div className="bottom-cinematic-fade absolute bottom-0 left-0 w-full h-1/3 z-[12] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-0 hidden lg:block" />
-
-                        <div className="absolute inset-0 z-[10] bg-black/5 pointer-events-none lg:hidden" />
-
                         {/* Frame sequence — always visible, driven by intro then scroll */}
                         <IntroSequence
                             ref={introRef}
