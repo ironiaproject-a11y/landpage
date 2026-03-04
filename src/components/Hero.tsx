@@ -639,24 +639,44 @@ export function Hero() {
                             </span>
                         </m.div>
 
+                        {/* Brand Eyebrow - The Anchor */}
+                        <m.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={(mounted && canStartSequence) ? { opacity: 0.6, y: 0 } : { opacity: 0, y: 10 }}
+                            transition={{ delay: 0.8, duration: 1.5, ease: "power2.out" }}
+                            className="mb-8"
+                        >
+                            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.5em] text-white/80 uppercase">Estética de Alta Performance</span>
+                        </m.div>
+
                         <m.h1
                             ref={titleRef}
                             initial={{ opacity: 0 }}
                             animate={(mounted && canStartSequence) ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(1.75rem,7vw,5.8rem)] will-change-transform font-bold uppercase leading-[1.02] mb-6 transform -translate-y-[15px] !opacity-100 flex flex-col items-center`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-display text-[clamp(2.5rem,9vw,6.5rem)] will-change-transform leading-[0.95] mb-10 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
                             style={{
-                                textShadow: '0 10px 40px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5)',
-                                fontSize: isMobile ? 'clamp(2.1rem, 10vw, 3.5rem)' : undefined,
+                                textShadow: '0 15px 50px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.4)',
+                                fontSize: isMobile ? 'clamp(2.8rem, 12vw, 4rem)' : undefined,
                                 background: 'linear-gradient(to bottom, #FFFFFF 0%, #E5E7EB 50%, #D1D5DB 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
-                                // Reveal timing is now handled by checkReveal function
                                 transition: 'none'
                             }}
                         >
-                            <span>Seu Sorriso,</span>
-                            <span className="font-light">sua assinatura</span>
+                            {/* Staggered Composition */}
+                            <span className="block font-black uppercase tracking-tight sm:mr-[15%]">Seu Sorriso,</span>
+                            <span
+                                className="block font-light italic lowercase tracking-[-0.02em] sm:ml-[15%] sm:-mt-4 opacity-90"
+                                style={{
+                                    fontFamily: 'var(--font-editorial)',
+                                    backgroundImage: 'linear-gradient(to bottom, #FAF9F7, #CBD5E1)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}
+                            >
+                                sua assinatura
+                            </span>
                         </m.h1>
 
                         <div className="overflow-hidden w-full transform" style={{ marginBottom: '28px' }}>
