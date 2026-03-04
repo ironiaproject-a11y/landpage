@@ -125,8 +125,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Define the internal scale factor (e.g., 1.05 of viewport to prevent gaps)
-            const DRAW_SCALE = isMobile ? 1.05 : 0.95;
+            // Define the internal scale factor (slightly reduced for better balance)
+            const DRAW_SCALE = isMobile ? 0.90 : 0.85;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
@@ -420,7 +420,7 @@ export function Hero() {
                 // Sync with rotation and depth (Prevents "opening sides" by scaling while rotating)
                 gsap.to(videoWrapperRef.current, {
                     rotation: isMobile ? 0 : 5, // Avoid "crooked" look on mobile
-                    scale: isMobile ? 1.0 : 1.15, // Scale up on desktop to cover rotation gaps
+                    scale: isMobile ? 0.95 : 1.05, // Scaled down slightly for better balance
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -568,11 +568,11 @@ export function Hero() {
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
                             maskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 28%, transparent 78%)'
-                                : 'radial-gradient(circle at center, black 15%, transparent 65%)',
+                                ? 'radial-gradient(circle at center, black 25%, transparent 75%)'
+                                : 'radial-gradient(circle at center, black 12%, transparent 62%)',
                             WebkitMaskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 28%, transparent 78%)'
-                                : 'radial-gradient(circle at center, black 15%, transparent 65%)'
+                                ? 'radial-gradient(circle at center, black 25%, transparent 75%)'
+                                : 'radial-gradient(circle at center, black 12%, transparent 62%)'
                         }}
                     >
                         {/* Frame sequence — always visible, driven by intro then scroll */}
