@@ -65,13 +65,13 @@ export function PremiumReveal({
     };
 
     return (
-        <div className={cn("relative overflow-hidden", className)}>
+        <div className={cn("relative overflow-hidden will-change-[clip-path,opacity]", className)}>
             <m.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once, margin: "-10%" }}
                 variants={variants}
-                className={cn("w-full h-full", innerClassName)}
+                className={cn("w-full h-full will-change-transform", innerClassName)}
             >
                 {children}
             </m.div>

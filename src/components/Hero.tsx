@@ -139,7 +139,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     height: '100% !important',
                     objectFit: 'cover',
                     transform: `scale(${isMobile ? 1.0 : 0.98}) translateZ(0)`, // Removed mobile reduction to prevent gaps
-                    filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
+                    willChange: 'transform, opacity, filter',
+                    transformStyle: 'preserve-3d', filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
@@ -444,10 +445,15 @@ export function Hero() {
                 if (!isAnimating.current || !sectionMounted.current) return;
 
                 const diff = targetProgress.current - smoothedProgress.current;
-                // Higher precision for the last 1% to prevent lock-up
-                const isNearEnd = Math.abs(diff) < 2;
-                const lerpFactor = isNearEnd ? 0.15 : (window.innerWidth < 768 ? 0.05 : 0.07);
 
+                // Optimized LERP for maximum fluidity
+                if (Math.abs(diff) < 0.001) {
+                    smoothedProgress.current = targetProgress.current;
+                    isAnimating.current = false;
+                    return;
+                }
+
+                const lerpFactor = isMobile ? 0.08 : 0.1; // Increased for snappier feel
                 smoothedProgress.current += diff * lerpFactor;
 
                 if (titleRef.current) {
