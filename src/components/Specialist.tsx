@@ -204,7 +204,7 @@ export function Specialist() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-16 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
             {/* Background overlay for blur effect */}
             <div
                 ref={backgroundRef}
@@ -262,7 +262,7 @@ export function Specialist() {
                                 >
                                     <div className="relative">
                                         <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-silver-bh)]/10" />
-                                        <p className="font-editorial text-lg md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10">
+                                        <p className="font-editorial text-lg md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-light relative z-10">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">
@@ -289,7 +289,7 @@ export function Specialist() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
                                     <div className="absolute top-8 right-8 glass-panel p-4 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
-                                        <p className="text-[var(--color-silver-bh)] font-display text-3xl md:text-4xl font-bold tracking-tight">15</p>
+                                        <p className="text-[var(--color-silver-bh)] font-display text-3xl md:text-4xl font-medium tracking-tight">15</p>
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 

@@ -68,7 +68,7 @@ export function CTA() {
     }, [mounted]);
 
     return (
-        <section ref={sectionRef} className="py-16 md:py-32 relative overflow-hidden bg-[var(--color-deep-black)]">
+        <section ref={sectionRef} className="py-24 md:py-40 relative overflow-hidden bg-[var(--color-deep-black)]">
             {/* Background Texture */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 

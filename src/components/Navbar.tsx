@@ -79,7 +79,7 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-20 pb-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-12 pb-8 bg-transparent"
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
@@ -250,7 +250,7 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-[0.2em] font-black uppercase text-glitch" data-text={link.name}>
+                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div

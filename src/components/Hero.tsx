@@ -626,19 +626,19 @@ export function Hero() {
                     <div
                         className="absolute inset-0 z-[11] pointer-events-none"
                         style={{
-                            background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%)',
-                            opacity: (mounted && canStartSequence) ? 1 : 0,
-                            transition: 'opacity 2.5s ease-in-out'
+                            background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.5) 100%)',
+                            opacity: (mounted && canStartSequence) ? 0.8 : 0,
+                            transition: 'opacity 3s ease-in-out'
                         }}
                     />
 
                     <div
                         className="absolute inset-0 z-[10] pointer-events-none"
                         style={{
-                            background: 'radial-gradient(circle at 50% 44%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 18%, rgba(0,0,0,0) 45%)',
+                            background: 'radial-gradient(circle at 50% 44%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 18%, rgba(0,0,0,0) 45%)',
                             mixBlendMode: 'screen',
-                            opacity: (mounted && canStartSequence) ? 1 : 0,
-                            transition: 'opacity 2s ease-in-out'
+                            opacity: (mounted && canStartSequence) ? 0.6 : 0,
+                            transition: 'opacity 2.5s ease-in-out'
                         }}
                     />
 

@@ -180,7 +180,7 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.12;
+  opacity: 0.05;
   mix-blend-mode: overlay;
   animation: grain-animation 15s steps(8) infinite;
   /* Lighter on CPU */
@@ -279,7 +279,7 @@ h1 {
   line-height: var(--line-height-hero);
   letter-spacing: var(--letter-spacing-hero);
   font-family: var(--font-editorial);
-  font-weight: 600;
+  font-weight: 500;
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
@@ -349,13 +349,13 @@ section {
 }
 
 .luxury-surface {
-  @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-premium-1;
   transition: all 0.8s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .luxury-surface:hover {
-  @apply bg-black/60 border-white/10 -translate-y-1;
-  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 255, 255, 0.05);
+  @apply bg-charcoal/60 border-white/10;
+  box-shadow: var(--shadow-premium-2);
 }
 
 .body-text-refined {

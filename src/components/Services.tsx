@@ -68,7 +68,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="font-display text-2xl font-bold mb-4 text-white group-hover:text-[var(--color-accent)] transition-colors duration-700 uppercase tracking-wide">
+                    <h3 className="font-display text-2xl font-medium mb-4 text-white group-hover:text-[var(--color-accent)] transition-colors duration-700 uppercase tracking-tight">
                         {service.title}
                     </h3>
 
@@ -298,7 +298,7 @@ export function Services() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
+        <section ref={sectionRef} className="py-24 md:py-40 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
             {/* Priority Preload for the first card video */}
             <link rel="preload" href={firstVideo} as="video" type="video/mp4" />
 
