@@ -92,7 +92,7 @@ export function Contact() {
     }, [mounted]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="contato">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="contato">
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
                     {/* Info Side */}
@@ -320,7 +320,7 @@ export function Contact() {
                 </m.div>
 
                 {/* Google Maps Embed with Premium Styling */}
-                <div className="w-full h-[600px] contrast-[1.1] brightness-[0.8] transition-all duration-700 group-hover/map:brightness-[0.9] group-hover/map:contrast-[1.15] relative z-10 overflow-hidden">
+                <div className="w-full h-[400px] md:h-[600px] contrast-[1.1] brightness-[0.8] transition-all duration-700 group-hover/map:brightness-[0.9] group-hover/map:contrast-[1.15] relative z-10 overflow-hidden">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                         width="100%"

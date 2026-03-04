@@ -177,7 +177,7 @@ export function CaseStudies() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="casos">
+        <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-background)] relative overflow-hidden" id="casos">
             {/* Ambient Lighting */}
             <div
                 ref={glowRef}
@@ -195,7 +195,7 @@ export function CaseStudies() {
                     >
                         Casos Clínicos
                     </m.span>
-                    <h2 ref={titleRef} className="font-display text-[clamp(42px,7vw,88px)] font-medium text-white leading-[1.05] tracking-hero mb-8 uppercase">
+                    <h2 ref={titleRef} className="font-display text-[clamp(28px,7vw,88px)] font-medium text-white leading-[1.05] tracking-hero mb-8 uppercase">
                         <span className="text-mask-reveal">
                             <span className="title-line-inner inline-block">Resultados que</span>
                         </span>

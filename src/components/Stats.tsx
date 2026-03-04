@@ -133,7 +133,7 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-20 md:py-40 bg-[#050505] relative overflow-hidden border-y border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             {/* Background Texture Overlay */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
 
@@ -175,7 +175,7 @@ export function Stats() {
                                             viewport={{ once: true, margin: "-15%" }}
                                             className="relative"
                                         >
-                                            <span className="text-[var(--color-creme)] font-editorial text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
+                                            <span className="text-[var(--color-creme)] font-editorial text-4xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
                                                 Essência
                                             </span>
                                             <div className="absolute -inset-4 bg-[var(--color-creme)]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />

@@ -93,7 +93,7 @@ export function FAQ() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-deep-black)] overflow-hidden" id="faq">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-deep-black)] overflow-hidden" id="faq">
             {/* Atmospheric Lighting */}
             <div className="faq-glow absolute top-1/2 left-0 -translate-y-1/2 w-[40%] h-[60%] glow-blob opacity-10 pointer-events-none" />
             <div className="faq-glow absolute bottom-0 right-0 w-[30%] h-[40%] glow-blob-warm opacity-10 pointer-events-none" />
@@ -111,7 +111,7 @@ export function FAQ() {
                         >
                             Esclarecimentos
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(42px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                        <h2 ref={titleRef} className="font-display text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
                             <span className="text-mask-reveal">
                                 <span className="title-line-inner inline-block">Dúvidas</span>
                             </span>

@@ -171,15 +171,16 @@ export function Experience() {
                     const stepItems = stepsRef.current?.querySelectorAll(".experience-step-item");
                     if (stepItems && stepItems.length > 0) {
                         gsap.fromTo(stepItems,
-                            { opacity: 0, x: -30 },
+                            { opacity: 0, x: isMobile ? 0 : -30, y: isMobile ? 20 : 0 },
                             {
                                 scrollTrigger: {
                                     trigger: stepsRef.current,
-                                    start: "top 75%",
+                                    start: isMobile ? "top 90%" : "top 75%",
                                     toggleActions: "play none none reverse"
                                 },
                                 opacity: 1,
                                 x: 0,
+                                y: 0,
                                 stagger: 0.2,
                                 duration: 1.2,
                                 ease: "power3.out"
@@ -239,7 +240,7 @@ export function Experience() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-graphite)] overflow-hidden" id="experiencia">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-var(--color-graphite) overflow-hidden" id="experiencia">
             {/* Background Narrative Texture */}
             <div ref={textureRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
@@ -253,7 +254,7 @@ export function Experience() {
                         >
                             A Jornada do Paciente
                         </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,8vw,6.5rem)] font-medium text-white leading-[0.95] mb-12 md:mb-16 tracking-tight">
+                        <h2 ref={titleRef} className="font-display text-[clamp(28px,8vw,6.5rem)] font-medium text-white leading-[0.95] mb-12 md:mb-16 tracking-tight">
                             <div className="block overflow-hidden pb-1">
                                 <span className="title-line-inner inline-block">O Protocolo de</span>
                             </div>

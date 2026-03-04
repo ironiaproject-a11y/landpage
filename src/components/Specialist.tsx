@@ -203,7 +203,7 @@ export function Specialist() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
             {/* Background overlay for blur effect */}
             <div
                 ref={backgroundRef}
@@ -266,7 +266,7 @@ export function Specialist() {
                             >
                                 <div className="p-10 relative overflow-hidden h-full">
                                     <Quote strokeWidth={1.2} className="absolute top-6 right-8 w-12 h-12 text-[var(--color-silver-bh)]/10" />
-                                    <p className="font-editorial text-2xl md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10" style={{ textShadow: "0 4px 15px rgba(0,0,0,0.4)" }}>
+                                    <p className="font-editorial text-xl md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-medium relative z-10" style={{ textShadow: "0 4px 15px rgba(0,0,0,0.4)" }}>
                                         &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                     </p>
                                     <div className="relative z-10">
@@ -300,7 +300,7 @@ export function Specialist() {
                                         alt="Dr. Ricardo Alessandro"
                                         width={800}
                                         height={1000}
-                                        className="w-full h-[650px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-[500px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                                     />
                                     {/* Selective dark gradient for text contrast over white coat */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/95 via-black/40 to-transparent opacity-100" />

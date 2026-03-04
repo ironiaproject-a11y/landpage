@@ -172,7 +172,7 @@ export function About() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-black overflow-hidden" id="sobre">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="sobre">
             {/* Ambient Background Elements */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-silver-bh)]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -204,7 +204,7 @@ export function About() {
                             />
 
                             {/* Main Image with Zoom Effect */}
-                            <div className="relative w-full h-[450px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
+                            <div className="relative w-full h-[400px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
                                     alt="Elevando o padrão da Odontologia Estética"
@@ -243,7 +243,7 @@ export function About() {
                             </span>
                         </m.div>
 
-                        <h2 ref={titleRef} className="font-display text-[clamp(28px,5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                        <h2 ref={titleRef} className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
                             <span className="text-mask-reveal">
                                 <m.span
                                     initial={{ y: "110%" }}
