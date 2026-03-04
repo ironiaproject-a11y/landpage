@@ -81,25 +81,30 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 ctx.imageSmoothingQuality = "high";
             }
 
-            // 2) Functional drawCoverImage (equivalente a object-fit: cover)
+            // 2) Functional drawCoverImage with INTERNAL SCALING
             const canvasWidth = displayWidth;
             const canvasHeight = displayHeight;
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
+            // Define the internal scale factor (e.g., 0.85 of viewport)
+            const DRAW_SCALE = isMobile ? 0.85 : 0.9;
+
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
             if (canvasRatio > imgRatio) {
-                // canvas mais largo → escalar pela largura (cortar verticalmente)
-                drawWidth = canvasWidth;
-                drawHeight = canvasWidth / imgRatio;
-                offsetY = (canvasHeight - drawHeight) / 2;
+                // canvas mais largo → escalar pela largura
+                drawWidth = canvasWidth * DRAW_SCALE;
+                drawHeight = drawWidth / imgRatio;
             } else {
-                // canvas mais alto → escalar pela altura (cortar lateralmente)
-                drawHeight = canvasHeight;
-                drawWidth = canvasHeight * imgRatio;
-                offsetX = (canvasWidth - drawWidth) / 2;
+                // canvas mais alto → escalar pela altura
+                drawHeight = canvasHeight * DRAW_SCALE;
+                drawWidth = drawHeight * imgRatio;
             }
+
+            // Always center the internally scaled image
+            offsetX = (canvasWidth - drawWidth) * 0.5;
+            offsetY = (canvasHeight - drawHeight) * 0.5;
 
             // Clean & Draw using CSS pixels (already normalized by setTransform)
             ctx.fillStyle = '#000000';
@@ -133,7 +138,7 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `scale(${isMobile ? 0.85 : 0.9}) translateZ(0)`,
+                    transform: `translateZ(0)`, // CSS scale removed to keep canvas flush with background
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
