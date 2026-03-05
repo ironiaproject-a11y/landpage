@@ -8,69 +8,98 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+const FRAME_COUNT = 192;
+
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const mouthRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
-    const buttonsRef = useRef<HTMLDivElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const textLayerRef = useRef<HTMLDivElement>(null);
+    const ctaLayerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        if (!canvasRef.current || !sectionRef.current) return;
 
-        // Force play immediately and on interval to prevent "stuck" state
-        const attemptPlay = () => {
-            if (videoRef.current) {
-                videoRef.current.play().catch(error => {
-                    console.log("Autoplay prevented, retrying...", error);
-                });
-            }
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        if (!context) return;
+
+        // Configuration
+        const currentFrame = (index: number) =>
+            `/para_vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.png`;
+
+        const images: HTMLImageElement[] = [];
+        const airbnb = { frame: 0 };
+
+        // Preload images
+        for (let i = 0; i < FRAME_COUNT; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        const render = () => {
+            const img = images[airbnb.frame];
+            if (!img || !img.complete) return;
+
+            // Handle Resize / Object-Fit: Cover
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const imgWidth = img.width;
+            const imgHeight = img.height;
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            const newWidth = imgWidth * ratio;
+            const newHeight = imgHeight * ratio;
+            const x = (canvasWidth - newWidth) / 2;
+            const y = (canvasHeight - newHeight) / 2;
+
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.drawImage(img, x, y, newWidth, newHeight);
         };
 
-        attemptPlay();
-        const playInterval = setInterval(attemptPlay, 1000);
+        const updateSize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
+        };
 
+        window.addEventListener("resize", updateSize);
+        updateSize();
+
+        // GSAP Scroll Animation
         const ctx = gsap.context(() => {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                // Layer 1 - Mouth (Medium Parallax: 0.6 speed)
-                gsap.to(mouthRef.current, {
-                    y: -150,
-                    scale: 1.03,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
+            // First image render when first image loads
+            images[0].onload = render;
 
-                // Layer 2 - Text (Slow Parallax: 0.2 speed)
-                gsap.to(textRef.current, {
-                    y: -50,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-
-                // Sticky CTA logic (at 40%)
-                ScrollTrigger.create({
+            gsap.to(airbnb, {
+                frame: FRAME_COUNT - 1,
+                snap: "frame",
+                ease: "none",
+                scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "40% top",
-                    onEnter: () => document.querySelector('.cta-primary')?.classList.add('is-sticky'),
-                    onLeaveBack: () => document.querySelector('.cta-primary')?.classList.remove('is-sticky')
-                });
-            }
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 0.5,
+                },
+                onUpdate: render,
+            });
+
+            // Layered Parallax logic (Optional additional movement if requested)
+            // But basic scrubbing is on the airbnb.frame now
+
+            // Sticky CTA logic
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "40% top",
+                onEnter: () => document.querySelector('.cta-primary')?.classList.add('is-sticky'),
+                onLeaveBack: () => document.querySelector('.cta-primary')?.classList.remove('is-sticky')
+            });
         }, sectionRef);
 
         return () => {
             ctx.revert();
-            clearInterval(playInterval);
+            window.removeEventListener("resize", updateSize);
         };
     }, []);
 
@@ -89,26 +118,14 @@ export function Hero() {
                     padding: 0;
                 }
 
-                /* Layer 1 - Mouth */
-                .hero-mouth-container { 
-                    position: absolute; 
-                    top: 50%; 
-                    left: 50%; 
-                    transform: translate(-50%, -50%); 
+                .hero-canvas {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
                     width: 100%;
-                    height: 70vh; 
-                    z-index: 1; 
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    pointer-events: none;
-                }
-
-                .hero-mouth-video {
                     height: 100%;
-                    width: auto;
-                    object-fit: cover;
-                    will-change: transform;
+                    z-index: 1;
+                    display: block;
                 }
 
                 .hero-overlay { 
@@ -133,7 +150,7 @@ export function Hero() {
                     z-index: 3; 
                     text-align: center; 
                     padding: 0 20px;
-                    will-change: transform;
+                    pointer-events: none;
                 }
 
                 .hero-title { 
@@ -208,37 +225,24 @@ export function Hero() {
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                {/* Layer 1: Mouth */}
-                <div ref={mouthRef} className="hero-mouth-container">
-                    <video
-                        ref={videoRef}
-                        className="hero-mouth-video"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        poster="/para_vc/frame_000_delay-0.041s.png"
-                    >
-                        <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
-                        <source src="/luxury-hero/webm_1080_variantA.webm" type="video/webm" />
-                    </video>
-                </div>
+                {/* Layer 1: Background Sequence */}
+                <canvas ref={canvasRef} className="hero-canvas" />
 
                 <div className="hero-overlay"></div>
 
                 {/* Layer 2: Text */}
-                <div ref={textRef} className="hero-text-layer">
+                <div ref={textLayerRef} className="hero-text-layer">
                     <h1 className="hero-title">Volte a sorrir com confiança.</h1>
                     <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
                 </div>
 
                 {/* Layer 3: Buttons */}
-                <div ref={buttonsRef} className="hero-cta-layer">
+                <div ref={ctaLayerRef} className="hero-cta-layer">
                     <button className="cta-primary">
                         Agendar Consulta
                     </button>
                     <a href="#results" className="cta-secondary-link">
-                        Galeria de Resultados
+                        ver galeria de resultados →
                     </a>
                 </div>
             </section>
