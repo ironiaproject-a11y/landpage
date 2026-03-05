@@ -13,6 +13,7 @@ const FRAME_COUNT = 192;
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     // Animation state
@@ -24,7 +25,7 @@ export function Hero() {
     }, []);
 
     useEffect(() => {
-        if (!mounted || !canvasRef.current || !sectionRef.current) return;
+        if (!mounted || !canvasRef.current || !sectionRef.current || !containerRef.current) return;
 
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
@@ -85,8 +86,9 @@ export function Hero() {
         window.addEventListener("resize", updateSize);
         updateSize();
 
-        // GSAP Scroll Animation - Fluid frame-by-frame scrub
+        // GSAP Scroll Animation - Section Pinning + 3D Transformation
         const ctx = gsap.context(() => {
+            // Pin the hero section during the scrub
             gsap.to(airbnbRef.current, {
                 frame: FRAME_COUNT - 1,
                 snap: "frame",
@@ -94,16 +96,18 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "bottom top",
-                    scrub: 0.1, // Highly responsive scrub
+                    end: "+=200%", // Longer distance for more controlled scrub
+                    pin: true,
+                    scrub: 0.05, // Tight responsiveness
+                    anticipatePin: 1
                 },
                 onUpdate: render,
             });
 
-            // Sticky CTA logic
+            // Sticky CTA logic - Adjust trigger points due to pinning
             ScrollTrigger.create({
                 trigger: sectionRef.current,
-                start: "40% top",
+                start: "10% top",
                 onEnter: () => document.querySelector('.cta-primary')?.classList.add('is-sticky'),
                 onLeaveBack: () => document.querySelector('.cta-primary')?.classList.remove('is-sticky')
             });
@@ -125,9 +129,21 @@ export function Hero() {
                     height: 100vh; 
                     width: 100%; 
                     background: #000; 
-                    overflow: hidden; 
+                    overflow: visible; /* Required for pinning */
                     margin: 0;
                     padding: 0;
+                    perspective: 1500px;
+                }
+
+                .hero-inner-container {
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
                 }
 
                 .hero-canvas {
@@ -137,6 +153,14 @@ export function Hero() {
                     height: 100%;
                     display: block;
                     z-index: 1;
+                    /* Perspective refinement: scale down and tilt */
+                    transform: scale(0.9) rotateX(2deg);
+                    transform-origin: center center;
+                    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+                }
+
+                .hero:hover .hero-canvas {
+                    transform: scale(0.92) rotateX(1deg);
                 }
 
                 .hero-overlay { 
@@ -146,7 +170,7 @@ export function Hero() {
                         to bottom,
                         rgba(0,0,0,0.65) 0%,
                         rgba(0,0,0,0.45) 40%,
-                        rgba(0,0,0,0.25) 70%
+                        rgba(0,0,0,0.1) 70%
                     ); 
                     z-index: 2; 
                     pointer-events: none; 
@@ -164,14 +188,15 @@ export function Hero() {
                 }
 
                 .hero-title { 
-                    font-size: 36px; 
+                    font-size: 38px; 
                     font-weight: 600; 
                     line-height: 1.1; 
                     letter-spacing: -0.02em; 
                     color: #FBFBFB; 
                     margin: 0; 
-                    max-width: 420px;
+                    max-width: 440px;
                     margin: 0 auto;
+                    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
                 }
 
                 .hero-subtitle { 
@@ -179,7 +204,7 @@ export function Hero() {
                     font-weight: 400;
                     color: #FBFBFB;
                     opacity: 0.8; 
-                    margin-top: 10px; 
+                    margin-top: 12px; 
                 }
 
                 .hero-cta-layer {
@@ -210,6 +235,12 @@ export function Hero() {
                     justify-content: center; 
                     border: 1px solid rgba(255,255,255,0.1); 
                     cursor: pointer; 
+                    transition: transform 0.3s ease, background 0.3s ease;
+                }
+
+                .cta-primary:hover {
+                    transform: translateY(-2px);
+                    background: #151515;
                 }
 
                 .cta-primary.is-sticky { 
@@ -227,32 +258,39 @@ export function Hero() {
                     font-size: 14px; 
                     color: #FBFBFB;
                     opacity: 0.75; 
-                    margin-top: 16px; 
+                    margin-top: 18px; 
                     text-decoration: none; 
                     font-weight: 400;
+                    transition: opacity 0.3s ease;
+                }
+
+                .cta-secondary-link:hover {
+                    opacity: 1;
                 }
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                <canvas
-                    ref={canvasRef}
-                    className="hero-canvas"
-                />
+                <div ref={containerRef} className="hero-inner-container">
+                    <canvas
+                        ref={canvasRef}
+                        className="hero-canvas"
+                    />
 
-                <div className="hero-overlay"></div>
+                    <div className="hero-overlay"></div>
 
-                <div className="hero-text-layer">
-                    <h1 className="hero-title">Volte a sorrir com confiança.</h1>
-                    <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
-                </div>
+                    <div className="hero-text-layer">
+                        <h1 className="hero-title">Volte a sorrir com confiança.</h1>
+                        <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
+                    </div>
 
-                <div className="hero-cta-layer">
-                    <button className="cta-primary">
-                        Agendar Consulta
-                    </button>
-                    <a href="#results" className="cta-secondary-link">
-                        ver galeria de resultados →
-                    </a>
+                    <div className="hero-cta-layer">
+                        <button className="cta-primary">
+                            Agendar Consulta
+                        </button>
+                        <a href="#results" className="cta-secondary-link">
+                            ver galeria de resultados →
+                        </a>
+                    </div>
                 </div>
             </section>
         </>
