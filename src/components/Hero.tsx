@@ -19,7 +19,10 @@ export function Hero() {
 
     useEffect(() => {
         setMounted(true);
-        if (!canvasRef.current || !sectionRef.current) return;
+    }, []);
+
+    useEffect(() => {
+        if (!mounted || !canvasRef.current || !sectionRef.current) return;
 
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
@@ -51,12 +54,10 @@ export function Hero() {
         };
 
         // Preload images
-        let firstFrameLoaded = false;
         for (let i = 0; i < FRAME_COUNT; i++) {
             const img = new Image();
             img.onload = () => {
                 if (i === 0) {
-                    firstFrameLoaded = true;
                     render();
                     // Signal Preloader that Hero is ready
                     window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
@@ -109,7 +110,7 @@ export function Hero() {
             ctx.revert();
             window.removeEventListener("resize", updateSize);
         };
-    }, []);
+    }, [mounted]);
 
     if (!mounted) return null;
 
