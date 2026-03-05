@@ -8,114 +8,99 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+const FRAME_COUNT = 192;
+
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [mounted, setMounted] = useState(false);
 
     // Animation state
-    const animatingRef = useRef(false);
-    const currentRotationRef = useRef(0);
-    const lastTriggerAtRef = useRef(0);
-    const touchStartYRef = useRef<number | null>(null);
-
-    // Config
-    const AUTO_DURATION = 1.0;
-    const USER_ROTATION = 360;
-    const USER_DURATION = 0.9;
-    const WHEEL_THRESHOLD = 60;
-    const MIN_TIME_BETWEEN = 600;
-    const PREFERRED_SCALE = 1.03;
-    const EASE = "power2.inOut";
+    const imagesRef = useRef<HTMLImageElement[]>([]);
+    const airbnbRef = useRef({ frame: 0 });
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
     useEffect(() => {
-        if (!mounted || !videoRef.current || !sectionRef.current) return;
+        if (!mounted || !canvasRef.current || !sectionRef.current) return;
 
-        const video = videoRef.current;
-        const model = video; // Use video as the model
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        if (!context) return;
 
-        // Signal Preloader that Hero is ready
-        const handleCanPlay = () => {
-            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+        // Configuration
+        const currentFrame = (index: number) =>
+            `/para_vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.png`;
+
+        const render = () => {
+            const img = imagesRef.current[airbnbRef.current.frame];
+            if (!img || !img.complete) return;
+
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const imgWidth = img.width;
+            const imgHeight = img.height;
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            const newWidth = imgWidth * ratio;
+            const newHeight = imgHeight * ratio;
+            const x = (canvasWidth - newWidth) / 2;
+            const y = (canvasHeight - newHeight) / 2;
+
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.drawImage(img, x, y, newWidth, newHeight);
         };
 
-        if (video.readyState >= 3) {
-            handleCanPlay();
-        } else {
-            video.addEventListener("canplaythrough", handleCanPlay, { once: true });
+        // Preload images
+        const preloadImages = () => {
+            for (let i = 0; i < FRAME_COUNT; i++) {
+                const img = new Image();
+                img.onload = () => {
+                    if (i === 0) {
+                        render();
+                        // Signal Preloader that Hero is ready
+                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                    }
+                };
+                img.src = currentFrame(i);
+                imagesRef.current.push(img);
+            }
+        };
+
+        preloadImages();
+
+        // Handle pre-loaded case for first frame or failsafe
+        if (imagesRef.current[0]?.complete) {
+            render();
+            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         }
 
-        const userTrigger = () => {
-            const nowTime = performance.now();
-            if (animatingRef.current) return;
-            if (nowTime - lastTriggerAtRef.current < MIN_TIME_BETWEEN) return;
-
-            lastTriggerAtRef.current = nowTime;
-            animatingRef.current = true;
-
-            const target = currentRotationRef.current + USER_ROTATION;
-
-            gsap.to(model, {
-                rotationY: target,
-                scale: PREFERRED_SCALE,
-                duration: USER_DURATION,
-                ease: EASE,
-                onUpdate: function () {
-                    const r = gsap.getProperty(model, "rotationY") as number;
-                    currentRotationRef.current = r;
-                },
-                onComplete: () => {
-                    currentRotationRef.current = target;
-                    gsap.to(model, { scale: 1, duration: 0.2 });
-                    animatingRef.current = false;
-                }
-            });
+        const updateSize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
         };
 
-        const onWheel = (e: WheelEvent) => {
-            if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
-            userTrigger();
-        };
+        window.addEventListener("resize", updateSize);
+        updateSize();
 
-        const onTouchStart = (e: TouchEvent) => {
-            touchStartYRef.current = e.touches[0].clientY;
-        };
-
-        const onTouchEnd = (e: TouchEvent) => {
-            if (touchStartYRef.current === null) return;
-            const endY = e.changedTouches[0].clientY;
-            const delta = touchStartYRef.current - endY;
-            if (Math.abs(delta) > 30) {
-                userTrigger();
-            }
-            touchStartYRef.current = null;
-        };
-
-        // Initial Autoplay 360
-        animatingRef.current = true;
-        gsap.to(model, {
-            rotationY: 360,
-            scale: PREFERRED_SCALE,
-            duration: AUTO_DURATION,
-            ease: EASE,
-            onComplete: () => {
-                currentRotationRef.current = 360;
-                gsap.to(model, { scale: 1, duration: 0.2 });
-                animatingRef.current = false;
-
-                // Enable user controls after autoplay
-                window.addEventListener("wheel", onWheel, { passive: true });
-                window.addEventListener("touchstart", onTouchStart, { passive: true });
-                window.addEventListener("touchend", onTouchEnd, { passive: true });
-            }
-        });
-
-        // Sticky CTA logic
+        // GSAP Scroll Animation - Fluid frame-by-frame scrub
         const ctx = gsap.context(() => {
+            gsap.to(airbnbRef.current, {
+                frame: FRAME_COUNT - 1,
+                snap: "frame",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 0.1, // Highly responsive scrub
+                },
+                onUpdate: render,
+            });
+
+            // Sticky CTA logic
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "40% top",
@@ -126,10 +111,7 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            video.removeEventListener("canplaythrough", handleCanPlay);
-            window.removeEventListener("wheel", onWheel);
-            window.removeEventListener("touchstart", onTouchStart);
-            window.removeEventListener("touchend", onTouchEnd);
+            window.removeEventListener("resize", updateSize);
         };
     }, [mounted]);
 
@@ -146,20 +128,15 @@ export function Hero() {
                     overflow: hidden; 
                     margin: 0;
                     padding: 0;
-                    perspective: 1200px;
                 }
 
-                .hero-video-bg {
+                .hero-canvas {
                     position: absolute;
                     inset: 0;
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                    z-index: 1;
                     display: block;
-                    will-change: transform;
-                    transform-origin: center center;
+                    z-index: 1;
                 }
 
                 .hero-overlay { 
@@ -257,17 +234,10 @@ export function Hero() {
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                <video
-                    ref={videoRef}
-                    className="hero-video-bg tooth-model"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    poster="/assets/images/clinic-interior.png"
-                >
-                    <source src="/hero-background.mp4" type="video/mp4" />
-                </video>
+                <canvas
+                    ref={canvasRef}
+                    className="hero-canvas"
+                />
 
                 <div className="hero-overlay"></div>
 
