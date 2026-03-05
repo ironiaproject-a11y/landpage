@@ -387,17 +387,21 @@ export function Hero() {
                             defaults: { ease: "power4.out", duration: 1.8 }
                         });
 
-                        tl.fromTo([".hero-title-line-1", ".hero-title-line-2"],
-                            { y: 60, opacity: 0, filter: "blur(12px)" },
-                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power4.out" }, "-=0.5"
+                        tl.fromTo(".hero-title-line-1",
+                            { y: 60, opacity: 0, filter: "blur(10px)" },
+                            { y: 0, opacity: 0.7, filter: "blur(0px)", duration: 1.2, ease: "power4.out" }
                         )
+                            .fromTo(".hero-title-line-2",
+                                { y: 60, opacity: 0, filter: "blur(10px)" },
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out" }, "-=0.8"
+                            )
                             .fromTo(descriptionRef.current,
                                 { y: 20, opacity: 0, filter: "blur(8px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "power4.out" }, "-=1.2"
+                                { y: 0, opacity: 0.8, filter: "blur(0px)", duration: 1.4, ease: "power4.out" }, "-=1.0"
                             )
                             .fromTo(actionsRef.current,
                                 { y: 15, opacity: 0 },
-                                { y: 0, opacity: 1, duration: 1.2, delay: 0.8, ease: "power4.out" }, "-=1.0"
+                                { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: "power4.out" }, "-=1.0"
                             );
                     }
                 };
@@ -499,19 +503,17 @@ export function Hero() {
                 const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
 
                 if (titleRef.current) {
-                    const tracking = scrollProgress * 10; // Expansão orgânica do 'assinatura' de 0 a 10px
-                    const scale = 1 + scrollProgress * 0.1; // "Câmera atravessando o texto"
+                    const tracking = scrollProgress * 6; // Expansão orgânica de 0 a 6px
+                    const scale = 1 + scrollProgress * 0.1;
                     const opacity = Math.max(0, 1 - Math.pow(scrollProgress, 1.2) * 2);
 
-                    // Aplica na Primeira Linha (não expande letter spacing com o scroll conforme restrito)
                     gsap.set(".hero-title-line-1", {
                         scale: scale,
-                        opacity: opacity,
-                        y: -(scrollProgress * 20), // Movimento vertical mínimo para não 'bater'
+                        opacity: 0.7 * (1 - scrollProgress), // Mudar para fade total no scroll
+                        y: -(scrollProgress * 20),
                         filter: `blur(${Math.pow(scrollProgress, 2) * 10}px)`
                     });
 
-                    // Aplica na Segunda Linha (Expande o letter spacing)
                     gsap.set(".hero-title-line-2", {
                         letterSpacing: `${tracking}px`,
                         scale: 1 + scrollProgress * 0.08,
@@ -622,7 +624,7 @@ export function Hero() {
                 <div
                     ref={contentWrapperRef}
                     className="absolute inset-0 z-[3] w-full flex flex-col items-center text-center pointer-events-none"
-                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: isMobile ? '8vh' : '15vh', paddingBottom: isMobile ? '6vh' : '12vh' }}
+                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: isMobile ? '10vh' : '15vh', paddingBottom: isMobile ? '8vh' : '15vh' }}
                 >
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
@@ -648,9 +650,7 @@ export function Hero() {
                     <div
                         className="absolute inset-0 z-[20] pointer-events-none"
                         style={{
-                            background: isMobile
-                                ? 'radial-gradient(circle at 50% 46%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.85) 85%)'
-                                : 'radial-gradient(circle at 50% 44%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.8) 85%)',
+                            background: 'radial-gradient(circle at center, transparent 0%, rgba(26, 26, 26, 0.4) 100%)',
                             opacity: (mounted && canStartSequence) ? 1 : 0,
                             transition: 'opacity 1.5s ease-in-out'
                         }}
@@ -665,11 +665,9 @@ export function Hero() {
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] mb-8 flex flex-col items-center relative w-full`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] flex flex-col items-center relative w-full`}
                             style={{
                                 color: 'white',
-                                backdropFilter: 'blur(2px)',
-                                WebkitBackdropFilter: 'blur(2px)',
                                 margin: '0 auto',
                                 pointerEvents: isFormOpen ? 'none' : 'auto',
                                 transition: 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
@@ -677,27 +675,31 @@ export function Hero() {
                             }}
                         >
                             <span
-                                className="uppercase opacity-0 hero-title-line-1 font-sans font-semibold"
+                                className="uppercase hero-title-line-1 font-sans"
                                 style={{
-                                    fontSize: '11px',
+                                    fontSize: '14px',
+                                    fontWeight: 500,
                                     letterSpacing: '8px',
-                                    opacity: 0.6
+                                    opacity: 0, // Controlled by reveal logic
+                                    color: 'white'
                                 }}
                             >SEU SORRISO,</span>
                             <span
-                                className="italic lowercase opacity-0 hero-title-line-2 font-display font-light flex items-center justify-center"
+                                className="italic hero-title-line-2 font-bodoni flex items-center justify-center font-light"
                                 style={{
-                                    fontSize: isMobile ? '42px' : '8rem',
-                                    marginTop: '12px'
+                                    fontSize: isMobile ? '48px' : '64px',
+                                    marginTop: '12px',
+                                    opacity: 0, // Controlled by reveal logic
+                                    textTransform: 'lowercase'
                                 }}
                             >
                                 <AnimatePresence mode="wait">
                                     <m.span
                                         key={isFormOpen ? "consulta" : "assinatura"}
-                                        initial={{ opacity: 0, y: 15, filter: 'blur(8px)' }}
+                                        initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
                                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                                        exit={{ opacity: 0, y: -15, filter: 'blur(8px)' }}
-                                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                        exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
+                                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                                         style={{ display: 'inline-block' }}
                                     >
                                         {isFormOpen ? "sua consulta." : "sua assinatura."}
@@ -716,19 +718,17 @@ export function Hero() {
                             alignItems: 'center',
                             width: '100%'
                         }}>
-                            <div className="overflow-hidden w-full transform mb-16 mt-auto">
+                            <div className="overflow-hidden w-full transform mb-12 mt-auto">
                                 <p
                                     ref={descriptionRef}
                                     className="text-center opacity-0 font-sans"
                                     style={{
-                                        fontSize: isMobile ? '15px' : '16px',
+                                        fontSize: '18px',
                                         color: '#F5F5DC',
                                         opacity: 0.8,
                                         maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
                                         margin: '0 auto',
                                         letterSpacing: '0.02em',
-                                        backdropFilter: 'blur(2px)',
-                                        WebkitBackdropFilter: 'blur(2px)'
                                     }}
                                 >
                                     Segurança clínica. Resultado natural.
@@ -743,23 +743,23 @@ export function Hero() {
                                         whileHover={{
                                             y: -2,
                                             scale: 1.05,
-                                            background: "rgba(245, 245, 220, 0.2)",
-                                            boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
+                                            background: "#FFFFFF",
+                                            boxShadow: "0 10px 40px rgba(245, 245, 220, 0.2)"
                                         }}
                                         whileTap={{ scale: 0.98 }}
                                         style={{
-                                            padding: '1rem 2.5rem',
+                                            padding: '1.2rem 3rem',
                                             borderRadius: '9999px',
-                                            background: 'rgba(255,255,255,0.1)',
-                                            backdropFilter: 'blur(10px)',
-                                            WebkitBackdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255,255,255,0.2)',
-                                            color: '#F5F5DC',
+                                            background: '#F5F5DC',
+                                            color: '#121212',
                                             fontWeight: 600,
+                                            fontSize: '14px',
+                                            letterSpacing: '0.05em',
                                             width: isMobile ? '100%' : 'auto',
-                                            transition: 'all 0.3s ease'
+                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
                                         }}
-                                        className="group relative flex items-center justify-center"
+                                        className="btn-primary-reconstructed flex items-center justify-center"
                                     >
                                         <span className="relative z-10">Agendar Consulta</span>
                                     </m.button>
@@ -771,23 +771,23 @@ export function Hero() {
                                         whileHover={{
                                             y: -2,
                                             scale: 1.05,
-                                            background: 'rgba(245, 245, 220, 0.2)',
-                                            boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
+                                            background: 'rgba(245, 245, 220, 0.05)',
+                                            borderColor: 'rgba(245, 245, 220, 0.5)'
                                         }}
                                         whileTap={{ scale: 0.98 }}
                                         style={{
-                                            padding: '1rem 2.5rem',
+                                            padding: '1.2rem 3rem',
                                             borderRadius: '9999px',
                                             background: 'transparent',
-                                            backdropFilter: 'blur(10px)',
-                                            WebkitBackdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            border: '1px solid rgba(245, 245, 220, 0.2)',
                                             color: '#F5F5DC',
                                             fontWeight: 600,
+                                            fontSize: '14px',
+                                            letterSpacing: '0.05em',
                                             width: isMobile ? '100%' : 'auto',
-                                            transition: 'all 0.3s ease'
+                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)'
                                         }}
-                                        className="group flex items-center justify-center"
+                                        className="btn-ghost-reconstructed flex items-center justify-center"
                                     >
                                         <span>Galeria de Resultados</span>
                                     </m.button>
