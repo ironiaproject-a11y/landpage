@@ -16,6 +16,14 @@ const config: Config = {
                 "gray-body": "#D6D6D6", // Light Gray (Body)
                 "silver-main": "#CBD5E1", // Metallic Silver (Accent)
                 "blue-tech": "#3B82F6", // Tech Link
+                "charcoal": "#1A1A1A",
+                "graphite": "#121212",
+                "deep-black": "#0B0B0B",
+            },
+            boxShadow: {
+                "premium-1": "var(--shadow-premium-1)",
+                "premium-2": "var(--shadow-premium-2)",
+                "premium-3": "var(--shadow-premium-3)",
             },
             fontFamily: {
                 display: "var(--font-display)",
