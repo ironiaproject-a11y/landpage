@@ -15,30 +15,50 @@ export function Hero() {
     useEffect(() => {
         setMounted(true);
 
-        // 1) Remoção definitiva eyebrow + observer (COPIADO EXATAMENTE DO PROMPT)
-        (function () {
-            const sel = '.hero-eyebrow';
-            function hide(el: any) { if (!el) return; el.remove && el.remove(); }
-            document.querySelectorAll(sel).forEach(hide);
-            const obs = new MutationObserver(muts => {
-                muts.forEach(m => {
-                    m.addedNodes.forEach((node: any) => {
-                        if (node.nodeType === 1) {
-                            if (node.matches && node.matches(sel)) hide(node);
-                            node.querySelectorAll && node.querySelectorAll(sel).forEach(hide);
-                        }
-                    });
+        // 1) Remoção definitiva eyebrow + observer (EXATAMENTE DO PROMPT)
+        const sel = '.hero-eyebrow';
+        const hide = (el: any) => { if (!el) return; el.remove && el.remove(); };
+        document.querySelectorAll(sel).forEach(hide);
+        const obs = new MutationObserver(muts => {
+            muts.forEach(m => {
+                m.addedNodes.forEach((node: any) => {
+                    if (node.nodeType === 1) {
+                        if (node.matches && node.matches(sel)) hide(node);
+                        node.querySelectorAll && node.querySelectorAll(sel).forEach(hide);
+                    }
                 });
             });
-            obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
-        })();
+        });
+        obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
 
-        // 2) Scroll driven parallax (COPIADO EXATAMENTE DO PROMPT + ADAPTAÇÕES DE SELETORES)
+        // GSAP context para animações e parallax
         const ctx = gsap.context(() => {
+            // 6) ENTRADA CINEMATOGRÁFICA
+            // Definimos o estado inicial via GSAP para garantir controle total
+            gsap.set(".hero-mouth", { opacity: 1 });
+
+            const tl = gsap.timeline();
+            tl.fromTo(".hero-title",
+                { autoAlpha: 0, y: 20 },
+                { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                0.3 // 300ms
+            )
+                .fromTo(".hero-subtitle",
+                    { autoAlpha: 0, y: 12 },
+                    { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+                    0.7 // 700ms
+                )
+                .fromTo(".cta-primary",
+                    { autoAlpha: 0, scale: 0.98 },
+                    { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out" },
+                    1.0 // 1000ms
+                );
+
+            // 7) PARALLAX CONTROLADO PELO SCROLL (EXATAMENTE DO PROMPT)
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 // mouth
                 gsap.to('.hero-mouth', {
-                    y: () => -(window.innerHeight * 0.12), // approx max -40~60px
+                    y: () => -(window.innerHeight * 0.12),
                     scale: 1.03,
                     ease: "power2.out",
                     scrollTrigger: {
@@ -63,44 +83,27 @@ export function Hero() {
                     scrollTrigger: { trigger: ".hero", start: "top top", end: "top+=300 top", scrub: 1 }
                 });
 
-                // CTA sticky toggle after 40% hero
+                // CTA Parallax (move menos, conforme princípio)
+                gsap.to('.cta-primary', {
+                    y: -40,
+                    ease: "power2.out",
+                    scrollTrigger: { trigger: ".hero", start: "top top", end: "top+=400 top", scrub: 0.3 }
+                });
+
+                // 8) CTA STICKY TOGGLE
                 ScrollTrigger.create({
                     trigger: ".hero",
                     start: () => (window.innerHeight * 0.4) + " top",
                     onEnter: () => document.querySelector('.cta-primary')?.classList.add('is-sticky'),
                     onLeaveBack: () => document.querySelector('.cta-primary')?.classList.remove('is-sticky')
                 });
-            } else {
-                // fallback: set static positions
-                gsap.set('.hero-mouth, .hero-title, .hero-subtitle', { clearProps: 'all' });
             }
-
-            // ENTRADA CINEMATOGRÁFICA (SEÇÃO 6)
-            const tl = gsap.timeline();
-            // 0ms: vídeo já pronto (está no DOM)
-            tl.to(".hero-mouth", { opacity: 1, duration: 0 })
-                // 300ms: headline
-                .fromTo(".hero-title",
-                    { autoAlpha: 0, y: 20 },
-                    { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                    0.3
-                )
-                // 700ms: subheadline
-                .fromTo(".hero-subtitle",
-                    { autoAlpha: 0, y: 12 },
-                    { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                    0.7
-                )
-                // 1000ms: CTA primário
-                .fromTo(".cta-primary",
-                    { autoAlpha: 0, scale: 0.98 },
-                    { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out" },
-                    1.0
-                );
-
         }, sectionRef);
 
-        return () => ctx.revert();
+        return () => {
+            obs.disconnect();
+            ctx.revert();
+        };
     }, []);
 
     if (!mounted) return null;
@@ -108,29 +111,138 @@ export function Hero() {
     return (
         <>
             <style>{`
-        /* CSS COPIADO EXATAMENTE DO PROMPT (SEÇÃO 13) */
-        .hero { padding: 24px 16px; position: relative; overflow: hidden; height: 100vh; background: #000; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .hero-mouth { position: absolute; left: 50%; transform: translateX(-50%); top: 35%; height: 65vh; width: 100%; max-width: 100vw; z-index:1; will-change: transform; filter: contrast(.96) brightness(.98); object-fit: contain; opacity: 0; }
-        .hero-overlay { position:absolute; inset:0; background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.25) 70%); z-index:2; pointer-events:none; }
+        /* 13) CSS EXATAMENTE DO PROMPT + CORREÇÕES DE FLUXO */
+        .hero { 
+          padding: 24px 16px; 
+          position: relative; 
+          overflow: hidden; 
+          height: 100vh; 
+          background: #000; 
+          width: 100%; 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+        }
         
-        /* Ajuste de posicionamento vertical conforme cálculo da Seção 4 */
-        /* mouthTop(35) + mouthHeight(65)/2 - (65 * 0.12) = 67.5 - 7.8 = 59.7% */
-        .hero-content { position: relative; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center; width: 100%; top: 59.7%; transform: translateY(-50%); }
+        /* Boca Protagonista: Ocupa 65% da altura, começando em 35% do topo */
+        .hero-mouth { 
+          position: absolute; 
+          left: 50%; 
+          transform: translateX(-50%); 
+          top: 35%; 
+          height: 65vh; 
+          width: 100%; 
+          max-width: 100vw; 
+          z-index: 1; 
+          will-change: transform; 
+          filter: contrast(.96) brightness(.98); 
+          object-fit: contain;
+          opacity: 1; /* Garantimos visibilidade imediata */
+        }
         
-        .hero-title{ font-size:36px; font-weight:700; line-height:1.02; letter-spacing:-0.02em; color:#FBFBFB; margin:0; will-change: transform, opacity; }
-        .hero-subtitle{ font-size:16px; font-weight:500; line-height: 1.4; color:#E6E6E6; margin-top:8px; will-change: transform, opacity; }
+        .hero-overlay { 
+          position: absolute; 
+          inset: 0; 
+          background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.25) 70%); 
+          z-index: 2; 
+          pointer-events: none; 
+        }
         
-        .hero-actions { margin-top: 24px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        /* 4) Posicionamento Vertical Calculado: 12% acima do centro da boca */
+        /* mouthCenter(67.5vh) - (mouthHeight(65vh) * 0.12) = 59.7vh */
+        /* Usamos position absolute para garantir precisão matemática conforme o prompt */
+        .hero-content { 
+          position: absolute; 
+          z-index: 10; 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+          text-align: center; 
+          width: 100%; 
+          top: 59.7vh; 
+          transform: translateY(-50%); 
+          padding: 0 16px;
+        }
         
-        .cta-primary{ width:100%; height:52px; background:#0B0B0B; color:#FBFBFB; border-radius:8px; font-weight:600; font-size:16px; letter-spacing:1px; text-transform:uppercase; display:inline-flex; align-items:center; justify-content:center; border:0; cursor:pointer; box-shadow: 0 6px 18px rgba(11,11,11,0.12); transition: opacity 200ms ease-out; }
+        .hero-title { 
+          font-size: 36px; 
+          font-weight: 700; 
+          line-height: 1.02; 
+          letter-spacing: -0.02em; 
+          color: #FBFBFB; 
+          margin: 0; 
+          will-change: transform, opacity; 
+        }
+        
+        .hero-subtitle { 
+          font-size: 16px; 
+          font-weight: 500; 
+          line-height: 1.4; 
+          color: #E6E6E6; 
+          margin-top: 8px; /* Gap solicitado de 8px */
+          will-change: transform, opacity; 
+        }
+        
+        .hero-actions { 
+          margin-top: 24px; 
+          width: 100%; 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+        }
+        
+        .cta-primary { 
+          width: 100%; 
+          height: 52px; 
+          background: #0B0B0B; 
+          color: #FBFBFB; 
+          border-radius: 8px; 
+          font-weight: 600; 
+          font-size: 16px; 
+          letter-spacing: 1px; 
+          text-transform: uppercase; 
+          display: inline-flex; 
+          align-items: center; 
+          justify-content: center; 
+          border: 0; 
+          cursor: pointer; 
+          box-shadow: 0 6px 18px rgba(11,11,11,0.12); 
+          transition: opacity 200ms ease-out; 
+          position: relative;
+          z-index: 100;
+        }
+        
         .cta-primary:hover { opacity: 0.9; }
         
-        .cta-primary.is-sticky{ position: fixed !important; bottom: 16px; left:16px; width: calc(100% - 32px); height:48px !important; transform: scale(1.02); transition: transform 200ms ease-out, box-shadow 200ms ease-out; z-index:9999; }
+        .cta-primary.is-sticky { 
+          position: fixed !important; 
+          bottom: 16px; 
+          left: 16px; 
+          width: calc(100% - 32px); 
+          height: 48px !important; 
+          transform: scale(1.02); 
+          transition: transform 200ms ease-out, box-shadow 200ms ease-out; 
+          z-index: 9999; 
+        }
         
-        .cta-secondary-link{ display:inline-block; font-size:14px; font-weight:500; color: rgba(255,255,255,0.78); opacity:0.78; margin-top:16px; text-decoration:none; }
+        .cta-secondary-link { 
+          display: inline-block; 
+          font-size: 14px; 
+          font-weight: 500; 
+          color: rgba(255,255,255,0.78); 
+          opacity: 0.78; 
+          margin-top: 16px; 
+          text-decoration: none; 
+          transition: opacity 200ms ease-out; 
+        }
         .cta-secondary-link:hover { text-decoration: underline; opacity: 1; }
         
-        @media (prefers-reduced-motion: reduce){ .hero-mouth, .hero-title, .hero-subtitle { transition: none !important; transform:none !important; } }
+        @media (prefers-reduced-motion: reduce) { 
+          .hero-mouth, .hero-title, .hero-subtitle { 
+            transition: none !important; 
+            transform: none !important; 
+          } 
+        }
       `}</style>
 
             <section ref={sectionRef} className="hero">
@@ -141,7 +253,6 @@ export function Hero() {
                     loop
                     playsInline
                     poster="/para_vc/frame_000_delay-0.041s.png"
-                    aria-label="Close-up do sorriso restaurado em 3D"
                 >
                     <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
                     <source src="/luxury-hero/webm_1080_variantA.webm" type="video/webm" />
