@@ -11,9 +11,22 @@ if (typeof window !== "undefined") {
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const textLayerRef = useRef<HTMLDivElement>(null);
-    const ctaLayerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
+
+    // Animation state
+    const animatingRef = useRef(false);
+    const currentRotationRef = useRef(0);
+    const lastTriggerAtRef = useRef(0);
+    const touchStartYRef = useRef<number | null>(null);
+
+    // Config
+    const AUTO_DURATION = 1.0;
+    const USER_ROTATION = 360;
+    const USER_DURATION = 0.9;
+    const WHEEL_THRESHOLD = 60;
+    const MIN_TIME_BETWEEN = 600;
+    const PREFERRED_SCALE = 1.03;
+    const EASE = "power2.inOut";
 
     useEffect(() => {
         setMounted(true);
@@ -23,8 +36,9 @@ export function Hero() {
         if (!mounted || !videoRef.current || !sectionRef.current) return;
 
         const video = videoRef.current;
+        const model = video; // Use video as the model
 
-        // Signal Preloader that Hero is ready when video can play
+        // Signal Preloader that Hero is ready
         const handleCanPlay = () => {
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         };
@@ -35,23 +49,73 @@ export function Hero() {
             video.addEventListener("canplaythrough", handleCanPlay, { once: true });
         }
 
-        // GSAP Scroll Animation - Subtle cinematic zoom
-        const ctx = gsap.context(() => {
-            gsap.fromTo(video,
-                { scale: 1.0 },
-                {
-                    scale: 1.05,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                }
-            );
+        const userTrigger = () => {
+            const nowTime = performance.now();
+            if (animatingRef.current) return;
+            if (nowTime - lastTriggerAtRef.current < MIN_TIME_BETWEEN) return;
 
-            // Sticky CTA logic
+            lastTriggerAtRef.current = nowTime;
+            animatingRef.current = true;
+
+            const target = currentRotationRef.current + USER_ROTATION;
+
+            gsap.to(model, {
+                rotationY: target,
+                scale: PREFERRED_SCALE,
+                duration: USER_DURATION,
+                ease: EASE,
+                onUpdate: function () {
+                    const r = gsap.getProperty(model, "rotationY") as number;
+                    currentRotationRef.current = r;
+                },
+                onComplete: () => {
+                    currentRotationRef.current = target;
+                    gsap.to(model, { scale: 1, duration: 0.2 });
+                    animatingRef.current = false;
+                }
+            });
+        };
+
+        const onWheel = (e: WheelEvent) => {
+            if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
+            userTrigger();
+        };
+
+        const onTouchStart = (e: TouchEvent) => {
+            touchStartYRef.current = e.touches[0].clientY;
+        };
+
+        const onTouchEnd = (e: TouchEvent) => {
+            if (touchStartYRef.current === null) return;
+            const endY = e.changedTouches[0].clientY;
+            const delta = touchStartYRef.current - endY;
+            if (Math.abs(delta) > 30) {
+                userTrigger();
+            }
+            touchStartYRef.current = null;
+        };
+
+        // Initial Autoplay 360
+        animatingRef.current = true;
+        gsap.to(model, {
+            rotationY: 360,
+            scale: PREFERRED_SCALE,
+            duration: AUTO_DURATION,
+            ease: EASE,
+            onComplete: () => {
+                currentRotationRef.current = 360;
+                gsap.to(model, { scale: 1, duration: 0.2 });
+                animatingRef.current = false;
+
+                // Enable user controls after autoplay
+                window.addEventListener("wheel", onWheel, { passive: true });
+                window.addEventListener("touchstart", onTouchStart, { passive: true });
+                window.addEventListener("touchend", onTouchEnd, { passive: true });
+            }
+        });
+
+        // Sticky CTA logic
+        const ctx = gsap.context(() => {
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "40% top",
@@ -63,6 +127,9 @@ export function Hero() {
         return () => {
             ctx.revert();
             video.removeEventListener("canplaythrough", handleCanPlay);
+            window.removeEventListener("wheel", onWheel);
+            window.removeEventListener("touchstart", onTouchStart);
+            window.removeEventListener("touchend", onTouchEnd);
         };
     }, [mounted]);
 
@@ -79,6 +146,7 @@ export function Hero() {
                     overflow: hidden; 
                     margin: 0;
                     padding: 0;
+                    perspective: 1200px;
                 }
 
                 .hero-video-bg {
@@ -90,6 +158,8 @@ export function Hero() {
                     object-position: center;
                     z-index: 1;
                     display: block;
+                    will-change: transform;
+                    transform-origin: center center;
                 }
 
                 .hero-overlay { 
@@ -105,7 +175,6 @@ export function Hero() {
                     pointer-events: none; 
                 }
 
-                /* Layer 2 - Text Content */
                 .hero-text-layer { 
                     position: absolute; 
                     top: 32%; 
@@ -136,7 +205,6 @@ export function Hero() {
                     margin-top: 10px; 
                 }
 
-                /* Layer 3 - CTA Buttons */
                 .hero-cta-layer {
                     position: absolute;
                     bottom: 22%;
@@ -189,10 +257,9 @@ export function Hero() {
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                {/* Layer 1: Background Video */}
                 <video
                     ref={videoRef}
-                    className="hero-video-bg"
+                    className="hero-video-bg tooth-model"
                     autoPlay
                     loop
                     muted
@@ -204,14 +271,12 @@ export function Hero() {
 
                 <div className="hero-overlay"></div>
 
-                {/* Layer 2: Text */}
-                <div ref={textLayerRef} className="hero-text-layer">
+                <div className="hero-text-layer">
                     <h1 className="hero-title">Volte a sorrir com confiança.</h1>
                     <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
                 </div>
 
-                {/* Layer 3: Buttons */}
-                <div ref={ctaLayerRef} className="hero-cta-layer">
+                <div className="hero-cta-layer">
                     <button className="cta-primary">
                         Agendar Consulta
                     </button>
