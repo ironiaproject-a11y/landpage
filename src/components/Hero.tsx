@@ -8,11 +8,9 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const FRAME_COUNT = 192;
-
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const textLayerRef = useRef<HTMLDivElement>(null);
     const ctaLayerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
@@ -22,80 +20,36 @@ export function Hero() {
     }, []);
 
     useEffect(() => {
-        if (!mounted || !canvasRef.current || !sectionRef.current) return;
+        if (!mounted || !videoRef.current || !sectionRef.current) return;
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
-        if (!context) return;
+        const video = videoRef.current;
 
-        // Configuration
-        const currentFrame = (index: number) =>
-            `/para_vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.png`;
-
-        const images: HTMLImageElement[] = [];
-        const airbnb = { frame: 0 };
-
-        const render = () => {
-            const img = images[airbnb.frame];
-            if (!img || !img.complete) return;
-
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const imgWidth = img.width;
-            const imgHeight = img.height;
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
-            const newWidth = imgWidth * ratio;
-            const newHeight = imgHeight * ratio;
-            const x = (canvasWidth - newWidth) / 2;
-            const y = (canvasHeight - newHeight) / 2;
-
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
-            context.drawImage(img, x, y, newWidth, newHeight);
-        };
-
-        // Preload images
-        for (let i = 0; i < FRAME_COUNT; i++) {
-            const img = new Image();
-            img.onload = () => {
-                if (i === 0) {
-                    render();
-                    // Signal Preloader that Hero is ready
-                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-                }
-            };
-            img.src = currentFrame(i);
-            images.push(img);
-        }
-
-        // Handle pre-loaded case for first frame or failsafe
-        if (images[0]?.complete) {
-            render();
+        // Signal Preloader that Hero is ready when video can play
+        const handleCanPlay = () => {
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-        }
-
-        const updateSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            render();
         };
 
-        window.addEventListener("resize", updateSize);
-        updateSize();
+        if (video.readyState >= 3) {
+            handleCanPlay();
+        } else {
+            video.addEventListener("canplaythrough", handleCanPlay, { once: true });
+        }
 
-        // GSAP Scroll Animation
+        // GSAP Scroll Animation - Subtle cinematic zoom
         const ctx = gsap.context(() => {
-            gsap.to(airbnb, {
-                frame: FRAME_COUNT - 1,
-                snap: "frame",
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 0.5,
-                },
-                onUpdate: render,
-            });
+            gsap.fromTo(video,
+                { scale: 1.0 },
+                {
+                    scale: 1.05,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true,
+                    },
+                }
+            );
 
             // Sticky CTA logic
             ScrollTrigger.create({
@@ -108,7 +62,7 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            window.removeEventListener("resize", updateSize);
+            video.removeEventListener("canplaythrough", handleCanPlay);
         };
     }, [mounted]);
 
@@ -127,12 +81,13 @@ export function Hero() {
                     padding: 0;
                 }
 
-                .hero-canvas {
+                .hero-video-bg {
                     position: absolute;
-                    top: 0;
-                    left: 0;
+                    inset: 0;
                     width: 100%;
                     height: 100%;
+                    object-fit: cover;
+                    object-position: center;
                     z-index: 1;
                     display: block;
                 }
@@ -234,8 +189,18 @@ export function Hero() {
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                {/* Layer 1: Background Sequence */}
-                <canvas ref={canvasRef} className="hero-canvas" />
+                {/* Layer 1: Background Video */}
+                <video
+                    ref={videoRef}
+                    className="hero-video-bg"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster="/assets/images/clinic-interior.png"
+                >
+                    <source src="/hero-background.mp4" type="video/mp4" />
+                </video>
 
                 <div className="hero-overlay"></div>
 
