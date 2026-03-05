@@ -13,10 +13,23 @@ export function Hero() {
     const mouthRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
     const buttonsRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+
+        // Force play immediately and on interval to prevent "stuck" state
+        const attemptPlay = () => {
+            if (videoRef.current) {
+                videoRef.current.play().catch(error => {
+                    console.log("Autoplay prevented, retrying...", error);
+                });
+            }
+        };
+
+        attemptPlay();
+        const playInterval = setInterval(attemptPlay, 1000);
 
         const ctx = gsap.context(() => {
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -45,9 +58,6 @@ export function Hero() {
                     }
                 });
 
-                // Layer 3 - Buttons (Normal scroll: 1.0 speed)
-                // No specific GSAP transform needed as it follows normal flow
-
                 // Sticky CTA logic (at 40%)
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
@@ -58,7 +68,10 @@ export function Hero() {
             }
         }, sectionRef);
 
-        return () => ctx.revert();
+        return () => {
+            ctx.revert();
+            clearInterval(playInterval);
+        };
     }, []);
 
     if (!mounted) return null;
@@ -198,6 +211,7 @@ export function Hero() {
                 {/* Layer 1: Mouth */}
                 <div ref={mouthRef} className="hero-mouth-container">
                     <video
+                        ref={videoRef}
                         className="hero-mouth-video"
                         autoPlay
                         muted
@@ -224,7 +238,7 @@ export function Hero() {
                         Agendar Consulta
                     </button>
                     <a href="#results" className="cta-secondary-link">
-                        ver galeria de resultados →
+                        Galeria de Resultados
                     </a>
                 </div>
             </section>
