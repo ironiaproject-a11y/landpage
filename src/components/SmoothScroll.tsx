@@ -17,8 +17,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
-            wheelMultiplier: 1.1,
-            touchMultiplier: 1.8,
+            wheelMultiplier: 1.0,
+            touchMultiplier: 1.5,
         });
 
         // 1. Synchronize Lenis with ScrollTrigger

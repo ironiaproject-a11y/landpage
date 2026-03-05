@@ -222,7 +222,7 @@ export function Hero() {
                 trigger: sectionRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 1,
+                scrub: true,
                 onUpdate: (self) => {
                     if (sectionMounted.current) {
                         const progress = self.progress;
@@ -247,7 +247,7 @@ export function Hero() {
             // Parallax Logic inside a ticker for smoothness beyond scrub
             const tickerRender = () => {
                 const diff = targetProgress.current - smoothedProgress.current;
-                smoothedProgress.current += diff * 0.1; // Smooth interpolation
+                smoothedProgress.current += diff * 0.35; // Smooth interpolation - increased from 0.1 for responsiveness
 
                 const startFrame = 130;
                 const endFrame = 192;
@@ -334,7 +334,7 @@ export function Hero() {
                     {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
                     <div
                         ref={backlightRef}
-                        className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
+                        className="absolute w-[100vw] h-[100vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
                             background: 'radial-gradient(circle, rgba(255, 245, 220, 0.12) 0%, transparent 70%)',
                             opacity: 0.08
@@ -346,11 +346,11 @@ export function Hero() {
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
                             maskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
-                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
+                                ? 'radial-gradient(circle at center, black 25%, transparent 65%)'
+                                : 'radial-gradient(circle at center, black 15%, transparent 45%)',
                             WebkitMaskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
-                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
+                                ? 'radial-gradient(circle at center, black 25%, transparent 65%)'
+                                : 'radial-gradient(circle at center, black 15%, transparent 45%)',
                             filter: isFormOpen ? 'blur(20px)' : 'none',
                             transition: 'filter 1.2s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}

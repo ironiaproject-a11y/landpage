@@ -227,9 +227,9 @@ export function Contact() {
                         className="absolute inset-0 pointer-events-none z-20"
                     />
 
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/map:opacity-100 transition-opacity duration-500 pointer-events-none z-30">
-                        <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-[10px] font-bold uppercase tracking-widest text-white">
-                            Interação Ativada
+                    <div className="absolute bottom-6 right-6 opacity-0 group-hover/map:opacity-100 transition-opacity duration-500 pointer-events-none z-30">
+                        <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[9px] font-bold uppercase tracking-widest text-white shadow-premium-1">
+                            Mapa Interativo
                         </div>
                     </div>
                 </div>
