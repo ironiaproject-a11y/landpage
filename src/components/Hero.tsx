@@ -436,9 +436,9 @@ export function Hero() {
                     }
                 });
 
-                // Parallax of content (Layered depth) - 0.7x speed relative to scroll. Using y offset.
+                // Parallax of content (Layered depth) - 0.6x speed relative to scroll. Using y offset.
                 gsap.to(contentWrapperRef.current, {
-                    y: () => window.innerHeight * -0.7,
+                    y: () => window.innerHeight * -0.6,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -499,7 +499,7 @@ export function Hero() {
                 const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
 
                 if (titleRef.current) {
-                    const tracking = scrollProgress * 8; // Expansão orgânica do 'assinatura' até 8px
+                    const tracking = scrollProgress * 10; // Expansão orgânica do 'assinatura' de 0 a 10px
                     const scale = 1 + scrollProgress * 0.1; // "Câmera atravessando o texto"
                     const opacity = Math.max(0, 1 - Math.pow(scrollProgress, 1.2) * 2);
 
@@ -622,7 +622,7 @@ export function Hero() {
                 <div
                     ref={contentWrapperRef}
                     className="absolute inset-0 z-[3] w-full flex flex-col items-center text-center pointer-events-none"
-                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: '15vh', paddingBottom: '12vh' }}
+                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: isMobile ? '8vh' : '15vh', paddingBottom: isMobile ? '6vh' : '12vh' }}
                 >
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
@@ -679,9 +679,9 @@ export function Hero() {
                             <span
                                 className="uppercase opacity-0 hero-title-line-1 font-sans font-semibold"
                                 style={{
-                                    fontSize: '14px',
-                                    letterSpacing: '5px',
-                                    opacity: 0.7
+                                    fontSize: '11px',
+                                    letterSpacing: '8px',
+                                    opacity: 0.6
                                 }}
                             >SEU SORRISO,</span>
                             <span
@@ -866,7 +866,7 @@ export function Hero() {
                                                         value={formData.phone}
                                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                                         placeholder="(11) 99999-9999"
-                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-sans tracking-widest text-lg focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
+                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display tracking-widest text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
                                                     />
                                                 </div>
                                             </div>
@@ -979,8 +979,8 @@ export function Hero() {
                                                 </svg>
                                             </div>
                                             <div className="flex flex-col gap-3">
-                                                <h3 className="font-display text-3xl md:text-4xl text-[#F5F5DC] font-light leading-tight">
-                                                    Em breve,<br />sua nova assinatura.
+                                                <h3 className="font-display text-3xl md:text-3xl text-[#F5F5DC] font-light leading-tight">
+                                                    Em breve,<br />sua nova assinatura visual começa.
                                                 </h3>
                                                 <p className="text-[#F5F5DC]/50 font-sans text-[15px] max-w-[280px] mx-auto leading-relaxed">
                                                     Nossa Concierge entrará em contato via WhatsApp para alinhar os últimos detalhes.
