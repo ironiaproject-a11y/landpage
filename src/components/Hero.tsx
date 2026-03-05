@@ -386,15 +386,15 @@ export function Hero() {
 
                         tl.fromTo([".hero-title-line-1", ".hero-title-line-2"],
                             { y: 60, opacity: 0, filter: "blur(12px)" },
-                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power3.out" }, "-=0.5"
+                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power4.out" }, "-=0.5"
                         )
                             .fromTo(descriptionRef.current,
                                 { y: 20, opacity: 0, filter: "blur(8px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "power3.out" }, "-=1.2"
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "power4.out" }, "-=1.2"
                             )
                             .fromTo(actionsRef.current,
                                 { y: 15, opacity: 0 },
-                                { y: 0, opacity: 1, duration: 1.2, delay: 0.8, ease: "power3.out" }, "-=1.0"
+                                { y: 0, opacity: 1, duration: 1.2, delay: 0.8, ease: "power4.out" }, "-=1.0"
                             );
                     }
                 };
@@ -665,20 +665,16 @@ export function Hero() {
                             }}
                         >
                             <span
-                                className="uppercase opacity-0 hero-title-line-1"
+                                className="uppercase opacity-0 hero-title-line-1 font-sans font-semibold"
                                 style={{
-                                    fontFamily: 'sans-serif',
                                     fontSize: '14px',
-                                    fontWeight: '400',
                                     letterSpacing: '5px',
                                     opacity: 0.7
                                 }}
                             >SEU SORRISO,</span>
                             <span
-                                className="italic lowercase opacity-0 hero-title-line-2"
+                                className="italic lowercase opacity-0 hero-title-line-2 font-display font-light"
                                 style={{
-                                    fontFamily: 'var(--font-editorial), "Didone", serif',
-                                    fontWeight: 300,
                                     fontSize: isMobile ? '42px' : '8rem',
                                     marginTop: '12px'
                                 }}
@@ -690,9 +686,8 @@ export function Hero() {
                         <div className="overflow-hidden w-full transform mb-16 mt-auto">
                             <p
                                 ref={descriptionRef}
-                                className="text-center opacity-0"
+                                className="text-center opacity-0 font-sans"
                                 style={{
-                                    fontFamily: 'sans-serif',
                                     fontSize: isMobile ? '15px' : '16px',
                                     color: '#F5F5DC',
                                     opacity: 0.8,
