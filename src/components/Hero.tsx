@@ -125,8 +125,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Aggressively reduced scale to push the dente into the deep background
-            const DRAW_SCALE = isMobile ? 0.70 : 0.60;
+            // Reduced scale to minimize competition with title/CTA
+            const DRAW_SCALE = isMobile ? 0.60 : 0.50;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
@@ -177,9 +177,10 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                     width: '100% !important',
                     height: '100% !important',
                     objectFit: 'cover',
-                    transform: `scale(${isMobile ? 1.0 : 0.98}) translateZ(0)`, // Removed mobile reduction to prevent gaps
+                    transform: `scale(${isMobile ? 1.0 : 0.98}) translateZ(0)`,
                     willChange: 'transform, opacity, filter',
-                    transformStyle: 'preserve-3d', filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
+                    transformStyle: 'preserve-3d',
+                    filter: `brightness(${isMobile ? 0.9 : 0.85}) contrast(1.1) saturate(1.0)`, // Reduced initial brightness
                     backfaceVisibility: 'hidden',
                     mixBlendMode: 'screen',
                     backgroundColor: 'transparent',
@@ -312,7 +313,6 @@ export function Hero() {
     const actionsRef = useRef<HTMLDivElement>(null);
     const contentWrapperRef = useRef<HTMLDivElement>(null);
     const videoWrapperRef = useRef<HTMLDivElement>(null);
-    const progressLineRef = useRef<HTMLDivElement>(null);
     const scrollHintRef = useRef<HTMLDivElement>(null);
     const overlayDarkRef = useRef<HTMLDivElement>(null);
     const heroVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -463,10 +463,14 @@ export function Hero() {
                     onUpdate: (self) => {
                         targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
 
-                        // Scroll Cinemático: Texto sobe e comprime levemente (tensão), sumindo de forma mais elegante
-                        frameProxy.current.letterSpacing = -(self.progress * 3);
-                        frameProxy.current.textY = -(self.progress * 150);
-                        frameProxy.current.opacity = 1 - Math.pow(self.progress, 1.5) * 1.5;
+                        // Scroll Logic: Only start frame sequence after passing CTAs (~30% scroll)
+                        const sequenceThreshold = 0.3;
+                        if (self.progress < sequenceThreshold) {
+                            targetProgress.current = startFrame;
+                        } else {
+                            const adjustedProgress = (self.progress - sequenceThreshold) / (1 - sequenceThreshold);
+                            targetProgress.current = startFrame + (endFrame - startFrame) * adjustedProgress;
+                        }
 
                         if (!isAnimating.current) {
                             isAnimating.current = true;
@@ -541,6 +545,14 @@ export function Hero() {
 
                 if (introRef.current) {
                     introRef.current.draw(smoothedProgress.current);
+                }
+
+                // Dynamically update canvas filter based on scroll for hierarchy focus
+                const canvas = (introRef.current as any)?.current?.canvas; // Adjust if necessary to target canvas
+                if (canvas) {
+                    const brightness = Math.min(1.1, 0.85 + scrollProgress * 0.4);
+                    const blur = Math.max(0, scrollProgress * 4);
+                    gsap.set(canvas, { filter: `brightness(${brightness}) blur(${blur}px)` });
                 }
 
                 if (Math.abs(diff) < 0.0001) {
@@ -624,7 +636,7 @@ export function Hero() {
                 <div
                     ref={contentWrapperRef}
                     className="absolute inset-0 z-[3] w-full flex flex-col items-center text-center pointer-events-none"
-                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: isMobile ? '10vh' : '15vh', paddingBottom: isMobile ? '8vh' : '15vh' }}
+                    style={{ padding: '0 6vw', justifyContent: 'center', paddingTop: isMobile ? '12vh' : '15vh' }}
                 >
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
@@ -665,7 +677,7 @@ export function Hero() {
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] flex flex-col items-center relative w-full`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] flex flex-col items-center relative w-full mb-12`}
                             style={{
                                 color: 'white',
                                 margin: '0 auto',
@@ -680,7 +692,7 @@ export function Hero() {
                                     fontSize: '14px',
                                     fontWeight: 500,
                                     letterSpacing: '8px',
-                                    opacity: 0, // Controlled by reveal logic
+                                    opacity: 0,
                                     color: 'white'
                                 }}
                             >SEU SORRISO,</span>
@@ -689,7 +701,7 @@ export function Hero() {
                                 style={{
                                     fontSize: isMobile ? '48px' : '64px',
                                     marginTop: '12px',
-                                    opacity: 0, // Controlled by reveal logic
+                                    opacity: 0,
                                     textTransform: 'lowercase'
                                 }}
                             >
@@ -718,7 +730,7 @@ export function Hero() {
                             alignItems: 'center',
                             width: '100%'
                         }}>
-                            <div className="overflow-hidden w-full transform mb-12 mt-auto">
+                            <div className="overflow-hidden w-full transform mb-16">
                                 <p
                                     ref={descriptionRef}
                                     className="text-center opacity-0 font-sans"
@@ -735,8 +747,7 @@ export function Hero() {
                                 </p>
                             </div>
 
-
-                            <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4" style={{ paddingBottom: '2vh' }}>
+                            <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-6 mt-4">
                                 <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                     <m.button
                                         onClick={() => setIsFormOpen(true)}
@@ -744,20 +755,21 @@ export function Hero() {
                                             y: -2,
                                             scale: 1.05,
                                             background: "#FFFFFF",
-                                            boxShadow: "0 10px 40px rgba(245, 245, 220, 0.2)"
+                                            boxShadow: "0 15px 45px rgba(245, 245, 220, 0.3)"
                                         }}
                                         whileTap={{ scale: 0.98 }}
                                         style={{
-                                            padding: '1.2rem 3rem',
+                                            padding: '1.4rem 4rem',
                                             borderRadius: '9999px',
                                             background: '#F5F5DC',
                                             color: '#121212',
                                             fontWeight: 600,
-                                            fontSize: '14px',
-                                            letterSpacing: '0.05em',
+                                            fontSize: '15px',
+                                            letterSpacing: '0.08em',
                                             width: isMobile ? '100%' : 'auto',
                                             transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-                                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+                                            boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+                                            textTransform: 'uppercase'
                                         }}
                                         className="btn-primary-reconstructed flex items-center justify-center"
                                     >
@@ -785,7 +797,8 @@ export function Hero() {
                                             fontSize: '14px',
                                             letterSpacing: '0.05em',
                                             width: isMobile ? '100%' : 'auto',
-                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)'
+                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                                            textTransform: 'uppercase'
                                         }}
                                         className="btn-ghost-reconstructed flex items-center justify-center"
                                     >
