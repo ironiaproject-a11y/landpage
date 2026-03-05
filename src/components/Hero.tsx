@@ -92,17 +92,17 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Scaled precisely to 65% of height as per instruction
-            const DRAW_SCALE = 0.65;
+            // Scaled precisely to cover the entire container (1.0) for an immersive feel
+            const DRAW_SCALE = 1.0;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
             if (canvasRatio > imgRatio) {
-                // canvas mais largo → escalar pela largura
+                // canvas is wider → scale by width to cover
                 drawWidth = canvasWidth * DRAW_SCALE;
                 drawHeight = drawWidth / imgRatio;
             } else {
-                // canvas mais alto → escalar pela altura
+                // canvas is taller → scale by height to cover
                 drawHeight = canvasHeight * DRAW_SCALE;
                 drawWidth = drawHeight * imgRatio;
             }
@@ -177,7 +177,7 @@ export function Hero() {
         if (!mounted || !canStartSequence) return;
 
         const ctx = gsap.context(() => {
-            // 1. INTRO TIMELINE (Fixed Frames: 0 -> 120)
+            // 1. INTRO TIMELINE (Fixed Frames: 0 -> 130)
             const introTl = gsap.timeline({
                 onUpdate: () => {
                     const progress = introTl.progress();
@@ -189,33 +189,25 @@ export function Hero() {
                 }
             });
 
+            // Intro sequence duration
             introTl.to({}, { duration: 3, ease: "none" });
 
-            // Coordinated reveal triggered during intro
-            const revealThreshold = TOTAL_FRAMES * (isMobile ? 0.35 : 0.85);
-            let revealed = false;
-
-            const checkReveal = (currentFrame: number) => {
-                if (!revealed && currentFrame >= revealThreshold) {
-                    revealed = true;
-                    const tl = gsap.timeline({
-                        defaults: { ease: "power4.out", duration: 1.8 }
-                    });
-
-                    tl.fromTo(titleRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }
-                    )
-                        .fromTo(descriptionRef.current,
-                            { y: 20, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 1.4, ease: "power4.out" }, "-=1.0"
-                        )
-                        .fromTo(actionsRef.current,
-                            { y: 15, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: "power4.out" }, "-=1.0"
-                        );
-                }
-            };
+            // Text reveal as part of the intro (so it doesn't conflict with parallax)
+            introTl.fromTo(titleRef.current,
+                { y: 40, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1.4, ease: "power3.out" },
+                1.0
+            )
+                .fromTo(descriptionRef.current,
+                    { y: 20, opacity: 0 },
+                    { y: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
+                    1.3
+                )
+                .fromTo(actionsRef.current,
+                    { y: 20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
+                    1.6
+                );
 
             // 2. SCROLL TRIGGER (Drives frame 130 -> 192 and Parallax)
             ScrollTrigger.create({
@@ -238,8 +230,6 @@ export function Hero() {
                         } else {
                             if (ctaSticky) setCtaSticky(false);
                         }
-
-                        checkReveal(targetProgress.current);
                     }
                 }
             });
@@ -247,51 +237,49 @@ export function Hero() {
             // Parallax Logic inside a ticker for smoothness beyond scrub
             const tickerRender = () => {
                 const diff = targetProgress.current - smoothedProgress.current;
-                smoothedProgress.current += diff * 0.35; // Smooth interpolation - increased from 0.1 for responsiveness
+                smoothedProgress.current += diff * 0.25; // Smooth interpolation
 
                 const startFrame = 130;
                 const endFrame = 192;
-                const scrollProgress = (smoothedProgress.current - startFrame) / (endFrame - startFrame);
+                const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
                 const scrollValue = scrollProgress * (typeof window !== 'undefined' ? window.innerHeight : 0);
 
-                if (titleRef.current) {
-                    const titleY = !shouldReduceMotion ? Math.max(-60, scrollValue * -0.9) : 0;
-                    gsap.set(titleRef.current, {
-                        y: titleY,
-                        opacity: 1,
-                        force3D: true
-                    });
-                }
-
-                if (descriptionRef.current) {
-                    const descY = !shouldReduceMotion ? Math.max(-60, scrollValue * -1.0) : 0;
-                    gsap.set(descriptionRef.current, {
-                        y: descY,
-                        opacity: 1,
-                        force3D: true
-                    });
-                }
-
                 if (introRef.current) {
-                    const currentMouthScale = !shouldReduceMotion ? (1 + Math.min(0.03, (scrollProgress / 0.4) * 0.03)) : 1;
-                    const mouthY = !shouldReduceMotion ? (scrollValue * 0.4) : 0;
+                    // Make the video canvas scale/transform WITH the scroll, as requested
+                    const currentMouthScale = !shouldReduceMotion ? (1 + scrollProgress * 0.15) : 1;
+                    const mouthY = !shouldReduceMotion ? (scrollValue * 0.15) : 0; // Much subtler parallax down so it doesn't leave margin
 
                     const canvas = introRef.current.getCanvas();
-                    if (canvas) {
+                    if (canvas && introTl.progress() > 0.99) { // Only apply parallax after intro finishes
                         gsap.set(canvas, {
                             y: mouthY,
                             scale: currentMouthScale,
-                            filter: 'brightness(0.92)',
                             force3D: true
                         });
                     }
+                }
+
+                if (titleRef.current && introTl.progress() > 0.99) {
+                    const titleY = !shouldReduceMotion ? (scrollValue * -0.6) : 0;
+                    gsap.set(titleRef.current, {
+                        y: titleY,
+                        force3D: true
+                    });
+                }
+
+                if (descriptionRef.current && introTl.progress() > 0.99) {
+                    const descY = !shouldReduceMotion ? (scrollValue * -0.8) : 0;
+                    gsap.set(descriptionRef.current, {
+                        y: descY,
+                        force3D: true
+                    });
                 }
 
                 if (introRef.current) {
                     introRef.current.draw(smoothedProgress.current);
                 }
 
-                if (Math.abs(diff) < 0.0001) {
+                if (Math.abs(diff) < 0.001) {
                     smoothedProgress.current = targetProgress.current;
                     isAnimating.current = false;
                 }
@@ -309,7 +297,7 @@ export function Hero() {
             ctx.revert();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mounted, canStartSequence]);
+    }, [mounted, canStartSequence, ctaSticky]);
 
     return (
         <section
