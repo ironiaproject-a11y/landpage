@@ -43,7 +43,11 @@ export function Hero() {
             const canvasHeight = canvas.height;
             const imgWidth = img.width;
             const imgHeight = img.height;
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+
+            // Seamless Proportion: Use a slightly larger ratio than standard cover
+            // to ensure edges stay hidden during 3D tilt
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 1.02;
+
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
             const x = (canvasWidth - newWidth) / 2;
@@ -71,24 +75,23 @@ export function Hero() {
 
         preloadImages();
 
-        // Handle pre-loaded case for first frame or failsafe
         if (imagesRef.current[0]?.complete) {
             render();
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         }
 
         const updateSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // Set canvas size slightly larger than window to hide tilt edges
+            canvas.width = window.innerWidth * 1.05;
+            canvas.height = window.innerHeight * 1.05;
             render();
         };
 
         window.addEventListener("resize", updateSize);
         updateSize();
 
-        // GSAP Scroll Animation - Section Pinning + 3D Transformation
+        // GSAP Scroll Animation
         const ctx = gsap.context(() => {
-            // Pin the hero section during the scrub
             gsap.to(airbnbRef.current, {
                 frame: FRAME_COUNT - 1,
                 snap: "frame",
@@ -96,15 +99,14 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%", // Longer distance for more controlled scrub
+                    end: "+=200%",
                     pin: true,
-                    scrub: 0.05, // Tight responsiveness
+                    scrub: 0.05,
                     anticipatePin: 1
                 },
                 onUpdate: render,
             });
 
-            // Sticky CTA logic - Adjust trigger points due to pinning
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "10% top",
@@ -129,10 +131,10 @@ export function Hero() {
                     height: 100vh; 
                     width: 100%; 
                     background: #000; 
-                    overflow: visible; /* Required for pinning */
+                    overflow: visible; 
                     margin: 0;
                     padding: 0;
-                    perspective: 1500px;
+                    perspective: 2000px;
                 }
 
                 .hero-inner-container {
@@ -148,29 +150,28 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
+                    /* Extend canvas beyond viewport to hide borders during tilt */
+                    top: -2.5%;
+                    left: -2.5%;
+                    width: 105%;
+                    height: 105%;
                     display: block;
                     z-index: 1;
-                    /* Perspective refinement: scale down and tilt */
-                    transform: scale(0.9) rotateX(2deg);
+                    /* Fluid cinematic depth without revealing edges */
+                    transform: rotateX(2deg) rotateY(0deg);
                     transform-origin: center center;
-                    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-                }
-
-                .hero:hover .hero-canvas {
-                    transform: scale(0.92) rotateX(1deg);
+                    filter: brightness(0.9) contrast(1.1);
+                    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
                 }
 
                 .hero-overlay { 
                     position: absolute; 
                     inset: 0; 
-                    background: linear-gradient(
-                        to bottom,
-                        rgba(0,0,0,0.65) 0%,
-                        rgba(0,0,0,0.45) 40%,
-                        rgba(0,0,0,0.1) 70%
+                    background: radial-gradient(
+                        circle at center,
+                        rgba(0,0,0,0) 0%,
+                        rgba(0,0,0,0.2) 50%,
+                        rgba(0,0,0,0.7) 100%
                     ); 
                     z-index: 2; 
                     pointer-events: none; 
@@ -196,7 +197,7 @@ export function Hero() {
                     margin: 0; 
                     max-width: 440px;
                     margin: 0 auto;
-                    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
                 }
 
                 .hero-subtitle { 
@@ -235,12 +236,6 @@ export function Hero() {
                     justify-content: center; 
                     border: 1px solid rgba(255,255,255,0.1); 
                     cursor: pointer; 
-                    transition: transform 0.3s ease, background 0.3s ease;
-                }
-
-                .cta-primary:hover {
-                    transform: translateY(-2px);
-                    background: #151515;
                 }
 
                 .cta-primary.is-sticky { 
@@ -261,11 +256,6 @@ export function Hero() {
                     margin-top: 18px; 
                     text-decoration: none; 
                     font-weight: 400;
-                    transition: opacity 0.3s ease;
-                }
-
-                .cta-secondary-link:hover {
-                    opacity: 1;
                 }
             `}</style>
 
