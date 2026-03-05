@@ -10,19 +10,19 @@ if (typeof window !== "undefined") {
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const mouthRef = useRef<HTMLVideoElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+    const mouthRef = useRef<HTMLDivElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
+    const buttonsRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
 
         const ctx = gsap.context(() => {
-            // SCROLL CONTROLLED PARALLAX (Only interaction)
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-
-                // Mouth: Scale 1.03 on scroll
+                // Layer 1 - Mouth (Medium Parallax: 0.6 speed)
                 gsap.to(mouthRef.current, {
+                    y: -150,
                     scale: 1.03,
                     ease: "none",
                     scrollTrigger: {
@@ -33,9 +33,9 @@ export function Hero() {
                     }
                 });
 
-                // Text Content: Move up 60px
-                gsap.to(contentRef.current, {
-                    y: -60,
+                // Layer 2 - Text (Slow Parallax: 0.2 speed)
+                gsap.to(textRef.current, {
+                    y: -50,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -45,7 +45,10 @@ export function Hero() {
                     }
                 });
 
-                // Sticky CTA (at 40%)
+                // Layer 3 - Buttons (Normal scroll: 1.0 speed)
+                // No specific GSAP transform needed as it follows normal flow
+
+                // Sticky CTA logic (at 40%)
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
                     start: "40% top",
@@ -69,21 +72,29 @@ export function Hero() {
                     width: 100%; 
                     background: #000; 
                     overflow: hidden; 
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    margin: 0;
+                    padding: 0;
                 }
 
-                .hero-mouth { 
+                /* Layer 1 - Mouth */
+                .hero-mouth-container { 
                     position: absolute; 
                     top: 50%; 
                     left: 50%; 
                     transform: translate(-50%, -50%); 
+                    width: 100%;
                     height: 70vh; 
-                    width: auto; 
                     z-index: 1; 
-                    object-fit: cover; 
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     pointer-events: none;
+                }
+
+                .hero-mouth-video {
+                    height: 100%;
+                    width: auto;
+                    object-fit: cover;
                     will-change: transform;
                 }
 
@@ -100,24 +111,27 @@ export function Hero() {
                     pointer-events: none; 
                 }
 
-                .hero-content { 
-                    position: relative; 
-                    z-index: 3; 
-                    max-width: 420px; 
+                /* Layer 2 - Text Content */
+                .hero-text-layer { 
+                    position: absolute; 
+                    top: 32%; 
+                    left: 0;
                     width: 100%;
+                    z-index: 3; 
                     text-align: center; 
                     padding: 0 20px;
-                    margin: auto;
                     will-change: transform;
                 }
 
                 .hero-title { 
-                    font-size: 34px; 
+                    font-size: 36px; 
                     font-weight: 600; 
                     line-height: 1.1; 
                     letter-spacing: -0.02em; 
                     color: #FBFBFB; 
                     margin: 0; 
+                    max-width: 420px;
+                    margin: 0 auto;
                 }
 
                 .hero-subtitle { 
@@ -128,16 +142,22 @@ export function Hero() {
                     margin-top: 10px; 
                 }
 
-                .cta-actions {
-                    margin-top: 24px;
+                /* Layer 3 - CTA Buttons */
+                .hero-cta-layer {
+                    position: absolute;
+                    bottom: 22%;
+                    left: 0;
+                    width: 100%;
+                    z-index: 4;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    width: 100%;
+                    padding: 0 20px;
                 }
 
                 .cta-primary { 
                     width: 100%; 
+                    max-width: 420px;
                     height: 50px; 
                     background: #0B0B0B; 
                     color: #FBFBFB; 
@@ -151,7 +171,6 @@ export function Hero() {
                     justify-content: center; 
                     border: 1px solid rgba(255,255,255,0.1); 
                     cursor: pointer; 
-                    transition: transform 0.3s ease;
                 }
 
                 .cta-primary.is-sticky { 
@@ -159,6 +178,7 @@ export function Hero() {
                     bottom: 20px; 
                     left: 20px; 
                     width: calc(100% - 40px); 
+                    max-width: none;
                     z-index: 9999; 
                     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                 }
@@ -170,39 +190,42 @@ export function Hero() {
                     opacity: 0.75; 
                     margin-top: 16px; 
                     text-decoration: none; 
-                    transition: opacity 0.3s ease;
+                    font-weight: 400;
                 }
-                .cta-secondary-link:hover { opacity: 1; }
             `}</style>
 
             <section ref={sectionRef} className="hero">
-                <video
-                    ref={mouthRef}
-                    className="hero-mouth"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    poster="/para_vc/frame_000_delay-0.041s.png"
-                >
-                    <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
-                    <source src="/luxury-hero/webm_1080_variantA.webm" type="video/webm" />
-                </video>
+                {/* Layer 1: Mouth */}
+                <div ref={mouthRef} className="hero-mouth-container">
+                    <video
+                        className="hero-mouth-video"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster="/para_vc/frame_000_delay-0.041s.png"
+                    >
+                        <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
+                        <source src="/luxury-hero/webm_1080_variantA.webm" type="video/webm" />
+                    </video>
+                </div>
 
                 <div className="hero-overlay"></div>
 
-                <div ref={contentRef} className="hero-content">
+                {/* Layer 2: Text */}
+                <div ref={textRef} className="hero-text-layer">
                     <h1 className="hero-title">Volte a sorrir com confiança.</h1>
                     <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
+                </div>
 
-                    <div className="cta-actions">
-                        <button className="cta-primary">
-                            AGENDAR CONSULTA
-                        </button>
-                        <a href="#results" className="cta-secondary-link">
-                            ver galeria de resultados →
-                        </a>
-                    </div>
+                {/* Layer 3: Buttons */}
+                <div ref={buttonsRef} className="hero-cta-layer">
+                    <button className="cta-primary">
+                        Agendar Consulta
+                    </button>
+                    <a href="#results" className="cta-secondary-link">
+                        ver galeria de resultados →
+                    </a>
                 </div>
             </section>
         </>
