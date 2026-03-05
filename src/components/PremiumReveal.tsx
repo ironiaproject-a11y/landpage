@@ -76,33 +76,6 @@ export function PremiumReveal({
                 {children}
             </m.div>
 
-            {/* Subtle Line Accent revealed for masks */}
-            {type === "mask" && (
-                <m.div
-                    initial={
-                        direction === "left" ? { left: 0, width: "100%" } :
-                            direction === "right" ? { right: 0, width: "100%" } :
-                                direction === "top" ? { top: 0, height: "100%" } :
-                                    { bottom: 0, height: "100%" }
-                    }
-                    whileInView={
-                        direction === "left" ? { left: "100%", width: "0%" } :
-                            direction === "right" ? { right: "100%", width: "0%" } :
-                                direction === "top" ? { top: "100%", height: "0%" } :
-                                    { bottom: "100%", height: "0%" }
-                    }
-                    viewport={{ once, margin: "-10%" }}
-                    transition={{
-                        duration,
-                        delay,
-                        ease: [0.22, 1, 0.36, 1]
-                    }}
-                    className={cn(
-                        "absolute z-20 bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent opacity-30",
-                        (direction === "left" || direction === "right") ? "top-0 bottom-0 w-[1px]" : "left-0 right-0 h-[1px]"
-                    )}
-                />
-            )}
         </div>
     );
 }

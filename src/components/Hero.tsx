@@ -384,25 +384,17 @@ export function Hero() {
                             defaults: { ease: "power4.out", duration: 1.4 }
                         });
 
-                        tl.fromTo(titleRef.current,
-                            { y: 30, opacity: 0 },
-                            { y: 0, opacity: 1 }, "-=0.9"
+                        tl.fromTo([".hero-title-line-1", ".hero-title-line-2"],
+                            { y: 40, opacity: 0, filter: "blur(12px)" },
+                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power4.out" }, "-=0.5"
                         )
-                            .fromTo(".hero-title-line-1",
-                                { y: 20, opacity: 0 },
-                                { y: 0, opacity: 1 }, "-=1.1"
-                            )
-                            .fromTo(".hero-title-line-2",
-                                { y: 15, opacity: 0 },
-                                { y: 0, opacity: 1 }, "-=1.1"
-                            )
                             .fromTo(descriptionRef.current,
-                                { y: 15, opacity: 0, filter: "blur(4px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.1 }, "-=1.0"
+                                { y: 20, opacity: 0, filter: "blur(8px)" },
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4 }, "-=1.2"
                             )
                             .fromTo(actionsRef.current,
-                                { y: 10, opacity: 0, scale: 0.98 },
-                                { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.7"
+                                { y: 15, opacity: 0 },
+                                { y: 0, opacity: 1, duration: 1.2 }, "-=1.0"
                             );
                     }
                 };
@@ -663,11 +655,11 @@ export function Hero() {
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-sans text-center will-change-transform leading-[1.2] mb-4 transform -translate-y-[15px] !opacity-100 flex flex-col items-center relative`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-sans text-center will-change-transform leading-[1.05] mb-8 flex flex-col items-center relative`}
                             style={{
                                 textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                                fontSize: isMobile ? '4rem' : '6rem',
-                                letterSpacing: '-0.02em',
+                                fontSize: isMobile ? 'clamp(2.8rem, 12vw, 4rem)' : '8rem',
+                                letterSpacing: '-0.03em',
                                 color: 'white'
                             }}
                         >
@@ -682,14 +674,15 @@ export function Hero() {
                             </span>
                         </h1>
 
-                        <div className="overflow-hidden w-full transform mb-12">
+                        <div className="overflow-hidden w-full transform mb-16">
                             <p
                                 ref={descriptionRef}
-                                className="font-normal text-center text-[#D1D5DB] leading-[1.4] opacity-0"
+                                className="font-normal text-center text-[#D1D5DB] leading-[1.6] opacity-0"
                                 style={{
-                                    fontSize: '1.5rem',
-                                    maxWidth: isMobile ? 'min(90vw, 450px)' : '800px',
-                                    margin: '1rem auto 0',
+                                    fontSize: isMobile ? '15px' : '16px',
+                                    maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
+                                    margin: '0 auto',
+                                    letterSpacing: '0.02em'
                                 }}
                             >
                                 Segurança clínica. Resultado natural.

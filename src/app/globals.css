@@ -842,33 +842,15 @@ section {
    ANIMATION: PREMIUM GRADIENT REVEAL
    =================================== */
 
-@property --reveal {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 0%;
-}
-
 .hero-title {
   display: inline-block;
-  --reveal: 0%;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      transparent var(--reveal),
-      #FBFBF9 var(--reveal),
-      #FBFBF9 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  transition: --reveal 1.2s cubic-bezier(.22, .9, .32, 1), color 0.1s linear 0.8s, -webkit-text-fill-color 0.1s linear 0.8s;
-  will-change: --reveal;
+  opacity: 0;
+  will-change: transform, opacity, filter;
 }
 
-/* Quando entrar */
+/* Base state for reveal handled by GSAP */
 .hero-title.in-view {
-  --reveal: 100%;
-  color: #FBFBF9 !important;
-  -webkit-text-fill-color: #FBFBF9 !important;
+  opacity: 1;
 }
 
 .light-sweep {
