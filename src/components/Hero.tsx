@@ -321,6 +321,9 @@ export function Hero() {
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [introFinished, setIntroFinished] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [formStep, setFormStep] = useState(1);
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', treatment: '', date: '', time: '' });
     const introRef = useRef<{ draw: (idx: number) => void } | null>(null);
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
@@ -573,6 +576,10 @@ export function Hero() {
                 <div
                     ref={videoWrapperRef}
                     className="absolute inset-0 z-0 origin-center will-change-transform flex items-center justify-center bg-black"
+                    style={{
+                        filter: isFormOpen ? 'brightness(0.3)' : 'none',
+                        transition: 'filter 1.2s cubic-bezier(0.22, 1, 0.36, 1)'
+                    }}
                 >
                     {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
                     <div
@@ -593,7 +600,9 @@ export function Hero() {
                                 : 'radial-gradient(circle at center, black 10%, transparent 55%)',
                             WebkitMaskImage: isMobile
                                 ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
-                                : 'radial-gradient(circle at center, black 10%, transparent 55%)'
+                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
+                            filter: isFormOpen ? 'blur(20px)' : 'none',
+                            transition: 'filter 1.2s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}
                     >
                         {/* Frame sequence — always visible, driven by intro then scroll */}
@@ -662,6 +671,9 @@ export function Hero() {
                                 backdropFilter: 'blur(2px)',
                                 WebkitBackdropFilter: 'blur(2px)',
                                 margin: '0 auto',
+                                pointerEvents: isFormOpen ? 'none' : 'auto',
+                                transition: 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+                                transform: isFormOpen ? (isMobile ? 'translateY(-10vh) scale(0.85)' : 'translateY(-15vh) scale(0.8)') : 'translateY(0) scale(1)',
                             }}
                         >
                             <span
@@ -673,93 +685,318 @@ export function Hero() {
                                 }}
                             >SEU SORRISO,</span>
                             <span
-                                className="italic lowercase opacity-0 hero-title-line-2 font-display font-light"
+                                className="italic lowercase opacity-0 hero-title-line-2 font-display font-light flex items-center justify-center"
                                 style={{
                                     fontSize: isMobile ? '42px' : '8rem',
                                     marginTop: '12px'
                                 }}
                             >
-                                sua assinatura.
+                                <AnimatePresence mode="wait">
+                                    <m.span
+                                        key={isFormOpen ? "consulta" : "assinatura"}
+                                        initial={{ opacity: 0, y: 15, filter: 'blur(8px)' }}
+                                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                        exit={{ opacity: 0, y: -15, filter: 'blur(8px)' }}
+                                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                        style={{ display: 'inline-block' }}
+                                    >
+                                        {isFormOpen ? "sua consulta." : "sua assinatura."}
+                                    </m.span>
+                                </AnimatePresence>
                             </span>
                         </h1>
 
-                        <div className="overflow-hidden w-full transform mb-16 mt-auto">
-                            <p
-                                ref={descriptionRef}
-                                className="text-center opacity-0 font-sans"
-                                style={{
-                                    fontSize: isMobile ? '15px' : '16px',
-                                    color: '#F5F5DC',
-                                    opacity: 0.8,
-                                    maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
-                                    margin: '0 auto',
-                                    letterSpacing: '0.02em',
-                                    backdropFilter: 'blur(2px)',
-                                    WebkitBackdropFilter: 'blur(2px)'
-                                }}
-                            >
-                                Segurança clínica. Resultado natural.
-                            </p>
+                        <div style={{
+                            opacity: isFormOpen ? 0 : 1,
+                            visibility: isFormOpen ? 'hidden' : 'visible',
+                            pointerEvents: isFormOpen ? 'none' : 'auto',
+                            transition: 'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}>
+                            <div className="overflow-hidden w-full transform mb-16 mt-auto">
+                                <p
+                                    ref={descriptionRef}
+                                    className="text-center opacity-0 font-sans"
+                                    style={{
+                                        fontSize: isMobile ? '15px' : '16px',
+                                        color: '#F5F5DC',
+                                        opacity: 0.8,
+                                        maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
+                                        margin: '0 auto',
+                                        letterSpacing: '0.02em',
+                                        backdropFilter: 'blur(2px)',
+                                        WebkitBackdropFilter: 'blur(2px)'
+                                    }}
+                                >
+                                    Segurança clínica. Resultado natural.
+                                </p>
+                            </div>
+
+
+                            <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4" style={{ paddingBottom: '2vh' }}>
+                                <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                    <m.button
+                                        onClick={() => setIsFormOpen(true)}
+                                        whileHover={{
+                                            y: -2,
+                                            scale: 1.05,
+                                            background: "rgba(245, 245, 220, 0.2)",
+                                            boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
+                                        }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            padding: '1rem 2.5rem',
+                                            borderRadius: '9999px',
+                                            background: 'rgba(255,255,255,0.1)',
+                                            backdropFilter: 'blur(10px)',
+                                            WebkitBackdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            color: '#F5F5DC',
+                                            fontWeight: 600,
+                                            width: isMobile ? '100%' : 'auto',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        className="group relative flex items-center justify-center"
+                                    >
+                                        <span className="relative z-10">Agendar Consulta</span>
+                                    </m.button>
+                                </Magnetic>
+
+                                <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                    <m.button
+                                        onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
+                                        whileHover={{
+                                            y: -2,
+                                            scale: 1.05,
+                                            background: 'rgba(245, 245, 220, 0.2)',
+                                            boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
+                                        }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            padding: '1rem 2.5rem',
+                                            borderRadius: '9999px',
+                                            background: 'transparent',
+                                            backdropFilter: 'blur(10px)',
+                                            WebkitBackdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            color: '#F5F5DC',
+                                            fontWeight: 600,
+                                            width: isMobile ? '100%' : 'auto',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        className="group flex items-center justify-center"
+                                    >
+                                        <span>Galeria de Resultados</span>
+                                    </m.button>
+                                </Magnetic>
+                            </div>
                         </div>
 
-
-                        <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4" style={{ paddingBottom: '2vh' }}>
-                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
-                                <m.button
-                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    whileHover={{
-                                        y: -2,
-                                        scale: 1.05,
-                                        background: "rgba(245, 245, 220, 0.2)",
-                                        boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
-                                    }}
-                                    whileTap={{ scale: 0.98 }}
+                        {/* Glassmorphism Multistep Form */}
+                        <AnimatePresence>
+                            {isFormOpen && (
+                                <m.div
+                                    initial={{ opacity: 0, y: 40, scale: 0.95, filter: 'blur(10px)' }}
+                                    animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                                    exit={{ opacity: 0, y: 20, scale: 0.95, filter: 'blur(10px)' }}
+                                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                                    className="absolute top-[48%] md:top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[500px] z-[30] pointer-events-auto"
                                     style={{
-                                        padding: '1rem 2.5rem',
-                                        borderRadius: '9999px',
-                                        background: 'rgba(255,255,255,0.1)',
-                                        backdropFilter: 'blur(10px)',
-                                        WebkitBackdropFilter: 'blur(10px)',
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        color: '#F5F5DC',
-                                        fontWeight: 600,
-                                        width: isMobile ? '100%' : 'auto',
-                                        transition: 'all 0.3s ease'
+                                        background: 'rgba(11, 11, 11, 0.65)',
+                                        backdropFilter: 'blur(24px)',
+                                        WebkitBackdropFilter: 'blur(24px)',
+                                        border: '1px solid rgba(245, 245, 220, 0.12)',
+                                        borderRadius: '24px',
+                                        padding: isMobile ? '2.5rem 1.5rem' : '3.5rem 2.5rem',
+                                        boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+                                        overflow: 'hidden'
                                     }}
-                                    className="group relative flex items-center justify-center"
                                 >
-                                    <span className="relative z-10">Agendar Consulta</span>
-                                </m.button>
-                            </Magnetic>
+                                    {/* Progress Line */}
+                                    <div className="absolute top-0 left-0 h-[2px] bg-[#F5F5DC]/10 w-full">
+                                        <m.div
+                                            className="h-full bg-[#F5F5DC]/80"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${(formStep / 4) * 100}%` }}
+                                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                        />
+                                    </div>
 
-                            <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
-                                <m.button
-                                    onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
-                                    whileHover={{
-                                        y: -2,
-                                        scale: 1.05,
-                                        background: 'rgba(245, 245, 220, 0.2)',
-                                        boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
-                                    }}
-                                    whileTap={{ scale: 0.98 }}
-                                    style={{
-                                        padding: '1rem 2.5rem',
-                                        borderRadius: '9999px',
-                                        background: 'transparent',
-                                        backdropFilter: 'blur(10px)',
-                                        WebkitBackdropFilter: 'blur(10px)',
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        color: '#F5F5DC',
-                                        fontWeight: 600,
-                                        width: isMobile ? '100%' : 'auto',
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                    className="group flex items-center justify-center"
-                                >
-                                    <span>Galeria de Resultados</span>
-                                </m.button>
-                            </Magnetic>
-                        </div>
+                                    {/* Close Button */}
+                                    <button
+                                        onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 500); }}
+                                        className="absolute top-4 right-4 text-[#F5F5DC]/40 hover:text-[#F5F5DC] transition-colors p-2 rounded-full hover:bg-white/5"
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" strokeWidth="1.5" />
+                                        </svg>
+                                    </button>
+
+                                    {/* Step 1: Identification */}
+                                    {formStep === 1 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-8"
+                                        >
+                                            <div className="flex flex-col gap-2 relative z-10">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seus dados</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">O primeiro passo para a sua nova assinatura visual.</p>
+                                            </div>
+                                            <div className="flex flex-col gap-6 relative z-10">
+                                                <div className="flex flex-col gap-1.5 group">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">Nome Completo</label>
+                                                    <input
+                                                        type="text"
+                                                        value={formData.name}
+                                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                        placeholder="Sua assinatura visual"
+                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-1.5 group">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">WhatsApp</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={formData.phone}
+                                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                        placeholder="(11) 99999-9999"
+                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-sans tracking-widest text-lg focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => setFormStep(2)}
+                                                disabled={!formData.name || !formData.phone}
+                                                className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC] relative z-10"
+                                            >
+                                                Próximo Passo
+                                            </button>
+                                        </m.div>
+                                    )}
+
+                                    {/* Step 2: Preference */}
+                                    {formStep === 2 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-7"
+                                        >
+                                            <button onClick={() => setFormStep(1)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
+                                                <span>←</span> Voltar
+                                            </button>
+                                            <div className="flex flex-col gap-2">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seu objetivo</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">Qual especialidade você procura?</p>
+                                            </div>
+                                            <div className="flex flex-col gap-3 max-h-[40vh] overflow-y-auto no-scrollbar pb-2">
+                                                {['Estética Dental (Lentes)', 'Harmonização Orogengival', 'Limpeza Profunda Premium', 'Avaliação Geral Exclusiva'].map((treatment) => (
+                                                    <button
+                                                        key={treatment}
+                                                        onClick={() => setFormData({ ...formData, treatment })}
+                                                        className={`text-left py-4 px-5 rounded-2xl border transition-all duration-300 ${formData.treatment === treatment ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
+                                                    >
+                                                        <span className="font-display text-[#F5F5DC]/90 tracking-wide text-lg">{treatment}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <button
+                                                onClick={() => setFormStep(3)}
+                                                disabled={!formData.treatment}
+                                                className="mt-2 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC]"
+                                            >
+                                                Escolher Horário
+                                            </button>
+                                        </m.div>
+                                    )}
+
+                                    {/* Step 3: Calendar */}
+                                    {formStep === 3 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-8"
+                                        >
+                                            <button onClick={() => setFormStep(2)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
+                                                <span>←</span> Voltar
+                                            </button>
+                                            <div className="flex flex-col gap-2">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Sua disponibilidade</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">Quando fica melhor para você?</p>
+                                            </div>
+
+                                            <div className="flex flex-col gap-5">
+                                                <div className="flex flex-col gap-2">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans mb-1">Período Ideal</label>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {['Manhã', 'Tarde'].map((time) => (
+                                                            <button
+                                                                key={time}
+                                                                onClick={() => setFormData({ ...formData, time })}
+                                                                className={`py-4 rounded-xl border transition-all duration-300 ${formData.time === time ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
+                                                            >
+                                                                <span className="font-sans text-[15px] font-medium text-[#F5F5DC]/90">{time}</span>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                onClick={() => {
+                                                    // Submission logic simulation
+                                                    setFormStep(4);
+                                                }}
+                                                disabled={!formData.time}
+                                                className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC] text-[#0B0B0B] py-4 rounded-full font-sans font-medium text-sm transition-all hover:scale-[1.02] shadow-[0_4px_20px_rgba(245,245,220,0.15)] disabled:opacity-30 disabled:bg-[#F5F5DC]/5 disabled:text-[#F5F5DC] disabled:hover:scale-100 disabled:shadow-none"
+                                            >
+                                                Finalizar Agendamento
+                                            </button>
+                                        </m.div>
+                                    )}
+
+                                    {/* Step 4: Success */}
+                                    {formStep === 4 && (
+                                        <m.div
+                                            initial={{ opacity: 0, scale: 0.95, filter: 'blur(5px)' }}
+                                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                            transition={{ duration: 1, ease: "easeOut" }}
+                                            className="flex flex-col items-center justify-center text-center gap-7 py-8"
+                                        >
+                                            <div className="w-20 h-20 rounded-full border border-[#F5F5DC]/20 flex items-center justify-center relative">
+                                                <div className="absolute inset-0 bg-[#F5F5DC]/5 rounded-full animate-pulse" />
+                                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10">
+                                                    <path d="M5 13L9 17L19 7" stroke="#F5F5DC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                            <div className="flex flex-col gap-3">
+                                                <h3 className="font-display text-3xl md:text-4xl text-[#F5F5DC] font-light leading-tight">
+                                                    Em breve,<br />sua nova assinatura.
+                                                </h3>
+                                                <p className="text-[#F5F5DC]/50 font-sans text-[15px] max-w-[280px] mx-auto leading-relaxed">
+                                                    Nossa Concierge entrará em contato via WhatsApp para alinhar os últimos detalhes.
+                                                </p>
+                                            </div>
+                                            <button
+                                                onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 800); setFormData({ name: '', phone: '', email: '', treatment: '', date: '', time: '' }); }}
+                                                className="mt-6 text-[#F5F5DC]/60 hover:text-[#F5F5DC] text-xs uppercase tracking-[0.2em] font-sans transition-colors border-b border-transparent hover:border-[#F5F5DC]/30 pb-1"
+                                            >
+                                                Voltar ao início
+                                            </button>
+                                        </m.div>
+                                    )}
+                                </m.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
 
