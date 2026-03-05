@@ -381,20 +381,20 @@ export function Hero() {
                     if (!revealed && currentFrame >= revealThreshold) {
                         revealed = true;
                         const tl = gsap.timeline({
-                            defaults: { ease: "power4.out", duration: 1.4 }
+                            defaults: { ease: "power4.out", duration: 1.8 }
                         });
 
                         tl.fromTo([".hero-title-line-1", ".hero-title-line-2"],
-                            { y: 40, opacity: 0, filter: "blur(12px)" },
-                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power4.out" }, "-=0.5"
+                            { y: 60, opacity: 0, filter: "blur(12px)" },
+                            { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.2, duration: 1.8, ease: "power3.out" }, "-=0.5"
                         )
                             .fromTo(descriptionRef.current,
                                 { y: 20, opacity: 0, filter: "blur(8px)" },
-                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4 }, "-=1.2"
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "power3.out" }, "-=1.2"
                             )
                             .fromTo(actionsRef.current,
                                 { y: 15, opacity: 0 },
-                                { y: 0, opacity: 1, duration: 1.2 }, "-=1.0"
+                                { y: 0, opacity: 1, duration: 1.2, delay: 0.8, ease: "power3.out" }, "-=1.0"
                             );
                     }
                 };
@@ -433,15 +433,15 @@ export function Hero() {
                     }
                 });
 
-                // Parallax of content (Layered depth)
+                // Parallax of content (Layered depth) - 0.7x speed relative to scroll. Using y offset.
                 gsap.to(contentWrapperRef.current, {
-                    y: () => window.innerHeight * -0.06,
+                    y: () => window.innerHeight * -0.7,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         start: "top top",
                         end: "bottom top",
-                        scrub: 0.9
+                        scrub: true
                     }
                 });
 
@@ -496,24 +496,25 @@ export function Hero() {
                 const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
 
                 if (titleRef.current) {
-                    const tracking = scrollProgress * 15; // Expansão elegante
+                    const tracking = scrollProgress * 8; // Expansão orgânica do 'assinatura' até 8px
                     const scale = 1 + scrollProgress * 0.1; // "Câmera atravessando o texto"
                     const opacity = Math.max(0, 1 - Math.pow(scrollProgress, 1.2) * 2);
 
-                    // Aplica na Primeira Linha
+                    // Aplica na Primeira Linha (não expande letter spacing com o scroll conforme restrito)
                     gsap.set(".hero-title-line-1", {
-                        letterSpacing: `${tracking}px`,
                         scale: scale,
                         opacity: opacity,
-                        y: -(scrollProgress * 20) // Movimento vertical mínimo para não 'bater'
+                        y: -(scrollProgress * 20), // Movimento vertical mínimo para não 'bater'
+                        filter: `blur(${Math.pow(scrollProgress, 2) * 10}px)`
                     });
 
-                    // Aplica na Segunda Linha (com leve atraso/parallax no dissolve)
+                    // Aplica na Segunda Linha (Expande o letter spacing)
                     gsap.set(".hero-title-line-2", {
-                        letterSpacing: `${tracking * 0.8}px`,
+                        letterSpacing: `${tracking}px`,
                         scale: 1 + scrollProgress * 0.08,
                         opacity: Math.max(0, 1 - Math.pow(scrollProgress, 0.8) * 1.5),
-                        y: -(scrollProgress * 40)
+                        y: -(scrollProgress * 40),
+                        filter: `blur(${Math.pow(scrollProgress, 2) * 10}px)`
                     });
                 }
 
@@ -611,8 +612,8 @@ export function Hero() {
 
                 <div
                     ref={contentWrapperRef}
-                    className="absolute inset-0 z-[3] w-full flex flex-col items-center justify-center text-center pointer-events-none"
-                    style={{ padding: '0 5vw' }}
+                    className="absolute inset-0 z-[3] w-full flex flex-col items-center text-center pointer-events-none"
+                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: '15vh', paddingBottom: '12vh' }}
                 >
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
@@ -655,34 +656,51 @@ export function Hero() {
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} font-sans text-center will-change-transform leading-[1.05] mb-8 flex flex-col items-center relative`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] mb-8 flex flex-col items-center relative w-full`}
                             style={{
-                                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                                fontSize: isMobile ? 'clamp(2.8rem, 12vw, 4rem)' : '8rem',
-                                letterSpacing: '-0.03em',
-                                color: 'white'
+                                color: 'white',
+                                backdropFilter: 'blur(2px)',
+                                WebkitBackdropFilter: 'blur(2px)',
+                                margin: '0 auto',
                             }}
                         >
-                            <span className="font-bold uppercase opacity-0 hero-title-line-1">Seu Sorriso,</span>
                             <span
-                                className="font-light italic lowercase opacity-0 hero-title-line-2"
+                                className="uppercase opacity-0 hero-title-line-1"
                                 style={{
-                                    fontFamily: 'var(--font-editorial)',
+                                    fontFamily: 'sans-serif',
+                                    fontSize: '14px',
+                                    fontWeight: '400',
+                                    letterSpacing: '5px',
+                                    opacity: 0.7
+                                }}
+                            >SEU SORRISO,</span>
+                            <span
+                                className="italic lowercase opacity-0 hero-title-line-2"
+                                style={{
+                                    fontFamily: 'var(--font-editorial), "Didone", serif',
+                                    fontWeight: 300,
+                                    fontSize: isMobile ? '42px' : '8rem',
+                                    marginTop: '12px'
                                 }}
                             >
-                                sua assinatura
+                                sua assinatura.
                             </span>
                         </h1>
 
-                        <div className="overflow-hidden w-full transform mb-16">
+                        <div className="overflow-hidden w-full transform mb-16 mt-auto">
                             <p
                                 ref={descriptionRef}
-                                className="font-normal text-center text-[#D1D5DB] leading-[1.6] opacity-0"
+                                className="text-center opacity-0"
                                 style={{
+                                    fontFamily: 'sans-serif',
                                     fontSize: isMobile ? '15px' : '16px',
+                                    color: '#F5F5DC',
+                                    opacity: 0.8,
                                     maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
                                     margin: '0 auto',
-                                    letterSpacing: '0.02em'
+                                    letterSpacing: '0.02em',
+                                    backdropFilter: 'blur(2px)',
+                                    WebkitBackdropFilter: 'blur(2px)'
                                 }}
                             >
                                 Segurança clínica. Resultado natural.
@@ -690,15 +708,15 @@ export function Hero() {
                         </div>
 
 
-                        <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4">
+                        <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4" style={{ paddingBottom: '2vh' }}>
                             <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
                                 <m.button
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                                     whileHover={{
                                         y: -2,
                                         scale: 1.05,
-                                        background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
-                                        boxShadow: "0 8px 40px rgba(0,0,0,0.2)"
+                                        background: "rgba(245, 245, 220, 0.2)",
+                                        boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
                                     }}
                                     whileTap={{ scale: 0.98 }}
                                     style={{
@@ -708,7 +726,7 @@ export function Hero() {
                                         backdropFilter: 'blur(10px)',
                                         WebkitBackdropFilter: 'blur(10px)',
                                         border: '1px solid rgba(255,255,255,0.2)',
-                                        color: 'white',
+                                        color: '#F5F5DC',
                                         fontWeight: 600,
                                         width: isMobile ? '100%' : 'auto',
                                         transition: 'all 0.3s ease'
@@ -725,8 +743,8 @@ export function Hero() {
                                     whileHover={{
                                         y: -2,
                                         scale: 1.05,
-                                        background: 'rgba(255,255,255,0.2)',
-                                        boxShadow: "0 8px 40px rgba(0,0,0,0.2)"
+                                        background: 'rgba(245, 245, 220, 0.2)',
+                                        boxShadow: "0 8px 40px rgba(0,0,0,0.15)"
                                     }}
                                     whileTap={{ scale: 0.98 }}
                                     style={{
@@ -736,7 +754,7 @@ export function Hero() {
                                         backdropFilter: 'blur(10px)',
                                         WebkitBackdropFilter: 'blur(10px)',
                                         border: '1px solid rgba(255,255,255,0.2)',
-                                        color: 'white',
+                                        color: '#F5F5DC',
                                         fontWeight: 600,
                                         width: isMobile ? '100%' : 'auto',
                                         transition: 'all 0.3s ease'
