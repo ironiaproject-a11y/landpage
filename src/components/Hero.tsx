@@ -44,9 +44,8 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Seamless Proportion: Use a slightly larger ratio than standard cover
-            // to ensure edges stay hidden during 3D tilt
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 1.02;
+            // Draw logic: Ensure the image covers its internal canvas area
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
@@ -81,9 +80,9 @@ export function Hero() {
         }
 
         const updateSize = () => {
-            // Set canvas size slightly larger than window to hide tilt edges
-            canvas.width = window.innerWidth * 1.05;
-            canvas.height = window.innerHeight * 1.05;
+            // Set canvas size to 115% of window to allow scale(0.92) without borders
+            canvas.width = window.innerWidth * 1.15;
+            canvas.height = window.innerHeight * 1.15;
             render();
         };
 
@@ -129,7 +128,7 @@ export function Hero() {
                 .hero { 
                     position: relative; 
                     height: 100vh; 
-                    width: 100%; 
+                    width: 100vw; 
                     background: #000; 
                     overflow: visible; 
                     margin: 0;
@@ -150,17 +149,17 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    /* Extend canvas beyond viewport to hide borders during tilt */
-                    top: -2.5%;
-                    left: -2.5%;
-                    width: 105%;
-                    height: 105%;
+                    /* Expanded to 115% and centered to hide gaps at 0.92 scale */
+                    top: -7.5%;
+                    left: -7.5%;
+                    width: 115%;
+                    height: 115%;
                     display: block;
                     z-index: 1;
-                    /* Fluid cinematic depth without revealing edges */
-                    transform: rotateX(2deg) rotateY(0deg);
+                    /* Visual balance: 0.92 scale + subtle tilt */
+                    transform: scale(0.92) rotateX(2deg);
                     transform-origin: center center;
-                    filter: brightness(0.9) contrast(1.1);
+                    filter: brightness(0.85) contrast(1.1);
                     transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
                 }
 
@@ -170,7 +169,7 @@ export function Hero() {
                     background: radial-gradient(
                         circle at center,
                         rgba(0,0,0,0) 0%,
-                        rgba(0,0,0,0.2) 50%,
+                        rgba(0,0,0,0.15) 40%,
                         rgba(0,0,0,0.7) 100%
                     ); 
                     z-index: 2; 
