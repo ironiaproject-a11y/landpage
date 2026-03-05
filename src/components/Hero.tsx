@@ -51,19 +51,26 @@ export function Hero() {
         };
 
         // Preload images
-        let loadedCount = 0;
+        let firstFrameLoaded = false;
         for (let i = 0; i < FRAME_COUNT; i++) {
             const img = new Image();
             img.onload = () => {
-                loadedCount++;
-                if (i === 0) render(); // Render first frame immediately when it loads
+                if (i === 0) {
+                    firstFrameLoaded = true;
+                    render();
+                    // Signal Preloader that Hero is ready
+                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                }
             };
             img.src = currentFrame(i);
             images.push(img);
         }
 
-        // Handle pre-loaded case for first frame
-        if (images[0]?.complete) render();
+        // Handle pre-loaded case for first frame or failsafe
+        if (images[0]?.complete) {
+            render();
+            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+        }
 
         const updateSize = () => {
             canvas.width = window.innerWidth;
