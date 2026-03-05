@@ -1,57 +1,90 @@
 "use client";
 
 import { m, useReducedMotion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import { useRef, useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
+import NextImage from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Magnetic } from "./Magnetic";
 
-// Registration MUST happen outside component to avoid re-registration on hot-reload
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-// Global sequence config
 const TOTAL_FRAMES = 192;
 
 // Expose a draw(frameIdx) method directly — GSAP calls this on every tick
-type IntroSequenceHandle = { draw: (idx: number) => void, getCanvas: () => HTMLCanvasElement | null };
+type IntroSequenceHandle = { draw: (idx: number) => void };
 
 const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(function IntroSequence({ isMobile }, ref) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const framesRef = useRef<HTMLImageElement[]>([]);
+    const [loaded, setLoaded] = useState(false);
     const loadedRef = useRef(false);
 
-    // Progressive loading with web-worker simulation logic for performance
     useEffect(() => {
-        let isMounted = true;
-        const frames: HTMLImageElement[] = [];
+        const targetFrames = isMobile ? 101 : TOTAL_FRAMES;
+        const imageElements: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         let loadedCount = 0;
 
-        const loadPack = (start: number, end: number) => {
-            for (let i = start; i <= end; i++) {
-                if (!isMounted) return;
+        const loadFrame = (i: number) => {
+            return new Promise<void>((resolve) => {
                 const img = new Image();
-                // Use the correct path based on your assets
-                const index = i.toString();
-                img.src = `/assets/hero-frames/frame-${index}.gif`;
-                img.onload = () => {
+
+                const checkDone = () => {
                     loadedCount++;
-                    if (loadedCount === TOTAL_FRAMES) {
-                        loadedRef.current = true;
+                    if (loadedCount === 1) { // Redraw first frame immediately
+                        framesRef.current = imageElements;
+                        (ref as any)?.current?.draw(0);
+                        // Notify that critical assets are ready for preloader exit
+                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
                     }
+                    if (loadedCount >= targetFrames) {
+                        framesRef.current = imageElements;
+                        loadedRef.current = true;
+                        setLoaded(true);
+                    }
+                    resolve();
                 };
-                frames[i] = img;
+
+                img.onload = () => {
+                    imageElements[i] = img;
+                    checkDone();
+                };
+
+                img.onerror = checkDone;
+                const paddedIndex = i.toString().padStart(3, '0');
+                img.src = `/para_vc/frame_${paddedIndex}_delay-0.041s.png`;
+            });
+        };
+
+        const loadInBatches = async () => {
+            // Priority 1: First 10 frames
+            const priorityBatches = [];
+            for (let i = 0; i < Math.min(10, TOTAL_FRAMES); i++) {
+                priorityBatches.push(loadFrame(i));
+            }
+            await Promise.all(priorityBatches);
+
+            // Priority 2: Remaining frames in batches
+            const batchSize = isMobile ? 10 : 20;
+            for (let i = 10; i < TOTAL_FRAMES; i += batchSize) {
+                // If mobile, we can skip some frames to reduce payload
+                const currentBatch = [];
+                for (let j = i; j < Math.min(i + batchSize, TOTAL_FRAMES); j++) {
+                    if (isMobile && j % 2 !== 0) continue; // Skip every other frame on mobile
+                    currentBatch.push(loadFrame(j));
+                }
+                await Promise.all(currentBatch);
+                // Allow some breathing room for the main thread
+                await new Promise(r => setTimeout(r, 10));
             }
         };
 
-        // prioritized load of first chunk to allow immediate sequence start
-        loadPack(0, 40);
-        setTimeout(() => loadPack(41, TOTAL_FRAMES - 1), 100);
+        loadInBatches();
+    }, [isMobile, ref]);
 
-        framesRef.current = frames;
-        return () => { isMounted = false; };
-    }, []);
-
+    // Expose draw() so GSAP can call it directly without triggering React renders
     useImperativeHandle(ref, () => ({
         draw(frameIdx: number) {
             if (!loadedRef.current) return;
@@ -92,17 +125,17 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             const canvasRatio = canvasWidth / canvasHeight;
             const imgRatio = img.naturalWidth / img.naturalHeight;
 
-            // Scaled precisely to cover the entire container (1.0) for an immersive feel
-            const DRAW_SCALE = 1.0;
+            // Aggressively reduced scale to push the dente into the deep background
+            const DRAW_SCALE = isMobile ? 0.70 : 0.60;
 
             let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
 
             if (canvasRatio > imgRatio) {
-                // canvas is wider → scale by width to cover
+                // canvas mais largo → escalar pela largura
                 drawWidth = canvasWidth * DRAW_SCALE;
                 drawHeight = drawWidth / imgRatio;
             } else {
-                // canvas is taller → scale by height to cover
+                // canvas mais alto → escalar pela altura
                 drawHeight = canvasHeight * DRAW_SCALE;
                 drawWidth = drawHeight * imgRatio;
             }
@@ -115,163 +148,394 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-        },
-        getCanvas() {
-            return canvasRef.current;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [isMobile]);
 
+    // Initial draw when loaded
+    useEffect(() => {
+        if (loaded && canvasRef.current) {
+            const canvas = canvasRef.current;
+            const handle = (ref as any)?.current;
+            if (handle?.draw) handle.draw(0);
+        }
+    }, [loaded, ref]);
+
+
     return (
-        <canvas
-            ref={canvasRef}
-            className="w-full h-full block object-cover will-change-transform"
-            style={{
-                background: '#000',
-                imageRendering: 'crisp-edges'
-            }}
-        />
+        <div className="absolute inset-0 z-0 flex items-center justify-center">
+            {!loaded && (
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-8 h-8 rounded-full border-t-2 border-b-2 border-[#C7A86B] animate-spin" />
+                    <span className="text-white/60 text-sm tracking-widest uppercase font-bold text-center px-4">Otimizando Experiência Mobile</span>
+                </div>
+            )}
+            <canvas
+                ref={canvasRef}
+                className="w-full h-full object-cover transition-opacity duration-700"
+                style={{
+                    width: '100% !important',
+                    height: '100% !important',
+                    objectFit: 'cover',
+                    transform: `scale(${isMobile ? 1.0 : 0.98}) translateZ(0)`, // Removed mobile reduction to prevent gaps
+                    willChange: 'transform, opacity, filter',
+                    transformStyle: 'preserve-3d', filter: `brightness(${isMobile ? 1.05 : 1.1}) contrast(1.05) saturate(1.05)`, // Dente como figura luminosa
+                    backfaceVisibility: 'hidden',
+                    mixBlendMode: 'screen',
+                    backgroundColor: 'transparent',
+                    opacity: loaded ? 1 : 0,
+                    transition: 'transform 0.45s ease, filter 0.45s ease'
+                }}
+            />
+        </div>
     );
 });
 
+const DentalScanner = ({ onLoaded, isMobile }: { onLoaded: () => void, isMobile: boolean }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const cursorRef = useRef<HTMLDivElement>(null);
+    const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+    const [isInteracting, setIsInteracting] = useState(false);
+    const [isAutoAnimating, setIsAutoAnimating] = useState(true);
+
+    useEffect(() => {
+        // We rely on NextImage's priority prop for these critical assets
+        onLoaded();
+    }, [onLoaded]);
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        const container = containerRef.current;
+        const rect = container.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const hintTl = gsap.timeline({
+            onComplete: () => setIsAutoAnimating(false)
+        });
+
+        gsap.set(container, { "--mask-size": "0px", "--x": `${centerX}px`, "--y": `${centerY}px` });
+
+        hintTl
+            .to(container, { "--mask-size": "200px", duration: 0.8, ease: "power2.out" }, "+=0.5")
+            .to(container, { "--mask-size": "150px", duration: 0.6, ease: "back.out(1.7)" });
+
+        const quickSetterX = gsap.quickSetter(container, "--x", "px");
+        const quickSetterY = gsap.quickSetter(container, "--y", "px");
+        const cursorSetterX = gsap.quickSetter(cursorRef.current, "x", "px");
+        const cursorSetterY = gsap.quickSetter(cursorRef.current, "y", "px");
+
+        const ticker = () => {
+            if (isAutoAnimating) {
+                cursorSetterX(centerX);
+                cursorSetterY(centerY);
+                return;
+            }
+            mousePos.current.x += (mousePos.current.targetX - mousePos.current.x) * 0.1;
+            mousePos.current.y += (mousePos.current.targetY - mousePos.current.y) * 0.1;
+
+            quickSetterX(mousePos.current.x);
+            quickSetterY(mousePos.current.y);
+            cursorSetterX(mousePos.current.x);
+            cursorSetterY(mousePos.current.y);
+        };
+
+        gsap.ticker.add(ticker);
+        return () => {
+            gsap.ticker.remove(ticker);
+            hintTl.kill();
+        };
+    }, [isAutoAnimating]);
+
+    const handleMove = (clientX: number, clientY: number) => {
+        if (isAutoAnimating || !containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        mousePos.current.targetX = clientX - rect.left;
+        mousePos.current.targetY = clientY - rect.top;
+    };
+
+    return (
+        <div
+            ref={containerRef}
+            className="relative mx-auto overflow-hidden select-none"
+            onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
+            onTouchMove={(e) => handleMove(e.touches[0].clientX, e.touches[0].clientY + (isMobile ? -60 : 0))}
+            onMouseEnter={() => setIsInteracting(true)}
+            onMouseLeave={() => setIsInteracting(false)}
+            style={{
+                cursor: 'none',
+                touchAction: 'none',
+                width: '100%',
+                height: '100%',
+                containerType: 'inline-size'
+            } as any}
+        >
+            <NextImage
+                src="/assets/images/dente-estetica.webp"
+                alt="Aesthetic"
+                fill
+                className="object-contain pointer-events-none"
+                priority
+            />
+            <div
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{
+                    clipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`,
+                    WebkitClipPath: `circle(var(--mask-size, 0px) at var(--x, 50%) var(--y, 50%))`
+                } as any}
+            >
+                <NextImage src="/assets/images/dente-raio-x.webp" alt="X-Ray" fill className="object-contain" priority />
+            </div>
+
+            <div
+                ref={cursorRef}
+                className={`fixed top-0 left-0 w-[150px] h-[150px] pointer-events-none z-[100] transition-opacity duration-300 ${isInteracting && !isAutoAnimating ? 'opacity-100' : 'opacity-0'}`}
+                style={{ marginTop: '-75px', marginLeft: '-75px' }}
+            >
+                <div className="absolute inset-0 border border-[#C7A86B]/30 rounded-full" />
+                <div className="absolute top-1/2 left-0 w-4 h-[1px] bg-[#C7A86B] -translate-y-1/2" />
+                <div className="absolute top-1/2 right-0 w-4 h-[1px] bg-[#C7A86B] -translate-y-1/2" />
+                <div className="absolute top-0 left-1/2 w-[1px] h-4 bg-[#C7A86B] -translate-x-1/2" />
+                <div className="absolute bottom-0 left-1/2 w-[1px] h-4 bg-[#C7A86B] -translate-x-1/2" />
+                <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-[#C7A86B] rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_#C7A86B]" />
+            </div>
+        </div>
+    );
+};
+
 export function Hero() {
-    const sectionRef = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
     const pinContainerRef = useRef<HTMLDivElement>(null);
-    const videoWrapperRef = useRef<HTMLDivElement>(null);
-    const contentWrapperRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const descriptionRef = useRef<HTMLParagraphElement>(null);
     const actionsRef = useRef<HTMLDivElement>(null);
-    const scrollHintRef = useRef<HTMLDivElement>(null);
+    const contentWrapperRef = useRef<HTMLDivElement>(null);
+    const videoWrapperRef = useRef<HTMLDivElement>(null);
     const progressLineRef = useRef<HTMLDivElement>(null);
-    const backlightRef = useRef<HTMLDivElement>(null);
-    const sectionMounted = useRef(false);
+    const scrollHintRef = useRef<HTMLDivElement>(null);
+    const overlayDarkRef = useRef<HTMLDivElement>(null);
+    const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
-    const shouldReduceMotion = useReducedMotion();
     const [mounted, setMounted] = useState(false);
     const [canStartSequence, setCanStartSequence] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [ctaSticky, setCtaSticky] = useState(false);
+    const [introFinished, setIntroFinished] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [formStep, setFormStep] = useState(1);
     const [formData, setFormData] = useState({ name: '', phone: '', email: '', treatment: '', date: '', time: '' });
-    const introRef = useRef<IntroSequenceHandle | null>(null);
+    const introRef = useRef<{ draw: (idx: number) => void } | null>(null);
     const targetProgress = useRef(0);
     const smoothedProgress = useRef(0);
     const isAnimating = useRef(false);
+    const frameProxy = useRef({ frame: 0, letterSpacing: 0, textY: 0, opacity: 1, glowScale: 1, glowOpacity: 0.05 });
+    const sectionMounted = useRef(false);
+    const backlightRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setMounted(true);
         sectionMounted.current = true;
-        setIsMobile(window.innerWidth < 768);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
 
-        // Pre-warm the component reveal
-        setTimeout(() => setCanStartSequence(true), 300);
+        if (typeof window !== "undefined") {
+            checkMobile();
+            window.addEventListener("resize", checkMobile);
 
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+            const handlePreloaderExit = () => setCanStartSequence(true);
+            window.addEventListener("preloader-exiting", handlePreloaderExit);
+
+            const timer = setTimeout(() => setCanStartSequence(true), 5000);
+
+            if (isMobile) {
+                ScrollTrigger.config({ ignoreMobileResize: true });
+            }
+
+            return () => {
+                window.removeEventListener("resize", checkMobile);
+                window.removeEventListener("preloader-exiting", handlePreloaderExit);
+                clearTimeout(timer);
+            };
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Phase 1 & 2 — Animation Orchestration
     useEffect(() => {
         if (!mounted || !canStartSequence) return;
 
         const ctx = gsap.context(() => {
-            // 1. INTRO TIMELINE (Fixed Frames: 0 -> 130)
-            const introTl = gsap.timeline({
-                onUpdate: () => {
-                    const progress = introTl.progress();
-                    const frame = Math.floor(progress * 130);
-                    if (introRef.current && !isAnimating.current) {
-                        introRef.current.draw(frame);
-                        smoothedProgress.current = frame;
+            const mm = gsap.matchMedia();
+
+            mm.add({
+                isDesktop: "(min-width: 768px)",
+                isMobile: "(max-width: 767px)",
+                reduceMotion: "(prefers-reduced-motion: reduce)"
+            }, (context) => {
+                const { isMobile, reduceMotion } = context.conditions as { isMobile: boolean, reduceMotion: boolean };
+
+                // Reset frame proxy
+                frameProxy.current.frame = 0;
+
+                // Coordinated reveal triggered during intro
+                const revealThreshold = TOTAL_FRAMES * (isMobile ? 0.35 : 0.85);
+                let revealed = false;
+
+                const checkReveal = (currentFrame: number) => {
+                    if (!revealed && currentFrame >= revealThreshold) {
+                        revealed = true;
+                        const tl = gsap.timeline({
+                            defaults: { ease: "power4.out", duration: 1.8 }
+                        });
+
+                        tl.fromTo(".hero-title-line-1",
+                            { y: 60, opacity: 0, filter: "blur(10px)" },
+                            { y: 0, opacity: 0.7, filter: "blur(0px)", duration: 1.2, ease: "power4.out" }
+                        )
+                            .fromTo(".hero-title-line-2",
+                                { y: 60, opacity: 0, filter: "blur(10px)" },
+                                { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power4.out" }, "-=0.8"
+                            )
+                            .fromTo(descriptionRef.current,
+                                { y: 20, opacity: 0, filter: "blur(8px)" },
+                                { y: 0, opacity: 0.8, filter: "blur(0px)", duration: 1.4, ease: "power4.out" }, "-=1.0"
+                            )
+                            .fromTo(actionsRef.current,
+                                { y: 15, opacity: 0 },
+                                { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: "power4.out" }, "-=1.0"
+                            );
                     }
-                }
-            });
+                };
 
-            // Intro sequence duration
-            introTl.to({}, { duration: 3, ease: "none" });
+                // Intro Timeline
+                const introTl = gsap.timeline({
+                    onComplete: () => setIntroFinished(true)
+                });
 
-            // Text reveal as part of the intro (so it doesn't conflict with parallax)
-            introTl.fromTo(titleRef.current,
-                { y: 40, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1.4, ease: "power3.out" },
-                1.0
-            )
-                .fromTo(descriptionRef.current,
-                    { y: 20, opacity: 0 },
-                    { y: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
-                    1.3
-                )
-                .fromTo(actionsRef.current,
-                    { y: 20, opacity: 0 },
-                    { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
-                    1.6
-                );
+                introTl.to(frameProxy.current, {
+                    frame: TOTAL_FRAMES - 1,
+                    duration: isMobile ? 4.5 : 5.0,
+                    ease: "power3.inOut",
+                    onUpdate() {
+                        introRef.current?.draw(frameProxy.current.frame);
+                        smoothedProgress.current = frameProxy.current.frame;
+                        targetProgress.current = frameProxy.current.frame;
+                        checkReveal(frameProxy.current.frame);
+                    },
+                    onComplete: () => {
+                        setIntroFinished(true);
+                        ScrollTrigger.refresh();
+                    }
+                });
 
-            // 2. SCROLL TRIGGER (Drives frame 130 -> 192 and Parallax)
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-                onUpdate: (self) => {
-                    if (sectionMounted.current) {
-                        const progress = self.progress;
-                        // Map 0 -> 1 scroll to frames 130 -> 192
-                        const startFrame = 130;
-                        const endFrame = 192;
-                        targetProgress.current = startFrame + progress * (endFrame - startFrame);
-                        isAnimating.current = true;
+                // Sync with rotation and depth (Aggressively smaller for "background" feel)
+                gsap.to(videoWrapperRef.current, {
+                    rotation: isMobile ? 0 : 5,
+                    scale: isMobile ? 0.80 : 0.90,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 0.8
+                    }
+                });
 
-                        // Sticky CTA logic
-                        if (progress > 0.4) {
-                            if (!ctaSticky) setCtaSticky(true);
-                        } else {
-                            if (ctaSticky) setCtaSticky(false);
+                // Parallax of content (Layered depth) - 0.6x speed relative to scroll. Using y offset.
+                gsap.to(contentWrapperRef.current, {
+                    y: () => window.innerHeight * -0.6,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+
+                // Keep existing frame sync trigger
+                const startFrame = 0;
+                const endFrame = TOTAL_FRAMES - 1;
+                ScrollTrigger.create({
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: isMobile ? 1 : 0.3,
+                    onUpdate: (self) => {
+                        targetProgress.current = startFrame + (endFrame - startFrame) * self.progress;
+
+                        // Scroll Cinemático: Texto sobe e comprime levemente (tensão), sumindo de forma mais elegante
+                        frameProxy.current.letterSpacing = -(self.progress * 3);
+                        frameProxy.current.textY = -(self.progress * 150);
+                        frameProxy.current.opacity = 1 - Math.pow(self.progress, 1.5) * 1.5;
+
+                        if (!isAnimating.current) {
+                            isAnimating.current = true;
                         }
                     }
-                }
+                });
+
+                return () => {
+                    // Cleanup handled by ctx.revert()
+                };
             });
 
-            // Parallax Logic inside a ticker for smoothness beyond scrub
+            // Shared constants (re-declared for ticker scope)
+            const startFrame = 0;
+            const endFrame = TOTAL_FRAMES - 1;
+
+            // Ticker for smooth LERPing
             const tickerRender = () => {
+                if (!isAnimating.current || !sectionMounted.current) return;
+
                 const diff = targetProgress.current - smoothedProgress.current;
-                smoothedProgress.current += diff * 0.25; // Smooth interpolation
 
-                const startFrame = 130;
-                const endFrame = 192;
-                const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
-                const scrollValue = scrollProgress * (typeof window !== 'undefined' ? window.innerHeight : 0);
-
-                if (introRef.current) {
-                    // Make the video canvas scale/transform WITH the scroll, as requested
-                    const currentMouthScale = !shouldReduceMotion ? (1 + scrollProgress * 0.15) : 1;
-                    const mouthY = !shouldReduceMotion ? (scrollValue * 0.15) : 0; // Much subtler parallax down so it doesn't leave margin
-
-                    const canvas = introRef.current.getCanvas();
-                    if (canvas && introTl.progress() > 0.99) { // Only apply parallax after intro finishes
-                        gsap.set(canvas, {
-                            y: mouthY,
-                            scale: currentMouthScale,
-                            force3D: true
-                        });
-                    }
+                if (Math.abs(diff) < 0.001) {
+                    smoothedProgress.current = targetProgress.current;
+                    isAnimating.current = false;
+                    return;
                 }
 
-                if (titleRef.current && introTl.progress() > 0.99) {
-                    const titleY = !shouldReduceMotion ? (scrollValue * -0.6) : 0;
-                    gsap.set(titleRef.current, {
-                        y: titleY,
-                        force3D: true
+                const lerpFactor = isMobile ? 0.08 : 0.12;
+                smoothedProgress.current += diff * lerpFactor;
+
+                // Scroll Cinemático: Dissolve Atmosférico (Tracking + Scale + Fade)
+                // Usando ScrollTrigger progress (self.progress salvo no proxy)
+                const scrollProgress = Math.max(0, (smoothedProgress.current - startFrame) / (endFrame - startFrame));
+
+                if (titleRef.current) {
+                    const tracking = scrollProgress * 6; // Expansão orgânica de 0 a 6px
+                    const scale = 1 + scrollProgress * 0.1;
+                    const opacity = Math.max(0, 1 - Math.pow(scrollProgress, 1.2) * 2);
+
+                    gsap.set(".hero-title-line-1", {
+                        scale: scale,
+                        opacity: 0.7 * (1 - scrollProgress), // Mudar para fade total no scroll
+                        y: -(scrollProgress * 20),
+                        filter: `blur(${Math.pow(scrollProgress, 2) * 10}px)`
+                    });
+
+                    gsap.set(".hero-title-line-2", {
+                        letterSpacing: `${tracking}px`,
+                        scale: 1 + scrollProgress * 0.08,
+                        opacity: Math.max(0, 1 - Math.pow(scrollProgress, 0.8) * 1.5),
+                        y: -(scrollProgress * 40),
+                        filter: `blur(${Math.pow(scrollProgress, 2) * 10}px)`
                     });
                 }
 
-                if (descriptionRef.current && introTl.progress() > 0.99) {
-                    const descY = !shouldReduceMotion ? (scrollValue * -0.8) : 0;
-                    gsap.set(descriptionRef.current, {
-                        y: descY,
-                        force3D: true
+                if (descriptionRef.current || actionsRef.current) {
+                    const contentOpacity = Math.max(0, 1 - scrollProgress * 3);
+                    gsap.set([descriptionRef.current, actionsRef.current], {
+                        opacity: contentOpacity,
+                        y: -(scrollProgress * 60)
+                    });
+                }
+
+                if (backlightRef.current) {
+                    gsap.set(backlightRef.current, {
+                        scale: 1 + scrollProgress * 0.5,
+                        opacity: 0.08 * (1 - scrollProgress),
+                        y: -(scrollProgress * 100)
                     });
                 }
 
@@ -279,7 +543,7 @@ export function Hero() {
                     introRef.current.draw(smoothedProgress.current);
                 }
 
-                if (Math.abs(diff) < 0.001) {
+                if (Math.abs(diff) < 0.0001) {
                     smoothedProgress.current = targetProgress.current;
                     isAnimating.current = false;
                 }
@@ -297,7 +561,7 @@ export function Hero() {
             ctx.revert();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mounted, canStartSequence, ctaSticky]);
+    }, [mounted, canStartSequence]);
 
     return (
         <section
@@ -322,7 +586,7 @@ export function Hero() {
                     {/* Volumetric Backlight Glow (Slow Parallax for 3D Depth) - Enhanced for 0.85x scale */}
                     <div
                         ref={backlightRef}
-                        className="absolute w-[100vw] h-[100vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
+                        className="absolute w-[130vw] h-[130vh] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none will-change-transform"
                         style={{
                             background: 'radial-gradient(circle, rgba(255, 245, 220, 0.12) 0%, transparent 70%)',
                             opacity: 0.08
@@ -334,11 +598,11 @@ export function Hero() {
                         className="relative w-full h-full flex items-center justify-center z-[5]"
                         style={{
                             maskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 25%, transparent 65%)'
-                                : 'radial-gradient(circle at center, black 15%, transparent 45%)',
+                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
+                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
                             WebkitMaskImage: isMobile
-                                ? 'radial-gradient(circle at center, black 25%, transparent 65%)'
-                                : 'radial-gradient(circle at center, black 15%, transparent 45%)',
+                                ? 'radial-gradient(circle at center, black 20%, transparent 70%)'
+                                : 'radial-gradient(circle at center, black 10%, transparent 55%)',
                             filter: isFormOpen ? 'blur(20px)' : 'none',
                             transition: 'filter 1.2s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}
@@ -352,7 +616,7 @@ export function Hero() {
                 </div>
 
                 {/* Removido o overlay escuro global para valorizar a luz do 3D */}
-                <div className="hero-overlay-fix absolute inset-0 pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.45)', zIndex: 1 }} />
+                <div className="hero-overlay-fix absolute inset-0 pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.15)', zIndex: 1 }} />
 
                 {/* Ambient Particles (Disabled for cleaner look) */}
                 {/* {!shouldReduceMotion && <AmbientParticles />} */}
@@ -360,7 +624,7 @@ export function Hero() {
                 <div
                     ref={contentWrapperRef}
                     className="absolute inset-0 z-[3] w-full flex flex-col items-center text-center pointer-events-none"
-                    style={{ padding: '24px 16px 36px 16px', justifyContent: 'center' }}
+                    style={{ padding: '0 6vw', justifyContent: 'space-between', paddingTop: isMobile ? '10vh' : '15vh', paddingBottom: isMobile ? '8vh' : '15vh' }}
                 >
                     {/* Strategic Spotlight Layer - Cinematic Depth (Layer 1) */}
                     <div
@@ -401,298 +665,354 @@ export function Hero() {
 
                         <h1
                             ref={titleRef}
-                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform flex flex-col items-center relative w-full`}
+                            className={`hero-title ${(mounted && canStartSequence) ? 'in-view' : ''} text-center will-change-transform leading-[1.05] flex flex-col items-center relative w-full`}
                             style={{
-                                color: '#FBFBFB',
-                                fontSize: '36px',
-                                fontWeight: 700,
-                                lineHeight: 1.02,
-                                letterSpacing: '-0.02em',
+                                color: 'white',
                                 margin: '0 auto',
                                 pointerEvents: isFormOpen ? 'none' : 'auto',
-                                transform: `translateY(-12%)`,
-                                textTransform: 'lowercase'
+                                transition: 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+                                transform: isFormOpen ? (isMobile ? 'translateY(-10vh) scale(0.85)' : 'translateY(-15vh) scale(0.8)') : 'translateY(0) scale(1)',
                             }}
                         >
-                            sua assinatura.
-                        </h1>
-
-                        <div className="flex flex-col items-center w-full" style={{
-                            opacity: isFormOpen ? 0 : 1,
-                            transition: 'opacity 0.8s ease',
-                            marginTop: '24px'
-                        }}>
-                            <p
-                                ref={descriptionRef}
-                                className="hero-subtitle text-center font-sans"
+                            <span
+                                className="uppercase hero-title-line-1 font-sans"
                                 style={{
-                                    fontSize: '16px',
+                                    fontSize: '14px',
                                     fontWeight: 500,
-                                    lineHeight: 1.4,
-                                    color: '#E6E6E6',
-                                    margin: '8px auto 0 auto',
-                                    opacity: 1
+                                    letterSpacing: '8px',
+                                    opacity: 0, // Controlled by reveal logic
+                                    color: 'white'
+                                }}
+                            >SEU SORRISO,</span>
+                            <span
+                                className="italic hero-title-line-2 font-bodoni flex items-center justify-center font-light"
+                                style={{
+                                    fontSize: isMobile ? '48px' : '64px',
+                                    marginTop: '12px',
+                                    opacity: 0, // Controlled by reveal logic
+                                    textTransform: 'lowercase'
                                 }}
                             >
-                                Segurança clínica. Resultado natural.
-                            </p>
-
-                            <div
-                                ref={actionsRef}
-                                className={`hero-ctas relative z-[50] flex flex-col items-center w-full transition-all duration-200 ease-out ${ctaSticky ? 'fixed bottom-4 left-4 w-[calc(100%-32px)] scale-[1.02]' : 'w-full'}`}
-                                style={{ marginTop: '24px' }}
-                            >
-                                <button
-                                    onClick={() => setIsFormOpen(true)}
-                                    aria-label="Agendar consulta — abre formulário de agendamento"
-                                    style={{
-                                        width: '100%',
-                                        height: ctaSticky ? '48px' : '52px',
-                                        background: '#0B0B0B',
-                                        color: '#FBFBFB',
-                                        borderRadius: '8px',
-                                        fontSize: '16px',
-                                        fontWeight: 600,
-                                        letterSpacing: '1px',
-                                        textTransform: 'uppercase',
-                                        border: 'none',
-                                        boxShadow: '0 6px 18px rgba(11,11,11,0.12)',
-                                        cursor: 'pointer',
-                                        transition: 'opacity 200ms ease-out, transform 200ms ease-out',
-                                        willChange: 'transform, opacity'
-                                    }}
-                                    className="cta-primary hover:opacity-90 active:scale-[0.98]"
-                                >
-                                    AGENDAR CONSULTA
-                                </button>
-
-                                {!ctaSticky && (
-                                    <a
-                                        href="#galeria"
-                                        className="cta-secondary-link text-center"
-                                        style={{
-                                            fontSize: '14px',
-                                            fontWeight: 500,
-                                            color: 'rgba(255,255,255,0.78)',
-                                            opacity: 0.78,
-                                            marginTop: '16px',
-                                            display: 'inline-block',
-                                            textDecoration: 'none',
-                                            transition: 'opacity 200ms ease'
-                                        }}
-                                        onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.textDecoration = 'underline'; }}
-                                        onMouseOut={(e) => { e.currentTarget.style.opacity = '0.78'; e.currentTarget.style.textDecoration = 'none'; }}
+                                <AnimatePresence mode="wait">
+                                    <m.span
+                                        key={isFormOpen ? "consulta" : "assinatura"}
+                                        initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
+                                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                        exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
+                                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                                        style={{ display: 'inline-block' }}
                                     >
-                                        ver galeria de resultados →
-                                    </a>
-                                )}
+                                        {isFormOpen ? "sua consulta." : "sua assinatura."}
+                                    </m.span>
+                                </AnimatePresence>
+                            </span>
+                        </h1>
+
+                        <div style={{
+                            opacity: isFormOpen ? 0 : 1,
+                            visibility: isFormOpen ? 'hidden' : 'visible',
+                            pointerEvents: isFormOpen ? 'none' : 'auto',
+                            transition: 'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}>
+                            <div className="overflow-hidden w-full transform mb-12 mt-auto">
+                                <p
+                                    ref={descriptionRef}
+                                    className="text-center opacity-0 font-sans"
+                                    style={{
+                                        fontSize: '18px',
+                                        color: '#F5F5DC',
+                                        opacity: 0.8,
+                                        maxWidth: isMobile ? 'min(90vw, 450px)' : '600px',
+                                        margin: '0 auto',
+                                        letterSpacing: '0.02em',
+                                    }}
+                                >
+                                    Segurança clínica. Resultado natural.
+                                </p>
+                            </div>
+
+
+                            <div ref={actionsRef} className="hero-ctas relative z-[20] flex flex-col items-center justify-center w-full px-5 pointer-events-auto opacity-0 gap-4" style={{ paddingBottom: '2vh' }}>
+                                <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                    <m.button
+                                        onClick={() => setIsFormOpen(true)}
+                                        whileHover={{
+                                            y: -2,
+                                            scale: 1.05,
+                                            background: "#FFFFFF",
+                                            boxShadow: "0 10px 40px rgba(245, 245, 220, 0.2)"
+                                        }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            padding: '1.2rem 3rem',
+                                            borderRadius: '9999px',
+                                            background: '#F5F5DC',
+                                            color: '#121212',
+                                            fontWeight: 600,
+                                            fontSize: '14px',
+                                            letterSpacing: '0.05em',
+                                            width: isMobile ? '100%' : 'auto',
+                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+                                        }}
+                                        className="btn-primary-reconstructed flex items-center justify-center"
+                                    >
+                                        <span className="relative z-10">Agendar Consulta</span>
+                                    </m.button>
+                                </Magnetic>
+
+                                <Magnetic strength={isMobile ? 0 : 0.3} range={100} className={isMobile ? "w-full" : ""}>
+                                    <m.button
+                                        onClick={() => document.getElementById('casos')?.scrollIntoView({ behavior: 'smooth' })}
+                                        whileHover={{
+                                            y: -2,
+                                            scale: 1.05,
+                                            background: 'rgba(245, 245, 220, 0.05)',
+                                            borderColor: 'rgba(245, 245, 220, 0.5)'
+                                        }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            padding: '1.2rem 3rem',
+                                            borderRadius: '9999px',
+                                            background: 'transparent',
+                                            border: '1px solid rgba(245, 245, 220, 0.2)',
+                                            color: '#F5F5DC',
+                                            fontWeight: 600,
+                                            fontSize: '14px',
+                                            letterSpacing: '0.05em',
+                                            width: isMobile ? '100%' : 'auto',
+                                            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)'
+                                        }}
+                                        className="btn-ghost-reconstructed flex items-center justify-center"
+                                    >
+                                        <span>Galeria de Resultados</span>
+                                    </m.button>
+                                </Magnetic>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                {/* Glassmorphism Multistep Form */}
-                <AnimatePresence>
-                    {isFormOpen && (
-                        <m.div
-                            initial={{ opacity: 0, y: 40, scale: 0.95, filter: 'blur(10px)' }}
-                            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, y: 20, scale: 0.95, filter: 'blur(10px)' }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                            className="absolute top-[48%] md:top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[500px] z-[30] pointer-events-auto"
-                            style={{
-                                background: 'rgba(11, 11, 11, 0.65)',
-                                backdropFilter: 'blur(24px)',
-                                WebkitBackdropFilter: 'blur(24px)',
-                                border: '1px solid rgba(245, 245, 220, 0.12)',
-                                borderRadius: '24px',
-                                padding: isMobile ? '2.5rem 1.5rem' : '3.5rem 2.5rem',
-                                boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
-                                overflow: 'hidden'
-                            }}
-                        >
-                            {/* Progress Line */}
-                            <div className="absolute top-0 left-0 h-[2px] bg-[#F5F5DC]/10 w-full">
+                        {/* Glassmorphism Multistep Form */}
+                        <AnimatePresence>
+                            {isFormOpen && (
                                 <m.div
-                                    className="h-full bg-[#F5F5DC]/80"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${(formStep / 4) * 100}%` }}
-                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                />
-                            </div>
-
-                            {/* Close Button */}
-                            <button
-                                onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 500); }}
-                                className="absolute top-4 right-4 text-[#F5F5DC]/40 hover:text-[#F5F5DC] transition-colors p-2 rounded-full hover:bg-white/5"
-                            >
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" strokeWidth="1.5" />
-                                </svg>
-                            </button>
-
-                            {/* Step 1: Identification */}
-                            {formStep === 1 && (
-                                <m.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.5, ease: "easeOut" }}
-                                    className="flex flex-col gap-8"
+                                    initial={{ opacity: 0, y: 40, scale: 0.95, filter: 'blur(10px)' }}
+                                    animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                                    exit={{ opacity: 0, y: 20, scale: 0.95, filter: 'blur(10px)' }}
+                                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                                    className="absolute top-[48%] md:top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[500px] z-[30] pointer-events-auto"
+                                    style={{
+                                        background: 'rgba(11, 11, 11, 0.65)',
+                                        backdropFilter: 'blur(24px)',
+                                        WebkitBackdropFilter: 'blur(24px)',
+                                        border: '1px solid rgba(245, 245, 220, 0.12)',
+                                        borderRadius: '24px',
+                                        padding: isMobile ? '2.5rem 1.5rem' : '3.5rem 2.5rem',
+                                        boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+                                        overflow: 'hidden'
+                                    }}
                                 >
-                                    <div className="flex flex-col gap-2 relative z-10">
-                                        <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seus dados</h3>
-                                        <p className="text-[#F5F5DC]/60 font-sans text-sm">O primeiro passo para a sua nova assinatura visual.</p>
+                                    {/* Progress Line */}
+                                    <div className="absolute top-0 left-0 h-[2px] bg-[#F5F5DC]/10 w-full">
+                                        <m.div
+                                            className="h-full bg-[#F5F5DC]/80"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${(formStep / 4) * 100}%` }}
+                                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                        />
                                     </div>
-                                    <div className="flex flex-col gap-6 relative z-10">
-                                        <div className="flex flex-col gap-1.5 group">
-                                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">Nome Completo</label>
-                                            <input
-                                                type="text"
-                                                value={formData.name}
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                placeholder="Sua assinatura visual"
-                                                className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-1.5 group">
-                                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">WhatsApp</label>
-                                            <input
-                                                type="tel"
-                                                value={formData.phone}
-                                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                                placeholder="(11) 99999-9999"
-                                                className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display tracking-widest text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
-                                            />
-                                        </div>
-                                    </div>
+
+                                    {/* Close Button */}
                                     <button
-                                        onClick={() => setFormStep(2)}
-                                        disabled={!formData.name || !formData.phone}
-                                        className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC] relative z-10"
+                                        onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 500); }}
+                                        className="absolute top-4 right-4 text-[#F5F5DC]/40 hover:text-[#F5F5DC] transition-colors p-2 rounded-full hover:bg-white/5"
                                     >
-                                        Próximo Passo
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" strokeWidth="1.5" />
+                                        </svg>
                                     </button>
-                                </m.div>
-                            )}
 
-                            {/* Step 2: Preference */}
-                            {formStep === 2 && (
-                                <m.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.5, ease: "easeOut" }}
-                                    className="flex flex-col gap-7"
-                                >
-                                    <button onClick={() => setFormStep(1)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
-                                        <span>←</span> Voltar
-                                    </button>
-                                    <div className="flex flex-col gap-2">
-                                        <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seu objetivo</h3>
-                                        <p className="text-[#F5F5DC]/60 font-sans text-sm">Qual especialidade você procura?</p>
-                                    </div>
-                                    <div className="flex flex-col gap-3 max-h-[40vh] overflow-y-auto no-scrollbar pb-2">
-                                        {['Estética Dental (Lentes)', 'Harmonização Orogengival', 'Limpeza Profunda Premium', 'Avaliação Geral Exclusiva'].map((treatment) => (
+                                    {/* Step 1: Identification */}
+                                    {formStep === 1 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-8"
+                                        >
+                                            <div className="flex flex-col gap-2 relative z-10">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seus dados</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">O primeiro passo para a sua nova assinatura visual.</p>
+                                            </div>
+                                            <div className="flex flex-col gap-6 relative z-10">
+                                                <div className="flex flex-col gap-1.5 group">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">Nome Completo</label>
+                                                    <input
+                                                        type="text"
+                                                        value={formData.name}
+                                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                        placeholder="Sua assinatura visual"
+                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-1.5 group">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans transition-colors group-focus-within:text-[#F5F5DC]/80">WhatsApp</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={formData.phone}
+                                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                        placeholder="(11) 99999-9999"
+                                                        className="bg-transparent border-b border-[#F5F5DC]/20 py-2.5 text-[#F5F5DC] font-display tracking-widest text-xl focus:outline-none focus:border-[#F5F5DC]/80 transition-all placeholder:text-[#F5F5DC]/15 placeholder:font-light"
+                                                    />
+                                                </div>
+                                            </div>
                                             <button
-                                                key={treatment}
-                                                onClick={() => setFormData({ ...formData, treatment })}
-                                                className={`text-left py-4 px-5 rounded-2xl border transition-all duration-300 ${formData.treatment === treatment ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
+                                                onClick={() => setFormStep(2)}
+                                                disabled={!formData.name || !formData.phone}
+                                                className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC] relative z-10"
                                             >
-                                                <span className="font-display text-[#F5F5DC]/90 tracking-wide text-lg">{treatment}</span>
+                                                Próximo Passo
                                             </button>
-                                        ))}
-                                    </div>
-                                    <button
-                                        onClick={() => setFormStep(3)}
-                                        disabled={!formData.treatment}
-                                        className="mt-2 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC]"
-                                    >
-                                        Escolher Horário
-                                    </button>
-                                </m.div>
-                            )}
+                                        </m.div>
+                                    )}
 
-                            {/* Step 3: Calendar */}
-                            {formStep === 3 && (
-                                <m.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.5, ease: "easeOut" }}
-                                    className="flex flex-col gap-8"
-                                >
-                                    <button onClick={() => setFormStep(2)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
-                                        <span>←</span> Voltar
-                                    </button>
-                                    <div className="flex flex-col gap-2">
-                                        <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Sua disponibilidade</h3>
-                                        <p className="text-[#F5F5DC]/60 font-sans text-sm">Quando fica melhor para você?</p>
-                                    </div>
-
-                                    <div className="flex flex-col gap-5">
-                                        <div className="flex flex-col gap-2">
-                                            <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans mb-1">Período Ideal</label>
-                                            <div className="grid grid-cols-2 gap-3">
-                                                {['Manhã', 'Tarde'].map((time) => (
+                                    {/* Step 2: Preference */}
+                                    {formStep === 2 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-7"
+                                        >
+                                            <button onClick={() => setFormStep(1)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
+                                                <span>←</span> Voltar
+                                            </button>
+                                            <div className="flex flex-col gap-2">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Seu objetivo</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">Qual especialidade você procura?</p>
+                                            </div>
+                                            <div className="flex flex-col gap-3 max-h-[40vh] overflow-y-auto no-scrollbar pb-2">
+                                                {['Estética Dental (Lentes)', 'Harmonização Orogengival', 'Limpeza Profunda Premium', 'Avaliação Geral Exclusiva'].map((treatment) => (
                                                     <button
-                                                        key={time}
-                                                        onClick={() => setFormData({ ...formData, time })}
-                                                        className={`py-4 rounded-xl border transition-all duration-300 ${formData.time === time ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
+                                                        key={treatment}
+                                                        onClick={() => setFormData({ ...formData, treatment })}
+                                                        className={`text-left py-4 px-5 rounded-2xl border transition-all duration-300 ${formData.treatment === treatment ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
                                                     >
-                                                        <span className="font-sans text-[15px] font-medium text-[#F5F5DC]/90">{time}</span>
+                                                        <span className="font-display text-[#F5F5DC]/90 tracking-wide text-lg">{treatment}</span>
                                                     </button>
                                                 ))}
                                             </div>
-                                        </div>
-                                    </div>
+                                            <button
+                                                onClick={() => setFormStep(3)}
+                                                disabled={!formData.treatment}
+                                                className="mt-2 border border-[#F5F5DC]/20 bg-[#F5F5DC]/5 text-[#F5F5DC] py-4 rounded-full font-sans font-medium text-sm transition-all hover:bg-[#F5F5DC] hover:text-[#0B0B0B] disabled:opacity-30 disabled:hover:bg-[#F5F5DC]/5 disabled:hover:text-[#F5F5DC]"
+                                            >
+                                                Escolher Horário
+                                            </button>
+                                        </m.div>
+                                    )}
 
-                                    <button
-                                        onClick={() => {
-                                            // Submission logic simulation
-                                            setFormStep(4);
-                                        }}
-                                        disabled={!formData.time}
-                                        className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC] text-[#0B0B0B] py-4 rounded-full font-sans font-medium text-sm transition-all hover:scale-[1.02] shadow-[0_4px_20px_rgba(245,245,220,0.15)] disabled:opacity-30 disabled:bg-[#F5F5DC]/5 disabled:text-[#F5F5DC] disabled:hover:scale-100 disabled:shadow-none"
-                                    >
-                                        Finalizar Agendamento
-                                    </button>
+                                    {/* Step 3: Calendar */}
+                                    {formStep === 3 && (
+                                        <m.div
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                            className="flex flex-col gap-8"
+                                        >
+                                            <button onClick={() => setFormStep(2)} className="text-[#F5F5DC]/40 text-xs text-left hover:text-[#F5F5DC] transition-colors flex items-center gap-2 -ml-2 -mt-2">
+                                                <span>←</span> Voltar
+                                            </button>
+                                            <div className="flex flex-col gap-2">
+                                                <h3 className="font-display text-2xl md:text-3xl text-[#F5F5DC] font-light">Sua disponibilidade</h3>
+                                                <p className="text-[#F5F5DC]/60 font-sans text-sm">Quando fica melhor para você?</p>
+                                            </div>
+
+                                            <div className="flex flex-col gap-5">
+                                                <div className="flex flex-col gap-2">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-[#F5F5DC]/50 font-sans mb-1">Período Ideal</label>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {['Manhã', 'Tarde'].map((time) => (
+                                                            <button
+                                                                key={time}
+                                                                onClick={() => setFormData({ ...formData, time })}
+                                                                className={`py-4 rounded-xl border transition-all duration-300 ${formData.time === time ? 'border-[#F5F5DC]/60 bg-[#F5F5DC]/10 shadow-[0_0_20px_rgba(245,245,220,0.05)]' : 'border-[#F5F5DC]/10 hover:border-[#F5F5DC]/30 hover:bg-[#F5F5DC]/5'}`}
+                                                            >
+                                                                <span className="font-sans text-[15px] font-medium text-[#F5F5DC]/90">{time}</span>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                onClick={() => {
+                                                    // Submission logic simulation
+                                                    setFormStep(4);
+                                                }}
+                                                disabled={!formData.time}
+                                                className="mt-6 border border-[#F5F5DC]/20 bg-[#F5F5DC] text-[#0B0B0B] py-4 rounded-full font-sans font-medium text-sm transition-all hover:scale-[1.02] shadow-[0_4px_20px_rgba(245,245,220,0.15)] disabled:opacity-30 disabled:bg-[#F5F5DC]/5 disabled:text-[#F5F5DC] disabled:hover:scale-100 disabled:shadow-none"
+                                            >
+                                                Finalizar Agendamento
+                                            </button>
+                                        </m.div>
+                                    )}
+
+                                    {/* Step 4: Success */}
+                                    {formStep === 4 && (
+                                        <m.div
+                                            initial={{ opacity: 0, scale: 0.95, filter: 'blur(5px)' }}
+                                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                            transition={{ duration: 1, ease: "easeOut" }}
+                                            className="flex flex-col items-center justify-center text-center gap-7 py-8"
+                                        >
+                                            <div className="w-20 h-20 rounded-full border border-[#F5F5DC]/20 flex items-center justify-center relative">
+                                                <div className="absolute inset-0 bg-[#F5F5DC]/5 rounded-full animate-pulse" />
+                                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10">
+                                                    <path d="M5 13L9 17L19 7" stroke="#F5F5DC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                            <div className="flex flex-col gap-3">
+                                                <h3 className="font-display text-3xl md:text-3xl text-[#F5F5DC] font-light leading-tight">
+                                                    Em breve,<br />sua nova assinatura visual começa.
+                                                </h3>
+                                                <p className="text-[#F5F5DC]/50 font-sans text-[15px] max-w-[280px] mx-auto leading-relaxed">
+                                                    Nossa Concierge entrará em contato via WhatsApp para alinhar os últimos detalhes.
+                                                </p>
+                                            </div>
+                                            <button
+                                                onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 800); setFormData({ name: '', phone: '', email: '', treatment: '', date: '', time: '' }); }}
+                                                className="mt-6 text-[#F5F5DC]/60 hover:text-[#F5F5DC] text-xs uppercase tracking-[0.2em] font-sans transition-colors border-b border-transparent hover:border-[#F5F5DC]/30 pb-1"
+                                            >
+                                                Voltar ao início
+                                            </button>
+                                        </m.div>
+                                    )}
                                 </m.div>
                             )}
+                        </AnimatePresence>
+                    </div>
+                </div>
 
-                            {/* Step 4: Success */}
-                            {formStep === 4 && (
-                                <m.div
-                                    initial={{ opacity: 0, scale: 0.95, filter: 'blur(5px)' }}
-                                    animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                                    transition={{ duration: 1, ease: "easeOut" }}
-                                    className="flex flex-col items-center justify-center text-center gap-7 py-8"
-                                >
-                                    <div className="w-20 h-20 rounded-full border border-[#F5F5DC]/20 flex items-center justify-center relative">
-                                        <div className="absolute inset-0 bg-[#F5F5DC]/5 rounded-full animate-pulse" />
-                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10">
-                                            <path d="M5 13L9 17L19 7" stroke="#F5F5DC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                    <div className="flex flex-col gap-3">
-                                        <h3 className="font-display text-3xl md:text-3xl text-[#F5F5DC] font-light leading-tight">
-                                            Em breve,<br />sua nova assinatura visual começa.
-                                        </h3>
-                                        <p className="text-[#F5F5DC]/50 font-sans text-[15px] max-w-[280px] mx-auto leading-relaxed">
-                                            Nossa Concierge entrará em contato via WhatsApp para alinhar os últimos detalhes.
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() => { setIsFormOpen(false); setTimeout(() => setFormStep(1), 800); setFormData({ name: '', phone: '', email: '', treatment: '', date: '', time: '' }); }}
-                                        className="mt-6 text-[#F5F5DC]/60 hover:text-[#F5F5DC] text-xs uppercase tracking-[0.2em] font-sans transition-colors border-b border-transparent hover:border-[#F5F5DC]/30 pb-1"
-                                    >
-                                        Voltar ao início
-                                    </button>
-                                </m.div>
-                            )}
-                        </m.div>
-                    )}
-                </AnimatePresence>
+                {/* Atmospheric Glows (Disabled for cleaner look) */}
+                {/* <div className="absolute top-[-10%] left-[-10%] w-[80%] lg:w-[50%] h-[50%] glow-blob-warm opacity-15 pointer-events-none" />
+                <div className="absolute bottom-[-10%] right-[-5%] w-[70%] lg:w-[40%] h-[40%] glow-blob opacity-10 pointer-events-none" /> */}
+
+                {/* Cinematic Progress Line (Desktop) (Disabled for cleaner look) */}
+                {/* {!isMobile && (
+                    <div className="absolute right-12 top-1/2 -translate-y-1/2 h-32 w-[1px] bg-white/10 overflow-hidden z-50">
+                        <div
+                            ref={progressLineRef}
+                            className="absolute top-0 left-0 w-full h-full bg-[var(--color-silver-bh)] origin-top scale-y-0"
+                        />
+                    </div>
+                )} */}
 
                 <m.div
                     ref={scrollHintRef}
@@ -726,3 +1046,4 @@ export function Hero() {
         </section>
     );
 }
+
