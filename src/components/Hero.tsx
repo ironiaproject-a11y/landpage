@@ -32,18 +32,10 @@ export function Hero() {
         const images: HTMLImageElement[] = [];
         const airbnb = { frame: 0 };
 
-        // Preload images
-        for (let i = 0; i < FRAME_COUNT; i++) {
-            const img = new Image();
-            img.src = currentFrame(i);
-            images.push(img);
-        }
-
         const render = () => {
             const img = images[airbnb.frame];
             if (!img || !img.complete) return;
 
-            // Handle Resize / Object-Fit: Cover
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const imgWidth = img.width;
@@ -58,6 +50,21 @@ export function Hero() {
             context.drawImage(img, x, y, newWidth, newHeight);
         };
 
+        // Preload images
+        let loadedCount = 0;
+        for (let i = 0; i < FRAME_COUNT; i++) {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                if (i === 0) render(); // Render first frame immediately when it loads
+            };
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        // Handle pre-loaded case for first frame
+        if (images[0]?.complete) render();
+
         const updateSize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -69,9 +76,6 @@ export function Hero() {
 
         // GSAP Scroll Animation
         const ctx = gsap.context(() => {
-            // First image render when first image loads
-            images[0].onload = render;
-
             gsap.to(airbnb, {
                 frame: FRAME_COUNT - 1,
                 snap: "frame",
@@ -84,9 +88,6 @@ export function Hero() {
                 },
                 onUpdate: render,
             });
-
-            // Layered Parallax logic (Optional additional movement if requested)
-            // But basic scrubbing is on the airbnb.frame now
 
             // Sticky CTA logic
             ScrollTrigger.create({
