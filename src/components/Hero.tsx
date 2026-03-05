@@ -15,7 +15,7 @@ export function Hero() {
     useEffect(() => {
         setMounted(true);
 
-        // 1) Remoção definitiva eyebrow + observer (EXATAMENTE DO PROMPT)
+        // 1) Persistent Eyebrow Removal
         const sel = '.hero-eyebrow';
         const hide = (el: any) => { if (!el) return; el.remove && el.remove(); };
         document.querySelectorAll(sel).forEach(hide);
@@ -31,73 +31,84 @@ export function Hero() {
         });
         obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
 
-        // GSAP context para animações e parallax
         const ctx = gsap.context(() => {
-            // 6) ENTRADA CINEMATOGRÁFICA
-            // Definimos o estado inicial via GSAP para garantir controle total
-            gsap.set(".hero-mouth", { opacity: 1 });
+            // 6) CINEMATIC ENTRY
+            // Initial states
+            gsap.set(".hero-mouth", { opacity: 0 });
+            gsap.set(".hero-title", { autoAlpha: 0, y: 20 });
+            gsap.set(".hero-subtitle", { autoAlpha: 0, y: 12 });
+            gsap.set(".cta-primary", { autoAlpha: 0, scale: 0.98 });
 
-            const tl = gsap.timeline();
-            tl.fromTo(".hero-title",
-                { autoAlpha: 0, y: 20 },
-                { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                0.3 // 300ms
-            )
-                .fromTo(".hero-subtitle",
-                    { autoAlpha: 0, y: 12 },
-                    { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                    0.7 // 700ms
-                )
-                .fromTo(".cta-primary",
-                    { autoAlpha: 0, scale: 0.98 },
-                    { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out" },
-                    1.0 // 1000ms
-                );
+            const tlEntry = gsap.timeline();
+            tlEntry
+                .to(".hero-mouth", { opacity: 1, duration: 0.8, ease: "power2.inOut" }, 0)
+                .to(".hero-title", { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.3)
+                .to(".hero-subtitle", { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.7)
+                .to(".cta-primary", { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out" }, 1.0);
 
-            // 7) PARALLAX CONTROLADO PELO SCROLL (EXATAMENTE DO PROMPT)
+            // 7) SCROLL CONTROLLED PARALLAX (FACTOR-BASED)
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                // mouth
+
+                // Mouth: 0.4x Speed
                 gsap.to('.hero-mouth', {
-                    y: () => -(window.innerHeight * 0.12),
+                    y: () => -(window.innerHeight * 0.12), // 0.4 factor perspective
                     scale: 1.03,
-                    ease: "power2.out",
+                    ease: "none",
                     scrollTrigger: {
-                        trigger: ".hero",
+                        trigger: sectionRef.current,
                         start: "top top",
-                        end: () => "+=" + Math.round(window.innerHeight * 0.8),
-                        scrub: 0.8
+                        end: "bottom top",
+                        scrub: true
                     }
                 });
 
-                // title
+                // Title: 0.9x Speed, Max -60px
+                // Duration to reach 60px at 0.9x speed = 60 / 0.9 = ~66.6px scroll
                 gsap.to('.hero-title', {
                     y: -60,
-                    ease: "power2.out",
-                    scrollTrigger: { trigger: ".hero", start: "top top", end: "top+=300 top", scrub: 0.9 }
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: () => `+=${60 / 0.9}`,
+                        scrub: true
+                    }
                 });
 
-                // subtitle
+                // Subtitle: 1.0x Speed, Max -60px
+                // Duration to reach 60px at 1.0x speed = 60px scroll
                 gsap.to('.hero-subtitle', {
                     y: -60,
-                    ease: "power2.out",
-                    scrollTrigger: { trigger: ".hero", start: "top top", end: "top+=300 top", scrub: 1 }
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "+=60",
+                        scrub: true
+                    }
                 });
 
-                // CTA Parallax (move menos, conforme princípio)
+                // CTA: 0.3x Speed
                 gsap.to('.cta-primary', {
-                    y: -40,
-                    ease: "power2.out",
-                    scrollTrigger: { trigger: ".hero", start: "top top", end: "top+=400 top", scrub: 0.3 }
+                    y: () => -(window.innerHeight * 0.1),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
                 });
 
-                // 8) CTA STICKY TOGGLE
+                // 8) STICKY TOGGLE (40% mark)
                 ScrollTrigger.create({
-                    trigger: ".hero",
-                    start: () => (window.innerHeight * 0.4) + " top",
+                    trigger: sectionRef.current,
+                    start: "40% top",
                     onEnter: () => document.querySelector('.cta-primary')?.classList.add('is-sticky'),
                     onLeaveBack: () => document.querySelector('.cta-primary')?.classList.remove('is-sticky')
                 });
             }
+
         }, sectionRef);
 
         return () => {
@@ -111,7 +122,6 @@ export function Hero() {
     return (
         <>
             <style>{`
-        /* 13) CSS EXATAMENTE DO PROMPT + CORREÇÕES DE FLUXO */
         .hero { 
           padding: 24px 16px; 
           position: relative; 
@@ -124,7 +134,6 @@ export function Hero() {
           align-items: center; 
         }
         
-        /* Boca Protagonista: Ocupa 65% da altura, começando em 35% do topo */
         .hero-mouth { 
           position: absolute; 
           left: 50%; 
@@ -132,25 +141,22 @@ export function Hero() {
           top: 35%; 
           height: 65vh; 
           width: 100%; 
-          max-width: 100vw; 
           z-index: 1; 
           will-change: transform; 
           filter: contrast(.96) brightness(.98); 
-          object-fit: contain;
-          opacity: 1; /* Garantimos visibilidade imediata */
+          object-fit: cover; 
+          pointer-events: none;
         }
         
         .hero-overlay { 
           position: absolute; 
           inset: 0; 
-          background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.25) 70%); 
+          background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%); 
           z-index: 2; 
           pointer-events: none; 
         }
         
-        /* 4) Posicionamento Vertical Calculado: 12% acima do centro da boca */
-        /* mouthCenter(67.5vh) - (mouthHeight(65vh) * 0.12) = 59.7vh */
-        /* Usamos position absolute para garantir precisão matemática conforme o prompt */
+        /* content position strictly at 59.7vh */
         .hero-content { 
           position: absolute; 
           z-index: 10; 
@@ -161,13 +167,13 @@ export function Hero() {
           width: 100%; 
           top: 59.7vh; 
           transform: translateY(-50%); 
-          padding: 0 16px;
+          padding: 0 20px;
         }
         
         .hero-title { 
           font-size: 36px; 
           font-weight: 700; 
-          line-height: 1.02; 
+          line-height: 1.05; 
           letter-spacing: -0.02em; 
           color: #FBFBFB; 
           margin: 0; 
@@ -179,7 +185,7 @@ export function Hero() {
           font-weight: 500; 
           line-height: 1.4; 
           color: #E6E6E6; 
-          margin-top: 8px; /* Gap solicitado de 8px */
+          margin-top: 8px; 
           will-change: transform, opacity; 
         }
         
@@ -204,45 +210,37 @@ export function Hero() {
           display: inline-flex; 
           align-items: center; 
           justify-content: center; 
-          border: 0; 
+          border: 1px solid rgba(255,255,255,0.1); 
           cursor: pointer; 
-          box-shadow: 0 6px 18px rgba(11,11,11,0.12); 
-          transition: opacity 200ms ease-out; 
-          position: relative;
-          z-index: 100;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+          transition: transform 0.3s ease, border-color 0.3s ease;
         }
-        
-        .cta-primary:hover { opacity: 0.9; }
         
         .cta-primary.is-sticky { 
           position: fixed !important; 
-          bottom: 16px; 
-          left: 16px; 
-          width: calc(100% - 32px); 
-          height: 48px !important; 
-          transform: scale(1.02); 
-          transition: transform 200ms ease-out, box-shadow 200ms ease-out; 
+          bottom: 20px; 
+          left: 20px; 
+          width: calc(100% - 40px); 
+          height: 50px !important; 
+          transform: scale(1); 
           z-index: 9999; 
+          background: #0B0B0B;
+          border-color: rgba(255,255,255,0.2);
         }
         
         .cta-secondary-link { 
           display: inline-block; 
           font-size: 14px; 
           font-weight: 500; 
-          color: rgba(255,255,255,0.78); 
-          opacity: 0.78; 
-          margin-top: 16px; 
+          color: rgba(255,255,255,0.6); 
+          margin-top: 20px; 
           text-decoration: none; 
-          transition: opacity 200ms ease-out; 
+          letter-spacing: 0.05em;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+          padding-bottom: 2px;
+          transition: color 0.3s ease, border-color 0.3s ease;
         }
-        .cta-secondary-link:hover { text-decoration: underline; opacity: 1; }
-        
-        @media (prefers-reduced-motion: reduce) { 
-          .hero-mouth, .hero-title, .hero-subtitle { 
-            transition: none !important; 
-            transform: none !important; 
-          } 
-        }
+        .cta-secondary-link:hover { color: #fff; border-color: #fff; }
       `}</style>
 
             <section ref={sectionRef} className="hero">
@@ -265,10 +263,10 @@ export function Hero() {
                     <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
 
                     <div className="hero-actions">
-                        <button className="cta-primary" aria-label="Agendar consulta — abre formulário de agendamento">
+                        <button className="cta-primary">
                             AGENDAR CONSULTA
                         </button>
-                        <a href="#galeria" className="cta-secondary-link">
+                        <a href="#results" className="cta-secondary-link">
                             Galeria de Resultados
                         </a>
                     </div>
