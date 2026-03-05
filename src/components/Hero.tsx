@@ -32,8 +32,8 @@ const IntroSequence = forwardRef<IntroSequenceHandle, { isMobile: boolean }>(fun
                 if (!isMounted) return;
                 const img = new Image();
                 // Use the correct path based on your assets
-                const index = i.toString().padStart(3, '0');
-                img.src = `/assets/sequence/mouth_${index}.webp`;
+                const index = i.toString();
+                img.src = `/assets/hero-frames/frame-${index}.gif`;
                 img.onload = () => {
                     loadedCount++;
                     if (loadedCount === TOTAL_FRAMES) {
