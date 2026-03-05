@@ -233,7 +233,14 @@ export default function RootLayout({
 
     // Mouth: localizar vídeo/imagem e marcar com classe
     let heroMouth = document.querySelector('.hero-mouth') || document.querySelector('video') || document.querySelector('img');
-    if(heroMouth && !heroMouth.classList.contains('hero-mouth')) heroMouth.classList.add('hero-mouth');
+    if(heroMouth){
+      if(!heroMouth.classList.contains('hero-mouth')) heroMouth.classList.add('hero-mouth');
+      if(heroMouth.tagName.toLowerCase() === 'video'){
+        heroMouth.play().catch(e=>console.warn('heroMouth.play() blocked:', e));
+      }
+    }
+    // Forçar play em qualquer vídeo na página para garantir
+    document.querySelectorAll('video').forEach(v => v.play().catch(e=>{}));
 
     /* --- Remover eyebrow e proteger contra reinserção --- */
     function removeEyebrowsNow(){
@@ -283,14 +290,20 @@ export default function RootLayout({
         const heroH = (heroEl.getBoundingClientRect().height || window.innerHeight);
         const mouthY = - clamp(p * heroH * 0.12, 0, 60);
         const mouthScale = 1 + clamp(p * 0.03, 0, 0.03);
-        if(mouth) mouth.style.transform = \`translate3d(-50%, \${mouthY}px, 0) scale(\${mouthScale})\`;
+        if(mouth) mouth.style.transform = 'translate3d(-50%, ' + mouthY + 'px, 0) scale(' + mouthScale + ')';
         const titleY = - clamp(p * 60, 0, 60);
-        if(title){ title.style.transform = \`translate3d(0, \${titleY}px, 0)\`; title.style.opacity = \`\${clamp(1 - p*0.15, 0.0, 1)}\`; }
-        if(subtitle){ subtitle.style.transform = \`translate3d(0, \${titleY}px, 0)\`; subtitle.style.opacity = \`\${clamp(1 - p*0.25, 0.0, 1)}\`; }
+        if(title){
+          title.style.transform = 'translate3d(0, ' + titleY + 'px, 0)';
+          title.style.opacity = '' + clamp(1 - p*0.15, 0.0, 1);
+        }
+        if(subtitle){
+          subtitle.style.transform = 'translate3d(0, ' + titleY + 'px, 0)';
+          subtitle.style.opacity = '' + clamp(1 - p*0.25, 0.0, 1);
+        }
         if(cta){
           if(p >= 0.4) cta.classList.add('is-sticky'); else cta.classList.remove('is-sticky');
           const ctaY = - clamp(p * 30, 0, 30);
-          cta.style.transform = \`translate3d(0, \${ctaY}px, 0)\`;
+          cta.style.transform = 'translate3d(0, ' + ctaY + 'px, 0)';
         }
       }
       let ticking = false;
