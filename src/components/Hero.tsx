@@ -228,14 +228,15 @@ export function Hero() {
 
                 .cta-primary { 
                     width: 100%; 
-                    max-width: 420px;
-                    height: 56px; 
+                    max-width: 320px;
+                    height: 48px; 
                     background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.95) 100%); 
                     color: #FBFBFB; 
-                    border-radius: 12px; 
+                    /* Pill shape */
+                    border-radius: 9999px; 
                     font-weight: 500; 
-                    font-size: 15px; 
-                    letter-spacing: 1.5px; 
+                    font-size: 13px; 
+                    letter-spacing: 1.2px; 
                     text-transform: uppercase; 
                     display: inline-flex; 
                     align-items: center; 
