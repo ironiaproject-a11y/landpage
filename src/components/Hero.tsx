@@ -128,7 +128,7 @@ export function Hero() {
                     position: relative; 
                     height: 100vh; 
                     width: 100vw; 
-                    background: #000; 
+                    background: transparent; 
                     overflow: visible; 
                     margin: 0;
                     padding: 0;
@@ -154,22 +154,6 @@ export function Hero() {
                     object-fit: cover;
                     object-position: center;
                     transform: scale(0.85);
-                    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
-                    mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
-                }
-
-                .hero-overlay { 
-                    position: absolute; 
-                    inset: 0; 
-                    /* Deep vignette to enhance perspective and blend the scaled, feathered video */
-                    background: radial-gradient(
-                        circle at center,
-                        rgba(0,0,0,0) 0%,
-                        rgba(0,0,0,0.3) 50%,
-                        rgba(0,0,0,0.9) 100%
-                    ); 
-                    z-index: 2; 
-                    pointer-events: none; 
                 }
 
                 .hero-text-layer { 
@@ -295,8 +279,6 @@ export function Hero() {
                         ref={canvasRef}
                         className="hero-canvas"
                     />
-
-                    <div className="hero-overlay"></div>
 
                     <div className="hero-text-layer">
                         <h1 className="hero-title">Volte a sorrir com confiança.</h1>

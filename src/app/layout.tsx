@@ -91,60 +91,6 @@ export default function RootLayout({
             })
           }}
         />
-        <style id="hero-video-fix" dangerouslySetInnerHTML={{ __html: `
-/* INÍCIO: ajuste cirúrgico do vídeo do HERO - aplicar somente este bloco CSS */
-.hero, .site-hero, header.hero { 
-  position: relative !important;
-  overflow: hidden !important;
-  /* NÃO alterar height/width do container */
-}
-
-/* aplicar ao elemento de mídia do hero — cobre variações comuns de seletor */
-.hero video,
-.hero img.video,
-.hero .video-element,
-video.hero-media {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  pointer-events: none !important;
-  transform: none !important; /* garantir sem scale/translate direto */
-  filter: brightness(0.90) contrast(0.96) saturate(0.98) !important; /* reduz dominância sem criar bordas */
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-  will-change: transform, filter !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-/* overlay leve, opcional — APLICAR SÓ SE TEXTOS FICAREM DIFÍCEIS DE LER */
-.hero::after{
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  pointer-events: none !important;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.08) 35%, rgba(0,0,0,0.03) 70%) !important;
-  z-index: 2 !important;
-}
-
-/* garantir que o conteúdo textual fique acima do overlay */
-.hero .hero-content,
-.hero-content,
-.hero .content {
-  position: relative !important;
-  z-index: 3 !important;
-}
-
-/* Evitar mostrar bordas indesejadas em viewports problemáticas */
-@media (min-width: 1200px){
-  .hero video { filter: brightness(0.92) contrast(0.97) !important; }
-}
-/* FIM: ajuste cirúrgico do vídeo do HERO */
-        ` }} />
       </head>
       <body className="antialiased">
         <SmoothScroll>
