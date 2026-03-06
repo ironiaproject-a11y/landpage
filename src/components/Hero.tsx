@@ -45,7 +45,7 @@ export function Hero() {
             const imgHeight = img.height;
 
             // Draw logic: Ensure the image covers its internal canvas area
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.70;
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
@@ -153,7 +153,8 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: center;
-                    transform: scale(0.85);
+                    mix-blend-mode: screen;
+                    filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.05));
                 }
 
                 .hero-text-layer { 
