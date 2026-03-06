@@ -80,9 +80,8 @@ export function Hero() {
         }
 
         const updateSize = () => {
-            // Set canvas size to 115% of window to allow scale(0.92) without borders
-            canvas.width = window.innerWidth * 1.15;
-            canvas.height = window.innerHeight * 1.15;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             render();
         };
 
@@ -149,14 +148,14 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    /* Expanded to 115% and centered to hide gaps at 0.92 scale */
-                    top: -7.5%;
-                    left: -7.5%;
-                    width: 115%;
-                    height: 115%;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
                     display: block;
                     z-index: 1;
-                    /* Visual balance: 0.92 scale + subtle tilt */
+                    /* Visual balance: 0.92 scale */
                     transform: scale(0.92);
                     transform-origin: center center;
                     filter: brightness(0.85) contrast(1.1);
