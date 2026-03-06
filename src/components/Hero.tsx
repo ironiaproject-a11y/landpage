@@ -49,14 +49,12 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Draw logic: Full-bleed + extra zoom to mask borders/watermarks
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 1.05;
+            // Draw logic: Balanced scaling + mask strategy
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.85;
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
             const x = (canvasWidth - newWidth) / 2;
-            // Shift slightly up (reducing y) to ensure bottom watermark is cut first if needed
-            // Default center is (canvasHeight - newHeight) / 2
             const y = (canvasHeight - newHeight) / 2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -249,6 +247,18 @@ export function Hero() {
                     filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.05));
                 }
 
+                /* Bottom mask to hide watermark and blend with background */
+                .hero-bottom-mask {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 15vh;
+                    background: linear-gradient(to top, #000 0%, transparent 100%);
+                    z-index: 2;
+                    pointer-events: none;
+                }
+
                 .hero-text-layer { 
                     position: absolute; 
                     inset: 0;
@@ -428,6 +438,8 @@ export function Hero() {
                         ref={canvasRef}
                         className="hero-canvas"
                     />
+
+                    <div className="hero-bottom-mask" />
 
                     <div className="hero-text-layer">
                         <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
