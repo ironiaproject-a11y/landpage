@@ -155,21 +155,19 @@ export function Hero() {
                     object-position: center;
                     display: block;
                     z-index: 1;
-                    /* Visual balance: 0.92 scale */
-                    transform: scale(0.92);
-                    transform-origin: center center;
+                    /* Base styling without visual scaling to prevent borders/zoom issues */
                     filter: brightness(0.85) contrast(1.1);
-                    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
                 }
 
                 .hero-overlay { 
                     position: absolute; 
                     inset: 0; 
+                    /* Deep vignette to create perspective and depth without physical shrinking */
                     background: radial-gradient(
                         circle at center,
-                        rgba(0,0,0,0) 0%,
-                        rgba(0,0,0,0.15) 40%,
-                        rgba(0,0,0,0.7) 100%
+                        rgba(0,0,0,0.1) 0%,
+                        rgba(0,0,0,0.4) 50%,
+                        rgba(0,0,0,0.85) 100%
                     ); 
                     z-index: 2; 
                     pointer-events: none; 
