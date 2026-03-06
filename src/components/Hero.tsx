@@ -49,12 +49,14 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Draw logic: Ensure the image covers its internal canvas area
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.62;
+            // Draw logic: Full-bleed + extra zoom to mask borders/watermarks
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 1.05;
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
             const x = (canvasWidth - newWidth) / 2;
+            // Shift slightly up (reducing y) to ensure bottom watermark is cut first if needed
+            // Default center is (canvasHeight - newHeight) / 2
             const y = (canvasHeight - newHeight) / 2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
