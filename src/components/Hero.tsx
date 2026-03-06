@@ -52,9 +52,9 @@ export function Hero() {
             // Base scale for cover-like behavior
             const baseRatio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
 
-            // Reduce the rendering scale to 45% of the viewport to create the 3D 'floating' feel
-            // without being constrained by a box
-            const targetScale = 0.45;
+            // Reduce the rendering scale to 32% of the viewport for a minimalist 3D sensation
+            // that is perfectly centered and free-floating
+            const targetScale = 0.32;
             const newWidth = imgWidth * baseRatio * targetScale;
             const newHeight = imgHeight * baseRatio * targetScale;
 
@@ -252,18 +252,18 @@ export function Hero() {
                     height: 100vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
-                    /* Very soft global mask to hide any possible edges */
+                    /* Tighter global mask for the smaller 32% minimalist scale */
                     -webkit-mask-image: radial-gradient(
                         circle at center, 
                         black 0%, 
-                        black 30%, 
-                        transparent 80%
+                        black 20%, 
+                        transparent 70%
                     );
                     mask-image: radial-gradient(
                         circle at center, 
                         black 0%, 
-                        black 30%, 
-                        transparent 80%
+                        black 20%, 
+                        transparent 70%
                     );
                     pointer-events: none;
                 }
