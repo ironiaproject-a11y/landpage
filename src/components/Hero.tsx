@@ -153,20 +153,7 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: center;
-                    display: block;
-                    z-index: 1;
-                    /* Visual balance: 0.92 scale */
                     transform: scale(0.92);
-                    transform-origin: center center;
-                    /* Feather edges out to eliminate hard borders while scaling */
-                    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), 
-                                linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-                    mask-composite: intersect;
-                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), 
-                                        linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-                    -webkit-mask-composite: source-in;
-                    filter: brightness(0.85) contrast(1.1);
-                    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
                 }
 
                 .hero-overlay { 
