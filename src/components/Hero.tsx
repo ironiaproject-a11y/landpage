@@ -52,9 +52,9 @@ export function Hero() {
             // Base scale for cover-like behavior
             const baseRatio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
 
-            // Reduce the rendering scale to 60% of the viewport to create the 3D 'floating' feel
+            // Reduce the rendering scale to 45% of the viewport to create the 3D 'floating' feel
             // without being constrained by a box
-            const targetScale = 0.6;
+            const targetScale = 0.45;
             const newWidth = imgWidth * baseRatio * targetScale;
             const newHeight = imgHeight * baseRatio * targetScale;
 
