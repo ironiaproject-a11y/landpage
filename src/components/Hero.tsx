@@ -57,8 +57,8 @@ export function Hero() {
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // 20% vertical position (favors top)
-            const y = (canvasHeight - newHeight) * 0.2;
+            // 50% vertical position (centered for full screen)
+            const y = (canvasHeight - newHeight) / 2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -245,22 +245,18 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 70vw;
-                    max-width: 880px;
-                    height: 48vh;
-                    border-radius: 24px;
+                    width: 100vw;
+                    height: 100vh;
                     mix-blend-mode: screen;
-                    filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.05));
                     overflow: hidden;
                 }
 
-                /* Adjusted mask for the new small size */
                 .hero-bottom-mask {
                     position: absolute;
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 8vh;
+                    height: 20vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
