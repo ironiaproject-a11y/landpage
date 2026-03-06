@@ -57,8 +57,8 @@ export function Hero() {
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // 40% vertical position (optimizes framing for 70vh)
-            const y = (canvasHeight - newHeight) * 0.4;
+            // 45% vertical position (optimizes framing for the new 3D floating window)
+            const y = (canvasHeight - newHeight) * 0.45;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -245,23 +245,24 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 100vw;
-                    height: 70vh;
+                    width: 85vw;
+                    height: 55vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
-                    /* Seamless blending via mask */
-                    -webkit-mask-image: linear-gradient(to bottom, 
-                        transparent 0%, 
-                        black 10%, 
-                        black 90%, 
+                    /* Omnidirectional seamless blending for 3D effect */
+                    -webkit-mask-image: radial-gradient(
+                        ellipse 60% 70% at 50% 50%, 
+                        black 0%, 
+                        black 40%, 
                         transparent 100%
                     );
-                    mask-image: linear-gradient(to bottom, 
-                        transparent 0%, 
-                        black 10%, 
-                        black 90%, 
+                    mask-image: radial-gradient(
+                        ellipse 60% 70% at 50% 50%, 
+                        black 0%, 
+                        black 40%, 
                         transparent 100%
                     );
+                    filter: drop-shadow(0 0 30px rgba(255,255,255,0.03));
                 }
 
                 .hero-bottom-mask {
@@ -269,7 +270,7 @@ export function Hero() {
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 30vh;
+                    height: 35vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
