@@ -49,16 +49,19 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Draw logic: object-fit: cover with object-position: center 20%
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            // Base scale for cover-like behavior
+            const baseRatio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
 
-            const newWidth = imgWidth * ratio;
-            const newHeight = imgHeight * ratio;
+            // Reduce the rendering scale to 60% of the viewport to create the 3D 'floating' feel
+            // without being constrained by a box
+            const targetScale = 0.6;
+            const newWidth = imgWidth * baseRatio * targetScale;
+            const newHeight = imgHeight * baseRatio * targetScale;
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // 45% vertical position (optimizes framing for the new 3D floating window)
-            const y = (canvasHeight - newHeight) * 0.45;
+            // center vertical (perfectly centered for free-floating look)
+            const y = (canvasHeight - newHeight) / 2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -245,24 +248,24 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 85vw;
-                    height: 55vh;
+                    width: 100vw;
+                    height: 100vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
-                    /* Omnidirectional seamless blending for 3D effect */
+                    /* Very soft global mask to hide any possible edges */
                     -webkit-mask-image: radial-gradient(
-                        ellipse 60% 70% at 50% 50%, 
+                        circle at center, 
                         black 0%, 
-                        black 40%, 
-                        transparent 100%
+                        black 30%, 
+                        transparent 80%
                     );
                     mask-image: radial-gradient(
-                        ellipse 60% 70% at 50% 50%, 
+                        circle at center, 
                         black 0%, 
-                        black 40%, 
-                        transparent 100%
+                        black 30%, 
+                        transparent 80%
                     );
-                    filter: drop-shadow(0 0 30px rgba(255,255,255,0.03));
+                    pointer-events: none;
                 }
 
                 .hero-bottom-mask {
@@ -270,7 +273,7 @@ export function Hero() {
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 35vh;
+                    height: 40vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
