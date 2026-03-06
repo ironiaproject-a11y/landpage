@@ -14,6 +14,11 @@ export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const titleTopRef = useRef<HTMLHeadingElement>(null);
+    const titleBottomRef = useRef<HTMLHeadingElement>(null);
+    const ctaRef = useRef<HTMLDivElement>(null);
+    const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+    const progressLineRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     // Animation state
@@ -105,6 +110,91 @@ export function Hero() {
                 onUpdate: render,
             });
 
+            // Immersive Zoom
+            gsap.to(canvasRef.current, {
+                scale: 1.1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=200%",
+                    scrub: true
+                }
+            });
+
+            // Narrative Flow: Part 1 - Top Headline Evaporation
+            gsap.to(titleTopRef.current, {
+                opacity: 0,
+                y: -50,
+                filter: "blur(12px)",
+                letterSpacing: "0.2em",
+                scale: 1.1,
+                ease: "power2.inOut",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "30% top",
+                    scrub: true
+                }
+            });
+
+            // Narrative Flow: Part 2 - Bottom Headline Entry
+            gsap.fromTo(titleBottomRef.current,
+                { opacity: 0, y: 50, scale: 0.95, filter: "blur(10px)" },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "50% top",
+                        end: "80% top",
+                        scrub: true
+                    }
+                }
+            );
+
+            // Narrative Flow: Part 3 - Button Entry
+            gsap.fromTo(ctaRef.current,
+                { opacity: 0, y: 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "75% top",
+                        end: "95% top",
+                        scrub: true
+                    }
+                }
+            );
+
+            // Scroll Indicators
+            gsap.to(scrollIndicatorRef.current, {
+                opacity: 0,
+                y: 20,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "10% top",
+                    scrub: true
+                }
+            });
+
+            gsap.to(progressLineRef.current, {
+                scaleY: 1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=200%",
+                    scrub: true
+                }
+            });
+
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "10% top",
@@ -148,56 +238,56 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 100vw;
+                    height: 100vh;
                     mix-blend-mode: screen;
                     filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.05));
                 }
 
                 .hero-text-layer { 
                     position: absolute; 
-                    top: 32%; 
-                    left: 0;
+                    inset: 0;
                     width: 100%;
                     z-index: 3; 
-                    text-align: center; 
-                    padding: 0 20px;
-                    pointer-events: none;
-                }
-
-                .hero-title { 
-                    font-size: 38px; 
-                    font-weight: 600; 
-                    line-height: 1.1; 
-                    letter-spacing: -0.02em; 
-                    color: #FBFBFB; 
-                    margin: 0; 
-                    max-width: 440px;
-                    margin: 0 auto;
-                    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
-                }
-
-                .hero-subtitle { 
-                    font-size: 16px; 
-                    font-weight: 400;
-                    color: #FBFBFB;
-                    opacity: 0.8; 
-                    margin-top: 12px; 
-                }
-
-                .hero-cta-layer {
-                    position: absolute;
-                    bottom: 22%;
-                    left: 0;
-                    width: 100%;
-                    z-index: 4;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    padding: 0 20px;
+                    justify-content: space-between;
+                    padding: 8vh 20px 12vh;
+                    pointer-events: none;
+                }
+
+                .hero-title-top { 
+                    font-size: 24px; 
+                    font-weight: 300; 
+                    line-height: 1.2; 
+                    letter-spacing: 0.1em; 
+                    text-transform: uppercase;
+                    color: #FBFBFB; 
+                    opacity: 0.8;
+                    margin: 0; 
+                    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                }
+
+                .hero-title-bottom { 
+                    font-size: 48px; 
+                    font-weight: 700; 
+                    line-height: 1.0; 
+                    letter-spacing: -0.02em; 
+                    color: #FBFBFB; 
+                    margin: 20px 0; 
+                    max-width: 600px;
+                    text-shadow: 0 10px 40px rgba(0,0,0,0.6);
+                }
+
+                .hero-cta-layer {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
                 }
 
                 .cta-primary { 
@@ -271,6 +361,62 @@ export function Hero() {
                     margin-top: 18px; 
                     text-decoration: none; 
                     font-weight: 400;
+                    pointer-events: auto;
+                }
+
+                .hero-scroll-indicator {
+                    position: absolute;
+                    bottom: 40px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+                    opacity: 0.6;
+                    z-index: 5;
+                    pointer-events: none;
+                }
+
+                .scroll-line {
+                    width: 1px;
+                    height: 60px;
+                    background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+                }
+
+                .hero-progress-container {
+                    position: absolute;
+                    right: 40px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 200px;
+                    width: 1px;
+                    background: rgba(255,255,255,0.1);
+                    z-index: 5;
+                }
+
+                .hero-progress-fill {
+                    width: 100%;
+                    height: 100%;
+                    background: #FBFBFB;
+                    transform-origin: top;
+                    transform: scaleY(0);
+                }
+
+                @media (max-width: 768px) {
+                    .hero-title-top {
+                        font-size: 18px;
+                    }
+                    .hero-title-bottom {
+                        font-size: 36px;
+                        margin: 15px 0;
+                    }
+                    .hero-text-layer {
+                        padding: 10vh 20px;
+                    }
+                    .hero-progress-container {
+                        right: 20px;
+                    }
                 }
             `}</style>
 
@@ -282,17 +428,30 @@ export function Hero() {
                     />
 
                     <div className="hero-text-layer">
-                        <h1 className="hero-title">Volte a sorrir com confiança.</h1>
-                        <p className="hero-subtitle">Segurança clínica. Resultado natural.</p>
+                        <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
+
+                        <div className="hero-cta-layer">
+                            <h1 ref={titleBottomRef} className="hero-title-bottom">Transforme sua vida</h1>
+
+                            <div ref={ctaRef} style={{ pointerEvents: 'auto' }}>
+                                <button className="cta-primary">
+                                    Agendar Consulta
+                                </button>
+                                <div className="text-center">
+                                    <a href="#results" className="cta-secondary-link">
+                                        ver galeria de resultados →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="hero-cta-layer">
-                        <button className="cta-primary">
-                            Agendar Consulta
-                        </button>
-                        <a href="#results" className="cta-secondary-link">
-                            ver galeria de resultados →
-                        </a>
+                    <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
+                        <div className="scroll-line" />
+                    </div>
+
+                    <div className="hero-progress-container">
+                        <div ref={progressLineRef} className="hero-progress-fill" />
                     </div>
                 </div>
             </section>
