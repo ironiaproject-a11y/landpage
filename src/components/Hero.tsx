@@ -50,7 +50,7 @@ export function Hero() {
             const imgHeight = img.height;
 
             // Draw logic: Ensure the image covers its internal canvas area
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.55;
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.62;
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
