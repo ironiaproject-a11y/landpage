@@ -154,6 +154,8 @@ export function Hero() {
                     object-fit: cover;
                     object-position: center;
                     transform: scale(0.85);
+                    -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
+                    mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
                 }
 
                 .hero-overlay { 
