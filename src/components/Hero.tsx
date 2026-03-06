@@ -153,7 +153,7 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: center;
-                    transform: scale(0.92);
+                    transform: scale(0.85);
                 }
 
                 .hero-overlay { 
