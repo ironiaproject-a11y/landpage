@@ -229,29 +229,63 @@ export function Hero() {
                 .cta-primary { 
                     width: 100%; 
                     max-width: 420px;
-                    height: 50px; 
-                    background: #0B0B0B; 
+                    height: 56px; 
+                    background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.95) 100%); 
                     color: #FBFBFB; 
-                    border-radius: 8px; 
-                    font-weight: 600; 
-                    font-size: 16px; 
-                    letter-spacing: 1px; 
+                    border-radius: 12px; 
+                    font-weight: 500; 
+                    font-size: 15px; 
+                    letter-spacing: 1.5px; 
                     text-transform: uppercase; 
                     display: inline-flex; 
                     align-items: center; 
                     justify-content: center; 
-                    border: 1px solid rgba(255,255,255,0.1); 
+                    border: 1px solid rgba(255,255,255,0.15); 
+                    border-top: 1px solid rgba(255,255,255,0.3); 
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
                     cursor: pointer; 
+                    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .cta-primary::before {
+                    content: '';
+                    position: absolute;
+                    top: 0; left: -100%;
+                    width: 50%; height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+                    transform: skewX(-20deg);
+                    transition: all 0.6s ease;
+                }
+
+                .cta-primary:hover::before {
+                    left: 150%;
+                }
+
+                .cta-primary:hover {
+                    background: linear-gradient(180deg, rgba(30,30,30,0.95) 0%, rgba(15,15,15,0.95) 100%);
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+                    border-color: rgba(255,255,255,0.25);
+                    border-top-color: rgba(255,255,255,0.4);
+                    transform: translateY(-2px);
+                }
+
+                .cta-primary:active {
+                    transform: translateY(1px);
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
                 }
 
                 .cta-primary.is-sticky { 
                     position: fixed !important; 
-                    bottom: 20px; 
+                    bottom: 24px; 
                     left: 20px; 
                     width: calc(100% - 40px); 
                     max-width: none;
                     z-index: 9999; 
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
                 }
 
                 .cta-secondary-link { 
