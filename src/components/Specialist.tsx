@@ -3,7 +3,8 @@
 import { m } from "framer-motion";
 import { Medal, Globe, Quote } from "lucide-react";
 import { Magnetic } from "./Magnetic";
-import VisualContainer from "./VisualContainer";
+import { PremiumReveal } from "./PremiumReveal";
+import { LuxuryCard } from "./LuxuryCard";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -18,6 +19,8 @@ export function Specialist() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const quoteRef = useRef<HTMLDivElement>(null);
+    const credentialsRef = useRef<HTMLDivElement>(null);
+    const backgroundRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -41,14 +44,14 @@ export function Specialist() {
                     {
                         scrollTrigger: {
                             trigger: titleRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         y: 0,
                         skewY: 0,
                         opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
+                        stagger: isMobile ? 0.08 : 0.15,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power4.out"
                     }
                 );
@@ -71,18 +74,34 @@ export function Specialist() {
             );
 
             // Badge Parallax
-            if (!isMobile) {
-                gsap.to(".badge-parallax", {
+            gsap.to(".badge-parallax", {
+                scrollTrigger: {
+                    trigger: ".dr-portrait-wrapper",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                },
+                y: isMobile ? -15 : -40,
+                ease: "none"
+            });
+
+            // Badge Entrance
+            gsap.fromTo(".op-badge-specialist",
+                { opacity: 0, scale: 0.8, x: 20 },
+                {
                     scrollTrigger: {
                         trigger: ".dr-portrait-wrapper",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
                     },
-                    y: -40,
-                    ease: "none"
-                });
-            }
+                    opacity: 1,
+                    scale: 1,
+                    x: 0,
+                    duration: 1.5,
+                    delay: 0.8,
+                    ease: "expo.out"
+                }
+            );
 
             if (quoteRef.current) {
                 gsap.fromTo(quoteRef.current,
@@ -90,33 +109,94 @@ export function Specialist() {
                     {
                         scrollTrigger: {
                             trigger: quoteRef.current,
-                            start: "top 85%",
+                            start: isMobile ? "top 95%" : "top 85%",
                             toggleActions: "play none none reverse"
                         },
                         opacity: 1,
                         y: 0,
-                        duration: 1.2,
+                        duration: isMobile ? 0.8 : 1.2,
                         ease: "power3.out",
-                        delay: 0.4
+                        delay: isMobile ? 0.2 : 0.4
                     }
                 );
             }
 
             // High-End Portrait Parallax
-            if (!isMobile) {
-                gsap.fromTo(".dr-portrait-wrapper",
-                    { y: 60 },
+            gsap.fromTo(".dr-portrait-wrapper",
+                { y: isMobile ? 40 : 80 },
+                {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.2
+                    },
+                    y: isMobile ? -40 : -80,
+                    ease: "none"
+                }
+            );
+
+            // Description Text Parallax
+            gsap.fromTo(".op-desc-parallax",
+                { y: isMobile ? 15 : 30 },
+                {
+                    scrollTrigger: {
+                        trigger: ".dr-portrait-wrapper",
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    },
+                    y: isMobile ? -15 : -30,
+                    ease: "none"
+                }
+            );
+
+            // Cinematic scroll effects
+            // Credentials sequential reveal
+            if (credentialsRef.current) {
+                const credentialItems = credentialsRef.current.querySelectorAll(".credential-item");
+                gsap.fromTo(credentialItems,
+                    { opacity: 0, x: -30 },
                     {
                         scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: 1.2
+                            trigger: credentialsRef.current,
+                            start: isMobile ? "top 90%" : "top 80%",
+                            toggleActions: "play none none reverse"
                         },
-                        y: -60,
-                        ease: "none"
+                        opacity: 1,
+                        x: 0,
+                        stagger: isMobile ? 0.1 : 0.2,
+                        duration: isMobile ? 0.7 : 1,
+                        ease: "power3.out"
                     }
                 );
+            }
+
+            // Quote scale effect on scroll
+            if (quoteRef.current) {
+                gsap.to(quoteRef.current, {
+                    scale: 0.97,
+                    scrollTrigger: {
+                        trigger: quoteRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
+
+            // Background blur effect increase
+            if (backgroundRef.current) {
+                gsap.to(backgroundRef.current, {
+                    opacity: 0.3,
+                    filter: "blur(20px)",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top center",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
             }
         }, sectionRef);
 
@@ -124,31 +204,32 @@ export function Specialist() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="especialista">
+            {/* Background overlay for blur effect */}
+            <div
+                ref={backgroundRef}
+                className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-transparent pointer-events-none"
+                style={{ opacity: 0 }}
+            />
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-20">
+                <div className="flex flex-col lg:flex-row items-start gap-20">
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
-                        <m.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
-                        >
-                            Corpo Clínico
-                        </m.span>
-                        <h2 ref={titleRef} className="font-display text-[clamp(40px,5.5vw,72px)] font-light text-white mb-10 leading-[1.0] tracking-tight">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block">A ciência por trás do seu</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver italic font-medium">melhor sorriso</span>.
-                            </div>
-                        </h2>
+                        <PremiumReveal type="fade" direction="top" duration={1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body">
+                                Corpo Clínico
+                            </span>
+                        </PremiumReveal>
 
-                        <div className="space-y-8 mb-12">
-                            <div className="flex items-start gap-6 group">
+                        <PremiumReveal type="mask" direction="bottom">
+                            <h2 className="font-display text-[clamp(28px,5.5vw,48px)] font-medium text-white mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
+                                A ciência por trás do seu<br />
+                                <span className="text-gradient-silver italic font-light">melhor sorriso</span>.
+                            </h2>
+                        </PremiumReveal>
+
+                        <div ref={credentialsRef} className="space-y-8 mb-12">
+                            <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Globe strokeWidth={1.2} className="w-6 h-6" />
@@ -159,7 +240,7 @@ export function Specialist() {
                                     <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-6 group">
+                            <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
                                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-silver-bh)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-silver-bh)] group-hover:text-black shadow-level-1">
                                         <Medal strokeWidth={1.2} className="w-6 h-6" />
@@ -172,77 +253,59 @@ export function Specialist() {
                             </div>
                         </div>
 
-                        <div ref={quoteRef} className="opacity-0">
-                            <VisualContainer
-                                width="100%"
-                                height="auto"
-                                hoverColor="rgba(255, 255, 255, 0.1)"
-                                sideHeight="15px"
-                            >
-                                <div className="p-10 relative overflow-hidden h-full">
-                                    <Quote strokeWidth={1.2} className="absolute top-6 right-8 w-12 h-12 text-[var(--color-silver-bh)]/10" />
-                                    <p className="font-editorial text-2xl text-white/90 italic leading-relaxed mb-6 font-light relative z-10">
-                                        &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
-                                    </p>
-                                    <div className="relative z-10">
-                                        <h4 className="text-white font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                        <PremiumReveal type="fade" delay={0.4}>
+                            <div ref={quoteRef}>
+                                <LuxuryCard
+                                    glowColor="rgba(212, 175, 55, 0.08)"
+                                    className="border-white/5"
+                                    innerClassName="p-8 md:p-10"
+                                >
+                                    <div className="relative">
+                                        <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-silver-bh)]/10" />
+                                        <p className="font-editorial text-lg md:text-3xl text-[var(--color-creme)] italic leading-[1.6] mb-8 font-light relative z-10">
+                                            &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
+                                        </p>
+                                        <div className="relative z-10">
+                                            <h4 className="text-white font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
+                                            <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </VisualContainer>
-                        </div>
+                                </LuxuryCard>
+                            </div>
+                        </PremiumReveal>
                     </div>
 
-                    {/* Right: Cinematic Portrait */}
                     <div className="lg:w-1/2 order-1 lg:order-2">
-                        <m.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, margin: "-10%" }}
-                            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                            className="relative dr-portrait-wrapper"
-                        >
-                            <VisualContainer
-                                width="100%"
-                                height="auto"
-                                hoverColor="rgba(255, 255, 255, 0.05)"
-                                sideHeight="20px"
-                                className="!rounded-[3rem] overflow-hidden border-white/10"
-                            >
-                                <div className="relative dr-portrait-inner">
+                        <div className="relative dr-portrait-wrapper will-change-transform [transform:translateZ(0)]">
+                            <PremiumReveal type="mask" direction="bottom" duration={1.5}>
+                                <div className="relative rounded-[2rem] overflow-hidden border border-white/10 dr-portrait-inner">
                                     <Image
                                         src="/assets/images/dr-ricardo.png"
                                         alt="Dr. Ricardo Alessandro"
                                         width={800}
                                         height={1000}
-                                        className="w-full h-[650px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[750px] object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
-                                    {/* Floating Counter Badge - Integrated into VisualContainer layers if needed, 
-                                        but keep as child for translateZ effect via VisualContainer mapping if possible.
-                                        VisualContainer maps children to translateZ layers.
-                                    */}
-                                    <div className="absolute top-12 right-12 glass-panel p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20">
-                                        <p className="text-[var(--color-silver-bh)] font-display text-4xl font-bold tracking-tight">15+</p>
+                                    <div className="absolute top-8 right-8 glass-panel p-4 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
+                                        <p className="text-[var(--color-silver-bh)] font-display text-3xl md:text-4xl font-medium tracking-tight">15</p>
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 
-                                    <div className="absolute bottom-12 left-12 z-20">
-                                        <h4 className="text-white font-display text-3xl font-light tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.3em]">Especialista em Reabilitação Oral</p>
+                                    <div className="absolute bottom-8 left-8 z-20 op-desc-parallax">
+                                        <h4 className="text-white font-display text-xl md:text-2xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                        <p className="text-[var(--color-silver-bh)] text-[10px] uppercase font-bold tracking-[0.08em]">Especialista em Reabilitação Oral</p>
                                     </div>
                                 </div>
-                            </VisualContainer>
+                            </PremiumReveal>
 
-                            {/* Ambient Glows */}
-                            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[var(--color-silver-bh)]/10 blur-[120px] pointer-events-none -z-10" />
-                            <div className="absolute -top-20 -left-20 w-64 h-64 bg-[var(--color-silver-bh)]/5 blur-[100px] pointer-events-none -z-10" />
-                        </m.div>
+                            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-[var(--color-silver-bh)]/5 blur-[100px] pointer-events-none -z-10" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
 

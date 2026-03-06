@@ -1,25 +1,35 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { m, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
 import { MoveLeft, MoveRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 interface ComparisonProps {
-    beforeImage: string;
-    afterImage: string;
+    beforeSource: string;
+    beforeType?: "image" | "video";
+    afterSource: string;
+    afterType?: "image" | "video";
     title: string;
     description: string;
-    isSingleImage?: boolean;
+    isSingleMedia?: boolean;
 }
 
-export function BeforeAfterSlider({ beforeImage, afterImage, title, description, isSingleImage }: ComparisonProps) {
-    const [sliderPos, setSliderPos] = useState(isSingleImage ? 100 : 50);
+export function BeforeAfterSlider({
+    beforeSource,
+    beforeType = "image",
+    afterSource,
+    afterType = "image",
+    title,
+    description,
+    isSingleMedia
+}: ComparisonProps) {
+    const [sliderPos, setSliderPos] = useState(isSingleMedia ? 100 : 50);
     const [isResizing, setIsResizing] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const handleMove = (e: React.MouseEvent | React.TouchEvent | any) => {
-        if (isSingleImage) return;
+        if (isSingleMedia) return;
         if (!isResizing && e.type !== "mousemove" && e.type !== "touchmove") return;
 
         const rect = containerRef.current?.getBoundingClientRect();
@@ -32,10 +42,42 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
         setSliderPos(position);
     };
 
-    const handleMouseDown = () => {
-        if (!isSingleImage) setIsResizing(true);
-    };
-    const handleMouseUp = () => setIsResizing(false);
+    const videoRefBefore = useRef<HTMLVideoElement>(null);
+    const videoRefAfter = useRef<HTMLVideoElement>(null);
+
+    const startVideos = useCallback(() => {
+        // Injetar sources sob demanda para performance
+        const loadSources = (v: HTMLVideoElement | null, src: string) => {
+            if (!v || v.dataset.loaded === "1") return;
+            const mp4 = document.createElement("source");
+            mp4.src = src;
+            mp4.type = "video/mp4";
+            v.appendChild(mp4);
+            v.load();
+            v.dataset.loaded = "1";
+        };
+
+        if (beforeType === "video") loadSources(videoRefBefore.current, beforeSource);
+        if (afterType === "video") loadSources(videoRefAfter.current, afterSource);
+
+        videoRefBefore.current?.play().catch(() => { });
+        videoRefAfter.current?.play().catch(() => { });
+    }, [beforeSource, beforeType, afterSource, afterType]);
+
+    const stopVideos = useCallback(() => {
+        videoRefBefore.current?.pause();
+        videoRefAfter.current?.pause();
+    }, []);
+
+    const handleMouseDown = useCallback(() => {
+        if (!isSingleMedia) setIsResizing(true);
+        startVideos();
+    }, [isSingleMedia, startVideos]);
+
+    const handleMouseUp = useCallback(() => {
+        setIsResizing(false);
+        stopVideos();
+    }, [stopVideos]);
 
     // Magnetic Handle Logic
     const handleX = useMotionValue(0);
@@ -45,7 +87,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
     const springHandleY = useSpring(handleY, springConfig);
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (isSingleImage || isResizing) return;
+        if (isSingleMedia || isResizing) return;
         const rect = containerRef.current?.getBoundingClientRect();
         if (!rect) return;
 
@@ -64,11 +106,28 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
             handleX.set(0);
             handleY.set(0);
         }
+
+        // Se estiver perto do handle, pré-carrega os vídeos
+        if (distance < 150) {
+            // Apenas injeta sources, não dá play ainda
+            const loadSourcesOnly = (v: HTMLVideoElement | null, src: string) => {
+                if (!v || v.dataset.loaded === "1") return;
+                const mp4 = document.createElement("source");
+                mp4.src = src;
+                mp4.type = "video/mp4";
+                v.appendChild(mp4);
+                v.load();
+                v.dataset.loaded = "1";
+            };
+            if (beforeType === "video") loadSourcesOnly(videoRefBefore.current, beforeSource);
+            if (afterType === "video") loadSourcesOnly(videoRefAfter.current, afterSource);
+        }
     };
 
     const handleMouseLeave = () => {
         handleX.set(0);
         handleY.set(0);
+        stopVideos();
     };
 
     useEffect(() => {
@@ -78,13 +137,84 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchend", handleMouseUp);
         };
-    }, []);
+    }, [handleMouseUp]);
+
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        // Pré-carrega os vídeos assim que entram em vista para mostrar o frame real
+                        const loadSourcesOnly = (v: HTMLVideoElement | null, src: string) => {
+                            if (!v || v.dataset.loaded === "1") return;
+                            const mp4 = document.createElement("source");
+                            mp4.src = src;
+                            mp4.type = "video/mp4";
+                            v.appendChild(mp4);
+                            v.load();
+                            v.dataset.loaded = "1";
+                        };
+                        if (beforeType === "video") loadSourcesOnly(videoRefBefore.current, beforeSource);
+                        if (afterType === "video") loadSourcesOnly(videoRefAfter.current, afterSource);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: "200px", threshold: 0.01 }
+        );
+
+        if (containerRef.current) observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, [beforeSource, afterSource, beforeType, afterType]);
+
+    const MediaRenderer = ({ source, type, label, poster, isBefore = false }: { source: string; type: "image" | "video"; label: string; poster?: string; isBefore?: boolean }) => {
+        const [isLoaded, setIsLoaded] = useState(false);
+
+        if (type === "video") {
+            return (
+                <>
+                    <video
+                        ref={isBefore ? videoRefBefore : videoRefAfter}
+                        poster={poster}
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        onLoadedData={() => setIsLoaded(true)}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isBefore ? "grayscale" : ""} ${isLoaded ? "opacity-100 z-[2]" : "opacity-0 z-[1]"}`}
+                        aria-hidden="true"
+                    />
+                    {poster && (
+                        <Image
+                            src={poster}
+                            alt={label}
+                            fill
+                            className={`object-cover ${isBefore ? "grayscale" : ""} transition-opacity duration-700 ${isLoaded ? "opacity-0 invisible pointer-events-none" : "opacity-100"} z-[1]`}
+                        />
+                    )}
+                </>
+            );
+        }
+        return (
+            <Image
+                src={source}
+                alt={label}
+                fill
+                priority={isBefore}
+                className={`object-cover ${isBefore ? "grayscale" : ""}`}
+            />
+        );
+    };
 
     return (
         <div className="group relative flex flex-col gap-8">
             <div
                 ref={containerRef}
-                className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleImage ? "" : "cursor-col-resize"} select-none shadow-2xl`}
+                className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleMedia ? "" : "cursor-col-resize"} select-none shadow-2xl`}
+                style={{ touchAction: "pan-y" }}
                 onMouseMove={(e) => {
                     handleMove(e);
                     handleMouseMove(e);
@@ -94,29 +224,24 @@ export function BeforeAfterSlider({ beforeImage, afterImage, title, description,
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleMouseDown}
             >
-                {/* After Image (Background) */}
-                <Image
-                    src={afterImage}
-                    alt="After"
-                    fill
-                    className="object-cover"
-                    priority
+
+                {/* After Media (Background) */}
+                <MediaRenderer
+                    source={afterSource}
+                    type={afterType}
+                    label="After"
+                    poster={beforeType === "image" ? beforeSource : undefined}
                 />
 
-                {!isSingleImage && (
+                {!isSingleMedia && (
                     <>
-                        {/* Before Image (Clip) */}
+                        {/* Before Media (Clip) */}
                         <div
                             className="absolute inset-0 w-full h-full overflow-hidden"
                             style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
                         >
-                            <Image
-                                src={beforeImage}
-                                alt="Before"
-                                fill
-                                className="object-cover grayscale"
-                                priority
-                            />
+                            <MediaRenderer source={beforeSource} type={beforeType} label="Before" isBefore />
+
                             {/* Before Label */}
                             <div className="absolute top-6 left-6 px-4 py-2 rounded-full glass-panel border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Antes</span>

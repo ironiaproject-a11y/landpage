@@ -1,6 +1,7 @@
 "use client";
 
-import { m } from "framer-motion";
+import { m, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { PremiumReveal } from "./PremiumReveal";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
@@ -14,10 +15,18 @@ if (typeof window !== "undefined") {
 
 export function About() {
     const sectionRef = useRef<HTMLElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const descriptionRef = useRef<HTMLParagraphElement>(null);
+    const imageWrapperRef = useRef<HTMLDivElement>(null);
+    const revealShadeRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
+    // Tilt values for motion
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+    const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
     const highlights = [
         "Autoridade em Lentes de Contato 3D",
@@ -34,215 +43,156 @@ export function About() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (isMobile) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
     useEffect(() => {
         if (!mounted) return;
 
         const ctx = gsap.context(() => {
-            const titleLines = Array.from(titleRef.current?.querySelectorAll(".title-line-inner") || []);
+            // Main Reveal Sequence
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: isMobile ? "top 90%" : "top 75%",
+                    toggleActions: "play none none reverse"
+                }
+            });
 
-            if (titleLines.length > 0) {
-                gsap.fromTo(titleLines,
-                    { y: "110%", skewY: 7, opacity: 0 },
-                    {
-                        scrollTrigger: {
-                            trigger: titleRef.current,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
-                        y: 0,
-                        skewY: 0,
-                        opacity: 1,
-                        stagger: 0.15,
-                        duration: 1.2,
-                        ease: "power4.out"
-                    }
-                );
+            // 1. Reveal Shade Animation (Cinematic Vertical Reveal)
+            if (revealShadeRef.current) {
+                tl.to(revealShadeRef.current, {
+                    scaleY: 0,
+                    transformOrigin: "top", // Reveals from bottom to top
+                    duration: 1.8,
+                    ease: "power4.inOut"
+                });
             }
 
-            if (descriptionRef.current) {
-                gsap.fromTo(descriptionRef.current,
-                    { opacity: 0, y: 30 },
-                    {
-                        scrollTrigger: {
-                            trigger: descriptionRef.current,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse"
-                        },
-                        opacity: 1,
-                        y: 0,
-                        duration: 1.2,
-                        ease: "power3.out",
-                        delay: 0.4
-                    }
-                );
-            }
+            // 2. Image Zoom & Subtle Float Effect
+            tl.fromTo(".inner-image-content",
+                { scale: isMobile ? 1.25 : 1.1, y: isMobile ? 50 : 30 },
+                { scale: 1, y: 0, duration: isMobile ? 2.5 : 2.2, ease: "power2.out" },
+                "-=1.6"
+            );
 
-            // Enhanced Multi-Layer Parallax - Enabled for all with speed adjustment
-            const speedMult = isMobile ? 0.3 : 1;
+            tl.fromTo(".about-list-item",
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, stagger: 0.05, duration: 0.8, ease: "power2.out" },
+                "-=0.6"
+            );
 
-            // Background Glow Drift
-            gsap.to(".glow-blob", {
+            // Continuous Parallax Effects
+            const speedMult = isMobile ? 0.45 : 1;
+
+            // Image Container Parallax
+            gsap.to(".about-image-wrapper", {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top bottom",
                     end: "bottom top",
-                    scrub: 2,
+                    scrub: 1,
                 },
-                y: -100 * speedMult,
-                x: 50 * speedMult,
-                scale: 1.2,
+                y: -(isMobile ? 20 : 60) * speedMult,
                 ease: "none"
             });
 
-            // Main Image Container Parallax
-            gsap.fromTo(".about-image-wrapper",
-                { y: isMobile ? 0 : 100 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.5,
-                    },
-                    y: isMobile ? 0 : -100,
-                    ease: "power1.inOut"
-                }
-            );
-
-            // Internal Image Parallax (Lens effect) - Dampen on mobile
-            gsap.fromTo(".inner-image-parallax img",
-                { y: isMobile ? "-5%" : "-15%" },
-                {
-                    scrollTrigger: {
-                        trigger: ".about-image-wrapper",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                    y: isMobile ? "5%" : "15%",
-                    ease: "none"
-                }
-            );
-
-            // Decorative Elements Parallax
-            gsap.fromTo(".about-decoration-parallax",
-                { y: 150 * speedMult, rotate: -15 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.2,
-                    },
-                    y: -150 * speedMult,
-                    rotate: 15,
-                    ease: "none"
-                }
-            );
-
-            gsap.fromTo(".about-decoration-parallax-2",
-                { x: -100 * speedMult, opacity: 0 },
-                {
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top 80%",
-                        end: "bottom top",
-                        scrub: 2,
-                    },
-                    x: 100 * speedMult,
-                    opacity: 0.5,
-                    ease: "none"
-                }
-            );
         }, sectionRef);
 
         return () => ctx.revert();
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative" id="sobre">
-            {/* Decorative Background */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#111] to-transparent pointer-events-none" />
-
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="sobre">
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Side */}
                     <m.div
-                        initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, x: -60 }}
-                        whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                        viewport={{ once: true, margin: isMobile ? "0px 0px 100px 0px" : "0px 0px -100px 0px", amount: isMobile ? 0.01 : 0.3 }}
-                        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="w-full lg:w-1/2 relative p-4"
+                        className="w-full lg:w-1/2 relative group"
+                        style={!isMobile ? { perspective: 1000 } : {}}
                     >
-                        <div className="about-image-wrapper will-change-transform">
-                            {/* Lighting Blob Behind Image */}
-                            <div className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] glow-blob opacity-30 blur-[100px] pointer-events-none" />
-
-                            {/* Floating Decorative Elements with independent parallax */}
-                            <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/5 rounded-full about-decoration-parallax pointer-events-none z-20 backdrop-blur-sm bg-white/5" />
-                            <div className="absolute -bottom-20 left-10 w-48 h-1 h-px bg-gradient-to-r from-[var(--color-silver-bh)] to-transparent about-decoration-parallax-2 pointer-events-none z-20" />
-
-                            <div className="relative w-full h-[450px] md:h-[500px] lg:h-[700px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl inner-image-parallax">
+                        <m.div
+                            ref={imageWrapperRef}
+                            className="about-image-wrapper relative rounded-2xl overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10"
+                            style={!isMobile ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <div ref={revealShadeRef} className="absolute inset-0 bg-neutral-900 z-30" />
+                            <div className="relative w-full h-[400px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
                                     alt="Elevando o padrão da Odontologia Estética"
                                     fill
                                     className="object-cover"
                                     priority
-                                    sizes="(max-width: 1024px) 100vw, 600px"
+                                    sizes="(max-width: 1024px) 100vw, 800px"
                                 />
                             </div>
-                        </div>
+                        </m.div>
                     </m.div>
 
                     {/* Content Side */}
-                    <div className="w-full lg:w-1/2">
-                        <m.div
-                            initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
-                            className="flex items-center gap-3 mb-8"
-                        >
-                            <div className="w-12 h-[1px] bg-[var(--color-silver-bh)]" />
-                            <span className="text-[var(--color-silver-bh)] font-bold tracking-[0.2em] uppercase text-xs">
-                                Excelência Comprovada
+                    <div className="w-full lg:w-1/2 flex flex-col items-start">
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                                Excelência Master
                             </span>
-                        </m.div>
+                        </PremiumReveal>
 
-                        <h2 ref={titleRef} className="text-5xl md:text-6xl font-medium mt-4 mb-8 text-white leading-[1.05] tracking-tight">
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block">Elevando o padrão da</span>
-                            </div>
-                            <div className="block overflow-hidden pb-1">
-                                <span className="title-line-inner inline-block text-gradient-silver font-editorial italic">Odontologia Estética</span>.
-                            </div>
+                        <h2 className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                            <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                                <span>Redefinindo o Conceito de</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-gradient-silver italic font-light block mt-2">Luxo Odontológico.</span>
+                            </PremiumReveal>
                         </h2>
 
-                        <p ref={descriptionRef} className="text-xl text-[var(--color-text-secondary)] mb-12 leading-relaxed font-light border-l-2 border-[var(--color-silver-bh)]/30 pl-8">
-                            Com mais de 30 anos de atuação em Pereira Barreto, a clínica alia tradição, inovação e alta tecnologia em Odontologia, contando também com uma clínica radiológica completa. Nosso foco é oferecer um ambiente seguro, acolhedor e altamente eficiente, garantindo um atendimento de excelência para o cuidado de toda a família.
-                        </p>
+                        <PremiumReveal direction="bottom" delay={0.4}>
+                            <p className="text-lg text-white/70 font-light leading-relaxed mb-10 body-text-refined">
+                                Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico.
+                            </p>
+                        </PremiumReveal>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 mb-14">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
                             {highlights.map((item, index) => (
-                                <m.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                                    transition={{ delay: 0.4 + index * 0.1, duration: 0.8, ease: "easeOut" }}
-                                    className="flex items-center gap-4 group"
-                                >
-                                    <div className="w-5 h-5 rounded-full border border-[var(--color-silver-bh)]/50 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] group-hover:border-[var(--color-silver-bh)] transition-all">
-                                        <ArrowUpRight strokeWidth={1.2} className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-white/20 transition-colors">
+                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] transition-all">
+                                        <ArrowUpRight className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-white/90 font-medium text-sm tracking-wide">{item}</span>
-                                </m.div>
+                                    <span className="text-white/80 font-medium text-sm tracking-wide group-hover:text-white">{item}</span>
+                                </div>
                             ))}
                         </div>
+
+                        <m.button
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.8 }}
+                            className="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-[0.08em] min-h-[52px] rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500 font-body"
+                        >
+                            Descubra nossa tecnologia
+                        </m.button>
                     </div>
                 </div>
             </div>
         </section>
     );
 }
-

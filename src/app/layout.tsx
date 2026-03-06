@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Libre_Bodoni } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { Preloader } from "@/components/Preloader";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import dynamic from "next/dynamic";
-
-const Cursor = dynamic(() => import("@/components/Cursor").then(mod => mod.Cursor), { ssr: false });
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton").then(mod => mod.WhatsAppButton), {
-  ssr: false,
-});
-const Preloader = dynamic(() => import("@/components/Preloader").then(mod => mod.Preloader), { ssr: false });
+import ClientSideExtras from "@/components/ClientSideExtras";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +16,16 @@ const inter = Inter({
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-playfair",
+  display: "swap",
+});
+
+const libreBodoni = Libre_Bodoni({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-bodoni",
   display: "swap",
 });
 
@@ -36,9 +40,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="pt-br" className={`${inter.variable} ${playfair.variable} ${libreBodoni.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+        {/* Preload Critical Assets */}
+        <link rel="preload" href="/hero-background.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/implant-3d.png" as="image" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -85,12 +95,11 @@ export default function RootLayout({
       <body className="antialiased">
         <SmoothScroll>
           <MotionProvider>
-            <ScrollProgress />
-            <Cursor />
             <Preloader />
+            <ScrollProgress />
+            <ClientSideExtras />
             <Navbar />
             {children}
-            <WhatsAppButton />
           </MotionProvider>
         </SmoothScroll>
       </body>

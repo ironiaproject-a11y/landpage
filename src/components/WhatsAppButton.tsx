@@ -11,22 +11,30 @@ export function WhatsAppButton() {
     const whatsappUrl = generateWhatsAppUrl(DEFAULT_MESSAGE);
     const [isHovered, setIsHovered] = useState(false);
     const [showProactive, setShowProactive] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        const handleReveal = () => setIsVisible(true);
+        window.addEventListener("preloader-exiting", handleReveal);
+        if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
+
         const timer = setTimeout(() => {
             setShowProactive(true);
-        }, 5000);
-        return () => clearTimeout(timer);
+        }, 8000); // Wait longer after reveal
+        return () => {
+            window.removeEventListener("preloader-exiting", handleReveal);
+            clearTimeout(timer);
+        };
     }, []);
 
     return (
-        <div className="fixed bottom-8 right-8 z-[100]">
-            <Magnetic strength={0.4} range={150}>
+        <div className={`fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[100] transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"}`}>
+            <Magnetic strength={isHovered ? 0.4 : 0.1} range={100}>
                 <m.a
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.5, y: 50 }}
+                    initial={{ opacity: 0, scale: 0.8, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     onMouseEnter={() => {
                         setIsHovered(true);
@@ -34,17 +42,31 @@ export function WhatsAppButton() {
                     }}
                     onMouseLeave={() => setIsHovered(false)}
                     whileHover={{
-                        scale: 1.1,
-                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(37, 211, 102, 0.2)"
+                        scale: 1, // Restrained
+                        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)"
                     }}
-                    whileTap={{ scale: 0.9 }}
-                    className="w-12 h-12 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-xl lg:shadow-2xl transition-shadow duration-300 group overflow-hidden relative"
+                    whileTap={{ scale: 0.94 }}
+                    className="w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl text-white/70 border border-white/20 shadow-xl transition-all duration-500 group overflow-hidden relative saturate-[0.8] scale-[0.85]"
                 >
-                    {/* Premium Glow Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {/* Subtle Pulsing Edge */}
+                    <m.div
+                        className="absolute inset-0 rounded-full border border-white/40 z-0"
+                        animate={{
+                            scale: [1, 1.15],
+                            opacity: [0.3, 0]
+                        }}
+                        transition={{
+                            repeat: Infinity,
+                            duration: 3,
+                            ease: "easeOut"
+                        }}
+                    />
 
-                    {/* Static Gold Border (Luxury Feel) */}
-                    <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-[var(--color-silver-bh)]/40 transition-colors" />
+                    {/* Premium Glow Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+
+                    {/* Static Silver Border (Luxury Feel) */}
+                    <div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-white/30 transition-colors z-20" />
 
                     <m.div
                         animate={{
@@ -55,41 +77,28 @@ export function WhatsAppButton() {
                             repeat: isHovered ? Infinity : 0,
                             duration: 0.6
                         }}
-                        className="relative z-10"
+                        className="relative z-30"
                     >
-                        <MessageCircle strokeWidth={1.2} className="w-8 h-8" />
+                        <MessageCircle strokeWidth={1} className="w-6 h-6 lg:w-7 lg:h-7 text-white/80 group-hover:text-white transition-colors" />
                     </m.div>
 
                     {/* Proactive Speech Bubble */}
                     <AnimatePresence>
                         {showProactive && (
                             <m.div
-                                initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                                animate={{ opacity: 1, scale: 1, x: 0 }}
-                                exit={{ opacity: 0, scale: 0.8, x: 20 }}
-                                className="absolute right-full mr-6 top-1/2 -translate-y-1/2 whitespace-nowrap px-6 py-4 rounded-organic-md bg-[var(--color-silver-bh)] text-black text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl pointer-events-none"
+                                initial={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
+                                animate={{ opacity: 1, scale: 1, x: 0, y: "-50%" }}
+                                exit={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
+                                className="absolute right-[120%] top-1/2 whitespace-nowrap px-6 py-4 rounded-2xl bg-white text-black text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl pointer-events-none hidden sm:block"
                             >
                                 <span className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                                    Dúvida sobre nossos protocolos?
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                                    Fale conosco agora
                                 </span>
-                                <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-[var(--color-silver-bh)] rotate-45" />
+                                <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white rotate-45" />
                             </m.div>
                         )}
                     </AnimatePresence>
-
-                    {/* Tooltip (Manual Hover) */}
-                    <m.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{
-                            opacity: (isHovered && !showProactive) ? 1 : 0,
-                            x: (isHovered && !showProactive) ? 0 : 20
-                        }}
-                        className="absolute right-full mr-6 top-1/2 -translate-y-1/2 whitespace-nowrap px-6 py-3 rounded-organic-sm bg-[#0B0B0B]/90 border border-white/10 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.3em] pointer-events-none backdrop-blur-xl shadow-premium-2"
-                    >
-                        Fale Conosco
-                        <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-[#0B0B0B]/90 border-r border-t border-white/10 rotate-45" />
-                    </m.div>
                 </m.a>
             </Magnetic>
         </div>

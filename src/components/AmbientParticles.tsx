@@ -58,8 +58,16 @@ export function AmbientParticles() {
             window.addEventListener("scroll", handleScroll, { passive: true });
         }
 
+        // Visibility flag - controlled by IntersectionObserver
+        let isVisible = true;
+
         // Animation loop
         const animate = () => {
+            if (!isVisible) {
+                animationFrameRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particlesRef.current.forEach((particle, i) => {
@@ -76,7 +84,7 @@ export function AmbientParticles() {
                 // Draw particle
                 ctx.beginPath();
                 ctx.arc(particle.x, finalY, particle.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(226, 232, 240, ${particle.opacity})`;
+                ctx.fillStyle = `rgba(245, 245, 220, ${particle.opacity})`;
                 ctx.fill();
 
                 // Subtle glow - only for some particles
@@ -85,8 +93,8 @@ export function AmbientParticles() {
                         particle.x, finalY, 0,
                         particle.x, finalY, particle.size * 6
                     );
-                    gradient.addColorStop(0, `rgba(226, 232, 240, ${particle.opacity * 0.2})`);
-                    gradient.addColorStop(1, "rgba(226, 232, 240, 0)");
+                    gradient.addColorStop(0, `rgba(245, 245, 220, ${particle.opacity * 0.2})`);
+                    gradient.addColorStop(1, "rgba(245, 245, 220, 0)");
                     ctx.fillStyle = gradient;
                     ctx.beginPath(); // Ensure a new path for the glow
                     ctx.arc(particle.x, finalY, particle.size * 6, 0, Math.PI * 2);
@@ -97,11 +105,21 @@ export function AmbientParticles() {
             animationFrameRef.current = requestAnimationFrame(animate);
         };
 
+        // IntersectionObserver: pause drawing when canvas leaves viewport
+        const observer = new IntersectionObserver(
+            (entries) => {
+                isVisible = entries[0].isIntersecting;
+            },
+            { threshold: 0 }
+        );
+        observer.observe(canvas);
+
         animate();
 
         return () => {
             window.removeEventListener("resize", resizeCanvas);
             window.removeEventListener("scroll", handleScroll);
+            observer.disconnect();
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
             }

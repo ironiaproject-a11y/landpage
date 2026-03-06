@@ -2,7 +2,8 @@
 
 import { m } from "framer-motion";
 import { Quote, Star } from "lucide-react";
-import VisualContainer from "./VisualContainer";
+import { PremiumReveal } from "./PremiumReveal";
+import { LuxuryCard } from "./LuxuryCard";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -17,6 +18,7 @@ export function Testimonials() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const testimonials = [
         {
@@ -58,6 +60,10 @@ export function Testimonials() {
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     useEffect(() => {
@@ -85,9 +91,9 @@ export function Testimonials() {
                 );
             }
 
-            // Scroll-Influenced Marquee Speed
+            // Scroll-Influenced Marquee Speed (Desktop only for performance)
             const marquee = sectionRef.current?.querySelector(".testimonials-marquee");
-            if (marquee) {
+            if (marquee && !isMobile) {
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
                     start: "top bottom",
@@ -105,36 +111,80 @@ export function Testimonials() {
                     }
                 });
             }
+
+            // Desktop-only cinematic scroll effects
+            // Testimonial cards stagger reveal
+            const cards = gsap.utils.toArray(".testimonial-card");
+            if (cards.length > 0) {
+                gsap.fromTo(cards,
+                    { opacity: 0, y: 40 },
+                    {
+                        scrollTrigger: {
+                            trigger: ".testimonials-marquee",
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        },
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.15,
+                        duration: 1,
+                        ease: "power3.out"
+                    }
+                );
+            }
+
+            // Star rating shine effect
+            gsap.to(".star-icon", {
+                opacity: 1,
+                scale: 1.1,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top center",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
+            // Quote marks rotation
+            gsap.to(".quote-icon-rotate", {
+                rotation: 15,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top center",
+                    end: "bottom top",
+                    scrub: 2
+                }
+            });
         }, sectionRef);
 
         return () => ctx.revert();
-    }, [mounted]);
+    }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--color-deep-black)] relative overflow-hidden" id="depoimentos">
-            {/* Atmospheric Lighting Evolution */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] glow-blob-warm opacity-10 pointer-events-none" />
-            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] glow-blob opacity-20" />
+        <section
+            ref={sectionRef}
+            id="depoimentos"
+            className="relative py-16 md:py-32 overflow-hidden bg-[#0a0a0a]"
+        >
+            {/* Cremic Atmospheric Lighting */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[var(--color-creme)]/5 blur-[120px] pointer-events-none" />
+            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[var(--color-creme)]/5 blur-[100px]" />
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
-                    <m.span
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                        className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block"
-                    >
-                        Prova Social
-                    </m.span>
-                    <h2 ref={titleRef} className="font-display text-5xl md:text-7xl font-medium text-white leading-[0.95] tracking-tight">
-                        <div className="block overflow-hidden pb-1">
-                            <span className="title-line-inner inline-block">Histórias de</span>
-                        </div>
-                        <div className="block overflow-hidden pb-1">
-                            <span className="title-line-inner inline-block text-gradient-silver">transformação real</span>.
-                        </div>
-                    </h2>
+                    <PremiumReveal type="fade" direction="top" duration={1}>
+                        <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body">
+                            Prova Social
+                        </span>
+                    </PremiumReveal>
+
+                    <PremiumReveal type="mask" direction="bottom">
+                        <h2 className="font-display text-[clamp(28px,6vw,48px)] font-medium text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                            Histórias de<br />
+                            <span className="text-gradient-silver italic font-light">transformação real.</span>
+                        </h2>
+                    </PremiumReveal>
                 </div>
 
                 {/* Testimonials Marquee Evolution */}
@@ -142,72 +192,64 @@ export function Testimonials() {
                     <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] testimonials-marquee">
                         <m.div
                             animate={{
-                                x: ["0%", "-50%"],
+                                x: ["0%", "-100%"],
                             }}
                             whileHover={{ animationPlayState: "paused" }}
                             transition={{
-                                duration: 35,
+                                duration: 25,
                                 ease: "linear",
                                 repeat: Infinity,
                             }}
-                            className="flex gap-10 pr-10 marquee-inner"
+                            className="flex gap-6 md:gap-10 pr-10 marquee-inner will-change-transform"
                             style={{ width: "max-content" }}
                         >
-                            {[...testimonials, ...testimonials].map((testimonial, index) => (
+                            {testimonials.map((testimonial, index) => (
                                 <div
                                     key={index}
-                                    className="w-[450px] shrink-0 h-full"
+                                    className="testimonial-card w-[320px] md:w-[450px] shrink-0 h-full"
                                 >
-                                    <VisualContainer
-                                        width="100%"
-                                        height="100%"
-                                        hoverColor="rgba(199, 168, 107, 0.05)"
-                                        sideHeight="5px"
-                                        className="rounded-organic-md light-sweep"
+                                    <LuxuryCard
+                                        className="h-full border-white/5"
+                                        innerClassName="p-10 md:p-12"
+                                        glowColor="rgba(245, 245, 220, 0.03)"
                                     >
-                                        <div className="p-12 relative overflow-hidden group h-full">
-                                            {/* Quote Icon Evolution */}
-                                            <div className="mb-12 relative">
-                                                <Quote strokeWidth={1.2} className="w-16 h-16 text-[var(--color-silver-bh)]/10 rotate-180 group-hover:text-[var(--color-silver-bh)]/20 transition-all duration-700" />
+                                        <div className="relative z-10 flex flex-col h-full">
+                                            <div className="mb-10 relative">
+                                                <Quote strokeWidth={1.2} className="quote-icon-rotate w-12 h-12 text-[var(--color-silver-bh)]/10" />
                                             </div>
 
-                                            <div className="relative z-10 flex flex-col h-full">
-                                                {/* Stars Evolution */}
-                                                <div className="flex gap-2 mb-10">
-                                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                                        <Star key={i} strokeWidth={1.2} className="w-4 h-4 fill-[var(--color-silver-bh)] text-[var(--color-silver-bh)] opacity-80" />
-                                                    ))}
+                                            <div className="flex gap-2 mb-8">
+                                                {[...Array(testimonial.rating)].map((_, i) => (
+                                                    <Star key={i} strokeWidth={1.2} className="star-icon w-3.5 h-3.5 fill-[var(--color-silver-bh)] text-[var(--color-silver-bh)] opacity-80" />
+                                                ))}
+                                            </div>
+
+                                            <p className="font-display text-lg md:text-xl text-white/90 italic leading-[1.7] mb-12 flex-grow font-light">
+                                                &quot;{testimonial.content}&quot;
+                                            </p>
+
+                                            <div className="pt-8 border-t border-white/5 flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-[var(--color-silver-bh)]/20 relative">
+                                                    <Image
+                                                        src={testimonial.image}
+                                                        alt={testimonial.name}
+                                                        fill
+                                                        className="object-cover grayscale-[30%]"
+                                                    />
                                                 </div>
-
-                                                {/* Content Evolution */}
-                                                <p className="font-editorial text-2xl text-white/90 italic leading-relaxed mb-12 flex-grow font-light">
-                                                    &quot;{testimonial.content}&quot;
-                                                </p>
-
-                                                {/* Author Evolution */}
-                                                <div className="pt-10 border-t border-white/5 flex items-center gap-5">
-                                                    <div className="w-14 h-14 rounded-full overflow-hidden border border-[var(--color-silver-bh)]/30 shadow-level-2 relative group-hover:border-[var(--color-silver-bh)] transition-colors duration-500">
-                                                        <Image
-                                                            src={testimonial.image}
-                                                            alt={testimonial.name}
-                                                            fill
-                                                            className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="font-medium text-white text-lg tracking-tight">{testimonial.name}</h4>
-                                                        <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.2em] font-bold">{testimonial.role}</p>
-                                                    </div>
+                                                <div>
+                                                    <h4 className="font-medium text-white text-base tracking-tight font-display">{testimonial.name}</h4>
+                                                    <p className="text-[9px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold font-body">{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </VisualContainer>
+                                    </LuxuryCard>
                                 </div>
                             ))}
                         </m.div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }

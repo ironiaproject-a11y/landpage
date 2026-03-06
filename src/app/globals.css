@@ -17,6 +17,8 @@
   /* Text Colors */
   --color-text-light: #FAF9F7;
   /* Warm White - Primary Headlines */
+  --color-creme: #F5F5DC;
+  /* Cream/Off-white for Highlights, CTAs, Stats */
   --color-text-dim: #D6D6D6;
   /* Light Gray - Body Text */
   --color-text-secondary: #CBD5E1;
@@ -52,16 +54,23 @@
   --gradient-surface: linear-gradient(180deg, rgba(11, 11, 11, 0.8) 0%, rgba(11, 11, 11, 1) 100%);
   --gradient-dark: linear-gradient(to bottom, #0B0B0B, #121212);
 
-  /* Typography */
+  /* Typography - Precise Engineering */
   --font-display: var(--font-playfair), serif;
   --font-body: var(--font-inter), sans-serif;
-  --font-editorial: "Playfair Display", serif;
-  /* Ensure editorial fallback */
+  --font-editorial: var(--font-playfair), serif;
 
-  /* Editorial Spacing & Sizes */
-  --font-size-hero: clamp(1.8rem, 10vw, 5.5rem);
-  --line-height-hero: 1.1;
-  --letter-spacing-hero: -0.02em;
+  /* Weights & Hierarchy */
+  --font-weight-heading: 500;
+  --font-weight-body: 400;
+
+  /* Editorial Spacing - Aristocratic Tracking */
+  --font-size-hero: clamp(32px, 8.5vw, 64px);
+  --line-height-hero: 1.04;
+  --letter-spacing-hero: 0.2em;
+  --letter-spacing-primary: 0.15em;
+  --letter-spacing-tight: -0.015em;
+  --letter-spacing-wide: 0.12em;
+  --letter-spacing-extra-wide: 0.3em;
 
   /* Enhanced Shadows - Layered Depth System */
   --shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -86,21 +95,21 @@
     0 16px 32px rgba(0, 0, 0, 0.15),
     0 32px 64px rgba(0, 0, 0, 0.1);
 
-  --shadow-glow-silver: 0 0 40px -10px rgba(226, 232, 240, 0.15);
-  --shadow-glow-silver-strong:
-    0 0 20px rgba(255, 255, 255, 0.15),
-    0 0 40px rgba(255, 255, 255, 0.1),
-    0 0 60px rgba(255, 255, 255, 0.05);
+  --shadow-glow-creme: 0 0 20px rgba(245, 245, 220, 0.15);
+  --shadow-glow-creme-strong: 0 0 35px rgba(245, 245, 220, 0.25);
 
-  /* Curvature - 2026 Organic Design */
+  /* Organic Shapes */
   --radius-organic-sm: 1rem;
   --radius-organic-md: 2rem;
   --radius-organic-lg: 3.5rem;
   --radius-organic-pill: 9999px;
 
-  /* Lighting Blobs */
-  --glow-blob: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-  --glow-blob-warm: radial-gradient(circle at center, rgba(226, 232, 240, 0.08) 0%, transparent 75%);
+  /* Accent Color - Platinum Silver (Professional Refinement) */
+  --color-accent: #CBD5E1;
+
+  /* Lighting Blobs - Purified Creme */
+  --glow-blob: radial-gradient(circle at center, rgba(245, 245, 220, 0.03) 0%, transparent 70%);
+  --glow-blob-warm: radial-gradient(circle at center, rgba(245, 245, 220, 0.06) 0%, transparent 75%);
 }
 
 /* ===================================
@@ -111,16 +120,26 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-deep-black);
+  background-color: #000000;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 body {
-  background: var(--color-background);
+  background: #000000;
   color: var(--color-text-light);
   font-family: var(--font-body);
   overflow-x: hidden;
   position: relative;
   cursor: none;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
 }
 
 /* Ensure interactive elements also hide cursor */
@@ -131,6 +150,9 @@ input,
 textarea,
 select {
   cursor: none !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Fallback for touch devices where custom cursor might be problematic */
@@ -155,12 +177,21 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.2;
+  opacity: 0.05;
   mix-blend-mode: overlay;
-  animation: grain-animation 12s steps(10) infinite;
+  animation: grain-animation 15s steps(8) infinite;
+  /* Lighter on CPU */
+}
+
+@media (max-width: 768px) {
+  body::before {
+    animation: none;
+    /* Disable animation on mobile for battery/performance */
+    opacity: 0.08;
+  }
 }
 
 /* Subtle Cinematic Vignette */
@@ -168,10 +199,16 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.5;
+  opacity: 0.35;
+}
+
+@media (max-width: 1024px) {
+  body::after {
+    opacity: 0.15;
+  }
 }
 
 @keyframes grain-animation {
@@ -226,15 +263,15 @@ h5,
 h6 {
   font-family: var(--font-display);
   color: var(--color-text-light);
-  letter-spacing: -0.03em;
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
+  font-weight: var(--font-weight-heading);
 }
 
 h1 {
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: var(--line-height-hero);
+  font-size: clamp(30px, 8vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
 
 .text-hero-editorial {
@@ -242,21 +279,37 @@ h1 {
   line-height: var(--line-height-hero);
   letter-spacing: var(--letter-spacing-hero);
   font-family: var(--font-editorial);
+  font-weight: 500;
+  /* Dual-layer shadow: sharp definition + soft volume */
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 .text-subheadline-editorial {
-  @apply text-base md:text-[1.75rem] font-light leading-[1.6] md:leading-[1.8] max-w-[52ch];
-  color: #D6D6D6;
-  /* Soft Cream / Light Gray */
+  @apply text-base font-light max-w-[60ch];
+  font-size: clamp(14px, 3.2vw, 18px);
+  line-height: 1.65;
+  /* opacity controlled by Framer Motion in Hero */
+  color: var(--color-text-dim);
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
-  font-weight: 600;
-  letter-spacing: -0.035em;
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 2rem;
 }
 
 h3 {
-  font-weight: 500;
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: var(--font-weight-heading);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 ::selection {
@@ -269,6 +322,172 @@ h3 {
    =================================== */
 
 /* Text Styles */
+.text-mask-reveal {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.text-mask-reveal-inner {
+  display: block;
+  will-change: transform;
+}
+
+/* Global Section Spacing (+20%) */
+section {
+  @apply py-20 md:py-40;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
+@media (max-width: 767px) {
+  section {
+    padding-top: 4rem;
+    /* 64px — respira sem desperdiçar espaço */
+    padding-bottom: 4rem;
+  }
+}
+
+.luxury-surface {
+  @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-premium-1;
+  transition: all 0.8s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.luxury-surface:hover {
+  @apply bg-charcoal/60 border-white/10;
+  box-shadow: var(--shadow-premium-2);
+}
+
+.body-text-refined {
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.card-luxury {
+  border: 1px solid rgba(245, 245, 220, 0.1);
+  background: rgba(18, 18, 18, 0.4);
+  backdrop-filter: blur(10px);
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-luxury:hover {
+  background: rgba(18, 18, 18, 0.6);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-glow-creme);
+}
+
+.text-glitch:hover {
+  text-shadow: 0 0 8px rgba(245, 245, 220, 0.4);
+  transition: text-shadow 0.3s ease;
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip: rect(65px, 9999px, 100px, 0);
+    transform: skew(0.13deg);
+  }
+
+  5% {
+    clip: rect(20px, 9999px, 53px, 0);
+    transform: skew(0.5deg);
+  }
+
+  10% {
+    clip: rect(74px, 9999px, 3px, 0);
+    transform: skew(0.21deg);
+  }
+
+  15% {
+    clip: rect(98px, 9999px, 20px, 0);
+    transform: skew(0.28deg);
+  }
+
+  20% {
+    clip: rect(81px, 9999px, 44px, 0);
+    transform: skew(0.83deg);
+  }
+
+  25% {
+    clip: rect(9px, 9999px, 10px, 0);
+    transform: skew(0.19deg);
+  }
+
+  30% {
+    clip: rect(38px, 9999px, 83px, 0);
+    transform: skew(0.74deg);
+  }
+
+  35% {
+    clip: rect(14px, 9999px, 60px, 0);
+    transform: skew(0.99deg);
+  }
+
+  40% {
+    clip: rect(6px, 9999px, 91px, 0);
+    transform: skew(0.23deg);
+  }
+
+  45% {
+    clip: rect(52px, 9999px, 49px, 0);
+    transform: skew(0.1deg);
+  }
+
+  50% {
+    clip: rect(53px, 9999px, 55px, 0);
+    transform: skew(0.57deg);
+  }
+
+  55% {
+    clip: rect(90px, 9999px, 19px, 0);
+    transform: skew(0.96deg);
+  }
+
+  60% {
+    clip: rect(32px, 9999px, 11px, 0);
+    transform: skew(0.67deg);
+  }
+
+  65% {
+    clip: rect(55px, 9999px, 78px, 0);
+    transform: skew(0.38deg);
+  }
+
+  70% {
+    clip: rect(56px, 9999px, 30px, 0);
+    transform: skew(0.72deg);
+  }
+
+  75% {
+    clip: rect(4px, 9999px, 78px, 0);
+    transform: skew(0.24deg);
+  }
+
+  80% {
+    clip: rect(11px, 9999px, 6px, 0);
+    transform: skew(0.01deg);
+  }
+
+  85% {
+    clip: rect(87px, 9999px, 49px, 0);
+    transform: skew(0.61deg);
+  }
+
+  90% {
+    clip: rect(54px, 9999px, 89px, 0);
+    transform: skew(0.67deg);
+  }
+
+  95% {
+    clip: rect(40px, 9999px, 35px, 0);
+    transform: skew(0.99deg);
+  }
+
+  100% {
+    clip: rect(25px, 9999px, 44px, 0);
+    transform: skew(0.34deg);
+  }
+}
+
 .text-silver {
   color: var(--color-silver-bh);
 }
@@ -290,6 +509,30 @@ h3 {
   to {
     background-position: 200% center;
   }
+}
+
+@keyframes shine-text-sweep {
+  0% {
+    background-position: -100% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shine-text {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 25%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 75%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+  animation: shine-text-sweep 6s infinite linear;
 }
 
 .drop-shadow-glow {
@@ -403,11 +646,18 @@ h3 {
 
 /* Super-Luxury Button System - Enhanced */
 .btn-luxury-primary {
-  @apply relative overflow-hidden transition-all duration-500 font-bold uppercase tracking-[0.3em] text-[10px] sm:text-xs rounded-full py-6 px-12;
-  background: var(--color-silver-bh);
-  /* Solid Muted Silver */
-  @apply relative overflow-hidden bg-[var(--color-silver-bh)] text-[#050505] font-bold py-4 px-10 rounded-full transition-all duration-500 isolate;
+  @apply relative overflow-hidden flex items-center justify-center transition-all duration-500 font-bold uppercase tracking-[0.3em] rounded-full;
+  background: var(--color-creme);
+  color: #000;
+  padding: 1rem 2.5rem;
+  font-size: 10px;
   box-shadow: var(--shadow-premium-2);
+}
+
+@media (min-width: 640px) {
+  .btn-luxury-primary {
+    font-size: 12px;
+  }
 }
 
 .btn-luxury-primary:hover {
@@ -491,6 +741,34 @@ h3 {
   max-width: 520px;
 }
 
+/* ===================================
+   MEDIA CARD SYSTEM
+   =================================== */
+.media-card {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.media-video {
+  will-change: opacity;
+}
+
+.media-poster {
+  transition: opacity 400ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-video {
+    display: none !important;
+  }
+
+  .media-card.is-playing .media-poster {
+    opacity: 1 !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .hero-video,
@@ -560,7 +838,21 @@ h3 {
   box-shadow: var(--shadow-premium-3);
 }
 
-/* Light Sweep Shimmer Effect */
+/* ===================================
+   ANIMATION: PREMIUM GRADIENT REVEAL
+   =================================== */
+
+.hero-title {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+/* Base state for reveal handled by GSAP */
+.hero-title.in-view {
+  opacity: 1;
+}
+
 .light-sweep {
   position: relative;
   overflow: hidden;
@@ -624,4 +916,51 @@ h3 {
 
 .animate-fade-in-up {
   animation: fade-in-up 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ===================================
+   HERO ENTRANCE ANIMATIONS
+   Sophisticated & Minimalist Fade
+   =================================== */
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-fade {
+  opacity: 0;
+  animation: heroFadeIn 700ms cubic-bezier(.22, .9, .32, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-fade {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.delay-headline {
+  animation-delay: 0ms;
+}
+
+.delay-subheadline {
+  animation-delay: 120ms;
+}
+
+.delay-cta-1 {
+  animation-delay: 240ms;
+}
+
+.delay-cta-2 {
+  animation-delay: 320ms;
 }

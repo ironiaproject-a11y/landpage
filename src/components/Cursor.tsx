@@ -9,9 +9,17 @@ export function Cursor() {
     const [isMagnetic, setIsMagnetic] = useState(false);
     const [isTextHovered, setIsTextHovered] = useState(false);
     const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+    const [isVisible, setIsVisible] = useState(false);
 
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
+
+    useEffect(() => {
+        const handleReveal = () => setIsVisible(true);
+        window.addEventListener("preloader-finished", handleReveal);
+        if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
+        return () => window.removeEventListener("preloader-finished", handleReveal);
+    }, []);
 
     // Enhanced spring configs for smoother magnetic effect
     const magneticSpringConfig = { damping: 20, stiffness: 200 };
@@ -39,7 +47,7 @@ export function Cursor() {
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
                 // Stronger pull when closer
-                const pullStrength = Math.min(1, 80 / distance);
+                const pullStrength = Math.min(1.2, 100 / distance); // Slightly stronger pull
                 const targetX = centerX + distanceX * (1 - pullStrength);
                 const targetY = centerY + distanceY * (1 - pullStrength);
 
@@ -98,7 +106,7 @@ export function Cursor() {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    if (isMobile) return null;
+    if (isMobile || !isVisible) return null;
 
     return (
         <>
@@ -195,15 +203,15 @@ export function Cursor() {
                         animate={{ opacity: 0.6, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-widest text-[var(--color-silver-bh)] whitespace-nowrap"
+                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[var(--color-silver-bh)] whitespace-nowrap"
                         style={{
                             x: cursorXSpring,
                             y: cursorYSpring,
                             translateX: "-50%",
-                            translateY: "-200%",
+                            translateY: "250%",
                         }}
                     >
-                        Click
+                        EXPLORAR
                     </m.div>
                 )}
             </AnimatePresence>

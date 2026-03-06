@@ -7,12 +7,47 @@ export function Preloader() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Minimum loading time for the animation to feel intentional
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2200);
+        (window as any).__PRELOADER_ACTIVE__ = true;
+        let minTimeElapsed = false;
+        let assetsLoaded = (window as any).__HERO_ASSETS_LOADED__ || false;
 
-        return () => clearTimeout(timer);
+        const checkExit = () => {
+            if (minTimeElapsed && assetsLoaded) {
+                window.dispatchEvent(new CustomEvent("preloader-exiting"));
+                setIsLoading(false);
+                // Dispatch finished after transition duration (1.4s)
+                setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent("preloader-finished"));
+                    (window as any).__PRELOADER_ACTIVE__ = false;
+                }, 1400);
+            }
+        };
+
+        const timer = setTimeout(() => {
+            minTimeElapsed = true;
+            checkExit();
+        }, 2200); // 2.2s for a more premium presence
+
+        const handleAssetsLoaded = () => {
+            assetsLoaded = true;
+            checkExit();
+        };
+
+        window.addEventListener("hero-assets-loaded", handleAssetsLoaded);
+
+        // Failsafe timeout to force loading finish after 6 seconds
+        const safetyTimer = setTimeout(() => {
+            assetsLoaded = true;
+            minTimeElapsed = true;
+            checkExit();
+        }, 6000);
+
+        return () => {
+            clearTimeout(timer);
+            clearTimeout(safetyTimer);
+            window.removeEventListener("hero-assets-loaded", handleAssetsLoaded);
+            (window as any).__PRELOADER_ACTIVE__ = false;
+        };
     }, []);
 
     return (
