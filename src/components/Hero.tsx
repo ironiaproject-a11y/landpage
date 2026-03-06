@@ -57,8 +57,8 @@ export function Hero() {
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // 35% vertical position (keeps the smile/tooth prominently framed)
-            const y = (canvasHeight - newHeight) * 0.35;
+            // 40% vertical position (optimizes framing for 70vh)
+            const y = (canvasHeight - newHeight) * 0.4;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -246,20 +246,20 @@ export function Hero() {
                     left: 50%;
                     transform: translate(-50%, -50%);
                     width: 100vw;
-                    height: 82vh;
+                    height: 70vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
                     /* Seamless blending via mask */
                     -webkit-mask-image: linear-gradient(to bottom, 
                         transparent 0%, 
-                        black 15%, 
-                        black 85%, 
+                        black 10%, 
+                        black 90%, 
                         transparent 100%
                     );
                     mask-image: linear-gradient(to bottom, 
                         transparent 0%, 
-                        black 15%, 
-                        black 85%, 
+                        black 10%, 
+                        black 90%, 
                         transparent 100%
                     );
                 }
@@ -269,7 +269,7 @@ export function Hero() {
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 25vh;
+                    height: 30vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
