@@ -157,7 +157,7 @@ export function Hero() {
                     display: block;
                     z-index: 1;
                     /* Visual balance: 0.92 scale + subtle tilt */
-                    transform: scale(0.92) rotateX(2deg);
+                    transform: scale(0.92);
                     transform-origin: center center;
                     filter: brightness(0.85) contrast(1.1);
                     transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
