@@ -256,7 +256,14 @@ export function Hero() {
                 {/* Background Video / X-ray Layer */}
                 <div
                     ref={videoWrapperRef}
-                    className="absolute inset-0 z-0 origin-center will-change-transform"
+                    className="absolute z-0 origin-center will-change-transform"
+                    style={{
+                        top: '-7.5%',
+                        left: '-7.5%',
+                        width: '115%',
+                        height: '115%',
+                        transform: 'scale(0.92)',
+                    }}
                 >
                     {/* Radial Spotlight Overlay */}
                     <div
