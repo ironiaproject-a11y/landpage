@@ -91,6 +91,49 @@ export default function RootLayout({
             })
           }}
         />
+        <style dangerouslySetInnerHTML={{ __html: `
+/* Ajuste cirúrgico: reduzir dominância visual do vídeo mantendo full-bleed */
+.hero, .site-hero, header.hero { /* use o seletor real do projeto se diferente */
+  position: relative !important;
+  overflow: hidden !important;
+  /* não alterar height/width */
+}
+
+.hero video,
+.hero img.video,
+.hero .video-element { /* cobrir variações de seletor; aplique ao elemento de mídia real */
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  pointer-events: none !important;
+  /* Perceção menor sem alterar container: usar escala sutil */
+  transform: scale(0.95) !important; /* valor inicial recomendado */
+  will-change: transform !important;
+}
+
+/* Se a escala revelar bordas em alguns viewports, ajustar para 0.97–0.99 localmente */
+@media (min-width: 1200px){
+  .hero video { transform: scale(0.97) !important; }
+}
+
+/* Opcional e condicional: overlay leve somente se necessário para legibilidade.
+   APLICAR SÓ SE A LEITURA DO TEXTO FICAR RUIM (caso contrário, ignorar). */
+.hero::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  background: rgba(0,0,0,0.12) !important; /* ajuste 0.08–0.18 conforme necessidade */
+  z-index: 2 !important; /* assegurar que texto (z-index maior) continue legível */
+}
+
+/* Garantir que nenhum estilo adicionado gere bordas visíveis */
+.hero video,
+.hero img.video { border: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+        ` }} />
       </head>
       <body className="antialiased">
         <SmoothScroll>
