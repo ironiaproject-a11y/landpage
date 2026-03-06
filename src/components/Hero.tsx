@@ -49,14 +49,16 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Draw logic: Balanced scaling + mask strategy
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.85;
+            // Draw logic: object-fit: cover with object-position: center 20%
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
+
+            // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // Shift slightly up to ensure bottom watermark is cut first or hidden by mask
-            const y = (canvasHeight - newHeight) / 2 - 20;
+            // 20% vertical position (favors top)
+            const y = (canvasHeight - newHeight) * 0.2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -86,8 +88,9 @@ export function Hero() {
         }
 
         const updateSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
             render();
         };
 
@@ -242,19 +245,22 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 100vw;
-                    height: 100vh;
+                    width: 70vw;
+                    max-width: 880px;
+                    height: 48vh;
+                    border-radius: 24px;
                     mix-blend-mode: screen;
                     filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.05));
+                    overflow: hidden;
                 }
 
-                /* Bottom mask to hide watermark and blend with background */
+                /* Adjusted mask for the new small size */
                 .hero-bottom-mask {
                     position: absolute;
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 25vh;
+                    height: 8vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
