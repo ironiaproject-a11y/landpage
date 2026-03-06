@@ -8,7 +8,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const FRAME_COUNT = 192;
+const FRAME_COUNT = 180;
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -55,7 +55,8 @@ export function Hero() {
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
             const x = (canvasWidth - newWidth) / 2;
-            const y = (canvasHeight - newHeight) / 2;
+            // Shift slightly up to ensure bottom watermark is cut first or hidden by mask
+            const y = (canvasHeight - newHeight) / 2 - 20;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -253,7 +254,7 @@ export function Hero() {
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 15vh;
+                    height: 25vh;
                     background: linear-gradient(to top, #000 0%, transparent 100%);
                     z-index: 2;
                     pointer-events: none;
