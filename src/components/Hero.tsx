@@ -8,7 +8,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const FRAME_COUNT = 177;
+const FRAME_COUNT = 31;
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -38,7 +38,7 @@ export function Hero() {
 
         // Configuration
         const currentFrame = (index: number) =>
-            `/assets/premium-hero-frames/frame_${index.toString().padStart(3, '0')}_delay-0.041s.png`;
+            `/assets/hero-new-sequence/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.png`;
 
         const render = () => {
             const img = imagesRef.current[airbnbRef.current.frame];
