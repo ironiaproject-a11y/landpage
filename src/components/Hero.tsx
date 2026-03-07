@@ -49,24 +49,14 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Target dimensions for the 'floating' area based on user feedback
-            // 68vw (max 880px) and 42vh
-            const targetWidth = Math.min(canvasWidth * 0.68, 880);
-            const targetHeight = canvasHeight * 0.42;
-
-            // Calculate scale to simulate object-fit: cover relative to the target area
-            const ratio = Math.max(targetWidth / imgWidth, targetHeight / imgHeight);
-
+            // Simple object-fit: cover logic for the constrained canvas
+            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
 
-            // center horizontal
+            // Center image within the canvas
             const x = (canvasWidth - newWidth) / 2;
-
-            // Mathematically center the 42vh 'visual window' in the 100vh canvas
-            const windowTop = (canvasHeight - targetHeight) / 2;
-            // Apply the 8% focus offset within that centered window
-            const y = windowTop + (targetHeight - newHeight) * 0.08;
+            const y = (canvasHeight - newHeight) / 2;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -253,8 +243,9 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 100vw;
-                    height: 100vh;
+                    width: 68vw;
+                    max-width: 880px;
+                    height: 40vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
                     pointer-events: none;
