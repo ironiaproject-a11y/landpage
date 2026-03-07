@@ -257,32 +257,10 @@ export function Hero() {
                     height: 100vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
-                    /* Soft radial mask that follows the 68vw/42vh proportions */
-                    -webkit-mask-image: radial-gradient(
-                        ellipse 40% 30% at center, 
-                        black 0%, 
-                        black 30%, 
-                        transparent 90%
-                    );
-                    mask-image: radial-gradient(
-                        ellipse 40% 30% at center, 
-                        black 0%, 
-                        black 30%, 
-                        transparent 90%
-                    );
                     pointer-events: none;
                 }
 
-                .hero-bottom-mask {
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 40vh;
-                    background: linear-gradient(to top, #000 0%, transparent 100%);
-                    z-index: 2;
-                    pointer-events: none;
-                }
+
 
                 .hero-text-layer { 
                     position: absolute; 
@@ -464,7 +442,7 @@ export function Hero() {
                         className="hero-canvas"
                     />
 
-                    <div className="hero-bottom-mask" />
+
 
                     <div className="hero-text-layer">
                         <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
