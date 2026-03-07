@@ -49,19 +49,21 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Base scale for cover-like behavior
-            const baseRatio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            // Target dimensions for the 'floating' area based on user feedback
+            // 68vw (max 880px) and 42vh
+            const targetWidth = Math.min(canvasWidth * 0.68, 880);
+            const targetHeight = canvasHeight * 0.42;
 
-            // Reduce the rendering scale to 32% of the viewport for a minimalist 3D sensation
-            // that is perfectly centered and free-floating
-            const targetScale = 0.32;
-            const newWidth = imgWidth * baseRatio * targetScale;
-            const newHeight = imgHeight * baseRatio * targetScale;
+            // Calculate scale to simulate object-fit: cover relative to the target area
+            const ratio = Math.max(targetWidth / imgWidth, targetHeight / imgHeight);
+
+            const newWidth = imgWidth * ratio;
+            const newHeight = imgHeight * ratio;
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // center vertical (perfectly centered for free-floating look)
-            const y = (canvasHeight - newHeight) / 2;
+            // object-position: center 8% (lifts the focus to center the smile and hide the drop)
+            const y = (canvasHeight - newHeight) * 0.08;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
@@ -252,18 +254,18 @@ export function Hero() {
                     height: 100vh;
                     mix-blend-mode: screen;
                     overflow: hidden;
-                    /* Tighter global mask for the smaller 32% minimalist scale */
+                    /* Soft radial mask that follows the 68vw/42vh proportions */
                     -webkit-mask-image: radial-gradient(
-                        circle at center, 
+                        ellipse 40% 30% at center, 
                         black 0%, 
-                        black 20%, 
-                        transparent 70%
+                        black 30%, 
+                        transparent 90%
                     );
                     mask-image: radial-gradient(
-                        circle at center, 
+                        ellipse 40% 30% at center, 
                         black 0%, 
-                        black 20%, 
-                        transparent 70%
+                        black 30%, 
+                        transparent 90%
                     );
                     pointer-events: none;
                 }
