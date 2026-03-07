@@ -32,17 +32,10 @@ const Stats = nextDynamic(() => import("@/components/Stats"), {
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 
-import { SocialProof } from "@/components/SocialProof";
-import { SmileTransformations } from "@/components/SmileTransformations";
-import { MidCTA } from "@/components/MidCTA";
-
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
-      <SocialProof />
-      <SmileTransformations />
-      <MidCTA />
       <About />
       <InstitutionalTrust />
       <TrustBar />

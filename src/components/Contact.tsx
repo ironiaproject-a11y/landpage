@@ -173,26 +173,26 @@ export function Contact() {
             <div className="relative group/map section-divider-top">
                 <div className="absolute inset-0 z-20 pointer-events-none border-y border-white/5 bg-gradient-to-b from-[var(--color-graphite)] via-transparent to-[var(--color-graphite)] opacity-60"></div>
 
-                {/* Floating Map Info Card - Refined Positioning for Mobile */}
+                {/* Floating Map Info Card - Refined Positioning */}
                 <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
-                    className="absolute top-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-2.5rem)] md:w-auto md:max-w-xs"
+                    className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
-                    <div className="glass-panel p-5 md:p-8 rounded-organic-md border border-white/10 backdrop-blur-xl shadow-premium-2">
-                        <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.3em] uppercase text-[8px] md:text-[9px] mb-2 md:mb-3 block opacity-80">
+                    <div className="glass-panel p-6 md:p-8 rounded-organic-md border border-white/10 backdrop-blur-xl shadow-premium-2">
+                        <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>
-                        <h3 className="text-base md:text-xl font-display text-white mb-2 md:mb-3 leading-tight">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>
-                        <p className="text-[9px] md:text-xs text-[var(--color-text-secondary)] leading-relaxed mb-4 md:mb-5 opacity-90">
+                        <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>
+                        <p className="text-[10px] md:text-xs text-[var(--color-text-secondary)] leading-relaxed mb-5 opacity-90">
                             Ambiente exclusivo com estacionamento privativo e manobrista para sua total comodidade.
                         </p>
                         <a
                             href="https://goo.gl/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[var(--color-silver-bh)] text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
+                            className="text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
                         >
                             Ver no Google Maps <span className="text-lg">→</span>
                         </a>
