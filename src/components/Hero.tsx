@@ -62,8 +62,11 @@ export function Hero() {
 
             // center horizontal
             const x = (canvasWidth - newWidth) / 2;
-            // object-position: center 8% (lifts the focus to center the smile and hide the drop)
-            const y = (canvasHeight - newHeight) * 0.08;
+
+            // Mathematically center the 42vh 'visual window' in the 100vh canvas
+            const windowTop = (canvasHeight - targetHeight) / 2;
+            // Apply the 8% focus offset within that centered window
+            const y = windowTop + (targetHeight - newHeight) * 0.08;
 
             context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.drawImage(img, x, y, newWidth, newHeight);
