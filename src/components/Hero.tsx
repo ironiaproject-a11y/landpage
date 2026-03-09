@@ -237,11 +237,12 @@ export function Hero() {
                     pointer-events: none;
                 }
 
-                /* Dark overlay for text legibility */
+                /* Dark overlay for text legibility and cinematic depth */
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: rgba(0, 0, 0, 0.45);
+                    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%),
+                                linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
                     z-index: 2;
                     pointer-events: none;
                 }
@@ -413,20 +414,22 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { height: 75vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
-                        width: 90vw;
+                        width: 65vw;
                         height: auto;
                         aspect-ratio: 1/1;
-                        max-height: 60vh;
+                        max-height: 55vh;
                         left: 50%;
-                        top: 55%;
+                        top: 52%;
                         transform: translate(-50%, -50%);
                         object-fit: contain;
+                        opacity: 0.9;
                     }
                     .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
-                    .hero-title-bottom { font-size: clamp(32px, 8vw, 48px); margin-bottom: 24px; }
-                    .hero-text-layer { padding: 0 20px; }
+                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 32px; }
+                    .hero-text-layer { padding: 0 24px; justify-content: center; }
+                    .hero-cta-layer { gap: 16px; }
                     .hero-progress-container { right: 16px; height: 120px; }
-                    .hero-scroll-indicator { bottom: 24px; }
+                    .hero-scroll-indicator { bottom: 24px; opacity: 0.3; }
                 }
             `}</style>
 
