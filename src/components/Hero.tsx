@@ -139,9 +139,9 @@ export function Hero() {
                 onUpdate: render,
             });
 
-            // Immersive Zoom (slightly less for full-bleed)
+            // Immersive Zoom (slightly less for framed layout)
             gsap.to(canvasRef.current, {
-                scale: 1.05,
+                scale: 1.08,
                 ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -269,20 +269,26 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100vw;
-                    height: 100vh;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 74vw;
+                    max-width: 1000px;
+                    height: 44vh;
                     object-fit: cover;
                     mix-blend-mode: normal;
                     z-index: 1;
                     pointer-events: none;
+                    border-radius: 32px;
+                    box-shadow: 0 0 100px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.03);
+                    overflow: hidden;
+                    border: 1px solid rgba(255,255,255,0.08);
                 }
 
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+                    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.5) 100%);
                     z-index: 2;
                     pointer-events: none;
                 }
@@ -296,7 +302,7 @@ export function Hero() {
                     flex-direction: column;
                     align-items: center;
                     justify-content: space-between;
-                    padding: 10vh 20px 15vh;
+                    padding: 12vh 20px 18vh;
                     pointer-events: none;
                 }
 
