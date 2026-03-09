@@ -414,7 +414,7 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { height: 75vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
-                        width: 82vw;
+                        width: 95vw;
                         height: auto;
                         aspect-ratio: 1/1;
                         max-height: 50vh;
