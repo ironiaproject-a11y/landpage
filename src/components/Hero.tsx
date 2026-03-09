@@ -131,7 +131,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=250%",
+                    end: "+=200%",
                     pin: true,
                     scrub: 0.5,
                     anticipatePin: 1
@@ -146,7 +146,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=250%",
+                    end: "+=200%",
                     scrub: true
                 }
             });
@@ -169,7 +169,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=250%",
+                    end: "+=200%",
                     scrub: true
                 }
             });
@@ -196,7 +196,7 @@ export function Hero() {
             <style>{`
                 .hero { 
                     position: relative; 
-                    height: 75vh; 
+                    height: 65vh; 
                     width: 100vw; 
                     background: #000; 
                     overflow: visible; 
