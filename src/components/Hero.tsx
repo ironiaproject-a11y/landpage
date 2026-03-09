@@ -131,7 +131,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=300%", // Longer scroll for 144 frames
+                    end: "+=250%",
                     pin: true,
                     scrub: 0.5,
                     anticipatePin: 1
@@ -139,79 +139,29 @@ export function Hero() {
                 onUpdate: render,
             });
 
-            // Immersive Zoom (slightly less for framed layout)
+            // Immersive Zoom
             gsap.to(canvasRef.current, {
-                scale: 1.08,
+                scale: 1.1,
                 ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=300%",
+                    end: "+=250%",
                     scrub: true
                 }
             });
 
-            // Narrative Flow: Part 1 - Top Headline Evaporation
-            gsap.to(titleTopRef.current, {
-                opacity: 0,
-                y: -50,
-                filter: "blur(12px)",
-                letterSpacing: "0.2em",
-                scale: 1.1,
-                ease: "power2.inOut",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "30% top",
-                    scrub: true
-                }
-            });
-
-            // Narrative Flow: Part 2 - Bottom Headline Entry
-            gsap.fromTo(titleBottomRef.current,
-                { opacity: 0, y: 50, scale: 0.95, filter: "blur(10px)" },
+            // Narrativa centrada: Opacidade e escala sutis
+            gsap.fromTo([titleTopRef.current, titleBottomRef.current, ctaRef.current],
+                { opacity: 0, y: 30 },
                 {
                     opacity: 1,
                     y: 0,
-                    scale: 1,
-                    filter: "blur(0px)",
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "40% top",
-                        end: "70% top",
-                        scrub: true
-                    }
+                    stagger: 0.2,
+                    duration: 1,
+                    ease: "power3.out"
                 }
             );
-
-            // Narrative Flow: Part 3 - Button Entry
-            gsap.fromTo(ctaRef.current,
-                { opacity: 0, y: 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "65% top",
-                        end: "90% top",
-                        scrub: true
-                    }
-                }
-            );
-
-            // Scroll Indicators
-            gsap.to(scrollIndicatorRef.current, {
-                opacity: 0,
-                y: 20,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "10% top",
-                    scrub: true
-                }
-            });
 
             gsap.to(progressLineRef.current, {
                 scaleY: 1,
@@ -219,7 +169,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=300%",
+                    end: "+=250%",
                     scrub: true
                 }
             });
@@ -246,9 +196,9 @@ export function Hero() {
             <style>{`
                 .hero { 
                     position: relative; 
-                    height: 100vh; 
+                    height: 75vh; 
                     width: 100vw; 
-                    background: #050505; 
+                    background: #000; 
                     overflow: visible; 
                     margin: 0;
                     padding: 0;
@@ -259,7 +209,7 @@ export function Hero() {
                     position: absolute;
                     inset: 0;
                     width: 100%;
-                    height: 100vh;
+                    height: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -269,25 +219,20 @@ export function Hero() {
 
                 .hero-canvas {
                     position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 80vw;
-                    max-width: 1100px;
-                    height: 50vh;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
                     object-fit: cover;
-                    mix-blend-mode: screen;
+                    mix-blend-mode: normal;
                     z-index: 1;
                     pointer-events: none;
-                    /* Seamless blending mask */
-                    -webkit-mask-image: radial-gradient(circle, black 40%, transparent 85%);
-                    mask-image: radial-gradient(circle, black 40%, transparent 85%);
                 }
 
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.6) 100%);
+                    background: rgba(0,0,0,0.45);
                     z-index: 2;
                     pointer-events: none;
                 }
@@ -300,8 +245,9 @@ export function Hero() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: space-between;
-                    padding: 12vh 20px 18vh;
+                    justify-content: center;
+                    padding: 0 20px;
+                    text-align: center;
                     pointer-events: none;
                 }
 
