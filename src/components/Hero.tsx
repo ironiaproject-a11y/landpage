@@ -50,8 +50,12 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
-            // Simple object-fit: cover logic for the constrained canvas
-            const ratio = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+            // Use 'contain' logic for mobile to ensure the entire skull is visible
+            const isMobile = window.innerWidth <= 768;
+            const ratio = isMobile
+                ? Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight)
+                : Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
 
@@ -409,14 +413,14 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { height: 75vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
-                        width: clamp(280px, 90vw, 100%); 
-                        height: auto; 
-                        max-height: 70vh;
+                        width: 90vw;
+                        height: auto;
+                        aspect-ratio: 1/1;
+                        max-height: 60vh;
                         left: 50%;
-                        transform: translateX(-50%);
-                        object-fit: contain;
                         top: 55%;
                         transform: translate(-50%, -50%);
+                        object-fit: contain;
                     }
                     .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
                     .hero-title-bottom { font-size: clamp(32px, 8vw, 48px); margin-bottom: 24px; }
