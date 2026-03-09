@@ -414,22 +414,22 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { height: 75vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
-                        width: 65vw;
+                        width: 82vw;
                         height: auto;
                         aspect-ratio: 1/1;
-                        max-height: 55vh;
+                        max-height: 50vh;
                         left: 50%;
-                        top: 52%;
+                        top: 50%;
                         transform: translate(-50%, -50%);
                         object-fit: contain;
-                        opacity: 0.9;
+                        opacity: 0.95;
                     }
                     .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
-                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 32px; }
+                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 24px; }
                     .hero-text-layer { padding: 0 24px; justify-content: center; }
-                    .hero-cta-layer { gap: 16px; }
-                    .hero-progress-container { right: 16px; height: 120px; }
-                    .hero-scroll-indicator { bottom: 24px; opacity: 0.3; }
+                    .hero-cta-layer { gap: 16px; margin-top: 10px; }
+                    .hero-progress-container { right: 12px; height: 100px; }
+                    .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
                 }
             `}</style>
 
