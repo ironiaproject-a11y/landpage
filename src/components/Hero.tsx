@@ -196,32 +196,32 @@ export function Hero() {
     return (
         <>
             <style>{`
-                .hero { 
-                    position: relative; 
-                    height: 55vh; 
-                    max-height: 500px;
-                    width: 100vw; 
-                    max-width: 100%;
-                    background: #000; 
-                    overflow: clip;
+                /* ─────────────────────────────────────────
+                   HERO — full-bleed video background layout
+                ───────────────────────────────────────── */
+                .hero {
+                    position: relative;
+                    width: 100%;
+                    height: 75vh;
+                    min-height: 500px;
+                    background: #000;
+                    overflow: hidden;
                     clip-path: inset(0);
                     margin: 0;
                     padding: 0;
                 }
 
+                /* Inner wrapper — clips the canvas so it can never 
+                   bleed outside the hero, even when GSAP pins it */
                 .hero-inner-container {
                     position: absolute;
                     inset: 0;
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    overflow: clip;
+                    overflow: hidden;
                     contain: paint;
                     background: #000;
                 }
 
+                /* Canvas fills the entire hero as a background video */
                 .hero-canvas {
                     position: absolute;
                     top: 0;
@@ -229,54 +229,54 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    mix-blend-mode: normal;
                     z-index: 1;
                     pointer-events: none;
                 }
 
+                /* Dark overlay for text legibility */
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: rgba(0,0,0,0.45);
+                    background: rgba(0, 0, 0, 0.45);
                     z-index: 2;
                     pointer-events: none;
                 }
 
-                .hero-text-layer { 
-                    position: absolute; 
+                /* Text layer — centered over the full-bleed canvas */
+                .hero-text-layer {
+                    position: absolute;
                     inset: 0;
-                    width: 100%;
-                    z-index: 3; 
+                    z-index: 3;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    padding: 0 20px;
+                    padding: 0 24px;
                     text-align: center;
                     pointer-events: none;
                 }
 
-                .hero-title-top { 
-                    font-size: 24px; 
-                    font-weight: 300; 
-                    line-height: 1.2; 
-                    letter-spacing: 0.1em; 
+                .hero-title-top {
+                    font-size: 15px;
+                    font-weight: 300;
+                    line-height: 1.4;
+                    letter-spacing: 0.2em;
                     text-transform: uppercase;
-                    color: #FBFBFB; 
-                    opacity: 0.8;
-                    margin: 0; 
-                    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    color: #FBFBFB;
+                    opacity: 0.75;
+                    margin: 0 0 16px;
+                    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
                 }
 
-                .hero-title-bottom { 
-                    font-size: 48px; 
-                    font-weight: 700; 
-                    line-height: 1.0; 
-                    letter-spacing: -0.02em; 
-                    color: #FBFBFB; 
-                    margin: 20px 0; 
-                    max-width: 600px;
-                    text-shadow: 0 10px 40px rgba(0,0,0,0.6);
+                .hero-title-bottom {
+                    font-size: clamp(38px, 6vw, 72px);
+                    font-weight: 700;
+                    line-height: 1.05;
+                    letter-spacing: -0.03em;
+                    color: #FBFBFB;
+                    margin: 0 0 32px;
+                    max-width: 720px;
+                    text-shadow: 0 8px 32px rgba(0,0,0,0.7);
                 }
 
                 .hero-cta-layer {
@@ -286,27 +286,27 @@ export function Hero() {
                     width: 100%;
                 }
 
-                .cta-primary { 
-                    width: 100%; 
+                /* CTA button */
+                .cta-primary {
+                    width: 100%;
                     max-width: 320px;
-                    height: 48px; 
-                    background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.95) 100%); 
-                    color: #FBFBFB; 
-                    /* Pill shape */
-                    border-radius: 9999px; 
-                    font-weight: 500; 
-                    font-size: 13px; 
-                    letter-spacing: 1.2px; 
-                    text-transform: uppercase; 
-                    display: inline-flex; 
-                    align-items: center; 
-                    justify-content: center; 
-                    border: 1px solid rgba(255,255,255,0.15); 
-                    border-top: 1px solid rgba(255,255,255,0.3); 
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                    cursor: pointer; 
+                    height: 52px;
+                    background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.95) 100%);
+                    color: #FBFBFB;
+                    border-radius: 9999px;
+                    font-weight: 500;
+                    font-size: 13px;
+                    letter-spacing: 1.4px;
+                    text-transform: uppercase;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    border-top: 1px solid rgba(255,255,255,0.3);
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    cursor: pointer;
                     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
                     position: relative;
                     overflow: hidden;
@@ -321,98 +321,108 @@ export function Hero() {
                     transform: skewX(-20deg);
                     transition: all 0.6s ease;
                 }
-
-                .cta-primary:hover::before {
-                    left: 150%;
-                }
+                .cta-primary:hover::before { left: 150%; }
 
                 .cta-primary:hover {
                     background: linear-gradient(180deg, rgba(30,30,30,0.95) 0%, rgba(15,15,15,0.95) 100%);
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.2);
                     border-color: rgba(255,255,255,0.25);
                     border-top-color: rgba(255,255,255,0.4);
                     transform: translateY(-2px);
                 }
-
                 .cta-primary:active {
                     transform: translateY(1px);
                     box-shadow: 0 2px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
                 }
 
-                .cta-primary.is-sticky { 
-                    position: fixed !important; 
-                    bottom: 24px; 
-                    left: 20px; 
-                    width: calc(100% - 40px); 
+                .cta-primary.is-sticky {
+                    position: fixed !important;
+                    bottom: 24px;
+                    left: 20px;
+                    width: calc(100% - 40px);
                     max-width: none;
-                    z-index: 9999; 
-                    box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+                    z-index: 9999;
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
                 }
 
-                .cta-secondary-link { 
-                    display: inline-block; 
-                    font-size: 14px; 
+                .cta-secondary-link {
+                    display: inline-block;
+                    font-size: 14px;
                     color: #FBFBFB;
-                    opacity: 0.75; 
-                    margin-top: 18px; 
-                    text-decoration: none; 
+                    opacity: 0.65;
+                    margin-top: 20px;
+                    text-decoration: none;
                     font-weight: 400;
                     pointer-events: auto;
+                    letter-spacing: 0.05em;
                 }
 
+                /* Scroll indicator */
                 .hero-scroll-indicator {
                     position: absolute;
-                    bottom: 40px;
+                    bottom: 36px;
                     left: 50%;
                     transform: translateX(-50%);
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     gap: 12px;
-                    opacity: 0.6;
+                    opacity: 0.5;
                     z-index: 5;
                     pointer-events: none;
                 }
-
                 .scroll-line {
                     width: 1px;
-                    height: 60px;
-                    background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+                    height: 50px;
+                    background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+                    animation: scrollPulse 2s ease-in-out infinite;
+                }
+                @keyframes scrollPulse {
+                    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+                    50% { opacity: 1; transform: scaleY(1.15); }
                 }
 
+                /* Side progress bar */
                 .hero-progress-container {
                     position: absolute;
-                    right: 40px;
+                    right: 32px;
                     top: 50%;
                     transform: translateY(-50%);
-                    height: 200px;
+                    height: 180px;
                     width: 1px;
-                    background: rgba(255,255,255,0.1);
+                    background: rgba(255,255,255,0.08);
                     z-index: 5;
                 }
-
                 .hero-progress-fill {
                     width: 100%;
                     height: 100%;
-                    background: #FBFBFB;
+                    background: rgba(255,255,255,0.7);
                     transform-origin: top;
                     transform: scaleY(0);
                 }
 
+                /* ── Responsive ─────────────────────────── */
+                @media (max-width: 1024px) {
+                    .hero { height: 72vh; }
+                }
+
                 @media (max-width: 768px) {
-                    .hero-title-top {
-                        font-size: 18px;
+                    .hero { height: 75vh; min-height: 480px; overflow: hidden; }
+                    .hero-canvas { 
+                        width: clamp(280px, 90vw, 100%); 
+                        height: auto; 
+                        max-height: 70vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        object-fit: contain;
+                        top: 55%;
+                        transform: translate(-50%, -50%);
                     }
-                    .hero-title-bottom {
-                        font-size: 36px;
-                        margin: 15px 0;
-                    }
-                    .hero-text-layer {
-                        padding: 10vh 20px;
-                    }
-                    .hero-progress-container {
-                        right: 20px;
-                    }
+                    .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
+                    .hero-title-bottom { font-size: clamp(32px, 8vw, 48px); margin-bottom: 24px; }
+                    .hero-text-layer { padding: 0 20px; }
+                    .hero-progress-container { right: 16px; height: 120px; }
+                    .hero-scroll-indicator { bottom: 24px; }
                 }
             `}</style>
 
