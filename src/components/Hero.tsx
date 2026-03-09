@@ -415,9 +415,7 @@ export function Hero() {
                     .hero { height: 75vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
                         width: 95vw;
-                        height: auto;
-                        aspect-ratio: 1/1;
-                        max-height: 50vh;
+                        height: 50vh;
                         left: 50%;
                         top: 50%;
                         transform: translate(-50%, -50%);
