@@ -272,23 +272,22 @@ export function Hero() {
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 74vw;
-                    max-width: 1000px;
-                    height: 44vh;
+                    width: 80vw;
+                    max-width: 1100px;
+                    height: 50vh;
                     object-fit: cover;
-                    mix-blend-mode: normal;
+                    mix-blend-mode: screen;
                     z-index: 1;
                     pointer-events: none;
-                    border-radius: 32px;
-                    box-shadow: 0 0 100px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.03);
-                    overflow: hidden;
-                    border: 1px solid rgba(255,255,255,0.08);
+                    /* Seamless blending mask */
+                    -webkit-mask-image: radial-gradient(circle, black 40%, transparent 85%);
+                    mask-image: radial-gradient(circle, black 40%, transparent 85%);
                 }
 
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.5) 100%);
+                    background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.6) 100%);
                     z-index: 2;
                     pointer-events: none;
                 }
