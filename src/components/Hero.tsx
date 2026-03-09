@@ -131,7 +131,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=150%",
                     pin: true,
                     scrub: 0.5,
                     anticipatePin: 1
@@ -141,12 +141,12 @@ export function Hero() {
 
             // Immersive Zoom
             gsap.to(canvasRef.current, {
-                scale: 1.1,
+                scale: 1.05,
                 ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=150%",
                     scrub: true
                 }
             });
@@ -169,7 +169,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=150%",
                     scrub: true
                 }
             });
@@ -196,7 +196,8 @@ export function Hero() {
             <style>{`
                 .hero { 
                     position: relative; 
-                    height: 65vh; 
+                    height: 55vh; 
+                    max-height: 500px;
                     width: 100vw; 
                     background: #000; 
                     overflow: visible; 
