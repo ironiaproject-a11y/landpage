@@ -139,17 +139,19 @@ export function Hero() {
                 onUpdate: render,
             });
 
-            // Immersive Zoom
-            gsap.to(canvasRef.current, {
-                scale: 1.05,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=150%",
-                    scrub: true
-                }
-            });
+            // Immersive Zoom — disabled on mobile to prevent overflow bleed
+            if (window.innerWidth > 768) {
+                gsap.to(canvasRef.current, {
+                    scale: 1.05,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "+=150%",
+                        scrub: true
+                    }
+                });
+            }
 
             // Narrativa centrada: Opacidade e escala sutis
             gsap.fromTo([titleTopRef.current, titleBottomRef.current, ctaRef.current],
@@ -200,7 +202,8 @@ export function Hero() {
                     max-height: 500px;
                     width: 100vw; 
                     background: #000; 
-                    overflow: visible; 
+                    overflow: hidden;
+                    clip-path: inset(0);
                     margin: 0;
                     padding: 0;
                     perspective: 2000px;
