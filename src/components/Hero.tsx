@@ -8,7 +8,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const FRAME_COUNT = 31;
+const FRAME_COUNT = 144;
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -20,6 +20,7 @@ export function Hero() {
     const scrollIndicatorRef = useRef<HTMLDivElement>(null);
     const progressLineRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
+    const [introFinished, setIntroFinished] = useState(false);
 
     // Animation state
     const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -38,7 +39,7 @@ export function Hero() {
 
         // Configuration
         const currentFrame = (index: number) =>
-            `/assets/hero-new-sequence/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.png`;
+            `/assets/hero-premium-v2/frame_${index.toString().padStart(3, '0')}_delay-0.041s.webp`;
 
         const render = () => {
             const img = imagesRef.current[airbnbRef.current.frame];
@@ -64,26 +65,24 @@ export function Hero() {
 
         // Preload images
         const preloadImages = () => {
+            let loadedCount = 0;
             for (let i = 0; i < FRAME_COUNT; i++) {
                 const img = new Image();
                 img.onload = () => {
+                    loadedCount++;
                     if (i === 0) {
                         render();
-                        // Signal Preloader that Hero is ready
+                    }
+                    if (loadedCount === FRAME_COUNT) {
+                        // All images loaded
                         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                        startIntro();
                     }
                 };
                 img.src = currentFrame(i);
                 imagesRef.current.push(img);
             }
         };
-
-        preloadImages();
-
-        if (imagesRef.current[0]?.complete) {
-            render();
-            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-        }
 
         const updateSize = () => {
             const rect = canvas.getBoundingClientRect();
@@ -94,9 +93,37 @@ export function Hero() {
 
         window.addEventListener("resize", updateSize);
         updateSize();
+        preloadImages();
+
+        let introTimeline: gsap.core.Timeline | null = null;
+
+        const startIntro = () => {
+            introTimeline = gsap.timeline({
+                onComplete: () => {
+                    setIntroFinished(true);
+                }
+            });
+
+            // "Cinematography" entrance: playing the video sequence
+            introTimeline.to(airbnbRef.current, {
+                frame: 30, // Intro plays first 30 frames
+                duration: 1.5,
+                snap: "frame",
+                ease: "power2.out",
+                onUpdate: render
+            });
+
+            // Animate text entry
+            introTimeline.fromTo(titleTopRef.current,
+                { opacity: 0, y: 30, filter: "blur(10px)" },
+                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 1, ease: "power3.out" },
+                "-=0.5"
+            );
+        };
 
         // GSAP Scroll Animation
         const ctx = gsap.context(() => {
+            // Main scroll trigger for frame playback
             gsap.to(airbnbRef.current, {
                 frame: FRAME_COUNT - 1,
                 snap: "frame",
@@ -104,22 +131,22 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=300%", // Longer scroll for 144 frames
                     pin: true,
-                    scrub: 0.05,
+                    scrub: 0.5,
                     anticipatePin: 1
                 },
                 onUpdate: render,
             });
 
-            // Immersive Zoom
+            // Immersive Zoom (slightly less for full-bleed)
             gsap.to(canvasRef.current, {
-                scale: 1.1,
+                scale: 1.05,
                 ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=300%",
                     scrub: true
                 }
             });
@@ -151,8 +178,8 @@ export function Hero() {
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "50% top",
-                        end: "80% top",
+                        start: "40% top",
+                        end: "70% top",
                         scrub: true
                     }
                 }
@@ -167,8 +194,8 @@ export function Hero() {
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "75% top",
-                        end: "95% top",
+                        start: "65% top",
+                        end: "90% top",
                         scrub: true
                     }
                 }
@@ -192,7 +219,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=200%",
+                    end: "+=300%",
                     scrub: true
                 }
             });
@@ -207,6 +234,7 @@ export function Hero() {
 
         return () => {
             ctx.revert();
+            if (introTimeline) introTimeline.kill();
             window.removeEventListener("resize", updateSize);
         };
     }, [mounted]);
@@ -220,7 +248,7 @@ export function Hero() {
                     position: relative; 
                     height: 100vh; 
                     width: 100vw; 
-                    background: transparent; 
+                    background: #050505; 
                     overflow: visible; 
                     margin: 0;
                     padding: 0;
@@ -236,22 +264,28 @@ export function Hero() {
                     align-items: center;
                     justify-content: center;
                     overflow: hidden;
+                    background: #000;
                 }
 
                 .hero-canvas {
                     position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 68vw;
-                    max-width: 880px;
-                    height: 40vh;
-                    mix-blend-mode: screen;
-                    overflow: hidden;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    object-fit: cover;
+                    mix-blend-mode: normal;
+                    z-index: 1;
                     pointer-events: none;
                 }
 
-
+                .hero-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+                    z-index: 2;
+                    pointer-events: none;
+                }
 
                 .hero-text-layer { 
                     position: absolute; 
@@ -262,7 +296,7 @@ export function Hero() {
                     flex-direction: column;
                     align-items: center;
                     justify-content: space-between;
-                    padding: 8vh 20px 12vh;
+                    padding: 10vh 20px 15vh;
                     pointer-events: none;
                 }
 
@@ -433,7 +467,7 @@ export function Hero() {
                         className="hero-canvas"
                     />
 
-
+                    <div className="hero-overlay" />
 
                     <div className="hero-text-layer">
                         <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
