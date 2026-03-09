@@ -201,12 +201,12 @@ export function Hero() {
                     height: 55vh; 
                     max-height: 500px;
                     width: 100vw; 
+                    max-width: 100%;
                     background: #000; 
-                    overflow: hidden;
+                    overflow: clip;
                     clip-path: inset(0);
                     margin: 0;
                     padding: 0;
-                    perspective: 2000px;
                 }
 
                 .hero-inner-container {
@@ -217,7 +217,8 @@ export function Hero() {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    overflow: hidden;
+                    overflow: clip;
+                    contain: paint;
                     background: #000;
                 }
 
