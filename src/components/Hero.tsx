@@ -367,7 +367,7 @@ export function Hero() {
                 .hero-text-layer {
                     position: absolute;
                     inset: 0;
-                    z-index: 3;
+                    z-index: 10;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -407,7 +407,6 @@ export function Hero() {
                     flex-direction: column;
                     align-items: center;
                     width: 100%;
-                    margin-top: 24px;
                     z-index: 10;
                 }
 
@@ -571,54 +570,54 @@ export function Hero() {
                 }
             `}</style>
 
-            <section ref={sectionRef} className="hero">
-                <div ref={containerRef} className="hero-inner-container">
-                    <div className="hero-overlay" />
+            <div className="hero-text-layer" style={{ pointerEvents: 'none' }}>
+                {/* Phase 1: Sua Origem */}
+                <div className="flex-1 w-full flex items-start justify-center pt-10" style={{ pointerEvents: 'none' }}>
+                    <h1 ref={titleOrigemRef} className="cinematic-title origem-layer">
+                        <span className="bracket">[</span>
+                        <span>Sua origem</span>
+                        <span className="bracket">]</span>
+                    </h1>
+                </div>
 
-                    <div className="hero-text-layer">
-                        {/* Phase 1: Sua Origem */}
-                        <h1 ref={titleOrigemRef} className="cinematic-title origem-layer">
-                            <span className="bracket">[</span>
-                            <span>Sua origem</span>
-                            <span className="bracket">]</span>
-                        </h1>
+                <div className="hero-video-wrapper">
+                    <canvas
+                        ref={canvasRef}
+                        className="hero-canvas"
+                    />
+                </div>
 
-                        <div className="hero-video-wrapper">
-                            <canvas
-                                ref={canvasRef}
-                                className="hero-canvas"
-                            />
-                        </div>
+                {/* Phase 2: Seu Sorriso */}
+                <div className="flex-1 w-full flex items-end justify-center pb-10" style={{ pointerEvents: 'none' }}>
+                    <h2
+                        ref={titleSorrisoRef}
+                        className="cinematic-title sorriso-layer"
+                        style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)', margin: 0 }}
+                    >
+                        <span className="bracket">[</span>
+                        <span>Seu sorriso</span>
+                        <span className="bracket">]</span>
+                    </h2>
+                </div>
 
-                        {/* Phase 2: Seu Sorriso */}
-                        <h2
-                            ref={titleSorrisoRef}
-                            className="cinematic-title sorriso-layer"
-                            style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)' }}
-                        >
-                            <span className="bracket">[</span>
-                            <span>Seu sorriso</span>
-                            <span className="bracket">]</span>
-                        </h2>
-
-                        <div className="hero-cta-layer">
-                            <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
-                                <button className="cta-primary">
-                                    Agendar Consulta
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
-                        <div className="scroll-line" />
-                    </div>
-
-                    <div className="hero-progress-container">
-                        <div ref={progressLineRef} className="hero-progress-fill" />
+                <div className="hero-cta-layer">
+                    <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
+                        <button className="cta-primary">
+                            Agendar Consulta
+                        </button>
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
+                <div className="scroll-line" />
+            </div>
+
+            <div className="hero-progress-container">
+                <div ref={progressLineRef} className="hero-progress-fill" />
+            </div>
+        </div >
+            </section >
         </>
     );
 }
