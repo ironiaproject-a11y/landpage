@@ -205,11 +205,11 @@ export function Hero() {
                 });
             }
 
-            // Initial text reveal (Proposition) - H1 "Tudo começa na estrutura"
+            // H1 "Tudo começa na estrutura" - fade + slide-up (duration ~600ms)
             introTimeline = gsap.timeline();
             introTimeline.fromTo(titleTopRef.current,
                 { opacity: 0, y: 30, filter: "blur(10px)" },
-                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
+                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }
             );
 
             // Synchronize H2 "E termina no seu sorriso" with the video transformation
@@ -412,6 +412,8 @@ export function Hero() {
                     flex-direction: column;
                     align-items: center;
                     width: 100%;
+                    margin-top: 24px;
+                    z-index: 10;
                 }
 
                 /* CTA button */
@@ -568,16 +570,17 @@ export function Hero() {
                         letter-spacing: 0.05em;
                     }
                     .hero-text-layer { 
-                        padding: 0 24px; 
+                        padding: 24px; 
                         justify-content: center;
                         position: relative;
                         height: 100%;
                     }
                     .hero-cta-layer { 
                         gap: 12px; 
-                        margin-top: 0px; 
+                        margin-top: 16px; 
                         position: relative; 
                         z-index: 2; 
+                        width: 100%;
                     }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
