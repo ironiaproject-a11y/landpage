@@ -26,7 +26,7 @@ export function Preloader() {
         const timer = setTimeout(() => {
             minTimeElapsed = true;
             checkExit();
-        }, 2200); // 2.2s for a more premium presence
+        }, 800); // Snappier entrance
 
         const handleAssetsLoaded = () => {
             assetsLoaded = true;

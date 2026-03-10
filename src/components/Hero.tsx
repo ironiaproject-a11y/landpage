@@ -119,11 +119,9 @@ export function Hero() {
             if (isPreloaderActive) {
                 const onPreloaderFinished = () => {
                     console.log("[Hero] preloader-finished event received");
-                    // Wait 2 frames to ensure DOM and other components (like Lenis) are settled
+                    // Start earlier for better flow
                     requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            executeIntro();
-                        });
+                        executeIntro();
                     });
                     window.removeEventListener("preloader-finished", onPreloaderFinished);
                 };
@@ -154,10 +152,10 @@ export function Hero() {
             interactions.forEach(event => window.addEventListener(event, onInteraction, { passive: true }));
 
             if (lenis) {
-                // If Lenis is available, use its native scrollTo for perfect sync
+                // Snappier 3s duration for better fluidity
                 lenis.scrollTo(scrollDistance, {
-                    duration: 5,
-                    easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t, // power2.inOut
+                    duration: 3,
+                    easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, // cubic-in-out for more drama
                     onComplete: () => {
                         if (!introStopped) {
                             console.log("[Hero] Lenis auto-play completed");
@@ -168,18 +166,18 @@ export function Hero() {
                 });
 
                 // We still store a "fake" tween to allow stopAutoPlay to work via lenis.stop() if needed,
-                // but Lenis's scrollTo is self-contained. 
+                // but Lenis's scrollTo is self-contained.
                 // To stop it, we'll just tell lenis to stop.
                 autoScrollTween = {
                     kill: () => lenis.stop(),
                 } as any;
                 lenis.start(); // Ensure it's running
             } else {
-                // Fallback to GSAP ScrollToPlugin
+                // Fallback to GSAP
                 autoScrollTween = gsap.to(window, {
                     scrollTo: { y: scrollDistance },
-                    duration: 5,
-                    ease: "power2.inOut",
+                    duration: 3,
+                    ease: "power3.inOut",
                     onComplete: () => {
                         if (!introStopped) {
                             console.log("[Hero] GSAP auto-play completed");
@@ -191,11 +189,11 @@ export function Hero() {
                 });
             }
 
-            // Initial text reveal (Proposition)
+            // Initial text reveal (Proposition) - faster
             introTimeline = gsap.timeline();
             introTimeline.fromTo(titleTopRef.current,
                 { opacity: 0, y: 30, filter: "blur(10px)" },
-                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
+                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
             );
         };
 
