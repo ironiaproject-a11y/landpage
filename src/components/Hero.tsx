@@ -87,10 +87,10 @@ export function Hero() {
             const newHeight = imgHeight * ratio;
 
             layoutRef.current = {
-                width: newWidth * 1.02,
-                height: newHeight * 1.02,
-                x: (canvas.width - newWidth * 1.02) / 2,
-                y: (canvas.height - newHeight * 1.02) / 2 // Re-centered internally for "straight" look
+                width: newWidth * 1.08, // Increased base scale
+                height: newHeight * 1.08,
+                x: (canvas.width - newWidth * 1.08) / 2,
+                y: (canvas.height - newHeight * 1.08) / 2
             };
 
             render();
@@ -160,7 +160,7 @@ export function Hero() {
 
             if (window.innerWidth > 768) {
                 gsap.to(containerRef.current, {
-                    scale: 1.15, // Controlled scale for prestige
+                    scale: 1.22, // Increased scroll scale
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
