@@ -418,12 +418,12 @@ export function Hero() {
                     .hero-video-wrapper {
                         width: 100vw;
                         height: 50vh;
-                        margin: auto;
+                        margin: 18px auto 0;
                         overflow: hidden;
-                        position: absolute;
-                        top: 42%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
+                        position: relative;
+                        top: 0;
+                        left: 0;
+                        transform: none;
                         z-index: 1;
                     }
                     .hero-canvas { 
@@ -436,13 +436,15 @@ export function Hero() {
                         object-fit: contain;
                         opacity: 1;
                     }
-                    .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
-                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 24px; }
+                    .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 8px; }
+                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 0px; }
                     .hero-text-layer { 
-                        padding: 12vh 24px 0; 
-                        justify-content: flex-start; 
+                        padding: 8vh 24px 0; 
+                        justify-content: flex-start;
+                        position: relative;
+                        height: 100%;
                     }
-                    .hero-cta-layer { gap: 16px; margin-top: 10px; }
+                    .hero-cta-layer { gap: 16px; margin-top: 18px; position: relative; z-index: 2; }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
                 }
@@ -450,21 +452,20 @@ export function Hero() {
 
             <section ref={sectionRef} className="hero">
                 <div ref={containerRef} className="hero-inner-container">
-                    <div className="hero-video-wrapper">
-                        <canvas
-                            ref={canvasRef}
-                            className="hero-canvas"
-                        />
-                    </div>
-
                     <div className="hero-overlay" />
 
                     <div className="hero-text-layer">
                         <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
+                        <h1 ref={titleBottomRef} className="hero-title-bottom">Transforme sua vida</h1>
+
+                        <div className="hero-video-wrapper">
+                            <canvas
+                                ref={canvasRef}
+                                className="hero-canvas"
+                            />
+                        </div>
 
                         <div className="hero-cta-layer">
-                            <h1 ref={titleBottomRef} className="hero-title-bottom">Transforme sua vida</h1>
-
                             <div ref={ctaRef} style={{ pointerEvents: 'auto' }}>
                                 <button className="cta-primary">
                                     Agendar Consulta
