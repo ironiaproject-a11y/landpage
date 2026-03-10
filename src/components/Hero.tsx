@@ -208,11 +208,12 @@ export function Hero() {
                 }
 
                 .cinematic-title {
+                    position: relative; /* Added to contain absolute children */
                     font-family: inherit;
                     color: #fff;
                     display: flex;
                     flex-direction: column;
-                    align-items: center; /* Centered relative to video */
+                    align-items: center;
                     gap: 0;
                     margin: 0;
                     width: 100%;
@@ -221,7 +222,8 @@ export function Hero() {
                 .prestige-text {
                     text-transform: uppercase;
                     letter-spacing: 0.12em;
-                    line-height: 1;
+                    line-height: 1.2;
+                    display: inline-block;
                 }
 
                 @media (max-width: 768px) {
