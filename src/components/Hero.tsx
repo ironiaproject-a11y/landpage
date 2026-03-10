@@ -207,13 +207,7 @@ export function Hero() {
                 });
             }
 
-            // Cinematic Reveal for [ SUA ORIGEM ]
-            gsap.fromTo(titleOrigemRef.current,
-                { opacity: 0, scale: 0.95, filter: "blur(15px)", letterSpacing: "0.5em" },
-                { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.2em", duration: 1.4, ease: "expo.out" }
-            );
-
-            // Final CTA Reveal - Triggered toward the end of the auto-play
+            // Cinematic properties are now statically handled in CSS and JSX
             gsap.delayedCall(3.2, () => {
                 if (!introStopped) {
                     gsap.fromTo(ctaRef.current,
@@ -256,33 +250,6 @@ export function Hero() {
                     }
                 });
             }
-
-            // [ SUA ORIGEM ] fades out as we morph
-            gsap.to(titleOrigemRef.current, {
-                opacity: 0,
-                y: -50,
-                filter: "blur(10px)",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "15% top",
-                    end: "45% top",
-                    scrub: true
-                }
-            });
-
-            // [ SEU SORRISO ] fades in as the transformation completes
-            gsap.to(titleSorrisoRef.current, {
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-                scale: 1,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "45% top",
-                    end: "75% top",
-                    scrub: true
-                }
-            });
 
             // Progress Line Animation
             gsap.to(progressLineRef.current, {
@@ -569,55 +536,58 @@ export function Hero() {
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
                 }
             `}</style>
+            <section ref={sectionRef} className="hero">
+                <div ref={containerRef} className="hero-inner-container">
+                    <div className="hero-overlay" />
 
-            <div className="hero-text-layer" style={{ pointerEvents: 'none' }}>
-                {/* Phase 1: Sua Origem */}
-                <div className="flex-1 w-full flex items-start justify-center pt-10" style={{ pointerEvents: 'none' }}>
-                    <h1 ref={titleOrigemRef} className="cinematic-title origem-layer">
-                        <span className="bracket">[</span>
-                        <span>Sua origem</span>
-                        <span className="bracket">]</span>
-                    </h1>
-                </div>
+                    <div className="hero-text-layer" style={{ pointerEvents: 'none' }}>
+                        {/* Phase 1: Sua Origem */}
+                        <div className="flex-1 w-full flex items-start justify-center pt-10" style={{ pointerEvents: 'none' }}>
+                            <h1 ref={titleOrigemRef} className="cinematic-title origem-layer">
+                                <span className="bracket">[</span>
+                                <span>Sua origem</span>
+                                <span className="bracket">]</span>
+                            </h1>
+                        </div>
 
-                <div className="hero-video-wrapper">
-                    <canvas
-                        ref={canvasRef}
-                        className="hero-canvas"
-                    />
-                </div>
+                        <div className="hero-video-wrapper">
+                            <canvas
+                                ref={canvasRef}
+                                className="hero-canvas"
+                            />
+                        </div>
 
-                {/* Phase 2: Seu Sorriso */}
-                <div className="flex-1 w-full flex items-end justify-center pb-10" style={{ pointerEvents: 'none' }}>
-                    <h2
-                        ref={titleSorrisoRef}
-                        className="cinematic-title sorriso-layer"
-                        style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)', margin: 0 }}
-                    >
-                        <span className="bracket">[</span>
-                        <span>Seu sorriso</span>
-                        <span className="bracket">]</span>
-                    </h2>
-                </div>
+                        {/* Phase 2: Seu Sorriso */}
+                        <div className="flex-1 w-full flex items-end justify-center pb-10" style={{ pointerEvents: 'none' }}>
+                            <h2
+                                ref={titleSorrisoRef}
+                                className="cinematic-title sorriso-layer"
+                                style={{ transform: 'translateY(0px)' }}
+                            >
+                                <span className="bracket">[</span>
+                                <span>Seu sorriso</span>
+                                <span className="bracket">]</span>
+                            </h2>
+                        </div>
 
-                <div className="hero-cta-layer">
-                    <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
-                        <button className="cta-primary">
-                            Agendar Consulta
-                        </button>
+                        <div className="hero-cta-layer">
+                            <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 1 }}>
+                                <button className="cta-primary">
+                                    Agendar Consulta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
+                        <div className="scroll-line" />
+                    </div>
+
+                    <div className="hero-progress-container">
+                        <div ref={progressLineRef} className="hero-progress-fill" />
                     </div>
                 </div>
-            </div>
-
-            <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
-                <div className="scroll-line" />
-            </div>
-
-            <div className="hero-progress-container">
-                <div ref={progressLineRef} className="hero-progress-fill" />
-            </div>
-        </div >
-            </section >
+            </section>
         </>
     );
 }
