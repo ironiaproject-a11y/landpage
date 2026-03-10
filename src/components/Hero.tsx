@@ -412,13 +412,13 @@ export function Hero() {
                 }
 
                 @media (max-width: 768px) {
-                    .hero { height: 75vh; min-height: 480px; overflow: hidden; }
+                    .hero { height: 80vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
                         width: 95vw;
-                        height: 50vh;
+                        height: 52vh;
                         left: 50%;
-                        top: 50%;
-                        transform: translate(-50%, -50%);
+                        top: 48%;
+                        transform: translate(-50%, -50%) scale(1.15);
                         object-fit: contain;
                         opacity: 0.95;
                     }
