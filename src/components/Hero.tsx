@@ -87,10 +87,10 @@ export function Hero() {
             const newHeight = imgHeight * ratio;
 
             layoutRef.current = {
-                width: newWidth,
-                height: newHeight,
-                x: (canvas.width - newWidth) / 2,
-                y: (canvas.height - newHeight) / 2
+                width: newWidth * 1.05, // Slight base scale increase
+                height: newHeight * 1.05,
+                x: (canvas.width - newWidth * 1.05) / 2,
+                y: (canvas.height - newHeight * 1.05) * 0.35 // Shifted UP (using 0.35 instead of 0.5)
             };
 
             render();
@@ -161,7 +161,7 @@ export function Hero() {
             if (window.innerWidth > 768) {
                 gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(canvasRef.current, {
-                    scale: 1.15, // Increased scale
+                    scale: 1.25, // Further increased scale for more impact
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -187,13 +187,14 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 100svh;
+                    height: 110vh; /* Increased height to give breathing room */
                     min-height: -webkit-fill-available;
                     background: #000;
                     display: flex;
-                    align-items: center; /* Center instead of bottom to move it up */
-                    padding-bottom: 2vh; /* Slight offset from dead center */
-                    padding-top: 0;
+                    align-items: flex-start; /* Alignment at the top */
+                    padding-top: 22vh; /* Precise top padding to position text near the clinic/logo area */
+                    padding-bottom: 10vh;
+                    margin-bottom: 10vh; /* Physical space before the next section */
                 }
 
                 .cinematic-title {
@@ -262,13 +263,13 @@ export function Hero() {
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full object-cover z-0"
-                style={mounted && window.innerWidth > 768 ? { left: '50%', top: '42%' } : { top: '45%' }}
+                style={mounted && window.innerWidth > 768 ? { left: '50%', top: '50%' } : { top: '50%' }}
             />
 
             <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
 
             {/* Content properly positioned at the bottom with a clear visual hierarchy */}
-            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12 -mt-20 md:-mt-32">
+            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12">
                 <div 
                     ref={textContainerRef}
                     className="max-w-4xl flex flex-col items-start gap-8 opacity-0 translate-y-12"
