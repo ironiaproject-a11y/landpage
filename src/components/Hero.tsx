@@ -161,7 +161,7 @@ export function Hero() {
             if (window.innerWidth > 768) {
                 gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(canvasRef.current, {
-                    scale: 1.05,
+                    scale: 1.15, // Increased scale
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -191,8 +191,9 @@ export function Hero() {
                     min-height: -webkit-fill-available;
                     background: #000;
                     display: flex;
-                    align-items: flex-end; /* Place text at the bottom to avoid covering the visual */
-                    padding-bottom: 8vh;
+                    align-items: center; /* Center instead of bottom to move it up */
+                    padding-bottom: 2vh; /* Slight offset from dead center */
+                    padding-top: 0;
                 }
 
                 .cinematic-title {
@@ -261,13 +262,13 @@ export function Hero() {
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full object-cover z-0"
-                style={mounted && window.innerWidth > 768 ? { left: '50%', top: '50%' } : {}}
+                style={mounted && window.innerWidth > 768 ? { left: '50%', top: '42%' } : { top: '45%' }}
             />
 
             <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
 
             {/* Content properly positioned at the bottom with a clear visual hierarchy */}
-            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12">
+            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12 -mt-20 md:-mt-32">
                 <div 
                     ref={textContainerRef}
                     className="max-w-4xl flex flex-col items-start gap-8 opacity-0 translate-y-12"
