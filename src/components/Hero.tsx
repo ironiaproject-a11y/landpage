@@ -391,9 +391,9 @@ export function Hero() {
                     letter-spacing: -0.02em;
                     color: #FBFBFB;
                     margin: 0;
-                    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+                    text-shadow: 0 4px 40px rgba(0,0,0,0.9);
                     z-index: 10;
-                    transform: translateY(20px); /* Overlap top of video */
+                    transform: translateY(60px); /* Significant overlap down */
                     position: relative;
                 }
                 
@@ -406,9 +406,9 @@ export function Hero() {
                     color: #FBFBFB;
                     opacity: 0.9;
                     margin: 0;
-                    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+                    text-shadow: 0 2px 30px rgba(0,0,0,0.9);
                     z-index: 10;
-                    transform: translateY(-20px); /* Overlap bottom of video */
+                    transform: translateY(-60px); /* Significant overlap up */
                     position: relative;
                 }
 
@@ -545,14 +545,11 @@ export function Hero() {
                     .hero { height: 92vh; min-height: 480px; overflow: hidden; max-width: 100%; }
                     .hero-video-wrapper {
                         width: 100vw;
-                        height: 50vh;
-                        margin: 18px auto 0;
-                        overflow: hidden;
+                        height: 45vh; /* Reduced height to pull text closer */
+                        margin: 0 auto;
+                        overflow: visible; /* Allow text overlap */
                         position: relative;
-                        top: 0;
-                        left: 0;
-                        transform: none;
-                        z-index: 1;
+                        z-index: 5;
                     }
                     .hero-canvas { 
                         width: 100% !important;
@@ -565,13 +562,15 @@ export function Hero() {
                         opacity: 1;
                     }
                     .hero-title-top { 
-                        font-size: clamp(20px, 6vw, 28px); 
-                        transform: translateY(12px);
+                        font-size: clamp(20px, 5.5vw, 26px); 
+                        transform: translateY(50px); /* Larger overlap on mobile */
+                        z-index: 15;
                     }
                     .hero-title-bottom { 
-                        font-size: clamp(14px, 4vw, 18px); 
-                        transform: translateY(-12px);
+                        font-size: clamp(14px, 4vw, 16px); 
+                        transform: translateY(-50px); /* Larger overlap on mobile */
                         letter-spacing: 0.05em;
+                        z-index: 15;
                     }
                     .hero-text-layer { 
                         padding: 24px; 
