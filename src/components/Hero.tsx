@@ -357,58 +357,79 @@ export function Hero() {
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%),
-                                linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+                    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%),
+                                linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
                     z-index: 2;
                     pointer-events: none;
                 }
 
-                /* Text layer — centered over the full-bleed canvas */
-                .hero-text-layer {
+                /* Video Layer — Truly centered and underlying */
+                .hero-video-container {
                     position: absolute;
                     inset: 0;
-                    z-index: 3;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1;
+                }
+
+                .hero-canvas {
+                    width: 75vw;
+                    height: 55vh;
+                    object-fit: cover;
+                    transform: scale(1.01); /* Prevent micro-gaps */
+                }
+
+                /* Content Layer — Floating and overlapping the video */
+                .hero-content-layer {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 10;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: space-between; /* Spread titles and CTA */
-                    padding: 15vh 24px 8vh;
-                    text-align: center;
+                    justify-content: center; /* Center-pivot for titles */
+                    padding: 0 24px;
                     pointer-events: none;
                 }
 
                 .cinematic-title {
-                    font-family: inherit;
-                    font-weight: 800;
-                    font-size: clamp(24px, 5vw, 48px);
-                    letter-spacing: 0.2em;
+                    font-weight: 900;
+                    font-size: clamp(32px, 6vw, 64px); /* Larger, more dominant */
+                    letter-spacing: 0.15em;
                     text-transform: uppercase;
                     color: #fff;
                     display: flex;
                     align-items: center;
-                    gap: clamp(10px, 2vw, 30px);
-                    text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                    gap: 15px;
+                    text-shadow: 0 0 50px rgba(0,0,0,0.5);
+                    position: absolute;
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .origem-layer {
+                    top: 25%; /* Positioned OVER the top part of the video */
+                }
+
+                .sorriso-layer {
+                    bottom: 25%; /* Positioned OVER the bottom part of the video */
+                    margin-top: 0;
                 }
 
                 .bracket {
                     font-weight: 200;
-                    color: rgba(255,255,255,0.4);
-                    font-size: 1.2em;
-                    transform: translateY(-2px);
-                }
-
-                .sorriso-layer {
-                    margin-bottom: auto; /* Push it towards the video area */
-                    margin-top: 40px;
+                    color: rgba(255,255,255,0.3);
+                    font-size: 1.1em;
                 }
 
                 .hero-cta-layer {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+                    position: absolute;
+                    bottom: 80px;
                     width: 100%;
-                    margin-top: 24px;
-                    z-index: 10;
+                    display: flex;
+                    justify-content: center;
+                    pointer-events: auto;
                 }
 
                 /* CTA button */
@@ -532,42 +553,29 @@ export function Hero() {
                 }
 
                 @media (max-width: 768px) {
-                    .hero { height: 95vh; min-height: 500px; }
-                    .hero-video-wrapper {
-                        width: 100vw;
-                        height: 85vh; /* Increased from 70vh for 15% expansion */
-                        margin: 0 auto;
-                        position: relative;
-                        top: -15vh; /* Pulled up 15% (from -5vh) for more immersion */
-                        z-index: 1;
+                    .hero { height: 95vh; }
+                    .hero-video-container {
+                        top: -15vh;
                     }
                     .hero-canvas { 
-                        width: 100% !important;
-                        height: 100% !important;
+                        width: 120vw; /* Bleed out slightly for mobile dominance */
+                        height: 70vh;
                         object-fit: contain;
                     }
-                    .hero-text-layer { 
-                        padding: 10vh 24px 40px; 
-                        justify-content: flex-end;
-                        position: absolute;
-                        height: 100%;
-                        gap: 15px;
-                    }
                     .cinematic-title {
-                        font-size: clamp(18px, 5.5vw, 24px);
-                        letter-spacing: 0.15em;
-                    }
-                    .sorriso-layer {
-                        margin-bottom: 20px;
-                        margin-top: 0;
-                    }
-                    .hero-cta-layer { 
-                        margin-top: 0; 
-                        z-index: 10; 
+                        font-size: clamp(20px, 8vw, 28px);
+                        letter-spacing: 0.1em;
                         width: 100%;
+                        white-space: nowrap;
+                    }
+                    .origem-layer { top: 18%; }
+                    .sorriso-layer { bottom: 18%; }
+                    .hero-cta-layer { 
+                        bottom: 40px; 
+                        padding: 0 20px;
                     }
                     .hero-progress-container { right: 12px; height: 100px; }
-                    .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
+                    .hero-scroll-indicator { bottom: 20px; opacity: 0.1; }
                 }
             `}</style>
 
@@ -575,7 +583,8 @@ export function Hero() {
                 <div ref={containerRef} className="hero-inner-container">
                     <div className="hero-overlay" />
 
-                    <div className="hero-text-layer">
+                    {/* Content Layer (Overlapping the Video) */}
+                    <div className="hero-content-layer">
                         {/* Phase 1: Sua Origem */}
                         <div ref={titleOrigemRef} className="cinematic-title origem-layer">
                             <span className="bracket">[</span>
@@ -583,7 +592,8 @@ export function Hero() {
                             <span className="bracket">]</span>
                         </div>
 
-                        <div className="hero-video-wrapper">
+                        {/* Video Layer */}
+                        <div className="hero-video-container">
                             <canvas
                                 ref={canvasRef}
                                 className="hero-canvas"
@@ -594,13 +604,12 @@ export function Hero() {
                         <div
                             ref={titleSorrisoRef}
                             className="cinematic-title sorriso-layer"
-                            style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)' }}
+                            style={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
                         >
                             <span className="bracket">[</span>
                             <span>Seu sorriso</span>
                             <span className="bracket">]</span>
                         </div>
-
                         <div className="hero-cta-layer">
                             <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
                                 <button className="cta-primary">
