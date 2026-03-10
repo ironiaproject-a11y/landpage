@@ -205,12 +205,33 @@ export function Hero() {
                 });
             }
 
-            // Initial text reveal (Proposition) - faster
+            // Initial text reveal (Proposition) - H1 "Tudo começa na estrutura"
             introTimeline = gsap.timeline();
             introTimeline.fromTo(titleTopRef.current,
                 { opacity: 0, y: 30, filter: "blur(10px)" },
-                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
+                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
             );
+
+            // Synchronize H2 "E termina no seu sorriso" with the video transformation
+            // We'll trigger it about 60% into the duration
+            gsap.delayedCall(2.2, () => {
+                if (!introStopped) {
+                    gsap.fromTo(titleBottomRef.current,
+                        { opacity: 0, y: 20, filter: "blur(8px)" },
+                        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power2.out" }
+                    );
+                }
+            });
+
+            // Final CTA Reveal
+            gsap.delayedCall(3.2, () => {
+                if (!introStopped) {
+                    gsap.fromTo(ctaRef.current,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+                    );
+                }
+            });
         };
 
         // GSAP Scroll Animation
@@ -246,17 +267,28 @@ export function Hero() {
                 });
             }
 
-            // Narrativa centrada: Opacidade e escala sutis
-            gsap.fromTo([titleTopRef.current, titleBottomRef.current, ctaRef.current],
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    stagger: 0.2,
-                    duration: 1,
-                    ease: "power3.out"
+            // Narrativa centrada: Opacidade e escala sutis baseados no scroll manual
+            // Para quando o usuário já interagiu
+            gsap.to(titleTopRef.current, {
+                opacity: 0.3,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "20% top",
+                    scrub: true
                 }
-            );
+            });
+
+            gsap.to(titleBottomRef.current, {
+                opacity: 1,
+                scale: 1.05,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "30% top",
+                    end: "60% top",
+                    scrub: true
+                }
+            });
 
             gsap.to(progressLineRef.current, {
                 scaleY: 1,
@@ -352,26 +384,27 @@ export function Hero() {
                 }
 
                 .hero-title-top {
-                    font-size: 15px;
+                    font-size: clamp(24px, 4vw, 42px);
+                    font-weight: 700;
+                    line-height: 1.1;
+                    letter-spacing: -0.02em;
+                    color: #FBFBFB;
+                    margin: 0 0 24px;
+                    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+                    z-index: 10;
+                }
+                
+                .hero-title-bottom {
+                    font-size: clamp(18px, 2.5vw, 28px);
                     font-weight: 300;
                     line-height: 1.4;
-                    letter-spacing: 0.2em;
+                    letter-spacing: 0.1em;
                     text-transform: uppercase;
                     color: #FBFBFB;
-                    opacity: 0.75;
-                    margin: 0 0 16px;
+                    opacity: 0.9;
+                    margin: 24px 0 32px;
                     text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-                }
-
-                .hero-title-bottom {
-                    font-size: clamp(38px, 6vw, 72px);
-                    font-weight: 700;
-                    line-height: 1.05;
-                    letter-spacing: -0.03em;
-                    color: #FBFBFB;
-                    margin: 0 0 32px;
-                    max-width: 720px;
-                    text-shadow: 0 8px 32px rgba(0,0,0,0.7);
+                    z-index: 10;
                 }
 
                 .hero-cta-layer {
@@ -524,15 +557,28 @@ export function Hero() {
                         object-fit: contain;
                         opacity: 1;
                     }
-                    .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 8px; }
-                    .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 0px; }
+                    .hero-title-top { 
+                        font-size: clamp(20px, 6vw, 28px); 
+                        margin-bottom: 12px; 
+                    }
+                    .hero-title-bottom { 
+                        font-size: clamp(14px, 4vw, 18px); 
+                        margin-top: 12px;
+                        margin-bottom: 24px;
+                        letter-spacing: 0.05em;
+                    }
                     .hero-text-layer { 
-                        padding: 8vh 24px 0; 
-                        justify-content: flex-start;
+                        padding: 0 24px; 
+                        justify-content: center;
                         position: relative;
                         height: 100%;
                     }
-                    .hero-cta-layer { gap: 16px; margin-top: 18px; position: relative; z-index: 2; }
+                    .hero-cta-layer { 
+                        gap: 12px; 
+                        margin-top: 0px; 
+                        position: relative; 
+                        z-index: 2; 
+                    }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
                 }
@@ -543,8 +589,10 @@ export function Hero() {
                     <div className="hero-overlay" />
 
                     <div className="hero-text-layer">
-                        <h2 ref={titleTopRef} className="hero-title-top">Transforme seu sorriso</h2>
-                        <h1 ref={titleBottomRef} className="hero-title-bottom">Transforme sua vida</h1>
+                        {/* H1 Headline - Main focus */}
+                        <h1 ref={titleTopRef} className="hero-title-top">
+                            Tudo começa na estrutura
+                        </h1>
 
                         <div className="hero-video-wrapper">
                             <canvas
@@ -553,8 +601,13 @@ export function Hero() {
                             />
                         </div>
 
+                        {/* H2 Subheadline - Revealed with the smile */}
+                        <h2 ref={titleBottomRef} className="hero-title-bottom">
+                            E termina no seu sorriso
+                        </h2>
+
                         <div className="hero-cta-layer">
-                            <div ref={ctaRef} style={{ pointerEvents: 'auto' }}>
+                            <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
                                 <button className="cta-primary">
                                     Agendar Consulta
                                 </button>
