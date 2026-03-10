@@ -228,10 +228,11 @@ export function Hero() {
                 /* Canvas fills the entire hero as a background video */
                 .hero-canvas {
                     position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
+                    top: 50%;
+                    left: 50%;
+                    width: 68vw;
+                    height: 42vh;
+                    transform: translate(-50%, -50%);
                     object-fit: cover;
                     z-index: 1;
                     pointer-events: none;
@@ -415,10 +416,10 @@ export function Hero() {
                     .hero { height: 80vh; min-height: 480px; overflow: hidden; }
                     .hero-canvas { 
                         width: 95vw;
-                        height: 52vh;
+                        height: 50vh;
                         left: 50%;
-                        top: 48%;
-                        transform: translate(-50%, -50%) scale(1.15);
+                        top: 50%;
+                        transform: translate(-50%, -50%);
                         object-fit: contain;
                         opacity: 0.95;
                     }
