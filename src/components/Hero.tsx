@@ -416,7 +416,7 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { height: 92vh; min-height: 480px; overflow: hidden; }
                     .hero-video-wrapper {
-                        width: 95vw;
+                        width: 98vw;
                         height: 50vh;
                         margin: auto;
                         overflow: hidden;
