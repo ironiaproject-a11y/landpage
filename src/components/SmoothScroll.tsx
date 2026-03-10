@@ -29,11 +29,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             lenis.raf(time * 1000);
         };
 
+        (window as any).__LENIS__ = lenis;
+
         gsap.ticker.add(updateRaf);
         gsap.ticker.lagSmoothing(0);
 
         return () => {
             lenis.destroy();
+            (window as any).__LENIS__ = null;
             gsap.ticker.remove(updateRaf);
         };
     }, []);

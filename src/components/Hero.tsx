@@ -114,50 +114,84 @@ export function Hero() {
             // Check if preloader is active using the global flag
             const isPreloaderActive = (window as any).__PRELOADER_ACTIVE__;
 
-            console.log("[Hero] startIntro, preloader active:", isPreloaderActive);
+            console.log("[Hero] startIntro called. Preloader active:", isPreloaderActive);
 
             if (isPreloaderActive) {
                 const onPreloaderFinished = () => {
-                    console.log("[Hero] preloader-finished received, starting executeIntro");
-                    setTimeout(executeIntro, 300); // 300ms buffer after preloader fades
+                    console.log("[Hero] preloader-finished event received");
+                    // Wait 2 frames to ensure DOM and other components (like Lenis) are settled
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            executeIntro();
+                        });
+                    });
                     window.removeEventListener("preloader-finished", onPreloaderFinished);
                 };
                 window.addEventListener("preloader-finished", onPreloaderFinished);
             } else {
-                console.log("[Hero] preloader not active, starting executeIntro immediately");
+                console.log("[Hero] Preloader not active, starting intro directly");
                 executeIntro();
             }
         };
 
         const executeIntro = () => {
-            // Calculate distance: 150% of viewport height
             const scrollDistance = window.innerHeight * 1.5;
+            const lenis = (window as any).__LENIS__;
 
-            console.log("[Hero] executeIntro, scrolling to:", scrollDistance);
+            console.log("[Hero] executeIntro. Scroll distance:", scrollDistance, "Lenis available:", !!lenis);
 
-            // Create interaction listeners to stop auto-play if user intervenes
+            // Interaction listeners to stop auto-play
             const interactions = ['mousedown', 'wheel', 'touchstart', 'keydown'];
+            let introStopped = false;
+
             const onInteraction = () => {
-                console.log("[Hero] User interaction detected, stopping auto-play");
+                if (introStopped) return;
+                console.log("[Hero] User interaction detected. Stopping auto-play.");
+                introStopped = true;
                 stopAutoPlay();
                 interactions.forEach(event => window.removeEventListener(event, onInteraction));
             };
             interactions.forEach(event => window.addEventListener(event, onInteraction, { passive: true }));
 
-            // Cinematic Auto-scroll using ScrollToPlugin
-            autoScrollTween = gsap.to(window, {
-                scrollTo: { y: scrollDistance },
-                duration: 5.5, // Slightly slower for more cinematic feel
-                ease: "power2.inOut",
-                onComplete: () => {
-                    console.log("[Hero] Auto-play completed");
-                    interactions.forEach(event => window.removeEventListener(event, onInteraction));
-                    setIntroFinished(true);
-                },
-                onOverwrite: stopAutoPlay
-            });
+            if (lenis) {
+                // If Lenis is available, use its native scrollTo for perfect sync
+                lenis.scrollTo(scrollDistance, {
+                    duration: 5,
+                    easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t, // power2.inOut
+                    onComplete: () => {
+                        if (!introStopped) {
+                            console.log("[Hero] Lenis auto-play completed");
+                            setIntroFinished(true);
+                            interactions.forEach(event => window.removeEventListener(event, onInteraction));
+                        }
+                    }
+                });
 
-            // Initial text reveal
+                // We still store a "fake" tween to allow stopAutoPlay to work via lenis.stop() if needed,
+                // but Lenis's scrollTo is self-contained. 
+                // To stop it, we'll just tell lenis to stop.
+                autoScrollTween = {
+                    kill: () => lenis.stop(),
+                } as any;
+                lenis.start(); // Ensure it's running
+            } else {
+                // Fallback to GSAP ScrollToPlugin
+                autoScrollTween = gsap.to(window, {
+                    scrollTo: { y: scrollDistance },
+                    duration: 5,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        if (!introStopped) {
+                            console.log("[Hero] GSAP auto-play completed");
+                            setIntroFinished(true);
+                            interactions.forEach(event => window.removeEventListener(event, onInteraction));
+                        }
+                    },
+                    onOverwrite: stopAutoPlay
+                });
+            }
+
+            // Initial text reveal (Proposition)
             introTimeline = gsap.timeline();
             introTimeline.fromTo(titleTopRef.current,
                 { opacity: 0, y: 30, filter: "blur(10px)" },
