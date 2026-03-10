@@ -415,12 +415,24 @@ export function Hero() {
 
                 @media (max-width: 768px) {
                     .hero { height: 92vh; min-height: 480px; overflow: hidden; }
-                    .hero-canvas { 
+                    .hero-video-wrapper {
                         width: 95vw;
-                        height: 65vh;
-                        left: 50%;
+                        height: 50vh;
+                        margin: auto;
+                        overflow: hidden;
+                        position: absolute;
                         top: 50%;
+                        left: 50%;
                         transform: translate(-50%, -50%);
+                        z-index: 1;
+                    }
+                    .hero-canvas { 
+                        width: 100% !important;
+                        height: 100% !important;
+                        position: relative !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        transform: none !important;
                         object-fit: contain;
                         opacity: 1;
                     }
@@ -435,10 +447,12 @@ export function Hero() {
 
             <section ref={sectionRef} className="hero">
                 <div ref={containerRef} className="hero-inner-container">
-                    <canvas
-                        ref={canvasRef}
-                        className="hero-canvas"
-                    />
+                    <div className="hero-video-wrapper">
+                        <canvas
+                            ref={canvasRef}
+                            className="hero-canvas"
+                        />
+                    </div>
 
                     <div className="hero-overlay" />
 
