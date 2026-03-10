@@ -110,6 +110,7 @@ export function Hero() {
         });
 
         const ctx = gsap.context(() => {
+            // Main frame animation
             gsap.to(playheadRef.current, {
                 frame: FRAME_COUNT - 1,
                 snap: "frame",
@@ -125,10 +126,42 @@ export function Hero() {
                 onUpdate: render,
             });
 
+            // Cross-fade animation for text
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=150%",
+                    scrub: 0.5,
+                }
+            });
+
+            // Phase 1: [ SUA ORIGEM ]
+            tl.to(".phrase-1", {
+                opacity: 0,
+                filter: "blur(10px)",
+                y: -20,
+                duration: 1,
+                ease: "power2.inOut"
+            }, 0.1);
+
+            // Phase 2: [ SEU SORRISO ]
+            tl.fromTo(".phrase-2", {
+                opacity: 0,
+                filter: "blur(10px)",
+                y: 20
+            }, {
+                opacity: 1,
+                filter: "blur(0px)",
+                y: 0,
+                duration: 1,
+                ease: "power2.out"
+            }, 0.6);
+
             if (window.innerWidth > 768) {
                 gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(canvasRef.current, {
-                    scale: 1.08,
+                    scale: 1.05,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -166,60 +199,61 @@ export function Hero() {
                     font-family: inherit;
                     color: #fff;
                     display: flex;
-                    align-items: center;
-                    justify-content: flex-start;
-                    gap: 16px;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0;
                     margin: 0;
                 }
 
                 .bracket {
                     font-weight: 200;
-                    color: rgba(255,255,255,0.3);
-                    transform: translateY(-2px);
+                    color: rgba(255,255,255,0.4);
+                    margin: 0 4px;
+                }
+
+                .prestige-text {
+                    text-transform: uppercase;
+                    letter-spacing: 0.15em;
                 }
 
                 .hero-overlay {
-                    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 60%);
+                    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
                 }
 
                 .cta-primary {
-                    min-width: 260px;
-                    height: 54px;
-                    background: rgba(255,255,255,0.08);
+                    min-width: 280px;
+                    height: 56px;
+                    background: rgba(255,255,255,0.05);
                     color: #fff;
                     border-radius: 9999px;
                     font-weight: 500;
-                    font-size: 14px;
-                    letter-spacing: 2px;
+                    font-size: 13px;
+                    letter-spacing: 3px;
                     text-transform: uppercase;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    border: 1px solid rgba(255,255,255,0.15);
+                    border: 1px solid rgba(255,255,255,0.1);
                     border-top: 1px solid rgba(255,255,255,0.3);
-                    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
-                    backdrop-filter: blur(20px);
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                    backdrop-filter: blur(25px);
                     cursor: pointer;
-                    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+                    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
                 .cta-primary:hover {
                     background: #fff;
                     color: #000;
-                    transform: translateY(-3px);
-                    box-shadow: 0 10px 40px rgba(255,255,255,0.2);
+                    transform: translateY(-5px);
+                    box-shadow: 0 20px 50px rgba(255,255,255,0.15);
                 }
 
                 @media (max-width: 768px) {
                     .hero { 
-                        height: 96svh; /* Slightly smaller than 100 on desktop, fitting snug above the fold */
-                        padding-bottom: 12vh; 
-                        padding-left: 1.5rem;
-                        padding-right: 1.5rem;
-                    }
-                    .cinematic-title { 
-                        justify-content: flex-start; /* Keep left alignment for stronger hierarchy anchor */
-                        gap: 12px;
+                        height: 100svh;
+                        padding-bottom: 15vh; 
+                        padding-left: 2rem;
+                        padding-right: 2rem;
                     }
                 }
             `}</style>
@@ -233,30 +267,34 @@ export function Hero() {
             <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
 
             {/* Content properly positioned at the bottom with a clear visual hierarchy */}
-            <div className="relative z-10 w-full px-4 md:px-16 mx-auto container pointer-events-none mb-4 md:mb-8">
+            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12">
                 <div 
                     ref={textContainerRef}
-                    className="max-w-2xl flex flex-col md:items-start items-start gap-5 opacity-0 translate-y-8"
+                    className="max-w-4xl flex flex-col items-start gap-8 opacity-0 translate-y-12"
                 >
-                    <div className="flex flex-col gap-1 items-start">
-                        <h1 className="cinematic-title">
-                            <span className="bracket text-3xl md:text-5xl lg:text-6xl">[</span>
-                            <span className="font-bold text-4xl md:text-6xl lg:text-7xl tracking-tighter drop-shadow-2xl">
-                                Sua origem
+                    <div className="cinematic-title">
+                        {/* Phrase 1: The Origin */}
+                        <div className="phrase-1 flex items-center">
+                            <span className="bracket text-4xl md:text-6xl">[</span>
+                            <span className="prestige-text font-bold text-5xl md:text-8xl tracking-tight text-white drop-shadow-2xl">
+                                SUA ORIGEM
                             </span>
-                            <span className="bracket text-3xl md:text-5xl lg:text-6xl">]</span>
-                        </h1>
-                        <h2 className="flex items-center gap-4 ml-2 md:ml-[4.5rem] mt-2 group">
-                            <span className="w-8 md:w-16 h-[1px] bg-white/40 block transition-all duration-700 group-hover:w-24"></span>
-                            <span className="text-xl md:text-3xl lg:text-4xl font-light italic tracking-wide text-white/90 drop-shadow-lg">
-                                Seu sorriso.
+                            <span className="bracket text-4xl md:text-6xl">]</span>
+                        </div>
+
+                        {/* Phrase 2: The Smile (Stacked/Absolute to allow clean transition) */}
+                        <div className="phrase-2 absolute top-0 left-0 flex items-center opacity-0">
+                            <span className="bracket text-4xl md:text-6xl">[</span>
+                            <span className="prestige-text font-bold text-5xl md:text-8xl tracking-tight text-white drop-shadow-2xl">
+                                SEU SORRISO
                             </span>
-                        </h2>
+                            <span className="bracket text-4xl md:text-6xl">]</span>
+                        </div>
                     </div>
-                    
-                    <div className="mt-6 md:mt-8 md:ml-[4.5rem] pointer-events-auto">
+
+                    <div className="ml-2 md:ml-12 pointer-events-auto">
                         <button className="cta-primary">
-                            Agendar Consulta
+                            Agendar Experiência
                         </button>
                     </div>
                 </div>
