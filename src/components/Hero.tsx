@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
 const FRAME_COUNT = 144;
@@ -100,28 +101,67 @@ export function Hero() {
         preloadImages();
 
         let introTimeline: gsap.core.Timeline | null = null;
+        let autoScrollTween: gsap.core.Tween | null = null;
+
+        const stopAutoPlay = () => {
+            if (autoScrollTween) {
+                autoScrollTween.kill();
+                autoScrollTween = null;
+            }
+        };
 
         const startIntro = () => {
-            introTimeline = gsap.timeline({
+            // Check if preloader is active using the global flag
+            const isPreloaderActive = (window as any).__PRELOADER_ACTIVE__;
+
+            console.log("[Hero] startIntro, preloader active:", isPreloaderActive);
+
+            if (isPreloaderActive) {
+                const onPreloaderFinished = () => {
+                    console.log("[Hero] preloader-finished received, starting executeIntro");
+                    setTimeout(executeIntro, 300); // 300ms buffer after preloader fades
+                    window.removeEventListener("preloader-finished", onPreloaderFinished);
+                };
+                window.addEventListener("preloader-finished", onPreloaderFinished);
+            } else {
+                console.log("[Hero] preloader not active, starting executeIntro immediately");
+                executeIntro();
+            }
+        };
+
+        const executeIntro = () => {
+            // Calculate distance: 150% of viewport height
+            const scrollDistance = window.innerHeight * 1.5;
+
+            console.log("[Hero] executeIntro, scrolling to:", scrollDistance);
+
+            // Create interaction listeners to stop auto-play if user intervenes
+            const interactions = ['mousedown', 'wheel', 'touchstart', 'keydown'];
+            const onInteraction = () => {
+                console.log("[Hero] User interaction detected, stopping auto-play");
+                stopAutoPlay();
+                interactions.forEach(event => window.removeEventListener(event, onInteraction));
+            };
+            interactions.forEach(event => window.addEventListener(event, onInteraction, { passive: true }));
+
+            // Cinematic Auto-scroll using ScrollToPlugin
+            autoScrollTween = gsap.to(window, {
+                scrollTo: { y: scrollDistance },
+                duration: 5.5, // Slightly slower for more cinematic feel
+                ease: "power2.inOut",
                 onComplete: () => {
+                    console.log("[Hero] Auto-play completed");
+                    interactions.forEach(event => window.removeEventListener(event, onInteraction));
                     setIntroFinished(true);
-                }
+                },
+                onOverwrite: stopAutoPlay
             });
 
-            // "Cinematography" entrance: playing the video sequence
-            introTimeline.to(airbnbRef.current, {
-                frame: 30, // Intro plays first 30 frames
-                duration: 1.5,
-                snap: "frame",
-                ease: "power2.out",
-                onUpdate: render
-            });
-
-            // Animate text entry
+            // Initial text reveal
+            introTimeline = gsap.timeline();
             introTimeline.fromTo(titleTopRef.current,
                 { opacity: 0, y: 30, filter: "blur(10px)" },
-                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 1, ease: "power3.out" },
-                "-=0.5"
+                { opacity: 0.8, y: 0, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
             );
         };
 
