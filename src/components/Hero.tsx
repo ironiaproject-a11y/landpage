@@ -209,8 +209,8 @@ export function Hero() {
 
             // Cinematic Reveal for [ SUA ORIGEM ]
             gsap.fromTo(titleOrigemRef.current,
-                { opacity: 0, scale: 0.95, filter: "blur(15px)", letterSpacing: "0.2em" },
-                { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.05em", duration: 1.4, ease: "expo.out" }
+                { opacity: 0, scale: 0.95, filter: "blur(15px)", letterSpacing: "0.5em" },
+                { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.2em", duration: 1.4, ease: "expo.out" }
             );
 
             // Final CTA Reveal - Triggered toward the end of the auto-play
@@ -315,34 +315,105 @@ export function Hero() {
     return (
         <>
             <style>{`
+                /* ─────────────────────────────────────────
+                   HERO — full-bleed video background layout
+                ───────────────────────────────────────── */
                 .hero {
+                    position: relative;
                     width: 100%;
-                    height: 100vh;
+                    height: 90vh; /* Increased for immersion */
                     min-height: 600px;
+                    background: #000;
+                    overflow: hidden;
+                    clip-path: inset(0);
+                    margin: 0;
+                    padding: 0;
+                }
+
+                /* Inner wrapper — clips the canvas so it can never 
+                   bleed outside the hero, even when GSAP pins it */
+                .hero-inner-container {
+                    position: absolute;
+                    inset: 0;
+                    overflow: hidden;
+                    contain: paint;
                     background: #000;
                 }
 
+                /* Canvas fills the entire hero as a background video */
+                .hero-canvas {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 75vw; /* Slightly larger for immersion */
+                    height: 55vh;
+                    transform: translate(-50%, -50%);
+                    object-fit: cover;
+                    z-index: 1;
+                    pointer-events: none;
+                }
+
+                /* Dark overlay for text legibility and cinematic depth */
                 .hero-overlay {
+                    position: absolute;
+                    inset: 0;
                     background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%),
-                                linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+                                linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+                    z-index: 2;
+                    pointer-events: none;
+                }
+
+                /* Text layer — centered over the full-bleed canvas */
+                .hero-text-layer {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 3;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between; /* Spread titles and CTA */
+                    padding: 15vh 24px 8vh;
+                    text-align: center;
+                    pointer-events: none;
                 }
 
                 .cinematic-title {
                     font-family: inherit;
                     font-weight: 800;
-                    font-size: clamp(32px, 5vw, 56px);
-                    letter-spacing: 0.1em;
+                    font-size: clamp(24px, 5vw, 48px);
+                    letter-spacing: 0.2em;
                     text-transform: uppercase;
                     color: #fff;
-                    text-shadow: 0 10px 40px rgba(0,0,0,0.6);
-                    margin: 0;
-                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    gap: clamp(10px, 2vw, 30px);
+                    text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                }
+
+                .bracket {
+                    font-weight: 200;
+                    color: rgba(255,255,255,0.4);
+                    font-size: 1.2em;
+                    transform: translateY(-2px);
+                }
+
+                .sorriso-layer {
+                    margin-bottom: auto; /* Push it towards the video area */
+                    margin-top: 40px;
+                }
+
+                .hero-cta-layer {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: 24px;
+                    z-index: 10;
                 }
 
                 /* CTA button */
                 .cta-primary {
                     width: 100%;
-                    min-width: 280px;
                     max-width: 320px;
                     height: 52px;
                     background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.95) 100%);
@@ -399,6 +470,18 @@ export function Hero() {
                     box-shadow: 0 15px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
                 }
 
+                .cta-secondary-link {
+                    display: inline-block;
+                    font-size: 14px;
+                    color: #FBFBFB;
+                    opacity: 0.65;
+                    margin-top: 20px;
+                    text-decoration: none;
+                    font-weight: 400;
+                    pointer-events: auto;
+                    letter-spacing: 0.05em;
+                }
+
                 /* Scroll indicator */
                 .hero-scroll-indicator {
                     position: absolute;
@@ -443,38 +526,83 @@ export function Hero() {
                     transform: scaleY(0);
                 }
 
+                /* ── Responsive ─────────────────────────── */
+                @media (max-width: 1024px) {
+                    .hero { height: 72vh; }
+                }
+
                 @media (max-width: 768px) {
-                    .hero { height: 100svh; min-height: 600px; }
-                    .cinematic-title { font-size: clamp(22px, 6vw, 32px); line-height: 1.2; }
-                    .hero-progress-container { right: 8px; height: 100px; }
+                    .hero { height: 95vh; min-height: 500px; }
+                    .hero-video-wrapper {
+                        width: 100vw;
+                        height: 85vh; /* Increased from 70vh for 15% expansion */
+                        margin: 0 auto;
+                        position: relative;
+                        top: -15vh; /* Pulled up 15% (from -5vh) for more immersion */
+                        z-index: 1;
+                    }
+                    .hero-canvas { 
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: contain;
+                    }
+                    .hero-text-layer { 
+                        padding: 10vh 24px 40px; 
+                        justify-content: flex-end;
+                        position: absolute;
+                        height: 100%;
+                        gap: 15px;
+                    }
+                    .cinematic-title {
+                        font-size: clamp(18px, 5.5vw, 24px);
+                        letter-spacing: 0.15em;
+                    }
+                    .sorriso-layer {
+                        margin-bottom: 20px;
+                        margin-top: 0;
+                    }
+                    .hero-cta-layer { 
+                        margin-top: 0; 
+                        z-index: 10; 
+                        width: 100%;
+                    }
+                    .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
                 }
             `}</style>
 
-            <section ref={sectionRef} className="hero relative overflow-hidden">
-                <div ref={containerRef} className="absolute inset-0 w-full h-full">
-                    <canvas
-                        ref={canvasRef}
-                        className="absolute inset-0 w-full h-full object-cover z-0"
-                    />
+            <section ref={sectionRef} className="hero">
+                <div ref={containerRef} className="hero-inner-container">
+                    <div className="hero-overlay" />
 
-                    <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
+                    <div className="hero-text-layer">
+                        {/* Phase 1: Sua Origem */}
+                        <h1 ref={titleOrigemRef} className="cinematic-title origem-layer">
+                            <span className="bracket">[</span>
+                            <span>Sua origem</span>
+                            <span className="bracket">]</span>
+                        </h1>
 
-                    <div className="absolute inset-0 flex items-center justify-center text-center z-10 pointer-events-none">
-                        <div className="flex flex-col items-center justify-center gap-6 w-full px-6">
-                            <h1 ref={titleOrigemRef} className="cinematic-title">
-                                Tudo começa na estrutura
-                            </h1>
+                        <div className="hero-video-wrapper">
+                            <canvas
+                                ref={canvasRef}
+                                className="hero-canvas"
+                            />
+                        </div>
 
-                            <h2
-                                ref={titleSorrisoRef}
-                                className="cinematic-title"
-                                style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)' }}
-                            >
-                                E termina no seu sorriso
-                            </h2>
+                        {/* Phase 2: Seu Sorriso */}
+                        <h2
+                            ref={titleSorrisoRef}
+                            className="cinematic-title sorriso-layer"
+                            style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)' }}
+                        >
+                            <span className="bracket">[</span>
+                            <span>Seu sorriso</span>
+                            <span className="bracket">]</span>
+                        </h2>
 
-                            <div ref={ctaRef} className="pointer-events-auto mt-6" style={{ opacity: 0 }}>
+                        <div className="hero-cta-layer">
+                            <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>
                                 <button className="cta-primary">
                                     Agendar Consulta
                                 </button>
@@ -482,11 +610,11 @@ export function Hero() {
                         </div>
                     </div>
 
-                    <div ref={scrollIndicatorRef} className="hero-scroll-indicator z-20">
+                    <div ref={scrollIndicatorRef} className="hero-scroll-indicator">
                         <div className="scroll-line" />
                     </div>
 
-                    <div className="hero-progress-container z-20">
+                    <div className="hero-progress-container">
                         <div ref={progressLineRef} className="hero-progress-fill" />
                     </div>
                 </div>
