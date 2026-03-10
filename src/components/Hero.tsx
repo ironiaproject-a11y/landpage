@@ -16,8 +16,6 @@ export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const titleTopRef = useRef<HTMLHeadingElement>(null);
-    const titleBottomRef = useRef<HTMLHeadingElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
     const scrollIndicatorRef = useRef<HTMLDivElement>(null);
     const progressLineRef = useRef<HTMLDivElement>(null);
@@ -112,7 +110,6 @@ export function Hero() {
         updateSize();
         preloadImages();
 
-        let introTimeline: gsap.core.Timeline | null = null;
         let autoScrollTween: gsap.core.Tween | null = null;
 
         const stopAutoPlay = () => {
@@ -208,30 +205,12 @@ export function Hero() {
                 });
             }
 
-            // H1 "Tudo começa na estrutura" - fade + slide-up (duration ~600ms)
-            introTimeline = gsap.timeline();
-            introTimeline.fromTo(titleTopRef.current,
-                { opacity: 0, y: 30, filter: "blur(10px)" },
-                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }
-            );
-
-            // Synchronize H2 "E termina no seu sorriso" with the video transformation
-            // We'll trigger it about 60% into the duration
-            gsap.delayedCall(2.2, () => {
-                if (!introStopped) {
-                    gsap.fromTo(titleBottomRef.current,
-                        { opacity: 0, y: 20, filter: "blur(8px)" },
-                        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power2.out" }
-                    );
-                }
-            });
-
-            // Final CTA Reveal
+            // Final CTA Reveal - Triggered toward the end of the auto-play
             gsap.delayedCall(3.2, () => {
                 if (!introStopped) {
                     gsap.fromTo(ctaRef.current,
                         { opacity: 0, y: 20 },
-                        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+                        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
                     );
                 }
             });
@@ -270,29 +249,7 @@ export function Hero() {
                 });
             }
 
-            // Narrativa centrada: Opacidade e escala sutis baseados no scroll manual
-            // Para quando o usuário já interagiu
-            gsap.to(titleTopRef.current, {
-                opacity: 0.3,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "20% top",
-                    scrub: true
-                }
-            });
-
-            gsap.to(titleBottomRef.current, {
-                opacity: 1,
-                scale: 1.05,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "30% top",
-                    end: "60% top",
-                    scrub: true
-                }
-            });
-
+            // Progress Line Animation
             gsap.to(progressLineRef.current, {
                 scaleY: 1,
                 ease: "none",
@@ -314,7 +271,6 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            if (introTimeline) introTimeline.kill();
             window.removeEventListener("resize", updateSize);
         };
     }, [mounted]);
@@ -330,8 +286,8 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 75vh;
-                    min-height: 500px;
+                    height: 90vh; /* Increased for immersion */
+                    min-height: 600px;
                     background: #000;
                     overflow: hidden;
                     clip-path: inset(0);
@@ -354,8 +310,8 @@ export function Hero() {
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    width: 68vw;
-                    height: 42vh;
+                    width: 75vw; /* Slightly larger for immersion */
+                    height: 55vh;
                     transform: translate(-50%, -50%);
                     object-fit: cover;
                     z-index: 1;
@@ -380,36 +336,10 @@ export function Hero() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
-                    padding: 0 24px;
+                    justify-content: flex-end; /* Push CTA to bottom */
+                    padding: 0 24px 80px; /* Space for the button */
                     text-align: center;
                     pointer-events: none;
-                }
-
-                .hero-title-top {
-                    font-size: clamp(24px, 4vw, 42px);
-                    font-weight: 700;
-                    line-height: 1.1;
-                    letter-spacing: -0.02em;
-                    color: #FBFBFB;
-                    margin: 0 0 16px;
-                    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
-                    z-index: 10;
-                    position: relative;
-                }
-                
-                .hero-title-bottom {
-                    font-size: clamp(18px, 2.5vw, 28px);
-                    font-weight: 300;
-                    line-height: 1.4;
-                    letter-spacing: 0.1em;
-                    text-transform: uppercase;
-                    color: #FBFBFB;
-                    opacity: 0.9;
-                    margin: 16px 0 32px;
-                    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
-                    z-index: 10;
-                    position: relative;
                 }
 
                 .hero-cta-layer {
@@ -542,47 +472,29 @@ export function Hero() {
                 }
 
                 @media (max-width: 768px) {
-                    .hero { height: 92vh; min-height: 480px; overflow: hidden; max-width: 100%; }
+                    .hero { height: 95vh; min-height: 500px; }
                     .hero-video-wrapper {
                         width: 100vw;
-                        height: 45vh; /* Reduced height to pull text closer */
+                        height: 70vh; /* Dominant video on mobile */
                         margin: 0 auto;
-                        overflow: visible; /* Allow text overlap */
                         position: relative;
-                        z-index: 5;
+                        top: -5vh; /* Pull up towards navbar */
+                        z-index: 1;
                     }
                     .hero-canvas { 
                         width: 100% !important;
                         height: 100% !important;
-                        position: relative !important;
-                        top: 0 !important;
-                        left: 0 !important;
-                        transform: none !important;
                         object-fit: contain;
-                        opacity: 1;
-                    }
-                    .hero-title-top { 
-                        font-size: clamp(20px, 6vw, 28px); 
-                        margin-bottom: 8px;
-                    }
-                    .hero-title-bottom { 
-                        font-size: clamp(14px, 4vw, 18px); 
-                        margin-top: 8px;
-                        margin-bottom: 24px;
-                        letter-spacing: 0.05em;
                     }
                     .hero-text-layer { 
-                        padding: 0 24px; 
-                        justify-content: center;
-                        position: relative;
+                        padding: 0 24px 60px; 
+                        justify-content: flex-end;
+                        position: absolute;
                         height: 100%;
                     }
                     .hero-cta-layer { 
-                        gap: 12px; 
-                        margin-top: 0px; 
-                        position: relative; 
+                        margin-top: 0; 
                         z-index: 10; 
-                        width: 100%;
                     }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
@@ -594,22 +506,12 @@ export function Hero() {
                     <div className="hero-overlay" />
 
                     <div className="hero-text-layer">
-                        {/* H1 Headline - Main focus */}
-                        <h1 ref={titleTopRef} className="hero-title-top">
-                            Tudo começa na estrutura
-                        </h1>
-
                         <div className="hero-video-wrapper">
                             <canvas
                                 ref={canvasRef}
                                 className="hero-canvas"
                             />
                         </div>
-
-                        {/* H2 Subheadline - Revealed with the smile */}
-                        <h2 ref={titleBottomRef} className="hero-title-bottom">
-                            E termina no seu sorriso
-                        </h2>
 
                         <div className="hero-cta-layer">
                             <div ref={ctaRef} style={{ pointerEvents: 'auto', opacity: 0 }}>

@@ -3,36 +3,30 @@
 I've restructured the Hero section to create a powerful visual narrative of transformation, centering the smile animation as the lead protagonist of the user journey.
 
 ## Key Accomplishments
-# Hero Narrative & Visual Walkthrough
+# Hero Immersive Video & Minimalist Hierarchy Walkthrough
 
-The Hero section has been refined into a focused, 4-level visual narrative that guides the user through the story of "Structure to Smile" with absolute clarity and intention.
+The Hero section has been transformed into a pure cinematic experience, where the "Structure to Smile" transformation is the sole focus.
 
 ## Changes Made
 
-### 1. Pure 4-Level Hierarchy
-- **Organization**: Reordered and tightened the elements to follow a logical vertical flow:
-    1. **H1 Headline**: "Tudo começa na estrutura" (The starting proposition).
-    2. **Hero Video**: The central transformation engine.
-    3. **H2 Subheadline**: "E termina no seu sorriso" (The results-oriented closure).
-    4. **CTA**: A single, primary "Agendar Consulta" button.
-- **Cleanup**: Removed the "ver galeria de resultados" link and any other secondary text to eliminate distractions and strengthen the call to action.
+### 1. Immersion-First Design
+- **Video Dominance**: Expanded the Hero container to **90vh** (95vh on mobile), and increased the video canvas size to fill the visual field.
+- **Top-to-Bottom Flow**: The video now flows from the top of the page (overlapping with the minimalist Navbar), creating a high-end, gallery-like feel.
+- **Visual Cleanup**: Completely removed the H1 and H2 headlines to eliminate any visual friction and let the dental transformation speak for itself.
 
-### 2. Tightened Vertical Rhythm
-- **Layout**: Removed complex CSS translations and overlaps that made elements feel disconnected.
-- **Consistency**: Implemented a clean vertical stack with intentional margins, ensuring the video and text feel like a single, cohesive cinematic unit.
+### 2. Minimalist Interaction
+- **Single CTA**: The only remaining text/interaction is the "Agendar Consulta" button, which reveals gracefully at the end of the narrative transformation.
+- **Simplified Rhythms**: Removed all headline-specific animations and scrub logic to ensure the focus remains 100% on the video.
 
-### 3. Intentional Animation Sync
-- **Reveal Logic**: 
-    - H1 appears snappily at 600ms.
-    - Video auto-plays.
-    - H2 fades in precisely when the smile transformation is completed.
-    - CTA button reveals last to close the loop.
+### 3. Stability & Cleanup
+- **Code Health**: Fixed TypeScript linting errors and removed all unused React refs and GSAP variables.
+- **Performance**: Maintained the optimized rendering pipeline (coordinate pre-calculation and resolution capping) for smooth playback in this larger format.
 
 ## Verification Results
 
 - **Build Status**: Verified via `npm run build` - successful.
-- **Narrative Flow**: The journey from the initial concept to the transformation and final action is direct and premium.
+- **Visual Impact**: The video now commands full attention, delivering a powerful message of transformation without distracting text.
 
-✅ The Hero section now tells a powerful, undistracted story of dental excellence.
+✅ The Hero section delivers a truly premium, video-centric narrative.
 
 ✅ Hero section redefined as a cohesive, high-impact transformation narrative.
