@@ -121,8 +121,11 @@ export function Hero() {
             if (isPreloaderActive) {
                 // Listen to 'exiting' instead of 'finished' to start animation WHILE preloader is fading out
                 const onPreloaderExiting = () => {
-                    console.log("[Hero] preloader-exiting event received. Starting executeIntro early.");
-                    executeIntro();
+                    console.log("[Hero] preloader-exiting event received. Adding 600ms perception delay.");
+                    // Add 600ms so humans can see the "before" state first
+                    setTimeout(() => {
+                        executeIntro();
+                    }, 600);
                     window.removeEventListener("preloader-exiting", onPreloaderExiting);
                 };
                 window.addEventListener("preloader-exiting", onPreloaderExiting);
@@ -156,10 +159,10 @@ export function Hero() {
             interactions.forEach(event => window.addEventListener(event, onInteraction, { passive: true }));
 
             if (lenis) {
-                // Snappier 3s duration for better fluidity
+                // Snappier but perception-friendly duration (3.8s)
                 lenis.scrollTo(scrollDistance, {
-                    duration: 3,
-                    easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, // cubic-in-out for more drama
+                    duration: 3.8,
+                    easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t, // Smooth power2 easing back for stability
                     onComplete: () => {
                         if (!introStopped) {
                             console.log("[Hero] Lenis auto-play completed");
@@ -180,8 +183,8 @@ export function Hero() {
                 // Fallback to GSAP
                 autoScrollTween = gsap.to(window, {
                     scrollTo: { y: scrollDistance },
-                    duration: 3,
-                    ease: "power3.inOut",
+                    duration: 3.8,
+                    ease: "power2.inOut",
                     onComplete: () => {
                         if (!introStopped) {
                             console.log("[Hero] GSAP auto-play completed");
