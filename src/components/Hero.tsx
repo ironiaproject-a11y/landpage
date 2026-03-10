@@ -143,10 +143,11 @@ export function Hero() {
                 onUpdate: render,
             });
 
-            // Immersive Zoom — disabled on mobile to prevent overflow bleed
+            // Immersive Zoom — ensures centering is maintained during scale
             if (window.innerWidth > 768) {
+                gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(canvasRef.current, {
-                    scale: 1.05,
+                    scale: 1.08,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -421,7 +422,7 @@ export function Hero() {
                         top: 50%;
                         transform: translate(-50%, -50%);
                         object-fit: contain;
-                        opacity: 0.95;
+                        opacity: 1;
                     }
                     .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
                     .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 24px; }
