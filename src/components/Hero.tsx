@@ -51,6 +51,10 @@ export function Hero() {
             const imgWidth = img.width;
             const imgHeight = img.height;
 
+            // Enable high quality image smoothing
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
+
             // Use 'contain' logic for mobile to ensure the entire skull is visible
             const isMobile = window.innerWidth <= 768;
             const ratio = isMobile
@@ -91,8 +95,13 @@ export function Hero() {
 
         const updateSize = () => {
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
+            const dpr = window.devicePixelRatio || 1;
+
+            // Set internal resolution based on DPR
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+
+            // CSS size stays the same as per layout
             render();
         };
 
