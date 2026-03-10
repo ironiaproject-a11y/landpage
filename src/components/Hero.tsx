@@ -139,19 +139,19 @@ export function Hero() {
             // Phase 1: [ SUA ORIGEM ]
             tl.to(".phrase-1", {
                 opacity: 0,
-                filter: "blur(12px)",
-                scale: 0.95,
-                y: -10,
+                filter: "blur(15px)",
+                scale: 0.9,
+                y: -15,
                 duration: 0.8,
                 ease: "power2.in"
-            }, 0.2);
+            }, 0.3); // Starts slightly later
 
             // Phase 2: [ SEU SORRISO ]
             tl.fromTo(".phrase-2", {
                 opacity: 0,
-                filter: "blur(12px)",
-                scale: 1.05,
-                y: 10
+                filter: "blur(15px)",
+                scale: 1.1,
+                y: 15
             }, {
                 opacity: 1,
                 filter: "blur(0px)",
@@ -159,7 +159,7 @@ export function Hero() {
                 y: 0,
                 duration: 0.8,
                 ease: "power2.out"
-            }, 0.7);
+            }, 0.5); // Overlaps with phrase-1 fade-out
 
             if (window.innerWidth > 768) {
                 gsap.to(containerRef.current, {
@@ -208,15 +208,14 @@ export function Hero() {
                 }
 
                 .cinematic-title {
-                    position: relative; /* Added to contain absolute children */
+                    position: relative;
                     font-family: inherit;
                     color: #fff;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 0;
-                    margin: 0;
                     width: 100%;
+                    height: 120px; /* Stronger fixed height to hold both absolute phrases */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .prestige-text {
@@ -249,8 +248,8 @@ export function Hero() {
                     className="relative z-10 w-full px-6 flex flex-col items-center opacity-0 translate-y-8"
                 >
                     <div className="cinematic-title">
-                        {/* Phrase 1: The Origin */}
-                        <div className="phrase-1 flex items-center justify-center w-full">
+                        {/* Both phrases use absolute inset-0 to ensure perfect overlap and centering */}
+                        <div className="phrase-1 absolute inset-0 flex items-center justify-center w-full">
                             <span className="bracket text-2xl md:text-4xl font-extralight opacity-30">[</span>
                             <span className="prestige-text font-medium text-4xl md:text-6xl tracking-[0.2em] text-white/90">
                                 SUA ORIGEM
@@ -258,8 +257,7 @@ export function Hero() {
                             <span className="bracket text-2xl md:text-4xl font-extralight opacity-30">]</span>
                         </div>
 
-                        {/* Phrase 2: The Smile */}
-                        <div className="phrase-2 absolute top-0 left-0 right-0 flex items-center justify-center opacity-0">
+                        <div className="phrase-2 absolute inset-0 flex items-center justify-center opacity-0">
                             <span className="bracket text-2xl md:text-4xl font-thin opacity-30">[</span>
                             <span className="prestige-text font-extralight italic text-4xl md:text-6xl tracking-[0.25em] text-white">
                                 SEU SORRISO
