@@ -27,6 +27,7 @@ export function Hero() {
     // Animation state
     const imagesRef = useRef<HTMLImageElement[]>([]);
     const airbnbRef = useRef({ frame: 0 });
+    const layoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
     useEffect(() => {
         setMounted(true);
@@ -47,30 +48,9 @@ export function Hero() {
             const img = imagesRef.current[airbnbRef.current.frame];
             if (!img || !img.complete) return;
 
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const imgWidth = img.width;
-            const imgHeight = img.height;
-
-            // Enable high quality image smoothing
-            context.imageSmoothingEnabled = true;
-            context.imageSmoothingQuality = "high";
-
-            // Use 'contain' logic for mobile to ensure the entire skull is visible
-            const isMobile = window.innerWidth <= 768;
-            const ratio = isMobile
-                ? Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight)
-                : Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
-
-            const newWidth = imgWidth * ratio;
-            const newHeight = imgHeight * ratio;
-
-            // Center image within the canvas
-            const x = (canvasWidth - newWidth) / 2;
-            const y = (canvasHeight - newHeight) / 2;
-
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
-            context.drawImage(img, x, y, newWidth, newHeight);
+            const { x, y, width, height } = layoutRef.current;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, x, y, width, height);
         };
 
         // Preload images
@@ -96,13 +76,35 @@ export function Hero() {
 
         const updateSize = () => {
             const rect = canvas.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
+            // Cap DPR at 2 for performance on high-res screens while keeping "Retina" quality
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-            // Set internal resolution based on DPR
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
 
-            // CSS size stays the same as per layout
+            // Pre-calculate layout once during resize to save GPU/CPU cycles in render()
+            const img = imagesRef.current[0] || new Image();
+            const imgWidth = img.width || 1920;
+            const imgHeight = img.height || 1080;
+
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "medium"; // Balanced for performance
+
+            const isMobile = window.innerWidth <= 768;
+            const ratio = isMobile
+                ? Math.min(canvas.width / imgWidth, canvas.height / imgHeight)
+                : Math.max(canvas.width / imgWidth, canvas.height / imgHeight);
+
+            const newWidth = imgWidth * ratio;
+            const newHeight = imgHeight * ratio;
+
+            layoutRef.current = {
+                width: newWidth,
+                height: newHeight,
+                x: (canvas.width - newWidth) / 2,
+                y: (canvas.height - newHeight) / 2
+            };
+
             render();
         };
 
