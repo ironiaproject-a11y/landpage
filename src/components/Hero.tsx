@@ -90,7 +90,7 @@ export function Hero() {
                 width: newWidth * 1.02,
                 height: newHeight * 1.02,
                 x: (canvas.width - newWidth * 1.02) / 2,
-                y: (canvas.height - newHeight * 1.02) * 0.42 // Centered closer to text
+                y: (canvas.height - newHeight * 1.02) / 2 // Re-centered internally for "straight" look
             };
 
             render();
@@ -159,7 +159,6 @@ export function Hero() {
             }, 0.6);
 
             if (window.innerWidth > 768) {
-                gsap.set(containerRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(containerRef.current, {
                     scale: 1.15, // Controlled scale for prestige
                     ease: "none",
@@ -195,8 +194,9 @@ export function Hero() {
 
                 .visual-wrapper {
                     position: absolute;
-                    top: 45%; /* Elevated position */
+                    top: 35%; /* Elevated position closer to Clinica logo */
                     left: 50%;
+                    transform: translate(-50%, -50%); /* Robust centering for all devices */
                     width: 100%;
                     height: 100%;
                     display: flex;
@@ -227,7 +227,7 @@ export function Hero() {
                         margin-bottom: 15vh;
                     }
                     .visual-wrapper {
-                        top: 40%;
+                        top: 32%; /* Even closer on mobile */
                     }
                 }
             `}</style>
