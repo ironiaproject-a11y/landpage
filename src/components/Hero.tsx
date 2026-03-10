@@ -390,10 +390,9 @@ export function Hero() {
                     line-height: 1.1;
                     letter-spacing: -0.02em;
                     color: #FBFBFB;
-                    margin: 0;
-                    text-shadow: 0 4px 40px rgba(0,0,0,0.9);
+                    margin: 0 0 16px;
+                    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
                     z-index: 10;
-                    transform: translateY(60px); /* Significant overlap down */
                     position: relative;
                 }
                 
@@ -405,10 +404,9 @@ export function Hero() {
                     text-transform: uppercase;
                     color: #FBFBFB;
                     opacity: 0.9;
-                    margin: 0;
-                    text-shadow: 0 2px 30px rgba(0,0,0,0.9);
+                    margin: 16px 0 32px;
+                    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
                     z-index: 10;
-                    transform: translateY(-60px); /* Significant overlap up */
                     position: relative;
                 }
 
@@ -562,27 +560,26 @@ export function Hero() {
                         opacity: 1;
                     }
                     .hero-title-top { 
-                        font-size: clamp(20px, 5.5vw, 26px); 
-                        transform: translateY(50px); /* Larger overlap on mobile */
-                        z-index: 15;
+                        font-size: clamp(20px, 6vw, 28px); 
+                        margin-bottom: 8px;
                     }
                     .hero-title-bottom { 
-                        font-size: clamp(14px, 4vw, 16px); 
-                        transform: translateY(-50px); /* Larger overlap on mobile */
+                        font-size: clamp(14px, 4vw, 18px); 
+                        margin-top: 8px;
+                        margin-bottom: 24px;
                         letter-spacing: 0.05em;
-                        z-index: 15;
                     }
                     .hero-text-layer { 
-                        padding: 24px; 
+                        padding: 0 24px; 
                         justify-content: center;
                         position: relative;
                         height: 100%;
                     }
                     .hero-cta-layer { 
                         gap: 12px; 
-                        margin-top: 16px; 
+                        margin-top: 0px; 
                         position: relative; 
-                        z-index: 2; 
+                        z-index: 10; 
                         width: 100%;
                     }
                     .hero-progress-container { right: 12px; height: 100px; }
@@ -617,11 +614,6 @@ export function Hero() {
                                 <button className="cta-primary">
                                     Agendar Consulta
                                 </button>
-                                <div className="text-center">
-                                    <a href="#results" className="cta-secondary-link">
-                                        ver galeria de resultados →
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>
