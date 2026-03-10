@@ -11,6 +11,7 @@ The Hero section has been transformed into a pure cinematic experience, where th
 
 ### 1. Immersion-First Design
 - **Video Dominance**: Expanded the Hero container to **90vh** (95vh on mobile), and increased the video canvas size to fill the visual field.
+- **Mobile Expansion**: Increased the video wrapper height on mobile to **85vh** and shifted its position **15% upwards** (`-15vh`). This ensures the transformation is the absolute protagonist on any screen size.
 - **Top-to-Bottom Flow**: The video now flows from the top of the page (overlapping with the minimalist Navbar), creating a high-end, gallery-like feel.
 - **Visual Cleanup**: Completely removed the H1 and H2 headlines to eliminate any visual friction and let the dental transformation speak for itself.
 
@@ -27,6 +28,6 @@ The Hero section has been transformed into a pure cinematic experience, where th
 - **Build Status**: Verified via `npm run build` - successful.
 - **Visual Impact**: The video now commands full attention, delivering a powerful message of transformation without distracting text.
 
-✅ The Hero section delivers a truly premium, video-centric narrative.
+✅ The Hero section delivers a truly premium, video-centric narrative with maximized mobile immersion.
 
 ✅ Hero section redefined as a cohesive, high-impact transformation narrative.

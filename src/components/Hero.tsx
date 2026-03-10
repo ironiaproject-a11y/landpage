@@ -475,10 +475,10 @@ export function Hero() {
                     .hero { height: 95vh; min-height: 500px; }
                     .hero-video-wrapper {
                         width: 100vw;
-                        height: 70vh; /* Dominant video on mobile */
+                        height: 85vh; /* Increased from 70vh for 15% expansion */
                         margin: 0 auto;
                         position: relative;
-                        top: -5vh; /* Pull up towards navbar */
+                        top: -15vh; /* Pulled up 15% (from -5vh) for more immersion */
                         z-index: 1;
                     }
                     .hero-canvas { 
