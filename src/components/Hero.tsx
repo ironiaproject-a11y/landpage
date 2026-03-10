@@ -111,21 +111,21 @@ export function Hero() {
         };
 
         const startIntro = () => {
-            // Check if preloader is active using the global flag
             const isPreloaderActive = (window as any).__PRELOADER_ACTIVE__;
 
             console.log("[Hero] startIntro called. Preloader active:", isPreloaderActive);
 
+            // Force scroll reset to top as soon as we start the intro process
+            window.scrollTo(0, 0);
+
             if (isPreloaderActive) {
-                const onPreloaderFinished = () => {
-                    console.log("[Hero] preloader-finished event received");
-                    // Start earlier for better flow
-                    requestAnimationFrame(() => {
-                        executeIntro();
-                    });
-                    window.removeEventListener("preloader-finished", onPreloaderFinished);
+                // Listen to 'exiting' instead of 'finished' to start animation WHILE preloader is fading out
+                const onPreloaderExiting = () => {
+                    console.log("[Hero] preloader-exiting event received. Starting executeIntro early.");
+                    executeIntro();
+                    window.removeEventListener("preloader-exiting", onPreloaderExiting);
                 };
-                window.addEventListener("preloader-finished", onPreloaderFinished);
+                window.addEventListener("preloader-exiting", onPreloaderExiting);
             } else {
                 console.log("[Hero] Preloader not active, starting intro directly");
                 executeIntro();
@@ -133,6 +133,10 @@ export function Hero() {
         };
 
         const executeIntro = () => {
+            // Re-render frame 0 to be absolutely sure we start from clean state
+            airbnbRef.current.frame = 0;
+            render();
+
             const scrollDistance = window.innerHeight * 1.5;
             const lenis = (window as any).__LENIS__;
 
