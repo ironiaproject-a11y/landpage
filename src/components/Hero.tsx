@@ -389,9 +389,11 @@ export function Hero() {
                     line-height: 1.1;
                     letter-spacing: -0.02em;
                     color: #FBFBFB;
-                    margin: 0 0 24px;
-                    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+                    margin: 0;
+                    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
                     z-index: 10;
+                    transform: translateY(20px); /* Overlap top of video */
+                    position: relative;
                 }
                 
                 .hero-title-bottom {
@@ -402,9 +404,11 @@ export function Hero() {
                     text-transform: uppercase;
                     color: #FBFBFB;
                     opacity: 0.9;
-                    margin: 24px 0 32px;
-                    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+                    margin: 0;
+                    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
                     z-index: 10;
+                    transform: translateY(-20px); /* Overlap bottom of video */
+                    position: relative;
                 }
 
                 .hero-cta-layer {
@@ -561,12 +565,11 @@ export function Hero() {
                     }
                     .hero-title-top { 
                         font-size: clamp(20px, 6vw, 28px); 
-                        margin-bottom: 12px; 
+                        transform: translateY(12px);
                     }
                     .hero-title-bottom { 
                         font-size: clamp(14px, 4vw, 18px); 
-                        margin-top: 12px;
-                        margin-bottom: 24px;
+                        transform: translateY(-12px);
                         letter-spacing: 0.05em;
                     }
                     .hero-text-layer { 
