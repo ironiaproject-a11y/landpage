@@ -87,10 +87,10 @@ export function Hero() {
             const newHeight = imgHeight * ratio;
 
             layoutRef.current = {
-                width: newWidth * 1.05, // Slight base scale increase
-                height: newHeight * 1.05,
-                x: (canvas.width - newWidth * 1.05) / 2,
-                y: (canvas.height - newHeight * 1.05) * 0.35 // Shifted UP (using 0.35 instead of 0.5)
+                width: newWidth * 1.02,
+                height: newHeight * 1.02,
+                x: (canvas.width - newWidth * 1.02) / 2,
+                y: (canvas.height - newHeight * 1.02) * 0.42 // Centered closer to text
             };
 
             render();
@@ -159,9 +159,9 @@ export function Hero() {
             }, 0.6);
 
             if (window.innerWidth > 768) {
-                gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
-                gsap.to(canvasRef.current, {
-                    scale: 1.25, // Further increased scale for more impact
+                gsap.set(containerRef.current, { xPercent: -50, yPercent: -50 });
+                gsap.to(containerRef.current, {
+                    scale: 1.15, // Controlled scale for prestige
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -187,14 +187,21 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 110vh; /* Increased height to give breathing room */
+                    height: 100vh;
                     min-height: -webkit-fill-available;
                     background: #000;
+                    margin-bottom: 25vh; /* Large spacer for About section */
+                }
+
+                .visual-wrapper {
+                    position: absolute;
+                    top: 45%; /* Elevated position */
+                    left: 50%;
+                    width: 100%;
+                    height: 100%;
                     display: flex;
-                    align-items: flex-start; /* Alignment at the top */
-                    padding-top: 22vh; /* Precise top padding to position text near the clinic/logo area */
-                    padding-bottom: 10vh;
-                    margin-bottom: 10vh; /* Physical space before the next section */
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .cinematic-title {
@@ -202,105 +209,69 @@ export function Hero() {
                     color: #fff;
                     display: flex;
                     flex-direction: column;
-                    align-items: flex-start;
+                    align-items: center; /* Centered relative to video */
                     gap: 0;
                     margin: 0;
-                }
-
-                .bracket {
-                    font-weight: 200;
-                    color: rgba(255,255,255,0.4);
-                    margin: 0 4px;
+                    width: 100%;
                 }
 
                 .prestige-text {
                     text-transform: uppercase;
-                    letter-spacing: 0.15em;
-                }
-
-                .hero-overlay {
-                    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-                }
-
-                .cta-primary {
-                    min-width: 280px;
-                    height: 56px;
-                    background: rgba(255,255,255,0.05);
-                    color: #fff;
-                    border-radius: 9999px;
-                    font-weight: 500;
-                    font-size: 13px;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-top: 1px solid rgba(255,255,255,0.3);
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-                    backdrop-filter: blur(25px);
-                    cursor: pointer;
-                    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-
-                .cta-primary:hover {
-                    background: #fff;
-                    color: #000;
-                    transform: translateY(-5px);
-                    box-shadow: 0 20px 50px rgba(255,255,255,0.15);
+                    letter-spacing: 0.12em;
+                    line-height: 1;
                 }
 
                 @media (max-width: 768px) {
                     .hero { 
-                        height: 100svh;
-                        padding-bottom: 15vh; 
-                        padding-left: 2rem;
-                        padding-right: 2rem;
+                        height: 90vh;
+                        margin-bottom: 15vh;
+                    }
+                    .visual-wrapper {
+                        top: 40%;
                     }
                 }
             `}</style>
 
-            <canvas
-                ref={canvasRef}
-                className="absolute inset-0 w-full h-full object-cover z-0"
-                style={mounted && window.innerWidth > 768 ? { left: '50%', top: '50%' } : { top: '50%' }}
-            />
-
-            <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
-
-            {/* Content properly positioned at the bottom with a clear visual hierarchy */}
-            <div className="relative z-10 w-full px-6 md:px-24 mx-auto container pointer-events-none mb-4 md:mb-12">
+            <div ref={containerRef} className="visual-wrapper z-0 pointer-events-none">
+                <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0 w-full h-full object-cover"
+                />
+                
+                {/* Typography INSIDE the visual container */}
                 <div 
                     ref={textContainerRef}
-                    className="max-w-4xl flex flex-col items-start gap-8 opacity-0 translate-y-12"
+                    className="relative z-10 w-full px-6 flex flex-col items-center opacity-0 translate-y-8"
                 >
                     <div className="cinematic-title">
                         {/* Phrase 1: The Origin */}
-                        <div className="phrase-1 flex items-center">
-                            <span className="bracket text-4xl md:text-6xl">[</span>
-                            <span className="prestige-text font-bold text-5xl md:text-8xl tracking-tight text-white drop-shadow-2xl">
+                        <div className="phrase-1 flex items-center justify-center w-full">
+                            <span className="bracket text-3xl md:text-5xl font-light opacity-40">[</span>
+                            <span className="prestige-text font-bold text-4xl md:text-6xl tracking-[0.15em] text-white drop-shadow-2xl">
                                 SUA ORIGEM
                             </span>
-                            <span className="bracket text-4xl md:text-6xl">]</span>
+                            <span className="bracket text-3xl md:text-5xl font-light opacity-40">]</span>
                         </div>
 
-                        {/* Phrase 2: The Smile (Stacked/Absolute to allow clean transition) */}
-                        <div className="phrase-2 absolute top-0 left-0 flex items-center opacity-0">
-                            <span className="bracket text-4xl md:text-6xl">[</span>
-                            <span className="prestige-text font-bold text-5xl md:text-8xl tracking-tight text-white drop-shadow-2xl">
+                        {/* Phrase 2: The Smile */}
+                        <div className="phrase-2 absolute top-0 left-0 right-0 flex items-center justify-center opacity-0">
+                            <span className="bracket text-3xl md:text-5xl font-light opacity-40">[</span>
+                            <span className="prestige-text font-bold text-4xl md:text-6xl tracking-[0.15em] text-white drop-shadow-2xl">
                                 SEU SORRISO
                             </span>
-                            <span className="bracket text-4xl md:text-6xl">]</span>
+                            <span className="bracket text-3xl md:text-5xl font-light opacity-40">]</span>
                         </div>
                     </div>
 
-                    <div className="ml-2 md:ml-12 pointer-events-auto">
+                    <div className="mt-12 pointer-events-auto">
                         <button className="cta-primary">
                             Agendar Experiência
                         </button>
                     </div>
                 </div>
             </div>
+
+            <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
         </section>
     );
 }
