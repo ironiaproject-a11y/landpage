@@ -1,3 +1,4 @@
+// Updated: 2026-03-10 - Premium Overlapping Narrative v2
 "use client";
 
 import { useEffect, useRef, useState } from "react";
