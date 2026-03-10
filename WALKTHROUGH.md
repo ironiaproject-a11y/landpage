@@ -3,31 +3,33 @@
 I've restructured the Hero section to create a powerful visual narrative of transformation, centering the smile animation as the lead protagonist of the user journey.
 
 ## Key Accomplishments
-# Hero Immersive Video & Minimalist Hierarchy Walkthrough
+# Hero Cinematic Typography & Hierarchy Walkthrough (PRESTIGE Inspired)
 
-The Hero section has been transformed into a pure cinematic experience, where the "Structure to Smile" transformation is the sole focus.
+The Hero section now features a high-end typography hierarchy inspired by luxury "PRESTIGE" aesthetics, framing the dental transformation with architectural elegance.
 
 ## Changes Made
 
-### 1. Immersion-First Design
-- **Video Dominance**: Expanded the Hero container to **90vh** (95vh on mobile), and increased the video canvas size to fill the visual field.
-- **Mobile Expansion**: Increased the video wrapper height on mobile to **85vh** and shifted its position **15% upwards** (`-15vh`). This ensures the transformation is the absolute protagonist on any screen size.
-- **Top-to-Bottom Flow**: The video now flows from the top of the page (overlapping with the minimalist Navbar), creating a high-end, gallery-like feel.
-- **Visual Cleanup**: Completely removed the H1 and H2 headlines to eliminate any visual friction and let the dental transformation speak for itself.
+### 1. "PRESTIGE" Typography Aesthetic
+- **Visual Style**: Re-introduced the phrases as **`[ SUA ORIGEM ]`** and **`[ SEU SORRISO ]`** using bold, uppercase typography with wide letter-spacing.
+- **Architectural Brackets**: Added thin, high-contrast brackets that "frame" each phrase, creating a premium, curated look similar to high-fashion or luxury gallery interfaces.
+- **Dynamic Centering**: The phrases are positioned to "sandwich" the central video transformation, creating a clear and powerful visual narrative.
 
-### 2. Minimalist Interaction
-- **Single CTA**: The only remaining text/interaction is the "Agendar Consulta" button, which reveals gracefully at the end of the narrative transformation.
-- **Simplified Rhythms**: Removed all headline-specific animations and scrub logic to ensure the focus remains 100% on the video.
+### 2. Scroll-Synchronized Narrative
+- **Cinematic Sync**: Implemented a GSAP cross-fade logic where:
+    - **`[ SUA ORIGEM ]`** dominates the initial structure phase.
+    - As the user scrolls and the video morphs, it dissolves into a blur-fade out.
+    - **`[ SEU SORRISO ]`** gracefully emerges as the smile transformation completes, leading the user directly to the CTA.
+- **Fluid Transitions**: Used `expo.out` easings and blur-fade combinations to ensure the transition feels as expensive and smooth as the 3D video itself.
 
-### 3. Stability & Cleanup
-- **Code Health**: Fixed TypeScript linting errors and removed all unused React refs and GSAP variables.
-- **Performance**: Maintained the optimized rendering pipeline (coordinate pre-calculation and resolution capping) for smooth playback in this larger format.
+### 3. Mobile Adaptation
+- **Mobile Scale**: Balanced the typography for mobile screens, ensuring the large-scale titles don't obstruct the video while maintaining the "sandwiched" layout.
+- **Increased Immersion**: Maintained the 15% upward expansion for the video container to maximize the impact of the transformation on vertical viewports.
 
 ## Verification Results
 
 - **Build Status**: Verified via `npm run build` - successful.
-- **Visual Impact**: The video now commands full attention, delivering a powerful message of transformation without distracting text.
+- **Aesthetic Coherence**: The bold, bracketed typography perfectly complements the high-tech, premium nature of the transformation video.
 
-✅ The Hero section delivers a truly premium, video-centric narrative with maximized mobile immersion.
+✅ The Hero section delivers a truly world-class, cinematic brand experience.
 
 ✅ Hero section redefined as a cohesive, high-impact transformation narrative.

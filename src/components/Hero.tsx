@@ -16,6 +16,8 @@ export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const titleOrigemRef = useRef<HTMLDivElement>(null);
+    const titleSorrisoRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
     const scrollIndicatorRef = useRef<HTMLDivElement>(null);
     const progressLineRef = useRef<HTMLDivElement>(null);
@@ -205,6 +207,12 @@ export function Hero() {
                 });
             }
 
+            // Cinematic Reveal for [ SUA ORIGEM ]
+            gsap.fromTo(titleOrigemRef.current,
+                { opacity: 0, scale: 0.95, filter: "blur(15px)", letterSpacing: "0.5em" },
+                { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.2em", duration: 1.4, ease: "expo.out" }
+            );
+
             // Final CTA Reveal - Triggered toward the end of the auto-play
             gsap.delayedCall(3.2, () => {
                 if (!introStopped) {
@@ -238,7 +246,7 @@ export function Hero() {
             if (window.innerWidth > 768) {
                 gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50 });
                 gsap.to(canvasRef.current, {
-                    scale: 1.08,
+                    scale: 1.12,
                     ease: "none",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -248,6 +256,33 @@ export function Hero() {
                     }
                 });
             }
+
+            // [ SUA ORIGEM ] fades out as we morph
+            gsap.to(titleOrigemRef.current, {
+                opacity: 0,
+                y: -50,
+                filter: "blur(10px)",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "15% top",
+                    end: "45% top",
+                    scrub: true
+                }
+            });
+
+            // [ SEU SORRISO ] fades in as the transformation completes
+            gsap.to(titleSorrisoRef.current, {
+                opacity: 1,
+                y: 0,
+                filter: "blur(0px)",
+                scale: 1,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "45% top",
+                    end: "75% top",
+                    scrub: true
+                }
+            });
 
             // Progress Line Animation
             gsap.to(progressLineRef.current, {
@@ -336,10 +371,35 @@ export function Hero() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: flex-end; /* Push CTA to bottom */
-                    padding: 0 24px 80px; /* Space for the button */
+                    justify-content: space-between; /* Spread titles and CTA */
+                    padding: 15vh 24px 8vh;
                     text-align: center;
                     pointer-events: none;
+                }
+
+                .cinematic-title {
+                    font-family: inherit;
+                    font-weight: 800;
+                    font-size: clamp(24px, 5vw, 48px);
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    gap: clamp(10px, 2vw, 30px);
+                    text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                }
+
+                .bracket {
+                    font-weight: 200;
+                    color: rgba(255,255,255,0.4);
+                    font-size: 1.2em;
+                    transform: translateY(-2px);
+                }
+
+                .sorriso-layer {
+                    margin-bottom: auto; /* Push it towards the video area */
+                    margin-top: 40px;
                 }
 
                 .hero-cta-layer {
@@ -487,14 +547,24 @@ export function Hero() {
                         object-fit: contain;
                     }
                     .hero-text-layer { 
-                        padding: 0 24px 60px; 
+                        padding: 10vh 24px 40px; 
                         justify-content: flex-end;
                         position: absolute;
                         height: 100%;
+                        gap: 15px;
+                    }
+                    .cinematic-title {
+                        font-size: clamp(18px, 5.5vw, 24px);
+                        letter-spacing: 0.15em;
+                    }
+                    .sorriso-layer {
+                        margin-bottom: 20px;
+                        margin-top: 0;
                     }
                     .hero-cta-layer { 
                         margin-top: 0; 
                         z-index: 10; 
+                        width: 100%;
                     }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
@@ -506,11 +576,29 @@ export function Hero() {
                     <div className="hero-overlay" />
 
                     <div className="hero-text-layer">
+                        {/* Phase 1: Sua Origem */}
+                        <div ref={titleOrigemRef} className="cinematic-title origem-layer">
+                            <span className="bracket">[</span>
+                            <span>Sua origem</span>
+                            <span className="bracket">]</span>
+                        </div>
+
                         <div className="hero-video-wrapper">
                             <canvas
                                 ref={canvasRef}
                                 className="hero-canvas"
                             />
+                        </div>
+
+                        {/* Phase 2: Seu Sorriso */}
+                        <div
+                            ref={titleSorrisoRef}
+                            className="cinematic-title sorriso-layer"
+                            style={{ opacity: 0, transform: 'translateY(20px) scale(0.95)', filter: 'blur(10px)' }}
+                        >
+                            <span className="bracket">[</span>
+                            <span>Seu sorriso</span>
+                            <span className="bracket">]</span>
                         </div>
 
                         <div className="hero-cta-layer">
