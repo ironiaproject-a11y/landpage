@@ -421,7 +421,7 @@ export function Hero() {
                         margin: auto;
                         overflow: hidden;
                         position: absolute;
-                        top: 50%;
+                        top: 42%;
                         left: 50%;
                         transform: translate(-50%, -50%);
                         z-index: 1;
@@ -438,7 +438,10 @@ export function Hero() {
                     }
                     .hero-title-top { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 12px; }
                     .hero-title-bottom { font-size: clamp(32px, 8vw, 44px); margin-bottom: 24px; }
-                    .hero-text-layer { padding: 0 24px; justify-content: center; }
+                    .hero-text-layer { 
+                        padding: 12vh 24px 0; 
+                        justify-content: flex-start; 
+                    }
                     .hero-cta-layer { gap: 16px; margin-top: 10px; }
                     .hero-progress-container { right: 12px; height: 100px; }
                     .hero-scroll-indicator { bottom: 20px; opacity: 0.2; }
