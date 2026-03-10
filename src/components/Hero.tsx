@@ -110,69 +110,62 @@ export function Hero() {
         });
 
         const ctx = gsap.context(() => {
-            // Main frame animation
-            gsap.to(playheadRef.current, {
-                frame: FRAME_COUNT - 1,
-                snap: "frame",
-                ease: "none",
+            // SINGLE UNIFIED TIMELINE for absolute synchronization
+            const masterTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=150%",
+                    end: "+=200%",
                     pin: true,
                     scrub: 0.5,
                     anticipatePin: 1
-                },
-                onUpdate: render,
-            });
-
-            // Cross-fade animation for text
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=150%",
-                    scrub: 0.5,
                 }
             });
 
-            // Phase 1: [ SUA ORIGEM ]
-            tl.to(".phrase-1", {
-                opacity: 0,
-                filter: "blur(15px)",
-                scale: 0.9,
-                y: -15,
-                duration: 0.8,
-                ease: "power2.in"
-            }, 0.3); // Starts slightly later
+            // 1. Frame Animation (full duration)
+            masterTl.to(playheadRef.current, {
+                frame: FRAME_COUNT - 1,
+                snap: "frame",
+                ease: "none",
+                duration: 2, // Arbitrary timeline duration
+                onUpdate: render,
+            }, 0);
 
-            // Phase 2: [ SEU SORRISO ]
-            tl.fromTo(".phrase-2", {
+            // 2. Container Scale (full duration)
+            if (window.innerWidth > 768) {
+                masterTl.to(containerRef.current, {
+                    scale: 1.25,
+                    ease: "none",
+                    duration: 2
+                }, 0);
+            }
+
+            // 3. Text Narrative Logic
+            // Phase 1: [ SUA ORIGEM ] Out
+            masterTl.to(".phrase-1", {
                 opacity: 0,
                 filter: "blur(15px)",
-                scale: 1.1,
+                scale: 0.85,
+                y: -15,
+                duration: 0.6,
+                ease: "power2.in"
+            }, 0.6); // Transition starts at ~30% scroll
+
+            // Phase 2: [ SEU SORRISO ] In
+            masterTl.fromTo(".phrase-2", {
+                opacity: 0,
+                filter: "blur(15px)",
+                scale: 1.15,
                 y: 15
             }, {
                 opacity: 1,
                 filter: "blur(0px)",
                 scale: 1,
                 y: 0,
-                duration: 0.8,
+                duration: 0.6,
                 ease: "power2.out"
-            }, 0.5); // Overlaps with phrase-1 fade-out
+            }, 1.0); // Overlaps as phrase-1 finishes
 
-            if (window.innerWidth > 768) {
-                gsap.to(containerRef.current, {
-                    scale: 1.22, // Increased scroll scale
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "+=150%",
-                        scrub: true
-                    }
-                });
-            }
         }, sectionRef);
 
         return () => {
@@ -209,18 +202,13 @@ export function Hero() {
 
                 .cinematic-title {
                     position: relative;
-                    font-family: inherit;
-                    color: #fff;
                     width: 100%;
-                    height: 120px; /* Stronger fixed height to hold both absolute phrases */
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    height: 140px; /* Taller safe height */
                 }
 
                 .prestige-text {
                     text-transform: uppercase;
-                    letter-spacing: 0.12em;
+                    letter-spacing: 0.15em;
                     line-height: 1.2;
                     display: inline-block;
                 }
