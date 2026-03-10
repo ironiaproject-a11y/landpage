@@ -149,12 +149,13 @@ export function Hero() {
     if (!mounted) return null;
 
     return (
-        <section ref={sectionRef} className="hero relative overflow-hidden min-h-[90vh]">
+        <section ref={sectionRef} className="hero relative overflow-hidden">
             <style>{`
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 100vh;
+                    height: 100svh;
+                    min-height: -webkit-fill-available;
                     background: #000;
                     display: flex;
                     align-items: flex-end; /* Place text at the bottom to avoid covering the visual */
@@ -163,57 +164,63 @@ export function Hero() {
 
                 .cinematic-title {
                     font-family: inherit;
-                    font-weight: 300;
-                    font-size: clamp(24px, 4vw, 42px);
-                    letter-spacing: 0.1em;
                     color: #fff;
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
-                    gap: 12px;
-                    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+                    gap: 16px;
                     margin: 0;
                 }
 
                 .bracket {
-                    font-weight: 100;
-                    color: rgba(255,255,255,0.4);
-                    font-size: 1.2em;
+                    font-weight: 200;
+                    color: rgba(255,255,255,0.3);
                     transform: translateY(-2px);
                 }
 
                 .hero-overlay {
-                    background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+                    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 60%);
                 }
 
                 .cta-primary {
-                    min-width: 220px;
-                    height: 48px;
-                    background: rgba(255,255,255,0.1);
+                    min-width: 260px;
+                    height: 54px;
+                    background: rgba(255,255,255,0.08);
                     color: #fff;
                     border-radius: 9999px;
-                    font-weight: 400;
-                    font-size: 13px;
-                    letter-spacing: 1.4px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    letter-spacing: 2px;
                     text-transform: uppercase;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    border: 1px solid rgba(255,255,255,0.2);
-                    backdrop-filter: blur(16px);
+                    border: 1px solid rgba(255,255,255,0.15);
+                    border-top: 1px solid rgba(255,255,255,0.3);
+                    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+                    backdrop-filter: blur(20px);
                     cursor: pointer;
-                    transition: all 0.4s ease;
+                    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
                 }
 
                 .cta-primary:hover {
                     background: #fff;
                     color: #000;
-                    transform: translateY(-2px);
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 40px rgba(255,255,255,0.2);
                 }
 
                 @media (max-width: 768px) {
-                    .cinematic-title { font-size: clamp(20px, 5vw, 28px); justify-content: center; }
-                    .hero { padding-bottom: 12vh; align-items: flex-end; justify-content: center;}
+                    .hero { 
+                        height: 96svh; /* Slightly smaller than 100 on desktop, fitting snug above the fold */
+                        padding-bottom: 12vh; 
+                        padding-left: 1.5rem;
+                        padding-right: 1.5rem;
+                    }
+                    .cinematic-title { 
+                        justify-content: flex-start; /* Keep left alignment for stronger hierarchy anchor */
+                        gap: 12px;
+                    }
                 }
             `}</style>
 
@@ -225,23 +232,29 @@ export function Hero() {
 
             <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
 
-            {/* Content properly positioned at the bottom */}
-            <div className="relative z-10 w-full px-8 md:px-16 mx-auto container pointer-events-none">
+            {/* Content properly positioned at the bottom with a clear visual hierarchy */}
+            <div className="relative z-10 w-full px-4 md:px-16 mx-auto container pointer-events-none mb-4 md:mb-8">
                 <div 
                     ref={textContainerRef}
-                    className="max-w-2xl flex flex-col md:items-start items-center gap-4 opacity-0 translate-y-8"
+                    className="max-w-2xl flex flex-col md:items-start items-start gap-5 opacity-0 translate-y-8"
                 >
-                    <h1 className="cinematic-title">
-                        <span className="bracket">[</span>
-                        <span>Sua origem</span>
-                        <span className="bracket">]</span>
-                    </h1>
-
-                    <p className="text-base md:text-xl opacity-80 text-white font-light tracking-wide drop-shadow-lg">
-                        Seu sorriso
-                    </p>
+                    <div className="flex flex-col gap-1 items-start">
+                        <h1 className="cinematic-title">
+                            <span className="bracket text-3xl md:text-5xl lg:text-6xl">[</span>
+                            <span className="font-bold text-4xl md:text-6xl lg:text-7xl tracking-tighter drop-shadow-2xl">
+                                Sua origem
+                            </span>
+                            <span className="bracket text-3xl md:text-5xl lg:text-6xl">]</span>
+                        </h1>
+                        <h2 className="flex items-center gap-4 ml-2 md:ml-[4.5rem] mt-2 group">
+                            <span className="w-8 md:w-16 h-[1px] bg-white/40 block transition-all duration-700 group-hover:w-24"></span>
+                            <span className="text-xl md:text-3xl lg:text-4xl font-light italic tracking-wide text-white/90 drop-shadow-lg">
+                                Seu sorriso.
+                            </span>
+                        </h2>
+                    </div>
                     
-                    <div className="mt-4 pointer-events-auto">
+                    <div className="mt-6 md:mt-8 md:ml-[4.5rem] pointer-events-auto">
                         <button className="cta-primary">
                             Agendar Consulta
                         </button>
