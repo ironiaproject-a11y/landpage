@@ -203,14 +203,25 @@ export function Hero() {
                 .cinematic-title {
                     position: relative;
                     width: 100%;
-                    height: 140px; /* Taller safe height */
+                    height: 140px;
                 }
 
                 .prestige-text {
                     text-transform: uppercase;
-                    letter-spacing: 0.15em;
                     line-height: 1.2;
                     display: inline-block;
+                }
+
+                .phrase-1 .prestige-text {
+                    color: var(--color-silver-bh, #CBD5E1);
+                    letter-spacing: 0.18em;
+                }
+
+                .phrase-2 .prestige-text {
+                    color: var(--color-creme, #F5F5DC);
+                    font-family: var(--font-bodoni), serif;
+                    letter-spacing: 0.22em;
+                    filter: drop-shadow(0 0 15px rgba(245, 245, 220, 0.3));
                 }
 
                 @media (max-width: 768px) {
@@ -236,21 +247,22 @@ export function Hero() {
                     className="relative z-10 w-full px-6 flex flex-col items-center opacity-0 translate-y-8"
                 >
                     <div className="cinematic-title">
-                        {/* Both phrases use absolute inset-0 to ensure perfect overlap and centering */}
+                        {/* Phrase 1: Titanium Silver - Technical Precision */}
                         <div className="phrase-1 absolute inset-0 flex items-center justify-center w-full">
-                            <span className="bracket text-2xl md:text-4xl font-extralight opacity-30">[</span>
-                            <span className="prestige-text font-medium text-4xl md:text-6xl tracking-[0.2em] text-white/90">
+                            <span className="bracket text-2xl md:text-3xl font-extralight opacity-20 text-[#CBD5E1]">[</span>
+                            <span className="prestige-text font-medium text-4xl md:text-6xl">
                                 SUA ORIGEM
                             </span>
-                            <span className="bracket text-2xl md:text-4xl font-extralight opacity-30">]</span>
+                            <span className="bracket text-2xl md:text-3xl font-extralight opacity-20 text-[#CBD5E1]">]</span>
                         </div>
 
+                        {/* Phrase 2: Creme Luminous - Aesthetic Sophistication */}
                         <div className="phrase-2 absolute inset-0 flex items-center justify-center opacity-0">
-                            <span className="bracket text-2xl md:text-4xl font-thin opacity-30">[</span>
-                            <span className="prestige-text font-extralight italic text-4xl md:text-6xl tracking-[0.25em] text-white">
+                            <span className="bracket text-2xl md:text-3xl font-thin opacity-20 text-[#F5F5DC]">[</span>
+                            <span className="prestige-text font-light italic text-4xl md:text-6xl">
                                 SEU SORRISO
                             </span>
-                            <span className="bracket text-2xl md:text-4xl font-thin opacity-30">]</span>
+                            <span className="bracket text-2xl md:text-3xl font-thin opacity-20 text-[#F5F5DC]">]</span>
                         </div>
                     </div>
 
