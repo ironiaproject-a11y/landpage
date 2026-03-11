@@ -288,9 +288,9 @@ export function Hero() {
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-1">
-                        <h1 className="text-[#F8F8F6] font-normal tracking-[0.15em] opacity-80 uppercase" style={{ 
+                        <h1 className="text-[#F8F8F6] font-normal tracking-[0.15em] opacity-90 uppercase" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(12px, 2.5vw, 15px)',
+                            fontSize: 'clamp(16px, 3vw, 22px)',
                             lineHeight: '1.2'
                         }}>
                             Sua origem
