@@ -287,12 +287,14 @@ export function Hero() {
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding: 0 6vw;
+                        padding-left: 6vw;
+                        padding-right: 6vw;
+                        padding-top: 20vh; /* Headline no topo ~20% da viewport — sem conflito de shorthand */
+                        padding-bottom: 0;
                         height: 100%;
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-start;
-                        padding-top: 15vh; /* Posiciona headline no topo ~15% da viewport */
                         top: 0 !important;
                     }
                     .phrase-1 {
@@ -315,7 +317,7 @@ export function Hero() {
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 2rem !important;
+                        margin-top: 4rem !important; /* Mais respiro entre headline e CTA */
                     }
                     .hero-visual {
                         width: 100%;
