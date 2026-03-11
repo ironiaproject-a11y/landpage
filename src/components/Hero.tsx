@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { m } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -99,78 +100,124 @@ export function Hero() {
         window.addEventListener("resize", updateSize);
         updateSize();
         preloadImages();
+        startSequence();
 
-        // Reveal text after a short delay
-        gsap.to(textContainerRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            delay: 0.5,
-            ease: "power3.out"
+        // 1. Intro Animation Sequence
+        const introTl = gsap.timeline({
+            paused: true,
+            onComplete: () => {
+                initScrollEffects();
+            }
         });
 
-        const ctx = gsap.context(() => {
-            // SINGLE UNIFIED TIMELINE for absolute synchronization
-            const masterTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=200%",
-                    pin: true,
-                    scrub: 0.5,
-                    anticipatePin: 1
+        const initScrollEffects = () => {
+            // Avoid double initialization
+            if (ScrollTrigger.getById("heroScroll")) return;
+
+            const ctx = gsap.context(() => {
+                const masterTl = gsap.timeline({
+                    id: "heroScroll",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "+=200%",
+                        pin: true,
+                        scrub: 0.5,
+                        anticipatePin: 1
+                    }
+                });
+
+                // Frame Animation - Continues from the end of intro (~45)
+                masterTl.fromTo(playheadRef.current, 
+                    { frame: 45 },
+                    {
+                        frame: FRAME_COUNT - 1,
+                        snap: "frame",
+                        ease: "none",
+                        duration: 2,
+                        onUpdate: render,
+                    }, 0);
+
+                // Container Scale
+                if (window.innerWidth > 768) {
+                    masterTl.to(containerRef.current, {
+                        scale: 1.25,
+                        ease: "none",
+                        duration: 2
+                    }, 0);
                 }
-            });
 
-            // 1. Frame Animation (full duration)
-            masterTl.to(playheadRef.current, {
-                frame: FRAME_COUNT - 1,
-                snap: "frame",
-                ease: "none",
-                duration: 2, // Arbitrary timeline duration
-                onUpdate: render,
-            }, 0);
+                // Text Narrative logic - Starts from phrase-1 (already visible)
+                masterTl.to(".phrase-1", {
+                    opacity: 0,
+                    filter: "blur(15px)",
+                    scale: 0.85,
+                    y: -15,
+                    duration: 0.6,
+                    ease: "power2.in"
+                }, 0.6);
 
-            // 2. Container Scale (full duration)
-            if (window.innerWidth > 768) {
-                masterTl.to(containerRef.current, {
-                    scale: 1.25,
-                    ease: "none",
-                    duration: 2
-                }, 0);
+                masterTl.fromTo(".phrase-2", {
+                    opacity: 0,
+                    filter: "blur(15px)",
+                    scale: 1.15,
+                    y: 15
+                }, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    scale: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power2.out"
+                }, 1.0);
+            }, sectionRef);
+        };
+
+        // Define Intro Tweens
+        introTl.to(playheadRef.current, {
+            frame: 45,
+            duration: 2.5,
+            ease: "power2.out",
+            onUpdate: render
+        }, 0);
+
+        introTl.fromTo(textContainerRef.current, 
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }, 
+        0.5);
+
+        // Handle Scroll Handover (Interruption)
+        const handleInterrupt = () => {
+            if (introTl.isActive()) {
+                introTl.kill();
+                // Jump to intro state for consistency
+                playheadRef.current.frame = 45;
+                gsap.set(textContainerRef.current, { opacity: 1, y: 0 });
+                render();
+                initScrollEffects();
             }
+            window.removeEventListener("wheel", handleInterrupt);
+            window.removeEventListener("touchstart", handleInterrupt);
+        };
 
-            // 3. Text Narrative Logic
-            // Phase 1: [ SUA ORIGEM ] Out
-            masterTl.to(".phrase-1", {
-                opacity: 0,
-                filter: "blur(15px)",
-                scale: 0.85,
-                y: -15,
-                duration: 0.6,
-                ease: "power2.in"
-            }, 0.6); // Transition starts at ~30% scroll
+        window.addEventListener("wheel", handleInterrupt);
+        window.addEventListener("touchstart", handleInterrupt);
 
-            // Phase 2: [ SEU SORRISO ] In
-            masterTl.fromTo(".phrase-2", {
-                opacity: 0,
-                filter: "blur(15px)",
-                scale: 1.15,
-                y: 15
-            }, {
-                opacity: 1,
-                filter: "blur(0px)",
-                scale: 1,
-                y: 0,
-                duration: 0.6,
-                ease: "power2.out"
-            }, 1.0); // Overlaps as phrase-1 finishes
-
-        }, sectionRef);
+        // Start Intro when first frame is ready
+        const startSequence = () => {
+            if (imagesRef.current[0]?.complete) {
+                introTl.play();
+            } else {
+                setTimeout(startSequence, 100);
+            }
+        };
 
         return () => {
-            ctx.revert();
+            introTl.kill();
+            window.removeEventListener("wheel", handleInterrupt);
+            window.removeEventListener("touchstart", handleInterrupt);
             window.removeEventListener("resize", updateSize);
+            ScrollTrigger.getById("heroScroll")?.kill();
         };
     }, [mounted]);
 
@@ -185,6 +232,7 @@ export function Hero() {
                     height: 100vh;
                     min-height: -webkit-fill-available;
                     background: #000;
+                    padding: 0 !important;
                     margin-bottom: 25vh; /* Large spacer for About section */
                 }
 
@@ -195,6 +243,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
+                        margin-top: -3vh; /* Visual offset to "subir" content */
                     }
                     .hero-text {
                         width: 50%;
@@ -282,9 +331,63 @@ export function Hero() {
                         margin-bottom: 15vh;
                     }
                 }
+
+                /* Film Grain Texture */
+                .film-grain {
+                    position: absolute;
+                    inset: -100% -100% -100% -100%;
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                    opacity: 0.04;
+                    pointer-events: none;
+                    z-index: 5;
+                    animation: noise 0.2s infinite;
+                    will-change: transform;
+                }
+
+                @keyframes noise {
+                    0% { transform: translate(0, 0); }
+                    10% { transform: translate(-5%, -5%); }
+                    20% { transform: translate(-10%, 5%); }
+                    30% { transform: translate(5%, -10%); }
+                    40% { transform: translate(-5%, 15%); }
+                    50% { transform: translate(-10%, 5%); }
+                    60% { transform: translate(15%, 0); }
+                    70% { transform: translate(0, 10%); }
+                    80% { transform: translate(-15%, 0); }
+                    90% { transform: translate(10%, 5%); }
+                    100% { transform: translate(5%, 0); }
+                }
             `}</style>
 
             <div className="hero-container relative z-10 w-full h-full">
+                {/* Film Grain Layer */}
+                <div className="film-grain" aria-hidden="true" />
+                
+                {/* Atmospheric Bokeh Particles */}
+                <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    {[...Array(6)].map((_, i) => (
+                        <m.div
+                            key={i}
+                            className="absolute rounded-full bg-[#E6D3A3]/5 blur-[60px]"
+                            style={{
+                                width: Math.random() * 300 + 200 + 'px',
+                                height: Math.random() * 300 + 200 + 'px',
+                                left: Math.random() * 100 + '%',
+                                top: Math.random() * 100 + '%',
+                            }}
+                            animate={{
+                                x: [0, Math.random() * 100 - 50, 0],
+                                y: [0, Math.random() * 100 - 50, 0],
+                                opacity: [0.3, 0.6, 0.3],
+                            }}
+                            transition={{
+                                duration: Math.random() * 10 + 15,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+                    ))}
+                </div>
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-1">
