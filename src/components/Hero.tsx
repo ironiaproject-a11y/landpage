@@ -139,6 +139,32 @@ export function Hero() {
                         onUpdate: render,
                     }, 0);
 
+                // Metric Counter Animations
+                const counters = sectionRef.current?.querySelectorAll(".hero-counter-value");
+                counters?.forEach((counter) => {
+                    const targetValue = parseFloat(counter.getAttribute("data-target") || "0");
+                    const isFloat = counter.getAttribute("data-float") === "true";
+                    
+                    const obj = { value: 0 };
+                    masterTl.to(obj, {
+                        value: targetValue,
+                        duration: 1.5,
+                        ease: "power4.out",
+                        onUpdate: () => {
+                            if (counter) {
+                                counter.innerHTML = isFloat 
+                                    ? obj.value.toFixed(1).replace(".", ",") 
+                                    : Math.floor(obj.value).toLocaleString("pt-BR");
+                            }
+                        }
+                    }, 0.5);
+                });
+
+                masterTl.fromTo(".hero-metrics", 
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+                0.3);
+
                 // Container Scale
                 if (window.innerWidth > 768) {
                     masterTl.to(containerRef.current, {
@@ -417,6 +443,41 @@ export function Hero() {
                         <button className="btn-luxury-primary">
                             Agendar Experiência
                         </button>
+                    </div>
+
+                    {/* Integrated Metrics (The "Hole" Filler) */}
+                    <div className="hero-metrics mt-16 md:mt-24 grid grid-cols-2 gap-8 md:gap-12 opacity-0">
+                        <div className="metric-item group">
+                            <div className="flex items-baseline gap-1">
+                                <span 
+                                    className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                    data-target="1200"
+                                    data-float="false"
+                                >
+                                    0
+                                </span>
+                                <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">+</span>
+                            </div>
+                            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                Histórias Reais
+                            </span>
+                        </div>
+
+                        <div className="metric-item group">
+                            <div className="flex items-baseline gap-1">
+                                <span 
+                                    className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                    data-target="99.1"
+                                    data-float="true"
+                                >
+                                    0
+                                </span>
+                                <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">%</span>
+                            </div>
+                            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                Precisão Digital
+                            </span>
+                        </div>
                     </div>
                 </div>
 
