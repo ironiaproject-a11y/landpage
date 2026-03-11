@@ -36,6 +36,16 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
+      <div className="h-[120px] bg-black" /> {/* Hero to Social proof: 120px for luxury air */}
+      <Stats />
+      
+      {/* Central CTA - Transition from Social Proof (Trust) to Action */}
+      <div className="flex justify-center bg-[#FBFBF9] pb-24">
+        <button className="btn-luxury-primary">
+          Agendar Experiência
+        </button>
+      </div>
+      <div className="h-[100px] bg-[#FBFBF9]" /> {/* Social proof to Next section: 100px */}
       <About />
       <InstitutionalTrust />
       <TrustBar />

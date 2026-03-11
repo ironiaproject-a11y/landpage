@@ -139,13 +139,13 @@ export function Hero() {
                         onUpdate: render,
                     }, 0);
 
-                masterTl.fromTo(".hero-metrics", 
+                /* masterTl.fromTo(".hero-metrics", 
                     { opacity: 0, y: 30 },
                     { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-                0.3);
+                0.3); */
 
-                // Metric Counter Animations - 4 Pillars
-                const counters = sectionRef.current?.querySelectorAll(".hero-counter-value");
+                // Metric Counter Animations - Moved to Stats.tsx
+                /* const counters = sectionRef.current?.querySelectorAll(".hero-counter-value");
                 counters?.forEach((counter, idx) => {
                     const targetValue = parseFloat(counter.getAttribute("data-target") || "0");
                     const isFloat = counter.getAttribute("data-float") === "true";
@@ -163,7 +163,7 @@ export function Hero() {
                             }
                         }
                     }, 0.5 + (idx * 0.15)); // Staggered count-up
-                });
+                }); */
 
                 // Container Scale
                 if (window.innerWidth > 768) {
@@ -260,7 +260,7 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 100vh;
+                    height: 90vh; /* Changed from 100vh to 90vh */
                     min-height: -webkit-fill-available;
                     background: #000;
                     padding: 0 !important;
@@ -269,19 +269,18 @@ export function Hero() {
                 @media (min-width: 1024px) {
                     .hero-container {
                         display: flex;
-                        align-items: flex-start; /* Aligns text to the top */
+                        align-items: flex-start;
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 15vh; /* Positions headline ~15% from top */
+                        padding-top: 18vh; /* content sitting higher (15-20%) */
                         position: relative;
                     }
                     .hero-text {
                         width: 50%;
-                        max-width: 520px;
+                        max-width: 600px;
                         z-index: 20;
                         text-align: left !important;
-                        /* Removed transform translateY to simplify upper positioning */
                     }
                     .hero-visual {
                         width: 50%;
@@ -289,10 +288,10 @@ export function Hero() {
                         position: relative;
                     }
                     .hero-overlay {
-                        background: linear-gradient(to right, 
-                            rgba(0,0,0,0.55) 0%, 
-                            rgba(0,0,0,0.2) 50%, 
-                            transparent 100%
+                        background: linear-gradient(
+                            rgba(0,0,0,0.55),
+                            rgba(0,0,0,0.25),
+                            transparent
                         );
                     }
                 }
@@ -302,10 +301,10 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-start; /* Aligns content to the top */
+                        justify-content: flex-start;
                         width: 100%;
                         height: 100%;
-                        padding-top: 15vh; /* Positions headline ~15% from top */
+                        padding-top: 15vh;
                         position: relative;
                     }
                     .hero-text {
@@ -323,7 +322,7 @@ export function Hero() {
                         left: auto !important;
                         transform: none !important;
                         width: 100%;
-                        margin-bottom: 0.5rem;
+                        margin-bottom: 10px; /* Spacing between lines (8-12px) */
                     }
                     .phrase-2 {
                         position: relative !important;
@@ -337,14 +336,18 @@ export function Hero() {
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 6.5rem !important; /* Increased breathing space (equivalent to mt-24+) */
+                        margin-top: 32px !important; /* Spacing between headline and CTA (28-36px) */
                     }
                     .hero-visual {
                         width: 100%;
                         height: 100%;
                     }
                     .hero-overlay {
-                        background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+                        background: linear-gradient(
+                            rgba(0,0,0,0.55),
+                            rgba(0,0,0,0.25),
+                            transparent
+                        );
                     }
                 }
 
@@ -419,10 +422,10 @@ export function Hero() {
                 </div>
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0" aria-hidden="false">
-                    <div className="phrase-1 mb-1">
-                        <h1 className="text-[#F8F8F6] font-normal tracking-[0.15em] opacity-90 uppercase" style={{ 
+                    <div className="phrase-1">
+                        <h1 className="text-[#F8F8F6] font-medium tracking-[0.15em] opacity-90 uppercase" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(16px, 3vw, 22px)',
+                            fontSize: 'clamp(24px, 4vw, 30px)', // Requirement: around 24-34px
                             lineHeight: '1.2'
                         }}>
                             Sua origem
@@ -432,91 +435,16 @@ export function Hero() {
                     <div className="phrase-2">
                         <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(44px, 11vw, 88px)',
+                            fontSize: 'clamp(48px, 10vw, 72px)', // Requirement: around 48-72px
                             lineHeight: '0.95'
                         }}>
                             Seu sorriso
                         </h2>
                     </div>
 
-                    <div className="hero-btn-wrapper mt-24 lg:mt-32 pointer-events-auto">
-                        <button className="btn-luxury-primary">
-                            Agendar Experiência
-                        </button>
-                    </div>
+                    {/* Button relocated to page.tsx for better hierarchical flow */}
 
-                    {/* Integrated Metrics Panel - 4 Pillars of Excellence */}
-                    <div className="hero-metrics mt-20 md:mt-32 w-full opacity-0">
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-16 border-t border-white/10 pt-12">
-                            {/* Transformations */}
-                            <div className="metric-item group">
-                                <div className="flex items-baseline gap-1">
-                                    <span 
-                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                        data-target="1250"
-                                        data-float="false"
-                                    >
-                                        0
-                                    </span>
-                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">+</span>
-                                </div>
-                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                    Histórias Reais
-                                </span>
-                            </div>
-
-                            {/* Digital Precision */}
-                            <div className="metric-item group">
-                                <div className="flex items-baseline gap-1">
-                                    <span 
-                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                        data-target="99.8"
-                                        data-float="true"
-                                    >
-                                        0
-                                    </span>
-                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">%</span>
-                                </div>
-                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                    Precisão Digital
-                                </span>
-                            </div>
-
-                            {/* Mastery */}
-                            <div className="metric-item group">
-                                <div className="flex items-baseline gap-1">
-                                    <span 
-                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                        data-target="25"
-                                        data-float="false"
-                                    >
-                                        0
-                                    </span>
-                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">y</span>
-                                </div>
-                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                    Anos de Maestria
-                                </span>
-                            </div>
-
-                            {/* Approval */}
-                            <div className="metric-item group">
-                                <div className="flex items-baseline gap-1">
-                                    <span 
-                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                        data-target="5.0"
-                                        data-float="true"
-                                    >
-                                        0
-                                    </span>
-                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">★</span>
-                                </div>
-                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                    Google Rating
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Metrics removed - moved to SocialProof (Stats.tsx) */}
                 </div>
 
                 {/* Visual Column / Container */}
