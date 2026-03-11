@@ -246,7 +246,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        margin-top: -3vh; /* Visual offset to "subir" content */
+                        padding-bottom: 8vh; /* Bias content upwards without clipping */
                     }
                     .hero-text {
                         width: 50%;
