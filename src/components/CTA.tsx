@@ -77,7 +77,7 @@ export function CTA() {
 
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <LuxuryCard
-                    className="cta-glass-panel max-w-4xl mx-auto border-white/5"
+                    className="cta-glass-panel max-w-4xl mx-auto border-[var(--color-silver-bh)]/5"
                     innerClassName="p-10 md:p-24"
                     glowColor="rgba(245, 245, 220, 0.08)"
                 >
@@ -93,15 +93,15 @@ export function CTA() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <h2 className="font-display text-[clamp(42px,7vw,96px)] font-medium text-white mb-10 leading-[1.05] tracking-hero uppercase">
+                        <h2 className="font-display text-[clamp(42px,7vw,96px)] font-medium text-[var(--color-silver-bh)] mb-10 leading-[1.05] tracking-hero uppercase">
                             Seu novo sorriso<br />
-                            <span className="text-gradient-silver italic font-light">começa hoje.</span>
+                            <span className="text-[var(--color-creme)] font-bodoni italic font-light">começa hoje.</span>
                         </h2>
                     </PremiumReveal>
 
                     <PremiumReveal type="fade" delay={0.5}>
-                        <p className="text-lg md:text-xl text-white font-medium leading-[1.6] max-w-2xl mx-auto mb-16 body-text-refined">
-                            Agende uma avaliação detalhada e descubra como nosso protocolo <span className="italic font-display font-light text-white">exclusivo</span> pode transformar sua autoestima.
+                        <p className="text-lg md:text-xl text-[var(--color-silver-bh)]/80 font-medium leading-[1.6] max-w-2xl mx-auto mb-16 body-text-refined">
+                            Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-[var(--color-creme)] font-bodoni italic font-light">exclusivo</span> pode transformar sua autoestima.
                         </p>
                     </PremiumReveal>
 

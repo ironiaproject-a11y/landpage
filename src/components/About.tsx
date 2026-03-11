@@ -155,28 +155,28 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                        <h2 className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-gradient-silver italic font-light block mt-2">Luxo Odontológico.</span>
+                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Luxo Odontológico.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-lg text-white/70 font-light leading-relaxed mb-10 body-text-refined">
+                            <p className="text-lg text-[var(--color-silver-bh)]/70 font-light leading-relaxed mb-10 body-text-refined">
                                 Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico.
                             </p>
                         </PremiumReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
                             {highlights.map((item, index) => (
-                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-white/20 transition-colors">
-                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-silver-bh)] transition-all">
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[var(--color-creme)]/20 transition-colors">
+                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-creme)] transition-all">
                                         <ArrowUpRight className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-white/80 font-medium text-sm tracking-wide group-hover:text-white">{item}</span>
+                                    <span className="text-[var(--color-silver-bh)]/80 font-medium text-sm tracking-wide group-hover:text-white">{item}</span>
                                 </div>
                             ))}
                         </div>
@@ -186,7 +186,7 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.8 }}
-                            className="px-10 py-5 bg-white text-black text-[10px] font-bold uppercase tracking-[0.08em] min-h-[52px] rounded-full hover:bg-[var(--color-silver-bh)] transition-colors duration-500 font-body"
+                            className="px-10 py-5 bg-[var(--color-silver-bh)] text-black text-[10px] font-bold uppercase tracking-[0.15em] min-h-[52px] rounded-full hover:bg-[var(--color-creme)] transition-colors duration-500 font-body"
                         >
                             Descubra nossa tecnologia
                         </m.button>

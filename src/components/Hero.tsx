@@ -212,18 +212,6 @@ export function Hero() {
                     display: inline-block;
                 }
 
-                .phrase-1 .prestige-text {
-                    color: var(--color-silver-bh, #CBD5E1);
-                    letter-spacing: 0.18em;
-                }
-
-                .phrase-2 .prestige-text {
-                    color: var(--color-creme, #F5F5DC);
-                    font-family: var(--font-bodoni), serif;
-                    letter-spacing: 0.22em;
-                    filter: drop-shadow(0 0 15px rgba(245, 245, 220, 0.3));
-                }
-
                 @media (max-width: 768px) {
                     .hero { 
                         height: 90vh;
@@ -233,6 +221,13 @@ export function Hero() {
                         top: 32%; /* Even closer on mobile */
                     }
                 }
+
+                .hero-overlay {
+                    background: linear-gradient(
+                        rgba(0, 0, 0, 0.45), 
+                        rgba(0, 0, 0, 0.2)
+                    );
+                }
             `}</style>
 
             <div ref={containerRef} className="visual-wrapper z-0 pointer-events-none">
@@ -241,35 +236,33 @@ export function Hero() {
                     className="absolute inset-0 w-full h-full object-cover"
                 />
                 
-                {/* Typography INSIDE the visual container */}
+                {/* Typography INSIDE the visual container (Overlay) */}
                 <div 
                     ref={textContainerRef}
-                    className="relative z-10 w-full px-6 flex flex-col items-center opacity-0 translate-y-8"
+                    className="absolute inset-0 flex items-center justify-center text-center z-10 px-6 opacity-0 translate-y-8"
                 >
-                    <div className="cinematic-title">
-                        {/* Phrase 1: Titanium Silver - Technical Precision */}
-                        <div className="phrase-1 absolute inset-0 flex items-center justify-center w-full">
-                            <span className="bracket text-2xl md:text-3xl font-extralight opacity-20 text-[#CBD5E1]">[</span>
-                            <span className="prestige-text font-medium text-4xl md:text-6xl">
-                                SUA ORIGEM
-                            </span>
-                            <span className="bracket text-2xl md:text-3xl font-extralight opacity-20 text-[#CBD5E1]">]</span>
+                    <div className="flex flex-col items-center">
+                        <div className="relative w-full overflow-hidden">
+                            {/* Phrase 1: "Sua origem" - Primary focus on hierarchy */}
+                            <div className="phrase-1 mb-1">
+                                <h1 className="text-[#F5F5F4] text-[clamp(28px,4vw,40px)] font-light tracking-wide uppercase">
+                                    Sua origem
+                                </h1>
+                            </div>
+
+                            {/* Phrase 2: "Seu sorriso" - Dominant focus */}
+                            <div className="phrase-2">
+                                <h2 className="text-[#F5F5F4] text-[clamp(48px,7vw,72px)] font-bold leading-tight uppercase font-bodoni italic">
+                                    Seu sorriso
+                                </h2>
+                            </div>
                         </div>
 
-                        {/* Phrase 2: Creme Luminous - Aesthetic Sophistication */}
-                        <div className="phrase-2 absolute inset-0 flex items-center justify-center opacity-0">
-                            <span className="bracket text-2xl md:text-3xl font-thin opacity-20 text-[#F5F5DC]">[</span>
-                            <span className="prestige-text font-light italic text-4xl md:text-6xl">
-                                SEU SORRISO
-                            </span>
-                            <span className="bracket text-2xl md:text-3xl font-thin opacity-20 text-[#F5F5DC]">]</span>
+                        <div className="mt-12 pointer-events-auto">
+                            <button className="btn-luxury-primary">
+                                Agendar Experiência
+                            </button>
                         </div>
-                    </div>
-
-                    <div className="mt-12 pointer-events-auto">
-                        <button className="cta-primary">
-                            Agendar Experiência
-                        </button>
                     </div>
                 </div>
             </div>

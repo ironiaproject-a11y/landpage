@@ -165,7 +165,7 @@ export function InstitutionalTrust() {
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-deep-black)] relative overflow-hidden">
             {/* Background Texture for Depth */}
-            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)' }}></div>
+            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, var(--color-silver-bh) 1px, transparent 1px)' }}></div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-12 border-b border-white/5 pb-20">
@@ -176,12 +176,12 @@ export function InstitutionalTrust() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-white text-[clamp(28px,6vw,48px)] font-medium leading-[1.1] uppercase tracking-[-0.01em]">
+                        <h2 className="font-display text-[var(--color-silver-bh)] text-[clamp(28px,6vw,48px)] font-medium leading-[1.1] uppercase tracking-[-0.01em]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-gradient-silver italic font-light block mt-2">Rigor e a Sensibilidade.</span>
+                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -201,17 +201,17 @@ export function InstitutionalTrust() {
                             {/* Numerical Indicator - Editorial Style */}
                             <div className="flex justify-between items-start mb-12">
                                 <div className="w-10 h-[1px] bg-[var(--color-creme)]/10 mt-4 group-hover:w-16 group-hover:bg-[var(--color-creme)]/30 transition-all duration-700 origin-left" />
-                                <span className="font-display font-medium text-6xl text-white/[0.03] group-hover:text-[var(--color-creme)]/10 transition-all duration-1000 leading-none tracking-tighter">
+                                <span className="font-display font-medium text-6xl text-[var(--color-silver-bh)]/[0.03] group-hover:text-[var(--color-creme)]/10 transition-all duration-1000 leading-none tracking-tighter">
                                     {card.number}
                                 </span>
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="font-display text-white text-xl md:text-2xl font-medium mb-6 group-hover:translate-x-2 transition-transform duration-500 uppercase tracking-wide">
+                                <h3 className="font-display text-[var(--color-silver-bh)] text-xl md:text-2xl font-medium mb-6 group-hover:translate-x-2 transition-transform duration-500 uppercase tracking-wide">
                                     {card.title}
                                 </h3>
 
-                                <p className="font-body text-white/70 text-sm leading-[1.65] group-hover:text-white/90 transition-colors duration-500 max-w-[90%] body-text-refined">
+                                <p className="font-body text-[var(--color-silver-bh)]/60 text-sm leading-[1.65] group-hover:text-[var(--color-silver-bh)]/90 transition-colors duration-500 max-w-[90%] body-text-refined">
                                     {card.subtitle}
                                 </p>
                             </div>

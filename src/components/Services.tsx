@@ -68,7 +68,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="font-display text-2xl font-medium mb-4 text-white group-hover:text-[var(--color-accent)] transition-colors duration-700 uppercase tracking-tight">
+                    <h3 className="font-display text-2xl font-medium mb-4 text-[var(--color-silver-bh)] group-hover:text-[var(--color-creme)] transition-colors duration-700 uppercase tracking-tight">
                         {service.title}
                     </h3>
 
@@ -77,7 +77,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-[0.3em] group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white transition-all duration-500">
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-[var(--color-creme)]/10 bg-[var(--color-creme)]/[0.02] backdrop-blur-md text-[var(--color-creme)]/80 text-[10px] font-bold uppercase tracking-[0.3em] group-hover:bg-[var(--color-creme)]/10 group-hover:border-[var(--color-creme)]/20 group-hover:text-[var(--color-creme)] transition-all duration-500">
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -319,12 +319,12 @@ export function Services() {
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-display text-[clamp(28px,6vw,56px)] font-medium text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                <h2 className="font-display text-[clamp(28px,6vw,56px)] font-medium text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de</span>
                     </PremiumReveal>
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <span className="text-gradient-silver italic font-light block mt-2">extrema precisão.</span>
+                        <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">extrema precisão.</span>
                     </PremiumReveal>
                 </h2>
             </div>

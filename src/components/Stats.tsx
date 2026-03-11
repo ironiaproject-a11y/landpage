@@ -134,7 +134,7 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-white/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-[var(--color-silver-bh)]/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             {/* Background Texture Overlay */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
 
@@ -207,7 +207,7 @@ export function Stats() {
                                         whileInView={{ opacity: 0.85, y: 0 }}
                                         transition={{ duration: 1, delay: stat.delay + 0.6 }}
                                         viewport={{ once: true, margin: "-15%" }}
-                                        className="text-white/80 font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-white transition-colors duration-500"
+                                        className="text-[var(--color-silver-bh)]/80 font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-[var(--color-silver-bh)] transition-colors duration-500"
                                     >
                                         {stat.sublabel}
                                     </m.p>
@@ -216,7 +216,7 @@ export function Stats() {
 
                             {/* Vertical Divider for Desktop */}
                             {index !== stats.length - 1 && (
-                                <div className="stat-divider hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent origin-center" />
+                                <div className="stat-divider hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-[var(--color-silver-bh)]/10 to-transparent origin-center" />
                             )}
 
                             {/* Horizontal Divider for Mobile - Refined */}
@@ -233,7 +233,7 @@ export function Stats() {
             <div className="stats-glow absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-[var(--color-silver-bh)]/5 blur-[150px] rounded-full pointer-events-none" />
 
             {/* Top Shine */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[2px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/20 to-transparent" />
         </section>
 
     );

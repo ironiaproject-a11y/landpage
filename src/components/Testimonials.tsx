@@ -180,9 +180,9 @@ export function Testimonials() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-display text-[clamp(28px,6vw,48px)] font-medium text-white leading-[1.1] tracking-[-0.01em] uppercase">
+                        <h2 className="font-display text-[clamp(28px,6vw,48px)] font-medium text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
                             Histórias de<br />
-                            <span className="text-gradient-silver italic font-light">transformação real.</span>
+                            <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -224,7 +224,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="font-display text-lg md:text-xl text-white/90 italic leading-[1.7] mb-12 flex-grow font-light">
+                                            <p className="font-bodoni text-lg md:text-xl text-[var(--color-creme)]/90 italic leading-[1.7] mb-12 flex-grow font-light">
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
@@ -238,8 +238,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-medium text-white text-base tracking-tight font-display">{testimonial.name}</h4>
-                                                    <p className="text-[9px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold font-body">{testimonial.role}</p>
+                                                    <h4 className="font-medium text-[var(--color-silver-bh)] text-base tracking-tight font-display">{testimonial.name}</h4>
+                                                    <p className="text-[9px] text-[var(--color-silver-bh)]/40 uppercase tracking-[0.08em] font-bold font-body">{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

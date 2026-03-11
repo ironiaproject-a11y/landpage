@@ -94,7 +94,7 @@ export function Navbar() {
                             className="relative z-50 flex items-center gap-2"
                         >
                             <span className="font-display text-[16px] font-medium text-white/90 tracking-[0.2em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-creme)] font-light italic">.</span>
+                                Clínica<span className="text-[var(--color-creme)] font-bodoni italic">.</span>
                             </span>
                         </a>
                     </Magnetic>

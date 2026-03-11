@@ -39,7 +39,7 @@ export function Contact() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(32px,4vw,56px)] font-medium text-white mb-8 leading-[1.1] uppercase tracking-hero">
+                        <h2 className="font-display text-[clamp(32px,4vw,56px)] font-medium text-[var(--color-silver-bh)] mb-8 leading-[1.1] uppercase tracking-hero">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
@@ -49,7 +49,7 @@ export function Contact() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-base text-white/70 font-light leading-[1.6] mb-12 body-text-refined">
+                            <p className="text-base text-[var(--color-silver-bh)]/70 font-light leading-[1.6] mb-12 body-text-refined">
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -66,8 +66,8 @@ export function Contact() {
                                             <item.icon strokeWidth={1.5} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
-                                            <a href={item.href} className="text-white hover:text-[var(--color-silver-bh)] transition-colors text-sm font-medium">{item.value}</a>
+                                            <h4 className="text-[10px] font-bold text-[var(--color-silver-bh)]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
+                                            <a href={item.href} className="text-[var(--color-silver-bh)] hover:text-[var(--color-creme)] transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
                                 </PremiumReveal>
@@ -131,17 +131,17 @@ export function Contact() {
                                         type="email"
                                         required
                                         placeholder="seu@email.com"
-                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all font-body text-sm"
+                                        className="w-full bg-[var(--color-silver-bh)]/[0.03] border border-[var(--color-silver-bh)]/10 rounded-xl px-6 py-5 text-[var(--color-silver-bh)] placeholder:text-[var(--color-silver-bh)]/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all font-body text-sm"
                                     />
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
+                                    <label className="text-[10px] font-bold text-[var(--color-silver-bh)]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
                                     <textarea
                                         name="message"
                                         rows={4}
                                         placeholder="Descreva brevemente seu objetivo..."
-                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all resize-none font-body text-sm"
+                                        className="w-full bg-[var(--color-silver-bh)]/[0.03] border border-[var(--color-silver-bh)]/10 rounded-xl px-6 py-5 text-[var(--color-silver-bh)] placeholder:text-[var(--color-silver-bh)]/10 focus:outline-none focus:border-[var(--color-silver-bh)]/50 transition-all resize-none font-body text-sm"
                                     />
                                 </div>
 
@@ -180,7 +180,7 @@ export function Contact() {
                     viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                     className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
-                    <div className="glass-panel p-6 md:p-8 rounded-organic-md border border-white/10 backdrop-blur-xl shadow-premium-2">
+                    <div className="glass-panel p-6 md:p-8 rounded-organic-md border border-[var(--color-silver-bh)]/10 backdrop-blur-xl shadow-premium-2 text-[var(--color-silver-bh)]">
                         <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>

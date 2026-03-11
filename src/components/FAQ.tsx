@@ -88,12 +88,12 @@ export function FAQ() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] tracking-hero uppercase">
+                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-medium text-[var(--color-silver-bh)] leading-[1.05] tracking-hero uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Dúvidas</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-gradient-silver italic font-light block mt-2">Frequentes.</span>
+                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Frequentes.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -102,7 +102,7 @@ export function FAQ() {
                         {faqs.map((faq, index) => (
                             <PremiumReveal key={index} direction="bottom" delay={0.1 + index * 0.05}>
                                 <div
-                                    className={`glass-panel overflow-hidden transition-all duration-500 rounded-2xl active:scale-[0.98] cursor-pointer ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-white/[0.05] shadow-[0_0_40px_rgba(255,255,255,0.03)]" : "border-white/5"
+                                    className={`glass-panel overflow-hidden transition-all duration-500 rounded-2xl active:scale-[0.98] cursor-pointer ${activeIndex === index ? "border-[var(--color-silver-bh)]/30 bg-[var(--color-silver-bh)]/[0.05] shadow-[0_0_40px_rgba(203,213,225,0.03)]" : "border-[var(--color-silver-bh)]/5"
                                         }`}
                                 >
 
@@ -113,11 +113,11 @@ export function FAQ() {
                                         <div className="flex items-start md:items-center gap-4 md:gap-6">
                                             <div className={`w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 border shrink-0 mt-0.5 md:mt-0 ${activeIndex === index
                                                 ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
-                                                : "bg-white/5 border-white/10 text-[var(--color-creme)]"
+                                                : "bg-[var(--color-silver-bh)]/5 border-[var(--color-silver-bh)]/10 text-[var(--color-creme)]"
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-base md:text-2xl font-medium text-white tracking-tight group-hover:text-[var(--color-silver-bh)] transition-colors leading-[1.35]">
+                                            <span className="text-base md:text-2xl font-medium text-[var(--color-silver-bh)] tracking-tight group-hover:text-[var(--color-creme)] transition-colors leading-[1.35]">
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -125,7 +125,7 @@ export function FAQ() {
                                             {activeIndex === index ? (
                                                 <Minus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]" />
                                             ) : (
-                                                <Plus strokeWidth={1.2} className="w-6 h-6 text-white/20 group-hover:text-white/60" />
+                                                <Plus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]/20 group-hover:text-[var(--color-silver-bh)]/60" />
                                             )}
                                         </div>
                                     </button>
@@ -139,7 +139,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-white/60 text-sm md:text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
+                                                    <p className="text-[var(--color-silver-bh)]/60 text-sm md:text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
                                                         {faq.answer}
                                                     </p>
                                                 </div>

@@ -27,6 +27,8 @@ const config: Config = {
             },
             fontFamily: {
                 display: "var(--font-display)",
+                playfair: "var(--font-display)",
+                bodoni: "var(--font-bodoni)",
                 body: "var(--font-body)",
             },
         },

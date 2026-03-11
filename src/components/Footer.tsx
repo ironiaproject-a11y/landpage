@@ -95,19 +95,19 @@ export function Footer() {
     };
 
     return (
-        <footer ref={sectionRef} className="bg-[#050505] border-t border-white/5 relative overflow-hidden">
+        <footer ref={sectionRef} className="bg-[#050505] border-t border-[var(--color-silver-bh)]/5 relative overflow-hidden">
             <div className="container mx-auto px-6 pt-24 pb-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 md:gap-12 mb-20">
                     {/* Brand Section */}
                     <div className="lg:col-span-4 transition-all">
                         <div className="space-y-8">
                             <div className="flex items-center gap-4 group/logo cursor-pointer">
-                                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-[var(--color-silver-bh)] border border-white/10 group-hover/logo:border-[var(--color-silver-bh)]/50 transition-all duration-700 relative overflow-hidden light-sweep">
-                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-white/5" />
+                                <div className="w-14 h-14 bg-[var(--color-silver-bh)]/5 rounded-2xl flex items-center justify-center text-[var(--color-silver-bh)] border border-[var(--color-silver-bh)]/10 group-hover/logo:border-[var(--color-silver-bh)]/50 transition-all duration-700 relative overflow-hidden light-sweep">
+                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-[var(--color-silver-bh)]/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-display font-medium tracking-[0.15em] text-white leading-tight uppercase">
-                                        Clínica<span className="text-[var(--color-creme)]">.</span>
+                                    <h3 className="text-lg font-display font-medium tracking-[0.15em] text-[var(--color-silver-bh)] leading-tight uppercase">
+                                        Clínica<span className="text-[var(--color-creme)] font-bodoni italic">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
@@ -130,7 +130,7 @@ export function Footer() {
                                             href={social.href}
                                             aria-label={social.label}
                                             whileHover={{ y: -4, backgroundColor: "var(--color-silver-bh)", color: "black", borderColor: "var(--color-silver-bh)" }}
-                                            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[var(--color-text-secondary)] transition-all bg-white/5"
+                                            className="w-10 h-10 rounded-full border border-[var(--color-silver-bh)]/10 flex items-center justify-center text-[var(--color-text-secondary)] transition-all bg-[var(--color-silver-bh)]/5"
                                         >
                                             {social.icon}
                                         </m.a>
@@ -142,7 +142,7 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white mb-8">Navegação</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
@@ -162,7 +162,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Especialidades</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
@@ -182,7 +182,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white mb-8">Onde Estamos</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
@@ -190,14 +190,14 @@ export function Footer() {
                                     <MapPin strokeWidth={1.2} className="w-5 h-5 text-[var(--color-silver-bh)]" />
                                 </div>
                                 <div className="text-sm">
-                                    <p className="font-bold text-white mb-1">Unidade Central</p>
-                                    <p className="text-[var(--color-text-secondary)]">Centro, Pereira Barreto - SP</p>
-                                    <p className="text-[var(--color-text-secondary)]">Brasil</p>
+                                    <p className="font-bold text-[var(--color-silver-bh)] mb-1">Unidade Central</p>
+                                    <p className="text-[var(--color-silver-bh)]/60">Centro, Pereira Barreto - SP</p>
+                                    <p className="text-[var(--color-silver-bh)]/60">Brasil</p>
                                 </div>
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[var(--color-silver-bh)]/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-white hover:text-[var(--color-silver-bh)] transition-colors">
-                                    <Phone strokeWidth={1.2} className="w-5 h-5 text-[var(--color-silver-bh)]" />
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-silver-bh)] hover:text-[var(--color-creme)] transition-colors">
+                                    <Phone strokeWidth={1.2} className="w-5 h-5 text-[var(--color-creme)]" />
                                     {COMPANY_PHONE}
                                 </a>
                                 <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-silver-bh)] transition-colors">
@@ -217,7 +217,7 @@ export function Footer() {
                                 © {currentYear} Clínica Odontologia. Todos os direitos reservados.
                             </p>
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-white/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
+                                <span className="text-[10px] text-[var(--color-silver-bh)]/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
                                 <button
                                     onClick={() => {
                                         if (typeof window !== 'undefined') {
@@ -245,7 +245,7 @@ export function Footer() {
                     <Magnetic strength={0.5} range={80}>
                         <button
                             onClick={scrollToTop}
-                            className="w-14 h-14 bg-white/5 text-white border border-white/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[var(--color-silver-bh)] hover:text-black hover:scale-110 transition-all duration-500"
+                            className="w-14 h-14 bg-[var(--color-silver-bh)]/5 text-[var(--color-silver-bh)] border border-[var(--color-silver-bh)]/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[var(--color-silver-bh)] hover:text-black hover:scale-110 transition-all duration-500"
                         >
                             <ArrowUp strokeWidth={1.2} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
                         </button>
