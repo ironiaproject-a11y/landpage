@@ -58,7 +58,7 @@ body {
   position: relative;
   cursor: none;
   line-height: 1.6;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.011em;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
   margin: 0;
@@ -194,7 +194,8 @@ h6 {
 h1 {
   font-size: var(--font-h1);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.05;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
 }
 
 .text-hero-editorial {
@@ -223,7 +224,8 @@ h1 {
 h2 {
   font-size: var(--font-h2);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.08;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
   margin-bottom: 2rem;
 }
 
@@ -255,8 +257,8 @@ h3 {
   will-change: transform;
 }
 
-/* Global Section Spacing (+20%) */
-section {
+/* Global Section Spacing (+20%) - Exclude Hero */
+section:not(.hero) {
   @apply py-20 md:py-40;
   content-visibility: auto;
   contain-intrinsic-size: 1px 1000px;

@@ -224,7 +224,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[#F8F8F6] text-[20px] italic leading-[1.6] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                            <p className="text-[#F8F8F6] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 

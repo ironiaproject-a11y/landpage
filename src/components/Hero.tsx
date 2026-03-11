@@ -177,7 +177,7 @@ export function Hero() {
     if (!mounted) return null;
 
     return (
-        <section ref={sectionRef} className="hero relative overflow-hidden bg-black flex items-center min-h-[90vh]">
+        <section ref={sectionRef} className="hero relative overflow-hidden bg-black min-h-[90vh]">
             <style>{`
                 .hero {
                     position: relative;
@@ -288,9 +288,9 @@ export function Hero() {
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-1">
-                        <h1 className="text-[#F8F8F6] font-normal tracking-wide opacity-80 uppercase" style={{ 
+                        <h1 className="text-[#F8F8F6] font-normal tracking-[0.15em] opacity-80 uppercase" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(14px, 3vw, 18px)',
+                            fontSize: 'clamp(12px, 2.5vw, 15px)',
                             lineHeight: '1.2'
                         }}>
                             Sua origem
@@ -298,10 +298,10 @@ export function Hero() {
                     </div>
                     
                     <div className="phrase-2">
-                        <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
+                        <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(42px, 10vw, 84px)',
-                            lineHeight: '1.0'
+                            fontSize: 'clamp(44px, 11vw, 88px)',
+                            lineHeight: '0.95'
                         }}>
                             Seu sorriso
                         </h2>
