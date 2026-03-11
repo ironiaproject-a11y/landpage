@@ -87,11 +87,13 @@ export function Hero() {
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
 
+            const mobileYOffset = isMobile ? -(canvas.height * 0.10) : 0; // sobe a imagem 10% da altura do canvas no mobile
+
             layoutRef.current = {
                 width: newWidth * 1.08, // Increased base scale
                 height: newHeight * 1.08,
                 x: (canvas.width - newWidth * 1.08) / 2,
-                y: (canvas.height - newHeight * 1.08) / 2
+                y: (canvas.height - newHeight * 1.08) / 2 + mobileYOffset
             };
 
             render();
