@@ -139,16 +139,21 @@ export function Hero() {
                         onUpdate: render,
                     }, 0);
 
-                // Metric Counter Animations
+                masterTl.fromTo(".hero-metrics", 
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+                0.3);
+
+                // Metric Counter Animations - 4 Pillars
                 const counters = sectionRef.current?.querySelectorAll(".hero-counter-value");
-                counters?.forEach((counter) => {
+                counters?.forEach((counter, idx) => {
                     const targetValue = parseFloat(counter.getAttribute("data-target") || "0");
                     const isFloat = counter.getAttribute("data-float") === "true";
                     
                     const obj = { value: 0 };
                     masterTl.to(obj, {
                         value: targetValue,
-                        duration: 1.5,
+                        duration: 1.8,
                         ease: "power4.out",
                         onUpdate: () => {
                             if (counter) {
@@ -157,13 +162,8 @@ export function Hero() {
                                     : Math.floor(obj.value).toLocaleString("pt-BR");
                             }
                         }
-                    }, 0.5);
+                    }, 0.5 + (idx * 0.15)); // Staggered count-up
                 });
-
-                masterTl.fromTo(".hero-metrics", 
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-                0.3);
 
                 // Container Scale
                 if (window.innerWidth > 768) {
@@ -439,44 +439,82 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    <div className="hero-btn-wrapper mt-24 pointer-events-auto">
+                    <div className="hero-btn-wrapper mt-24 lg:mt-32 pointer-events-auto">
                         <button className="btn-luxury-primary">
                             Agendar Experiência
                         </button>
                     </div>
 
-                    {/* Integrated Metrics (The "Hole" Filler) */}
-                    <div className="hero-metrics mt-16 md:mt-24 grid grid-cols-2 gap-8 md:gap-12 opacity-0">
-                        <div className="metric-item group">
-                            <div className="flex items-baseline gap-1">
-                                <span 
-                                    className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                    data-target="1200"
-                                    data-float="false"
-                                >
-                                    0
+                    {/* Integrated Metrics Panel - 4 Pillars of Excellence */}
+                    <div className="hero-metrics mt-20 md:mt-32 w-full opacity-0">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-16 border-t border-white/10 pt-12">
+                            {/* Transformations */}
+                            <div className="metric-item group">
+                                <div className="flex items-baseline gap-1">
+                                    <span 
+                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                        data-target="1250"
+                                        data-float="false"
+                                    >
+                                        0
+                                    </span>
+                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">+</span>
+                                </div>
+                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                    Histórias Reais
                                 </span>
-                                <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">+</span>
                             </div>
-                            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                Histórias Reais
-                            </span>
-                        </div>
 
-                        <div className="metric-item group">
-                            <div className="flex items-baseline gap-1">
-                                <span 
-                                    className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
-                                    data-target="99.1"
-                                    data-float="true"
-                                >
-                                    0
+                            {/* Digital Precision */}
+                            <div className="metric-item group">
+                                <div className="flex items-baseline gap-1">
+                                    <span 
+                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                        data-target="99.8"
+                                        data-float="true"
+                                    >
+                                        0
+                                    </span>
+                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">%</span>
+                                </div>
+                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                    Precisão Digital
                                 </span>
-                                <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">%</span>
                             </div>
-                            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
-                                Precisão Digital
-                            </span>
+
+                            {/* Mastery */}
+                            <div className="metric-item group">
+                                <div className="flex items-baseline gap-1">
+                                    <span 
+                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                        data-target="25"
+                                        data-float="false"
+                                    >
+                                        0
+                                    </span>
+                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">y</span>
+                                </div>
+                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                    Anos de Maestria
+                                </span>
+                            </div>
+
+                            {/* Approval */}
+                            <div className="metric-item group">
+                                <div className="flex items-baseline gap-1">
+                                    <span 
+                                        className="hero-counter-value font-editorial text-4xl md:text-5xl lg:text-6xl font-medium text-[#F8F8F6] tracking-tight"
+                                        data-target="5.0"
+                                        data-float="true"
+                                    >
+                                        0
+                                    </span>
+                                    <span className="font-editorial text-xl md:text-2xl text-[#E6D3A3] opacity-40">★</span>
+                                </div>
+                                <span className="text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-[#E6D3A3] font-bold block mt-2">
+                                    Google Rating
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
