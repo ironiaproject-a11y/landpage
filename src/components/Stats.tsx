@@ -134,7 +134,7 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-[#F8F8F6]/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+        <section ref={containerRef} className="pt-8 md:pt-16 pb-16 md:pb-40 bg-[#050505] relative overflow-hidden border-y border-[#F8F8F6]/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             {/* Background Texture Overlay */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
 
