@@ -77,7 +77,7 @@ export function CTA() {
 
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <LuxuryCard
-                    className="cta-glass-panel max-w-4xl mx-auto border-[var(--color-silver-bh)]/5"
+                    className="cta-glass-panel max-w-4xl mx-auto border-[#F8F8F6]/5"
                     innerClassName="p-10 md:p-24"
                     glowColor="rgba(245, 245, 220, 0.08)"
                 >
@@ -86,22 +86,22 @@ export function CTA() {
                     <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] glow-blob opacity-20" />
 
                     <PremiumReveal type="fade" direction="top" delay={0.2}>
-                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[var(--color-silver-bh)]/5 text-[var(--color-silver-bh)] text-[10px] font-bold uppercase tracking-[0.2em] border border-[var(--color-silver-bh)]/10 mb-12">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#E6D3A3]/5 text-[#E6D3A3] text-[10px] font-bold uppercase tracking-[0.2em] border border-[#E6D3A3]/10 mb-12">
                             <Calendar strokeWidth={1.2} className="w-3.5 h-3.5" />
                             Agenda Aberta 2026
                         </div>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <h2 className="font-display text-[clamp(42px,7vw,96px)] font-medium text-[var(--color-silver-bh)] mb-10 leading-[1.05] tracking-hero uppercase">
+                        <h2 className="font-display text-[clamp(28px,6vw,72px)] font-semibold text-[#F8F8F6] mb-10 leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             Seu novo sorriso<br />
-                            <span className="text-[var(--color-creme)] font-bodoni italic font-light">começa hoje.</span>
+                            <span className="text-[#E6D3A3] font-display italic font-light">começa hoje.</span>
                         </h2>
                     </PremiumReveal>
 
                     <PremiumReveal type="fade" delay={0.5}>
-                        <p className="text-lg md:text-xl text-[var(--color-silver-bh)]/80 font-medium leading-[1.6] max-w-2xl mx-auto mb-16 body-text-refined">
-                            Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-[var(--color-creme)] font-bodoni italic font-light">exclusivo</span> pode transformar sua autoestima.
+                        <p className="text-[#6B7280] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-[#E6D3A3] font-display italic font-light">exclusivo</span> pode transformar sua autoestima.
                         </p>
                     </PremiumReveal>
 

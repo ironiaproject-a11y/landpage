@@ -119,7 +119,7 @@ export function Cursor() {
                         animate={{ scale: 3, opacity: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="fixed top-0 left-0 w-12 h-12 rounded-full border-2 border-[var(--color-silver-bh)] pointer-events-none z-[10000]"
+                        className="fixed top-0 left-0 w-12 h-12 rounded-full border-2 border-[#F8F8F6] pointer-events-none z-[10000]"
                         style={{
                             left: ripple.x,
                             top: ripple.y,
@@ -168,7 +168,7 @@ export function Cursor() {
                     />
                     {isTextHovered && (
                         <m.div
-                            className="absolute inset-0 border border-[var(--color-silver-bh)] opacity-20 rounded-full"
+                            className="absolute inset-0 border border-[#F8F8F6] opacity-20 rounded-full"
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                         />
@@ -178,7 +178,7 @@ export function Cursor() {
 
             {/* Inner Dot - Enhanced with pulse */}
             <m.div
-                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-[var(--color-silver-bh)] pointer-events-none z-[10000]"
+                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-[#F8F8F6] pointer-events-none z-[10000]"
                 style={{
                     x: cursorX,
                     y: cursorY,
@@ -203,7 +203,7 @@ export function Cursor() {
                         animate={{ opacity: 0.6, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[var(--color-silver-bh)] whitespace-nowrap"
+                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[#F8F8F6] whitespace-nowrap"
                         style={{
                             x: cursorXSpring,
                             y: cursorYSpring,

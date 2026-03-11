@@ -68,16 +68,19 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="font-display text-2xl font-medium mb-4 text-[var(--color-silver-bh)] group-hover:text-[var(--color-creme)] transition-colors duration-700 uppercase tracking-tight">
+                    <h3 className="text-[#F8F8F6] font-semibold mb-4 transition-colors duration-700" style={{ 
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: 'clamp(18px, 2.2vw, 26px)'
+                    }}>
                         {service.title}
                     </h3>
 
-                    <p className="text-white/60 leading-[1.7] text-sm mb-8 md:mb-12 font-light body-text-refined">
+                    <p className="text-[#6B7280] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'Inter, sans-serif' }}>
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-[var(--color-creme)]/10 bg-[var(--color-creme)]/[0.02] backdrop-blur-md text-[var(--color-creme)]/80 text-[10px] font-bold uppercase tracking-[0.3em] group-hover:bg-[var(--color-creme)]/10 group-hover:border-[var(--color-creme)]/20 group-hover:text-[var(--color-creme)] transition-all duration-500">
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-[#F8F8F6]/10 bg-[#0B0B0B] text-[#F8F8F6] text-[14px] font-semibold tracking-normal transition-all duration-500 group-hover:scale-105 active:scale-95 shadow-md" style={{ fontFamily: 'Inter, sans-serif' }}>
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -314,17 +317,17 @@ export function Services() {
 
             <div className="max-w-4xl mb-16 md:mb-24 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
-                    <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                    <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                         Tratamentos de Elite
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-display text-[clamp(28px,6vw,56px)] font-medium text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
+                <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de</span>
                     </PremiumReveal>
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">extrema precisão.</span>
+                        <span className="text-[#E6D3A3] font-display italic font-light block mt-2">extrema precisão.</span>
                     </PremiumReveal>
                 </h2>
             </div>

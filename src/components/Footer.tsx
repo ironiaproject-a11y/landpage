@@ -95,23 +95,23 @@ export function Footer() {
     };
 
     return (
-        <footer ref={sectionRef} className="bg-[#050505] border-t border-[var(--color-silver-bh)]/5 relative overflow-hidden">
+        <footer ref={sectionRef} className="bg-[#050505] border-t border-[#F8F8F6]/5 relative overflow-hidden">
             <div className="container mx-auto px-6 pt-24 pb-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 md:gap-12 mb-20">
                     {/* Brand Section */}
                     <div className="lg:col-span-4 transition-all">
                         <div className="space-y-8">
                             <div className="flex items-center gap-4 group/logo cursor-pointer">
-                                <div className="w-14 h-14 bg-[var(--color-silver-bh)]/5 rounded-2xl flex items-center justify-center text-[var(--color-silver-bh)] border border-[var(--color-silver-bh)]/10 group-hover/logo:border-[var(--color-silver-bh)]/50 transition-all duration-700 relative overflow-hidden light-sweep">
-                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-[var(--color-silver-bh)]/5" />
+                                <div className="w-14 h-14 bg-[#F8F8F6]/5 rounded-2xl flex items-center justify-center text-[#F8F8F6] border border-[#F8F8F6]/10 group-hover/logo:border-[#E6D3A3]/50 transition-all duration-700 relative overflow-hidden light-sweep">
+                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-[#F8F8F6]/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-display font-medium tracking-[0.15em] text-[var(--color-silver-bh)] leading-tight uppercase">
-                                        Clínica<span className="text-[var(--color-creme)] font-bodoni italic">.</span>
+                                    <h3 className="text-lg font-display font-semibold tracking-[0.15em] text-[#F8F8F6] leading-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                        Clínica<span className="text-[#E6D3A3] italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-[var(--color-text-secondary)] leading-[1.6] max-w-sm font-normal text-sm opacity-60 group-hover/logo:opacity-100 transition-opacity duration-700 footer-reveal-item body-text-refined">
+                            <p className="text-[#6B7280] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'Inter, sans-serif' }}>
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -129,8 +129,8 @@ export function Footer() {
                                         <m.a
                                             href={social.href}
                                             aria-label={social.label}
-                                            whileHover={{ y: -4, backgroundColor: "var(--color-silver-bh)", color: "black", borderColor: "var(--color-silver-bh)" }}
-                                            className="w-10 h-10 rounded-full border border-[var(--color-silver-bh)]/10 flex items-center justify-center text-[var(--color-text-secondary)] transition-all bg-[var(--color-silver-bh)]/5"
+                                            whileHover={{ y: -4, backgroundColor: "#E6D3A3", color: "black", borderColor: "#E6D3A3" }}
+                                            className="w-10 h-10 rounded-full border border-[#F8F8F6]/10 flex items-center justify-center text-[#6B7280] transition-all bg-[#F8F8F6]/5"
                                         >
                                             {social.icon}
                                         </m.a>
@@ -142,16 +142,16 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Navegação</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#E6D3A3]/60 mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
                                     <a
                                         href={link.href}
-                                        className="text-[var(--color-text-secondary)] hover:text-[var(--color-silver-bh)] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[#6B7280] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
-                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[var(--color-silver-bh)] transition-all mr-0 group-hover:mr-2"></span>
+                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {link.name}
                                     </a>
                                 </li>
@@ -162,16 +162,16 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Especialidades</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#E6D3A3]/60 mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
                                 <li key={index}>
                                     <a
                                         href="#servicos"
-                                        className="text-[var(--color-text-secondary)] hover:text-[var(--color-silver-bh)] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[#6B7280] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
-                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[var(--color-silver-bh)] transition-all mr-0 group-hover:mr-2"></span>
+                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {service.name}
                                     </a>
                                 </li>
@@ -182,26 +182,26 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-silver-bh)]/60 mb-8">Onde Estamos</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#E6D3A3]/60 mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
-                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[var(--color-silver-bh)]/30 transition-colors">
-                                    <MapPin strokeWidth={1.2} className="w-5 h-5 text-[var(--color-silver-bh)]" />
+                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[#E6D3A3]/30 transition-colors">
+                                    <MapPin strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
                                 </div>
                                 <div className="text-sm">
-                                    <p className="font-bold text-[var(--color-silver-bh)] mb-1">Unidade Central</p>
-                                    <p className="text-[var(--color-silver-bh)]/60">Centro, Pereira Barreto - SP</p>
-                                    <p className="text-[var(--color-silver-bh)]/60">Brasil</p>
+                                    <p className="font-bold text-[#F8F8F6] mb-1">Unidade Central</p>
+                                    <p className="text-[#F8F8F6]/60">Centro, Pereira Barreto - SP</p>
+                                    <p className="text-[#F8F8F6]/60">Brasil</p>
                                 </div>
                             </div>
-                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[var(--color-silver-bh)]/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-silver-bh)] hover:text-[var(--color-creme)] transition-colors">
-                                    <Phone strokeWidth={1.2} className="w-5 h-5 text-[var(--color-creme)]" />
+                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[#E6D3A3]/30 transition-colors">
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[#F8F8F6] hover:text-[#E6D3A3] transition-colors">
+                                    <Phone strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_PHONE}
                                 </a>
-                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-silver-bh)] transition-colors">
-                                    <Mail strokeWidth={1.2} className="w-5 h-5 text-[var(--color-silver-bh)]" />
+                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[#6B7280] hover:text-[#E6D3A3] transition-colors">
+                                    <Mail strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_EMAIL}
                                 </a>
                             </div>
@@ -217,7 +217,7 @@ export function Footer() {
                                 © {currentYear} Clínica Odontologia. Todos os direitos reservados.
                             </p>
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-[var(--color-silver-bh)]/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
+                                <span className="text-[10px] text-[#F8F8F6]/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
                                 <button
                                     onClick={() => {
                                         if (typeof window !== 'undefined') {
@@ -226,7 +226,7 @@ export function Footer() {
                                             window.location.reload();
                                         }
                                     }}
-                                    className="text-[10px] text-[var(--color-silver-bh)]/40 hover:text-[var(--color-silver-bh)] underline underline-offset-2 transition-colors"
+                                    className="text-[10px] text-[#F8F8F6]/40 hover:text-[#F8F8F6] underline underline-offset-2 transition-colors"
                                 >
                                     Atualizar Versão
                                 </button>
@@ -245,7 +245,7 @@ export function Footer() {
                     <Magnetic strength={0.5} range={80}>
                         <button
                             onClick={scrollToTop}
-                            className="w-14 h-14 bg-[var(--color-silver-bh)]/5 text-[var(--color-silver-bh)] border border-[var(--color-silver-bh)]/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[var(--color-silver-bh)] hover:text-black hover:scale-110 transition-all duration-500"
+                            className="w-14 h-14 bg-[#F8F8F6]/5 text-[#F8F8F6] border border-[#F8F8F6]/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[#E6D3A3] hover:text-black hover:scale-110 transition-all duration-500"
                         >
                             <ArrowUp strokeWidth={1.2} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
                         </button>
@@ -254,9 +254,9 @@ export function Footer() {
             </div>
 
             {/* Subtle Gradient Spots - Enhanced Depth */}
-            <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[var(--color-silver-bh)]/3 blur-[140px] -z-10 rounded-full pointer-events-none translate-y-[-50%]" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-silver-bh)]/5 blur-[120px] -z-10 rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-silver-bh)]/3 blur-[100px] -z-10 rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#F8F8F6]/3 blur-[140px] -z-10 rounded-full pointer-events-none translate-y-[-50%]" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F8F8F6]/5 blur-[120px] -z-10 rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F8F8F6]/3 blur-[100px] -z-10 rounded-full pointer-events-none" />
         </footer >
     );
 }

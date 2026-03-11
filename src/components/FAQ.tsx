@@ -83,17 +83,17 @@ export function FAQ() {
                     {/* Header */}
                     <div className="text-center mb-16 md:mb-24">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
                                 Esclarecimentos
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-medium text-[var(--color-silver-bh)] leading-[1.05] tracking-hero uppercase">
+                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Dúvidas</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Frequentes.</span>
+                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Frequentes.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -112,20 +112,20 @@ export function FAQ() {
                                     >
                                         <div className="flex items-start md:items-center gap-4 md:gap-6">
                                             <div className={`w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 border shrink-0 mt-0.5 md:mt-0 ${activeIndex === index
-                                                ? "bg-[var(--color-creme)] border-[var(--color-creme)] text-black shadow-glow-creme"
-                                                : "bg-[var(--color-silver-bh)]/5 border-[var(--color-silver-bh)]/10 text-[var(--color-creme)]"
+                                                ? "bg-[#E6D3A3] border-[#E6D3A3] text-black shadow-glow-creme"
+                                                : "bg-[#F8F8F6]/5 border-[#F8F8F6]/10 text-[#E6D3A3]"
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-base md:text-2xl font-medium text-[var(--color-silver-bh)] tracking-tight group-hover:text-[var(--color-creme)] transition-colors leading-[1.35]">
+                                            <span className="text-[18px] font-semibold text-[#F8F8F6] tracking-tight group-hover:text-[#E6D3A3] transition-colors leading-[1.35]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                                 {faq.question}
                                             </span>
                                         </div>
                                         <div className="ml-4 transition-transform duration-500 min-w-[24px]">
                                             {activeIndex === index ? (
-                                                <Minus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]" />
+                                                <Minus strokeWidth={1.2} className="w-6 h-6 text-[#F8F8F6]" />
                                             ) : (
-                                                <Plus strokeWidth={1.2} className="w-6 h-6 text-[var(--color-silver-bh)]/20 group-hover:text-[var(--color-silver-bh)]/60" />
+                                                <Plus strokeWidth={1.2} className="w-6 h-6 text-[#F8F8F6]/20 group-hover:text-[#F8F8F6]/60" />
                                             )}
                                         </div>
                                     </button>
@@ -139,7 +139,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-[var(--color-silver-bh)]/60 text-sm md:text-lg leading-[1.6] font-medium max-w-2xl body-text-refined">
+                                                    <p className="text-[#6B7280] text-[15px] leading-[1.6] font-normal max-w-2xl" style={{ fontFamily: 'Inter, sans-serif' }}>
                                                         {faq.answer}
                                                     </p>
                                                 </div>

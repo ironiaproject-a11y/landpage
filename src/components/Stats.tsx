@@ -134,7 +134,7 @@ export function Stats() {
     }, [mounted]);
 
     return (
-        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-[var(--color-silver-bh)]/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+        <section ref={containerRef} className="py-16 md:py-40 bg-[#050505] relative overflow-hidden border-y border-[#F8F8F6]/5 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             {/* Background Texture Overlay */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
 
@@ -155,13 +155,13 @@ export function Stats() {
                                     className="flex items-baseline gap-1 mb-6 md:mb-10 group"
                                 >
                                     {stat.prefix && (
-                                        <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 mr-2">
+                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 mr-2">
                                             {stat.prefix}
                                         </span>
                                     )}
                                     {stat.value !== null ? (
                                         <span
-                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-[var(--color-creme)] tracking-tighter leading-none transition-all duration-700"
+                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-[#E6D3A3] tracking-tighter leading-none transition-all duration-700"
                                             style={{ textShadow: "0 10px 30px rgba(245,245,220,0.15)" }}
                                             data-target={stat.value}
                                             data-float={stat.value % 1 !== 0}
@@ -177,15 +177,15 @@ export function Stats() {
                                             className="relative"
                                         >
                                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                                                <span className="text-[var(--color-creme)] font-editorial text-4xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
+                                                <span className="text-[#E6D3A3] font-editorial text-4xl sm:text-7xl md:text-8xl font-bold tracking-tight uppercase leading-none" style={{ textShadow: "0 10px 40px rgba(245,245,220,0.3)" }}>
                                                     Essência
                                                 </span>
                                             </PremiumReveal>
-                                            <div className="absolute -inset-4 bg-[var(--color-creme)]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                                            <div className="absolute -inset-4 bg-[#E6D3A3]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                                         </m.div>
                                     )}
                                     {stat.suffix && (
-                                        <span className="text-[var(--color-silver-bh)] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 ml-2">
+                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 ml-2">
                                             {stat.suffix}
                                         </span>
                                     )}
@@ -193,21 +193,21 @@ export function Stats() {
 
                                 {/* Labels */}
                                 <div className="flex flex-col items-center md:items-start text-center md:text-left overflow-hidden">
-                                    <m.h4
+                                     <m.h4
                                         initial={{ opacity: 0, x: -20 }}
                                         whileInView={{ opacity: 0.9, x: 0 }}
                                         transition={{ duration: 0.8, delay: stat.delay + 0.4 }}
                                         viewport={{ once: true, margin: "-15%" }}
-                                        className="text-[var(--color-silver-bh)] font-body text-[11px] md:text-[12px] font-bold uppercase tracking-[0.08em] mb-4"
+                                        className="text-[#6B7280] font-body text-[11px] md:text-[12px] font-bold uppercase tracking-[0.08em] mb-4"
                                     >
                                         {stat.label}
                                     </m.h4>
-                                    <m.p
+                                     <m.p
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 0.85, y: 0 }}
                                         transition={{ duration: 1, delay: stat.delay + 0.6 }}
                                         viewport={{ once: true, margin: "-15%" }}
-                                        className="text-[var(--color-silver-bh)]/80 font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-[var(--color-silver-bh)] transition-colors duration-500"
+                                        className="text-[#6B7280] font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-[#F8F8F6] transition-colors duration-500"
                                     >
                                         {stat.sublabel}
                                     </m.p>
@@ -216,12 +216,12 @@ export function Stats() {
 
                             {/* Vertical Divider for Desktop */}
                             {index !== stats.length - 1 && (
-                                <div className="stat-divider hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-[var(--color-silver-bh)]/10 to-transparent origin-center" />
+                                 <div className="stat-divider hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-[#F8F8F6]/10 to-transparent origin-center" />
                             )}
 
                             {/* Horizontal Divider for Mobile - Refined */}
                             {index !== stats.length - 1 && (
-                                <div className="md:hidden w-24 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/30 to-transparent my-12 mx-auto" />
+                                 <div className="md:hidden w-24 h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6]/30 to-transparent my-12 mx-auto" />
                             )}
                         </div>
                     ))}
@@ -229,11 +229,11 @@ export function Stats() {
             </div>
 
             {/* Cinematic Ambient Glow Evolution */}
-            <div className="stats-glow absolute -top-1/4 -left-1/4 w-[600px] h-[600px] bg-[var(--color-silver-bh)]/5 blur-[150px] rounded-full pointer-events-none" />
-            <div className="stats-glow absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-[var(--color-silver-bh)]/5 blur-[150px] rounded-full pointer-events-none" />
+             <div className="stats-glow absolute -top-1/4 -left-1/4 w-[600px] h-[600px] bg-[#F8F8F6]/5 blur-[150px] rounded-full pointer-events-none" />
+            <div className="stats-glow absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-[#F8F8F6]/5 blur-[150px] rounded-full pointer-events-none" />
 
             {/* Top Shine */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[2px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)]/20 to-transparent" />
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[2px] bg-gradient-to-r from-transparent via-[#F8F8F6]/20 to-transparent" />
         </section>
 
     );

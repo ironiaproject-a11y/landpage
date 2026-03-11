@@ -150,33 +150,33 @@ export function About() {
                     {/* Content Side */}
                     <div className="w-full lg:w-1/2 flex flex-col items-start">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                                 Excelência Master
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,4.5vw,48px)] font-medium mb-12 text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-12 text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Luxo Odontológico.</span>
+                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Luxo Odontológico.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-lg text-[var(--color-silver-bh)]/70 font-light leading-relaxed mb-10 body-text-refined">
+                            <p className="text-[16px] text-[#6B7280] font-normal leading-[1.6] mb-10" style={{ fontFamily: 'Inter, sans-serif' }}>
                                 Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico.
                             </p>
                         </PremiumReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
                             {highlights.map((item, index) => (
-                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[var(--color-creme)]/20 transition-colors">
-                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[var(--color-creme)] transition-all">
-                                        <ArrowUpRight className="w-3 h-3 text-[var(--color-silver-bh)] group-hover:text-black transition-colors" />
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-colors">
+                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
+                                        <ArrowUpRight className="w-3 h-3 text-[#6B7280] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-[var(--color-silver-bh)]/80 font-medium text-sm tracking-wide group-hover:text-white">{item}</span>
+                                    <span className="text-[#6B7280] font-medium text-[14px] tracking-wide group-hover:text-[#F8F8F6]" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
                                 </div>
                             ))}
                         </div>
@@ -186,7 +186,8 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.8 }}
-                            className="px-10 py-5 bg-[var(--color-silver-bh)] text-black text-[10px] font-bold uppercase tracking-[0.15em] min-h-[52px] rounded-full hover:bg-[var(--color-creme)] transition-colors duration-500 font-body"
+                            className="px-10 py-5 bg-[#0B0B0B] text-[#F8F8F6] text-[16px] font-semibold tracking-normal rounded-full transition-all duration-500 border border-[#F8F8F6]/10 hover:scale-105 active:scale-95 shadow-lg"
+                            style={{ fontFamily: 'Inter, sans-serif' }}
                         >
                             Descubra nossa tecnologia
                         </m.button>

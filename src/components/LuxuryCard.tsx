@@ -38,7 +38,7 @@ export function LuxuryCard({
             transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
                 "luxury-surface rounded-2xl p-px relative group overflow-hidden",
-                interactive && "hover:border-[var(--color-silver-bh)]/30",
+                interactive && "hover:border-[#F8F8F6]/30",
                 className
             )}
         >

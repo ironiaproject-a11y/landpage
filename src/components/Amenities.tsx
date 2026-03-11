@@ -192,7 +192,7 @@ export function Amenities() {
                     {/* Left Column: Context & Sticky Image */}
                     <div className="lg:w-5/12 sticky top-32">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                                 Hospitality
                             </span>
                         </PremiumReveal>
@@ -223,7 +223,7 @@ export function Amenities() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
                                 <div className="absolute bottom-8 left-8 z-20">
-                                    <div className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-silver-bh)] mb-2">Ambiente</div>
+                                    <div className="text-[10px] uppercase tracking-[0.3em] text-[#6B7280] mb-2">Ambiente</div>
                                     <div className="text-2xl font-display text-white">Lounge Private</div>
                                 </div>
                             </div>
@@ -240,13 +240,13 @@ export function Amenities() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: index * 0.1 }}
                                     viewport={{ once: true, margin: "-5%" }}
-                                    className="group border-b border-white/5 hover:border-[var(--color-silver-bh)]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
+                                    className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
                                         <h3 className="text-2xl md:text-3xl font-display text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
                                             {item.title}
                                         </h3>
-                                        <span className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] group-hover:text-[var(--color-silver-bh)] transition-colors duration-500 opacity-50 group-hover:opacity-100">
+                                        <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-[0.2em] group-hover:text-[#F8F8F6] transition-colors duration-500 opacity-50 group-hover:opacity-100">
                                             0{index + 1}
                                         </span>
                                     </div>

@@ -167,22 +167,22 @@ export function Testimonials() {
             className="relative py-16 md:py-32 overflow-hidden bg-[#0a0a0a]"
         >
             {/* Cremic Atmospheric Lighting */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[var(--color-creme)]/5 blur-[120px] pointer-events-none" />
-            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[var(--color-creme)]/5 blur-[100px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#E6D3A3]/5 blur-[120px] pointer-events-none" />
+            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[#E6D3A3]/5 blur-[100px]" />
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-[var(--color-silver-bh)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body">
+                        <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                             Prova Social
                         </span>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-display text-[clamp(28px,6vw,48px)] font-medium text-[var(--color-silver-bh)] leading-[1.1] tracking-[-0.01em] uppercase">
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             Histórias de<br />
-                            <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">transformação real.</span>
+                            <span className="text-[#E6D3A3] font-display italic font-light block mt-2">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -215,21 +215,21 @@ export function Testimonials() {
                                     >
                                         <div className="relative z-10 flex flex-col h-full">
                                             <div className="mb-10 relative">
-                                                <Quote strokeWidth={1.2} className="quote-icon-rotate w-12 h-12 text-[var(--color-silver-bh)]/10" />
+                                                <Quote strokeWidth={1.2} className="quote-icon-rotate w-12 h-12 text-[#F8F8F6]/10" />
                                             </div>
 
                                             <div className="flex gap-2 mb-8">
                                                 {[...Array(testimonial.rating)].map((_, i) => (
-                                                    <Star key={i} strokeWidth={1.2} className="star-icon w-3.5 h-3.5 fill-[var(--color-silver-bh)] text-[var(--color-silver-bh)] opacity-80" />
+                                                    <Star key={i} strokeWidth={1.2} className="star-icon w-3.5 h-3.5 fill-[#F8F8F6] text-[#F8F8F6] opacity-80" />
                                                 ))}
                                             </div>
 
-                                            <p className="font-bodoni text-lg md:text-xl text-[var(--color-creme)]/90 italic leading-[1.7] mb-12 flex-grow font-light">
+                                            <p className="text-[#F8F8F6] text-[20px] italic leading-[1.6] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
                                             <div className="pt-8 border-t border-white/5 flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-[var(--color-silver-bh)]/20 relative">
+                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-[#F8F8F6]/10 relative">
                                                     <Image
                                                         src={testimonial.image}
                                                         alt={testimonial.name}
@@ -238,8 +238,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-medium text-[var(--color-silver-bh)] text-base tracking-tight font-display">{testimonial.name}</h4>
-                                                    <p className="text-[9px] text-[var(--color-silver-bh)]/40 uppercase tracking-[0.08em] font-bold font-body">{testimonial.role}</p>
+                                                    <h4 className="font-semibold text-[#F8F8F6] text-base tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.name}</h4>
+                                                    <p className="text-[10px] text-[#6B7280] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

@@ -93,8 +93,8 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-[16px] font-medium text-white/90 tracking-[0.2em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-creme)] font-bodoni italic">.</span>
+                            <span className="font-display text-[16px] font-medium text-[#F8F8F6] tracking-[0.2em] uppercase transition-all duration-700" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                Clínica<span className="text-[#E6D3A3] italic font-light">.</span>
                             </span>
                         </a>
                     </Magnetic>
@@ -112,41 +112,43 @@ export function Navbar() {
                                             whileHover="hover"
                                         >
                                             {/* Original Text */}
-                                            <m.div
-                                                variants={{
-                                                    initial: { y: 0 },
-                                                    hover: { y: "-110%" }
-                                                }}
-                                                animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="text-[11px] font-medium text-[var(--color-text-secondary)] uppercase tracking-[0.1em] font-body"
-                                            >
-                                                {link.name}
-                                            </m.div>
+                                                <m.div
+                                                    variants={{
+                                                        initial: { y: 0 },
+                                                        hover: { y: "-110%" }
+                                                    }}
+                                                    animate={activeSection === link.href ? "hover" : "initial"}
+                                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                                    className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-[0.1em]"
+                                                    style={{ fontFamily: 'Inter, sans-serif' }}
+                                                >
+                                                    {link.name}
+                                                </m.div>
 
                                             {/* Hover Text (Champagne) */}
-                                            <m.div
-                                                variants={{
-                                                    initial: { y: "110%" },
-                                                    hover: { y: 0 }
-                                                }}
-                                                animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="absolute inset-0 py-2 px-4 text-[11px] font-medium text-[var(--color-silver-bh)] uppercase tracking-[0.1em] font-body"
-                                            >
-                                                {link.name}
-                                            </m.div>
+                                                <m.div
+                                                    variants={{
+                                                        initial: { y: "110%" },
+                                                        hover: { y: 0 }
+                                                    }}
+                                                    animate={activeSection === link.href ? "hover" : "initial"}
+                                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-[#E6D3A3] uppercase tracking-[0.1em]"
+                                                    style={{ fontFamily: 'Inter, sans-serif' }}
+                                                >
+                                                    {link.name}
+                                                </m.div>
 
                                             {/* Animated Underline */}
-                                            <m.div
-                                                variants={{
-                                                    initial: { scaleX: 0, opacity: 0 },
-                                                    hover: { scaleX: 1, opacity: 1 }
-                                                }}
-                                                animate={activeSection === link.href ? "hover" : "initial"}
-                                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                className="absolute bottom-1 left-2 right-2 h-[1.5px] bg-[var(--color-silver-bh)] origin-left"
-                                            />
+                                                <m.div
+                                                    variants={{
+                                                        initial: { scaleX: 0, opacity: 0 },
+                                                        hover: { scaleX: 1, opacity: 1 }
+                                                    }}
+                                                    animate={activeSection === link.href ? "hover" : "initial"}
+                                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                                    className="absolute bottom-1 left-2 right-2 h-[1.5px] bg-[#E6D3A3] origin-left"
+                                                />
                                         </m.a>
 
                                     </Magnetic>
@@ -172,7 +174,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-creme relative overflow-hidden bg-[var(--color-creme)] text-black"
+                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-gold relative overflow-hidden bg-[#E6D3A3] text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"
@@ -257,11 +259,11 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[var(--color-silver-bh)] transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
+                                            <span className="font-display text-3xl sm:text-4xl text-white group-hover:text-[#E6D3A3] transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div
-                                                className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--color-silver-bh)] origin-center"
+                                                className="absolute -bottom-1 left-0 right-0 h-px bg-[#E6D3A3] origin-center"
                                                 initial={{ scaleX: 0 }}
                                                 whileHover={{ scaleX: 1 }}
                                             />
@@ -305,7 +307,7 @@ export function Navbar() {
                                     <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[var(--color-text-tertiary)] mb-4">Atendimento VIP</p>
                                     <a
                                         href="tel:+551837433000"
-                                        className="text-[var(--color-silver-bh)] font-medium text-lg sm:text-xl hover:brightness-125 transition-all block mb-2"
+                                        className="text-[#F8F8F6] font-medium text-lg sm:text-xl hover:brightness-125 transition-all block mb-2"
                                     >
                                         +55 (18) 3743-3000
                                     </a>
@@ -323,7 +325,7 @@ export function Navbar() {
                                                 initial={{ opacity: 0, scale: 0.8 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 transition={{ delay: 1 + (i * 0.1), duration: 0.5 }}
-                                                whileHover={{ y: -3, color: "var(--color-silver-bh)" }}
+                                                whileHover={{ y: -3, color: "#E6D3A3" }}
                                                 className="text-white/40 transition-colors"
                                                 aria-label={social.name}
                                             >

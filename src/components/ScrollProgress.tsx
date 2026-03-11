@@ -30,7 +30,7 @@ export function ScrollProgress() {
         >
             <m.div
                 style={{ scaleX }}
-                className="h-full origin-left bg-gradient-to-r from-[var(--color-silver-bh)] via-[var(--color-gold-light)] to-[var(--color-silver-bh)] shadow-[0_0_10px_rgba(212,197,165,0.5)]"
+                className="h-full origin-left bg-gradient-to-r from-[#F8F8F6] via-[#E6D3A3] to-[#F8F8F6] shadow-[0_0_10px_rgba(212,197,165,0.5)]"
             />
         </m.div>
     );

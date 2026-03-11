@@ -250,7 +250,7 @@ export function BeforeAfterSlider({
 
                         {/* After Label */}
                         <div className="absolute top-6 right-6 px-4 py-2 rounded-full glass-panel border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-silver-bh)]">Depois</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#F8F8F6]">Depois</span>
                         </div>
 
                         {/* Slider Handle */}
@@ -272,11 +272,11 @@ export function BeforeAfterSlider({
                                     ]
                                 }}
                                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute inset-y-0 -left-[1px] w-[2px] bg-gradient-to-b from-transparent via-[var(--color-silver-bh)] to-transparent"
+                                className="absolute inset-y-0 -left-[1px] w-[2px] bg-gradient-to-b from-transparent via-[#F8F8F6] to-transparent"
                             />
 
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0B0B0B] border border-[var(--color-silver-bh)] flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover/handle:scale-110">
-                                <div className="flex items-center gap-1 text-[var(--color-silver-bh)]">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0B0B0B] border border-[#F8F8F6] flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover/handle:scale-110">
+                                <div className="flex items-center gap-1 text-[#E6D3A3]">
                                     <MoveLeft strokeWidth={1.2} className="w-3 h-3" />
                                     <MoveRight strokeWidth={1.2} className="w-3 h-3" />
                                 </div>
@@ -291,7 +291,7 @@ export function BeforeAfterSlider({
 
             <div className="flex flex-col gap-4 px-2">
                 <div className="flex items-center gap-3">
-                    <Sparkles strokeWidth={1.2} className="w-4 h-4 text-[var(--color-silver-bh)]" />
+                    <Sparkles strokeWidth={1.2} className="w-4 h-4 text-[#F8F8F6]" />
                     <h4 className="font-display text-2xl text-white font-medium">{title}</h4>
                 </div>
                 <p className="text-[var(--color-text-secondary)] font-light leading-relaxed">

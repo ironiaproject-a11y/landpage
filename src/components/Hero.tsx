@@ -177,7 +177,7 @@ export function Hero() {
     if (!mounted) return null;
 
     return (
-        <section ref={sectionRef} className="hero relative overflow-hidden">
+        <section ref={sectionRef} className="hero relative overflow-hidden bg-black flex items-center min-h-[90vh]">
             <style>{`
                 .hero {
                     position: relative;
@@ -188,28 +188,92 @@ export function Hero() {
                     margin-bottom: 25vh; /* Large spacer for About section */
                 }
 
+                @media (min-width: 1024px) {
+                    .hero-container {
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 8vw;
+                    }
+                    .hero-text {
+                        width: 50%;
+                        max-width: 520px;
+                        z-index: 20;
+                        text-align: left !important;
+                    }
+                    .hero-visual {
+                        width: 50%;
+                        height: 100%;
+                        position: relative;
+                    }
+                    .hero-overlay {
+                        background: linear-gradient(to right, 
+                            rgba(0,0,0,0.55) 0%, 
+                            rgba(0,0,0,0.2) 50%, 
+                            transparent 100%
+                        );
+                    }
+                }
+
+                @media (max-width: 1023px) {
+                    .hero-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .hero-text {
+                        position: absolute;
+                        z-index: 20;
+                        text-align: center;
+                        width: 100%;
+                        padding: 0 6vw;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-end;
+                        padding-bottom: 12vh;
+                        top: 0 !important;
+                    }
+                    .phrase-1 {
+                        position: relative !important;
+                        top: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        width: 100%;
+                        margin-bottom: 0.5rem;
+                    }
+                    .phrase-2 {
+                        position: relative !important;
+                        top: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        width: 100%;
+                    }
+                    .hero-btn-wrapper {
+                        position: relative !important;
+                        top: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        margin-top: 2rem !important;
+                    }
+                    .hero-visual {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .hero-overlay {
+                        background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+                    }
+                }
+
                 .visual-wrapper {
                     position: absolute;
-                    top: 35%; /* Elevated position closer to Clinica logo */
-                    left: 50%;
-                    transform: translate(-50%, -50%); /* Robust centering for all devices */
+                    inset: 0;
                     width: 100%;
                     height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .cinematic-title {
-                    position: relative;
-                    width: 100%;
-                    height: 140px;
-                }
-
-                .prestige-text {
-                    text-transform: uppercase;
-                    line-height: 1.2;
-                    display: inline-block;
                 }
 
                 @media (max-width: 768px) {
@@ -217,57 +281,50 @@ export function Hero() {
                         height: 90vh;
                         margin-bottom: 15vh;
                     }
-                    .visual-wrapper {
-                        top: 32%; /* Even closer on mobile */
-                    }
-                }
-
-                .hero-overlay {
-                    background: linear-gradient(
-                        rgba(0, 0, 0, 0.45), 
-                        rgba(0, 0, 0, 0.2)
-                    );
                 }
             `}</style>
 
-            <div ref={containerRef} className="visual-wrapper z-0 pointer-events-none">
-                <canvas
-                    ref={canvasRef}
-                    className="absolute inset-0 w-full h-full object-cover"
-                />
-                
-                {/* Typography INSIDE the visual container (Overlay) */}
-                <div 
-                    ref={textContainerRef}
-                    className="absolute inset-0 flex items-center justify-center text-center z-10 px-6 opacity-0 translate-y-8"
-                >
-                    <div className="flex flex-col items-center">
-                        <div className="relative w-full overflow-hidden">
-                            {/* Phrase 1: "Sua origem" - Primary focus on hierarchy */}
-                            <div className="phrase-1 mb-1">
-                                <h1 className="text-[#F5F5F4] text-[clamp(28px,4vw,40px)] font-light tracking-wide uppercase">
-                                    Sua origem
-                                </h1>
-                            </div>
+            <div className="hero-container relative z-10 w-full h-full">
+                {/* Text Column */}
+                <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
+                    <div className="phrase-1 mb-1">
+                        <h1 className="text-[#F8F8F6] font-normal tracking-wide opacity-80 uppercase" style={{ 
+                            fontFamily: '"Playfair Display", serif',
+                            fontSize: 'clamp(14px, 3vw, 18px)',
+                            lineHeight: '1.2'
+                        }}>
+                            Sua origem
+                        </h1>
+                    </div>
+                    
+                    <div className="phrase-2">
+                        <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
+                            fontFamily: '"Playfair Display", serif',
+                            fontSize: 'clamp(42px, 10vw, 84px)',
+                            lineHeight: '1.0'
+                        }}>
+                            Seu sorriso
+                        </h2>
+                    </div>
 
-                            {/* Phrase 2: "Seu sorriso" - Dominant focus */}
-                            <div className="phrase-2">
-                                <h2 className="text-[#F5F5F4] text-[clamp(48px,7vw,72px)] font-bold leading-tight uppercase font-bodoni italic">
-                                    Seu sorriso
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div className="mt-12 pointer-events-auto">
-                            <button className="btn-luxury-primary">
-                                Agendar Experiência
-                            </button>
-                        </div>
+                    <div className="hero-btn-wrapper mt-12 pointer-events-auto">
+                        <button className="btn-luxury-primary">
+                            Agendar Experiência
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <div className="hero-overlay absolute inset-0 z-[1] pointer-events-none" />
+                {/* Visual Column / Container */}
+                <div ref={containerRef} className="hero-visual absolute lg:relative inset-0 lg:inset-auto lg:h-full lg:w-1/2 lg:ml-auto pointer-events-none overflow-hidden">
+                    <div className="visual-wrapper">
+                        <canvas
+                            ref={canvasRef}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="hero-overlay absolute inset-0 z-[1]" />
+                </div>
+            </div>
         </section>
     );
 }

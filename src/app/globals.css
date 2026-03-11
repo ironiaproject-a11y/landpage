@@ -3,115 +3,37 @@
 @tailwind utilities;
 
 /* ===================================
-   DESIGN TOKENS - Luxury Clinical Refinement
-   Theme: Charcoal & Off-White (#0B0B0B / #F5F3EE)
+   DESIGN TOKENS - Premium Luxury Refinement
+   Theme: Charcoal, Gold & Off-White (#0B0B0B / #E6D3A3 / #F8F8F6)
    =================================== */
 
 :root {
-  /* Colors - Strict Luxury Palette (Titanium Silver Refinement) */
-  --color-deep-black: #0B0B0B;
-  --color-graphite: #121212;
-  --color-charcoal: #1A1A1A;
-  --color-slate-dark: #222222;
+  /* Colors - Premium Luxury Palette */
+  --color-premium-white: #F8F8F6;
+  --color-premium-gold: #E6D3A3;
+  --color-premium-black: #0B0B0B;
+  --color-premium-slate: #6B7280;
+  --color-premium-charcoal: #374151;
 
-  /* Text Colors */
-  --color-text-light: #FAF9F7;
-  /* Warm White - Primary Headlines */
-  --color-creme: #F5F5DC;
-  /* Cream/Off-white for Highlights, CTAs, Stats */
-  --color-text-dim: #D6D6D6;
-  /* Light Gray - Body Text */
-  --color-text-secondary: #CBD5E1;
-  /* Slate/Silver - Secondary Headlines */
-  --color-text-tertiary: #9CA3AF;
-  /* Muted - Meta */
+  /* Typography Scale - Precision Engineering */
+  --font-h1: clamp(36px, 6vw, 72px);
+  --font-h2: clamp(28px, 4.5vw, 48px);
+  --font-h3: clamp(18px, 2.2vw, 26px);
+  --font-body: 16px;
+  --font-small: 14px;
 
-  /* Metal Accents - Titanium Silver & Clinical Metallic */
-  --color-silver-bh: #CBD5E1;
-  --color-silver-bh-rgb: 203, 213, 225;
-  /* Authentic Brushed Silver */
-  --color-silver-light: #F8FAFC;
-  /* Bright Metallic highlight */
-  --color-silver-dark: #64748B;
-  /* Deep Titanium Silver */
-  --color-silver-dim: #475569;
-  /* Muted Silver Shadow */
-
-  --color-link-tech: #94A3B8;
-  /* Replacing Gold with Metallic Silver */
+  /* Weights */
+  --font-weight-thin: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Semantic Mapping */
-  --color-background: var(--color-deep-black);
-  --color-surface: var(--color-graphite);
-  --color-surface-elevated: var(--color-charcoal);
-
-  --color-primary: var(--color-silver-bh);
-  --color-border: #333333;
-  --color-border-light: #2A2A2A;
-
-  /* Gradients - Titanium & Platinum Depth */
-  --gradient-silver: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 40%, #64748B 100%);
-  --gradient-silver-text: linear-gradient(to right, #FAF9F7, #CBD5E1, #94A3B8, #F8FAFC);
-  --gradient-surface: linear-gradient(180deg, rgba(11, 11, 11, 0.8) 0%, rgba(11, 11, 11, 1) 100%);
-  --gradient-dark: linear-gradient(to bottom, #0B0B0B, #121212);
-
-  /* Typography - Precise Engineering */
-  --font-display: var(--font-playfair), serif;
-  --font-body: var(--font-inter), sans-serif;
-  --font-editorial: var(--font-playfair), serif;
-  --font-bodoni: var(--font-bodoni), serif;
-
-  /* Weights & Hierarchy */
-  --font-weight-heading: 500;
-  --font-weight-body: 400;
-
-  /* Editorial Spacing - Aristocratic Tracking */
-  --font-size-hero: clamp(32px, 8.5vw, 64px);
-  --line-height-hero: 1.04;
-  --letter-spacing-hero: 0.2em;
-  --letter-spacing-primary: 0.15em;
-  --letter-spacing-tight: -0.015em;
-  --letter-spacing-wide: 0.12em;
-  --letter-spacing-extra-wide: 0.3em;
-
-  /* Enhanced Shadows - Layered Depth System */
-  --shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.1);
-  --shadow-level-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-level-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-level-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-level-glam:
-    0 10px 15px -3px rgba(0, 0, 0, 0.2),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1),
-    0 25px 50px -12px rgba(255, 255, 255, 0.05);
-
-  /* Enhanced Premium Shadows */
-  --shadow-premium-1:
-    0 2px 4px rgba(0, 0, 0, 0.1),
-    0 8px 16px rgba(0, 0, 0, 0.1);
-  --shadow-premium-2:
-    0 4px 8px rgba(0, 0, 0, 0.12),
-    0 12px 24px rgba(0, 0, 0, 0.12),
-    0 24px 48px rgba(0, 0, 0, 0.08);
-  --shadow-premium-3:
-    0 8px 16px rgba(0, 0, 0, 0.15),
-    0 16px 32px rgba(0, 0, 0, 0.15),
-    0 32px 64px rgba(0, 0, 0, 0.1);
-
-  --shadow-glow-creme: 0 0 20px rgba(245, 245, 220, 0.15);
-  --shadow-glow-creme-strong: 0 0 35px rgba(245, 245, 220, 0.25);
-
-  /* Organic Shapes */
-  --radius-organic-sm: 1rem;
-  --radius-organic-md: 2rem;
-  --radius-organic-lg: 3.5rem;
-  --radius-organic-pill: 9999px;
-
-  /* Accent Color - Platinum Silver (Professional Refinement) */
-  --color-accent: #CBD5E1;
-
-  /* Lighting Blobs - Purified Creme */
-  --glow-blob: radial-gradient(circle at center, rgba(245, 245, 220, 0.03) 0%, transparent 70%);
-  --glow-blob-warm: radial-gradient(circle at center, rgba(245, 245, 220, 0.06) 0%, transparent 75%);
+  --color-background: var(--color-premium-black);
+  --color-text-primary: var(--color-premium-white);
+  --color-text-secondary: var(--color-premium-slate);
+  --color-accent: var(--color-premium-gold);
 }
 
 /* ===================================
@@ -129,8 +51,8 @@ html {
 }
 
 body {
-  background: #000000;
-  color: var(--color-text-light);
+  background: var(--color-background);
+  color: var(--color-text-primary);
   font-family: var(--font-body);
   overflow-x: hidden;
   position: relative;
@@ -263,17 +185,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-display);
-  color: var(--color-text-light);
+  font-family: var(--font-playfair), serif;
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
-  font-weight: var(--font-weight-heading);
+  color: var(--color-text-primary);
 }
 
 h1 {
-  font-size: clamp(30px, 8vw, 72px);
+  font-size: var(--font-h1);
+  font-weight: var(--font-weight-semibold);
   line-height: 1.05;
-  letter-spacing: -0.01em;
 }
 
 .text-hero-editorial {
@@ -300,17 +221,16 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(24px, 5vw, 48px);
-  font-weight: var(--font-weight-heading);
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  font-size: var(--font-h2);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.08;
   margin-bottom: 2rem;
 }
 
 h3 {
-  font-size: clamp(20px, 3vw, 32px);
-  font-weight: var(--font-weight-heading);
-  letter-spacing: -0.01em;
+  font-size: var(--font-h3);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
   line-height: 1.25;
 }
 
@@ -652,12 +572,14 @@ section {
 
 /* Super-Luxury Button System - Enhanced */
 .btn-luxury-primary {
-  @apply relative overflow-hidden flex items-center justify-center transition-all duration-500 font-bold uppercase tracking-[0.3em] rounded-full;
-  background: var(--color-creme);
-  color: #000;
-  padding: 1rem 2.5rem;
-  font-size: 10px;
-  box-shadow: var(--shadow-premium-2);
+  @apply relative overflow-hidden flex items-center justify-center transition-all duration-500 font-semibold uppercase tracking-[0.2em] rounded-full;
+  background: #0B0B0B;
+  color: #F8F8F6;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid rgba(248,248,246,0.05);
 }
 
 @media (min-width: 640px) {
@@ -667,8 +589,9 @@ section {
 }
 
 .btn-luxury-primary:hover {
-  box-shadow: var(--shadow-premium-3), var(--shadow-glow-silver-strong);
-  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  transform: scale(1.02);
+  border-color: rgba(230, 211, 163, 0.3);
 }
 
 .btn-luxury-primary::before {
@@ -698,11 +621,10 @@ section {
 }
 
 .btn-luxury-ghost {
-  @apply relative overflow-hidden transition-all duration-500 font-bold uppercase tracking-[0.3em] text-[10px] sm:text-xs rounded-full py-6 px-12 backdrop-blur-md;
-  background: rgba(203, 213, 225, 0.03);
-  border: 1px solid rgba(203, 213, 225, 0.2);
-  color: var(--color-silver-bh);
-  box-shadow: var(--shadow-premium-1);
+  @apply relative overflow-hidden transition-all duration-500 font-semibold uppercase tracking-[0.2em] text-[10px] sm:text-xs rounded-full py-4 px-8 backdrop-blur-md;
+  background: transparent;
+  border: 1px solid rgba(248, 248, 246, 0.08);
+  color: #F8F8F6;
 }
 
 .btn-luxury-ghost:hover {

@@ -165,32 +165,32 @@ export function InstitutionalTrust() {
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-deep-black)] relative overflow-hidden">
             {/* Background Texture for Depth */}
-            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, var(--color-silver-bh) 1px, transparent 1px)' }}></div>
+            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #F8F8F6 1px, transparent 1px)' }}></div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-12 border-b border-white/5 pb-20">
                     <div className="max-w-4xl">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-silver-bh)] font-body text-[10px] font-bold uppercase tracking-[0.08em] mb-8 block">
+                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                                 Fundamentos do Cuidado
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[var(--color-silver-bh)] text-[clamp(28px,6vw,48px)] font-medium leading-[1.1] uppercase tracking-[-0.01em]">
+                        <h2 className="font-display text-[#F8F8F6] text-[clamp(36px,6vw,72px)] font-semibold leading-[1.05] uppercase tracking-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[var(--color-creme)] font-bodoni italic font-light block mt-2">Rigor e a Sensibilidade.</span>
+                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
 
                     <div className="hidden lg:block text-right">
                         <PremiumReveal direction="right" delay={0.4}>
-                            <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">Desde 1996</span>
-                            <div className="h-[1px] w-20 bg-[var(--color-silver-bh)] ml-auto mb-2"></div>
-                            <span className="block text-sm text-[var(--color-text-secondary)]">Tradição e Inovação em Pereira Barreto</span>
+                            <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#6B7280] mb-2">Desde 1996</span>
+                            <div className="h-[1px] w-20 bg-[#F8F8F6] ml-auto mb-2"></div>
+                            <span className="block text-sm text-[#6B7280]">Tradição e Inovação em Pereira Barreto</span>
                         </PremiumReveal>
                     </div>
                 </div>
@@ -200,25 +200,25 @@ export function InstitutionalTrust() {
                         <LuxuryCard key={index} delay={0.2 + (index * 0.1)}>
                             {/* Numerical Indicator - Editorial Style */}
                             <div className="flex justify-between items-start mb-12">
-                                <div className="w-10 h-[1px] bg-[var(--color-creme)]/10 mt-4 group-hover:w-16 group-hover:bg-[var(--color-creme)]/30 transition-all duration-700 origin-left" />
-                                <span className="font-display font-medium text-6xl text-[var(--color-silver-bh)]/[0.03] group-hover:text-[var(--color-creme)]/10 transition-all duration-1000 leading-none tracking-tighter">
+                                <div className="w-10 h-[1px] bg-[#E6D3A3]/10 mt-4 group-hover:w-16 group-hover:bg-[#E6D3A3]/30 transition-all duration-700 origin-left" />
+                                <span className="font-display font-medium text-6xl text-[#F8F8F6]/[0.03] group-hover:text-[#E6D3A3]/10 transition-all duration-1000 leading-none tracking-tighter">
                                     {card.number}
                                 </span>
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="font-display text-[var(--color-silver-bh)] text-xl md:text-2xl font-medium mb-6 group-hover:translate-x-2 transition-transform duration-500 uppercase tracking-wide">
+                                <h3 className="text-[#F8F8F6] text-[20px] font-semibold mb-6 transition-transform duration-500 uppercase tracking-wide" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {card.title}
                                 </h3>
 
-                                <p className="font-body text-[var(--color-silver-bh)]/60 text-sm leading-[1.65] group-hover:text-[var(--color-silver-bh)]/90 transition-colors duration-500 max-w-[90%] body-text-refined">
+                                <p className="text-[#6B7280] text-[15px] font-normal leading-[1.6] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {card.subtitle}
                                 </p>
                             </div>
 
                             {/* Bottom Detail */}
                             <div className="mt-12 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-                                <div className="text-[9px] uppercase tracking-[0.08em] text-[var(--color-creme)]">Pilar de Excelência</div>
+                                <div className="text-[9px] uppercase tracking-[0.08em] text-[#E6D3A3]">Pilar de Excelência</div>
                             </div>
                         </LuxuryCard>
                     ))}

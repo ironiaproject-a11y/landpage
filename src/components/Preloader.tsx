@@ -72,7 +72,7 @@ export function Preloader() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 0.15, scale: 1 }}
                         transition={{ duration: 2 }}
-                        className="absolute inset-0 bg-gradient-to-br from-[var(--color-silver-bh)]/30 via-transparent to-transparent blur-[120px]"
+                        className="absolute inset-0 bg-gradient-to-br from-[#F8F8F6]/30 via-transparent to-transparent blur-[120px]"
                     />
 
                     <div className="relative flex flex-col items-center">
@@ -80,7 +80,7 @@ export function Preloader() {
                             initial={{ width: 0 }}
                             animate={{ width: "240px" }}
                             transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1] }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)] to-transparent mb-8"
+                            className="h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6] to-transparent mb-8"
                         />
 
                         <m.div
@@ -101,7 +101,7 @@ export function Preloader() {
                             initial={{ width: 0 }}
                             animate={{ width: "240px" }}
                             transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-[var(--color-silver-bh)] to-transparent mt-8"
+                            className="h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6] to-transparent mt-8"
                         />
 
                         {/* Progress Indicator */}
@@ -110,7 +110,7 @@ export function Preloader() {
                                 initial={{ x: "-100%" }}
                                 animate={{ x: "0%" }}
                                 transition={{ duration: 1.8, ease: "easeInOut" }}
-                                className="w-full h-full bg-[var(--color-silver-bh)] shadow-[0_0_10px_var(--color-silver-bh)]"
+                                className="w-full h-full bg-[#E6D3A3] shadow-[0_0_10px_#E6D3A3]"
                             />
                         </div>
                     </div>
