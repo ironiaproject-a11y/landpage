@@ -91,7 +91,7 @@ export function Hero() {
                 width: newWidth * 1.08, // Increased base scale
                 height: newHeight * 1.08,
                 x: (canvas.width - newWidth * 1.08) / 2,
-                y: (canvas.height - newHeight * 1.08) / 2
+                y: (canvas.height - newHeight * 1.08) / 2 - (canvas.height * 0.06) // Surgically raise frame by 6%
             };
 
             render();
@@ -246,13 +246,13 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-bottom: 8vh; /* Bias content upwards without clipping */
                     }
                     .hero-text {
                         width: 50%;
                         max-width: 520px;
                         z-index: 20;
                         text-align: left !important;
+                        transform: translateY(-6vh); /* Surgically raise text to match video */
                     }
                     .hero-visual {
                         width: 50%;
@@ -287,7 +287,7 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-end;
-                        padding-bottom: 12vh;
+                        padding-bottom: 18vh; /* Raised from 12vh to match new elevation */
                         top: 0 !important;
                     }
                     .phrase-1 {
