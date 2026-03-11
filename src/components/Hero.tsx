@@ -100,7 +100,6 @@ export function Hero() {
         window.addEventListener("resize", updateSize);
         updateSize();
         preloadImages();
-        startSequence();
 
         // 1. Intro Animation Sequence
         const introTl = gsap.timeline({
@@ -204,16 +203,20 @@ export function Hero() {
         window.addEventListener("touchstart", handleInterrupt);
 
         // Start Intro when first frame is ready
+        let introTimeout: NodeJS.Timeout;
         const startSequence = () => {
             if (imagesRef.current[0]?.complete) {
                 introTl.play();
             } else {
-                setTimeout(startSequence, 100);
+                introTimeout = setTimeout(startSequence, 100);
             }
         };
 
+        startSequence();
+
         return () => {
             introTl.kill();
+            if (introTimeout) clearTimeout(introTimeout);
             window.removeEventListener("wheel", handleInterrupt);
             window.removeEventListener("touchstart", handleInterrupt);
             window.removeEventListener("resize", updateSize);
