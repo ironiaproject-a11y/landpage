@@ -155,13 +155,13 @@ export function Stats() {
                                     className="flex items-baseline gap-1 mb-6 md:mb-10 group"
                                 >
                                     {stat.prefix && (
-                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 mr-2">
+                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-40 group-hover:opacity-100 transition-opacity duration-700 mr-2">
                                             {stat.prefix}
                                         </span>
                                     )}
                                     {stat.value !== null ? (
                                         <span
-                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-[#E6D3A3] tracking-tighter leading-none transition-all duration-700"
+                                            className="stat-counter font-editorial text-6xl sm:text-8xl md:text-[110px] lg:text-[130px] font-medium text-[#E6D3A3] tracking-[-0.05em] leading-none transition-all duration-700"
                                             style={{ textShadow: "0 10px 30px rgba(245,245,220,0.15)" }}
                                             data-target={stat.value}
                                             data-float={stat.value % 1 !== 0}
@@ -185,7 +185,7 @@ export function Stats() {
                                         </m.div>
                                     )}
                                     {stat.suffix && (
-                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-60 group-hover:opacity-100 transition-opacity duration-700 ml-2">
+                                        <span className="text-[#F8F8F6] font-editorial text-3xl md:text-5xl font-light opacity-40 group-hover:opacity-100 transition-opacity duration-700 ml-2">
                                             {stat.suffix}
                                         </span>
                                     )}
@@ -207,7 +207,7 @@ export function Stats() {
                                         whileInView={{ opacity: 0.85, y: 0 }}
                                         transition={{ duration: 1, delay: stat.delay + 0.6 }}
                                         viewport={{ once: true, margin: "-15%" }}
-                                        className="text-[#6B7280] font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-[#F8F8F6] transition-colors duration-500"
+                                         className="text-[#8E9196] font-body text-sm md:text-base font-light leading-[1.65] max-w-[300px] hover:text-[#F8F8F6] transition-colors duration-500"
                                     >
                                         {stat.sublabel}
                                     </m.p>
