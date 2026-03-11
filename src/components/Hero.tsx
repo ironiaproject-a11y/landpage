@@ -87,7 +87,7 @@ export function Hero() {
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
 
-            const mobileYOffset = isMobile ? -(canvas.height * 0.10) : 0; // sobe a imagem 10% da altura do canvas no mobile
+            const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; // sobe a imagem 20% da altura do canvas no mobile para garantir o rosto/foco no lugar
 
             layoutRef.current = {
                 width: newWidth * 1.08, // Increased base scale
@@ -244,20 +244,19 @@ export function Hero() {
                 @media (min-width: 1024px) {
                     .hero-container {
                         display: flex;
-                        align-items: center;
+                        align-items: flex-start; /* Aligns text to the top */
                         width: 100%;
-                        height: 110%; /* Increased height to allow for more shift and avoid bottom gap */
+                        height: 100%;
                         padding-left: 8vw;
-                        padding-top: 10vh; /* Increased protection for brand logo space */
+                        padding-top: 15vh; /* Positions headline ~15% from top */
                         position: relative;
-                        top: -5vh; /* Increased shift to meet user requirement */
                     }
                     .hero-text {
                         width: 50%;
                         max-width: 520px;
                         z-index: 20;
                         text-align: left !important;
-                        transform: translateY(-2vh); /* Fine-tuning to keep text 'inside' the visual composition */
+                        /* Removed transform translateY to simplify upper positioning */
                     }
                     .hero-visual {
                         width: 50%;
@@ -278,22 +277,17 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-start;
+                        justify-content: flex-start; /* Aligns content to the top */
                         width: 100%;
-                        height: 110%;
+                        height: 100%;
+                        padding-top: 15vh; /* Positions headline ~15% from top */
                         position: relative;
-                        top: -8vh; /* Vídeo sobe mais um pouco, compensado no hero-text */
                     }
                     .hero-text {
-                        /* top:45vh do container = ~40vh do topo da section — dentro do hero */
-                        position: absolute;
                         z-index: 20;
                         text-align: center;
                         width: 100%;
                         padding: 0 6vw;
-                        top: 48vh; /* -8vh container + 48vh = 40vh da section — texto no lugar */
-                        left: 0;
-                        right: 0;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -318,7 +312,7 @@ export function Hero() {
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 2.5rem !important;
+                        margin-top: 6.5rem !important; /* Increased breathing space (equivalent to mt-24+) */
                     }
                     .hero-visual {
                         width: 100%;
@@ -400,7 +394,7 @@ export function Hero() {
                     ))}
                 </div>
                 {/* Text Column */}
-                <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
+                <div ref={textContainerRef} className="hero-text opacity-0" aria-hidden="false">
                     <div className="phrase-1 mb-1">
                         <h1 className="text-[#F8F8F6] font-normal tracking-[0.15em] opacity-90 uppercase" style={{ 
                             fontFamily: '"Playfair Display", serif',
@@ -421,7 +415,7 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    <div className="hero-btn-wrapper mt-12 pointer-events-auto">
+                    <div className="hero-btn-wrapper mt-24 pointer-events-auto">
                         <button className="btn-luxury-primary">
                             Agendar Experiência
                         </button>
