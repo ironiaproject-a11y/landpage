@@ -271,14 +271,15 @@ export function Hero() {
                 }
 
                 @media (max-width: 1023px) {
+                    .hero-container {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
                         width: 100%;
-                        height: 106%;
+                        height: 104%;
                         position: relative;
-                        top: -6vh;
+                        top: -2vh; /* Even more moderate shift for mobile */
                     }
                     .hero-text {
                         position: absolute;
