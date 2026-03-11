@@ -280,16 +280,16 @@ export function Hero() {
                         width: 100%;
                         height: 110%;
                         position: relative;
-                        top: -10vh; /* Sobe o container (vídeo + texto) próximo à logo Clínica */
+                        top: -5vh; /* Vídeo sobe um pouco, próximo da Clínica, sem encostar */
                     }
                     .hero-text {
-                        /* Posicionamento absoluto com top fixo — sem height:100% para não vazar */
+                        /* top:45vh do container = ~40vh do topo da section — dentro do hero */
                         position: absolute;
                         z-index: 20;
                         text-align: center;
                         width: 100%;
                         padding: 0 6vw;
-                        top: 18vh; /* Texto começa a 18vh do topo — dentro do hero */
+                        top: 45vh;
                         left: 0;
                         right: 0;
                         display: flex;
@@ -316,7 +316,7 @@ export function Hero() {
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 3rem !important;
+                        margin-top: 2.5rem !important;
                     }
                     .hero-visual {
                         width: 100%;
