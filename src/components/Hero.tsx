@@ -276,26 +276,25 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: center;
+                        justify-content: flex-start;
                         width: 100%;
                         height: 110%;
                         position: relative;
-                        top: -4vh; /* Increased shift for mobile */
+                        top: -10vh; /* Sobe o container (vídeo + texto) próximo à logo Clínica */
                     }
                     .hero-text {
+                        /* Posicionamento absoluto com top fixo — sem height:100% para não vazar */
                         position: absolute;
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding-left: 6vw;
-                        padding-right: 6vw;
-                        padding-top: 20vh; /* Headline no topo ~20% da viewport — sem conflito de shorthand */
-                        padding-bottom: 0;
-                        height: 100%;
+                        padding: 0 6vw;
+                        top: 18vh; /* Texto começa a 18vh do topo — dentro do hero */
+                        left: 0;
+                        right: 0;
                         display: flex;
                         flex-direction: column;
-                        justify-content: flex-start;
-                        top: 0 !important;
+                        align-items: center;
                     }
                     .phrase-1 {
                         position: relative !important;
@@ -317,7 +316,7 @@ export function Hero() {
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 4rem !important; /* Mais respiro entre headline e CTA */
+                        margin-top: 3rem !important;
                     }
                     .hero-visual {
                         width: 100%;
