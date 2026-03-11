@@ -291,8 +291,8 @@ export function Hero() {
                         height: 100%;
                         display: flex;
                         flex-direction: column;
-                        justify-content: flex-end;
-                        padding-bottom: 12vh; /* Reverte to stable padding, the container 'top' handles the elevation now */
+                        justify-content: flex-start;
+                        padding-top: 15vh; /* Posiciona headline no topo ~15% da viewport */
                         top: 0 !important;
                     }
                     .phrase-1 {
