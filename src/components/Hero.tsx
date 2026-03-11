@@ -280,7 +280,7 @@ export function Hero() {
                         width: 100%;
                         height: 110%;
                         position: relative;
-                        top: -5vh; /* Vídeo sobe um pouco, próximo da Clínica, sem encostar */
+                        top: -8vh; /* Vídeo sobe mais um pouco, compensado no hero-text */
                     }
                     .hero-text {
                         /* top:45vh do container = ~40vh do topo da section — dentro do hero */
@@ -289,7 +289,7 @@ export function Hero() {
                         text-align: center;
                         width: 100%;
                         padding: 0 6vw;
-                        top: 45vh;
+                        top: 48vh; /* -8vh container + 48vh = 40vh da section — texto no lugar */
                         left: 0;
                         right: 0;
                         display: flex;
