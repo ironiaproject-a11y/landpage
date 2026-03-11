@@ -91,7 +91,7 @@ export function Hero() {
                 width: newWidth * 1.08, // Increased base scale
                 height: newHeight * 1.08,
                 x: (canvas.width - newWidth * 1.08) / 2,
-                y: (canvas.height - newHeight * 1.08) / 2 - (canvas.height * 0.06) // Surgically raise frame by 6%
+                y: (canvas.height - newHeight * 1.08) / 2
             };
 
             render();
@@ -244,15 +244,16 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         width: 100%;
-                        height: 100%;
+                        height: 106%; /* Slightly taller to provide headroom for the shift */
                         padding-left: 8vw;
+                        position: relative;
+                        top: -6vh; /* Physically shift the entire container up */
                     }
                     .hero-text {
                         width: 50%;
                         max-width: 520px;
                         z-index: 20;
                         text-align: left !important;
-                        transform: translateY(-6vh); /* Surgically raise text to match video */
                     }
                     .hero-visual {
                         width: 50%;
@@ -269,13 +270,14 @@ export function Hero() {
                 }
 
                 @media (max-width: 1023px) {
-                    .hero-container {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
                         width: 100%;
-                        height: 100%;
+                        height: 106%;
+                        position: relative;
+                        top: -6vh;
                     }
                     .hero-text {
                         position: absolute;
@@ -287,7 +289,7 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-end;
-                        padding-bottom: 18vh; /* Raised from 12vh to match new elevation */
+                        padding-bottom: 12vh; /* Reverte to stable padding, the container 'top' handles the elevation now */
                         top: 0 !important;
                     }
                     .phrase-1 {
