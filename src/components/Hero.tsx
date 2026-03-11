@@ -244,10 +244,11 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         width: 100%;
-                        height: 106%; /* Slightly taller to provide headroom for the shift */
+                        height: 104%; /* Slightly taller to provide headroom */
                         padding-left: 8vw;
+                        padding-top: 6vh; /* Reserve space for fixed navbar/logo */
                         position: relative;
-                        top: -6vh; /* Physically shift the entire container up */
+                        top: -3vh; /* Moderate shift */
                     }
                     .hero-text {
                         width: 50%;
