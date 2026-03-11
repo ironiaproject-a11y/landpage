@@ -204,7 +204,7 @@ export function Specialist() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative bg-[#0B0B0B] overflow-hidden" id="especialista">
+        <section ref={sectionRef} className="pt-12 md:pt-20 pb-24 md:pb-40 relative bg-[#0B0B0B] overflow-hidden" id="especialista">
             {/* Background overlay for blur effect */}
             <div
                 ref={backgroundRef}

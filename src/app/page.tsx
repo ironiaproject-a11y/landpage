@@ -36,12 +36,12 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
+      <Specialist />
       <About />
       <InstitutionalTrust />
       <TrustBar />
       <Services />
       <CaseStudies />
-      <Specialist />
       <Stats />
       <Experience />
       <Amenities />

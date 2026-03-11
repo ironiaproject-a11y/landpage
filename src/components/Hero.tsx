@@ -238,7 +238,6 @@ export function Hero() {
                     min-height: -webkit-fill-available;
                     background: #000;
                     padding: 0 !important;
-                    margin-bottom: 25vh; /* Large spacer for About section */
                 }
 
                 @media (min-width: 1024px) {
@@ -333,7 +332,6 @@ export function Hero() {
                 @media (max-width: 768px) {
                     .hero { 
                         height: 90vh;
-                        margin-bottom: 15vh;
                     }
                 }
 
