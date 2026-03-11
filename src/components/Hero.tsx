@@ -244,17 +244,18 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         width: 100%;
-                        height: 104%; /* Slightly taller to provide headroom */
+                        height: 110%; /* Increased height to allow for more shift and avoid bottom gap */
                         padding-left: 8vw;
-                        padding-top: 6vh; /* Reserve space for fixed navbar/logo */
+                        padding-top: 10vh; /* Increased protection for brand logo space */
                         position: relative;
-                        top: -3vh; /* Moderate shift */
+                        top: -5vh; /* Increased shift to meet user requirement */
                     }
                     .hero-text {
                         width: 50%;
                         max-width: 520px;
                         z-index: 20;
                         text-align: left !important;
+                        transform: translateY(-2vh); /* Fine-tuning to keep text 'inside' the visual composition */
                     }
                     .hero-visual {
                         width: 50%;
@@ -277,9 +278,9 @@ export function Hero() {
                         align-items: center;
                         justify-content: center;
                         width: 100%;
-                        height: 104%;
+                        height: 110%;
                         position: relative;
-                        top: -2vh; /* Even more moderate shift for mobile */
+                        top: -4vh; /* Increased shift for mobile */
                     }
                     .hero-text {
                         position: absolute;
