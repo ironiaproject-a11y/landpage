@@ -67,7 +67,7 @@ export function Hero() {
 
         const updateSize = () => {
             const rect = canvas.getBoundingClientRect();
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const dpr = Math.min(window.devicePixelRatio || 1, 3);
 
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
@@ -77,12 +77,10 @@ export function Hero() {
             const imgHeight = img.height || 1080;
 
             context.imageSmoothingEnabled = true;
-            context.imageSmoothingQuality = "medium";
+            context.imageSmoothingQuality = "high";
 
             const isMobile = window.innerWidth <= 768;
-            const ratio = isMobile
-                ? Math.min(canvas.width / imgWidth, canvas.height / imgHeight)
-                : Math.max(canvas.width / imgWidth, canvas.height / imgHeight);
+            const ratio = Math.max(canvas.width / imgWidth, canvas.height / imgHeight);
 
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
@@ -90,10 +88,10 @@ export function Hero() {
             const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; // sobe a imagem 20% da altura do canvas no mobile para garantir o rosto/foco no lugar
 
             layoutRef.current = {
-                width: newWidth * 1.08, // Increased base scale
-                height: newHeight * 1.08,
-                x: (canvas.width - newWidth * 1.08) / 2,
-                y: (canvas.height - newHeight * 1.08) / 2 + mobileYOffset
+                width: newWidth * 1.02, // Tighter scale for performance and crispness
+                height: newHeight * 1.02,
+                x: (canvas.width - newWidth * 1.02) / 2,
+                y: (canvas.height - newHeight * 1.02) / 2 + mobileYOffset
             };
 
             render();
@@ -128,9 +126,9 @@ export function Hero() {
                     }
                 });
 
-                // Frame Animation - Continues from the end of intro (~45)
+                // Frame Animation - Continues from the end of intro (~60)
                 masterTl.fromTo(playheadRef.current, 
-                    { frame: 45 },
+                    { frame: 60 },
                     {
                         frame: FRAME_COUNT - 1,
                         snap: "frame",
@@ -202,9 +200,9 @@ export function Hero() {
 
         // Define Intro Tweens
         introTl.to(playheadRef.current, {
-            frame: 45,
-            duration: 2.5,
-            ease: "power2.out",
+            frame: 60, // Played automatically to set the stage
+            duration: 3.5, // Cinematic duration
+            ease: "power2.inOut",
             onUpdate: render
         }, 0);
 
@@ -213,12 +211,23 @@ export function Hero() {
             { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }, 
         0.5);
 
+        // Animate metrics and button
+        introTl.fromTo(".hero-metrics-subtle",
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+        1.2);
+
+        introTl.fromTo(".hero-btn-wrapper",
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+        1.5);
+
         // Handle Scroll Handover (Interruption)
         const handleInterrupt = () => {
             if (introTl.isActive()) {
                 introTl.kill();
-                // Jump to intro state for consistency
-                playheadRef.current.frame = 45;
+                // Jump to intro handover state for consistency
+                playheadRef.current.frame = 60;
                 gsap.set(textContainerRef.current, { opacity: 1, y: 0 });
                 render();
                 initScrollEffects();
@@ -260,7 +269,7 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 90vh; /* Changed from 100vh to 90vh */
+                    height: 100vh; /* Changed back to 100vh for full immersion */
                     min-height: -webkit-fill-available;
                     background: #000;
                     padding: 0 !important;
@@ -281,17 +290,24 @@ export function Hero() {
                         max-width: 600px;
                         z-index: 20;
                         text-align: left !important;
+                        padding-top: 2vh;
+                    }
+                    .phrase-2 {
+                        margin-left: 30px; /* Artistic Offset for the main line */
                     }
                     .hero-visual {
-                        width: 50%;
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
                         height: 100%;
-                        position: relative;
+                        z-index: 0;
                     }
                     .hero-overlay {
-                        background: linear-gradient(
-                            rgba(0,0,0,0.55),
-                            rgba(0,0,0,0.25),
-                            transparent
+                        background: radial-gradient(
+                            circle at 20% 50%,
+                            rgba(0,0,0,0.4) 0%,
+                            rgba(0,0,0,0.2) 40%,
+                            rgba(0,0,0,0.6) 100%
                         );
                     }
                 }
@@ -304,7 +320,7 @@ export function Hero() {
                         justify-content: flex-start;
                         width: 100%;
                         height: 100%;
-                        padding-top: 15vh;
+                        padding-top: 12vh;
                         position: relative;
                     }
                     .hero-text {
@@ -322,7 +338,7 @@ export function Hero() {
                         left: auto !important;
                         transform: none !important;
                         width: 100%;
-                        margin-bottom: 10px; /* Spacing between lines (8-12px) */
+                        margin-bottom: 8px; /* Slightly tighter */
                     }
                     .phrase-2 {
                         position: relative !important;
@@ -331,12 +347,17 @@ export function Hero() {
                         transform: none !important;
                         width: 100%;
                     }
+                    .hero-metrics-subtle {
+                        justify-content: center;
+                        margin-top: 40px;
+                    }
                     .hero-btn-wrapper {
                         position: relative !important;
                         top: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        margin-top: 32px !important; /* Spacing between headline and CTA (28-36px) */
+                        margin-top: 32px !important;
+                        z-index: 30;
                     }
                     .hero-visual {
                         width: 100%;
@@ -344,9 +365,9 @@ export function Hero() {
                     }
                     .hero-overlay {
                         background: linear-gradient(
-                            rgba(0,0,0,0.55),
-                            rgba(0,0,0,0.25),
-                            transparent
+                            rgba(0,0,0,0.6),
+                            rgba(0,0,0,0.3),
+                            rgba(0,0,0,0.7)
                         );
                     }
                 }
@@ -360,7 +381,9 @@ export function Hero() {
 
                 @media (max-width: 768px) {
                     .hero { 
-                        height: 90vh;
+                        height: auto;
+                        min-height: 100vh;
+                        padding-bottom: 60px !important;
                     }
                 }
 
@@ -423,32 +446,51 @@ export function Hero() {
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0" aria-hidden="false">
                     <div className="phrase-1">
-                        <h1 className="text-[#F8F8F6] font-medium tracking-[0.15em] opacity-90 uppercase" style={{ 
-                            fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(24px, 4vw, 30px)', // Requirement: around 24-34px
+                        <h1 className="text-white/60 font-medium tracking-[0.6em] uppercase" style={{ 
+                            fontFamily: 'var(--font-body), sans-serif',
+                            fontSize: '12px', 
                             lineHeight: '1.2'
                         }}>
                             Sua origem
                         </h1>
                     </div>
                     
-                    <div className="phrase-2">
+                    <div className="phrase-2 mt-4">
                         <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(48px, 10vw, 72px)', // Requirement: around 48-72px
-                            lineHeight: '0.95'
+                            fontSize: 'clamp(48px, 10vw, 82px)', 
+                            lineHeight: '0.9'
                         }}>
                             Seu sorriso
                         </h2>
                     </div>
 
-                    {/* Button relocated to page.tsx for better hierarchical flow */}
+                    <div className="hero-metrics-subtle mt-10 md:mt-12 opacity-0 flex flex-wrap gap-x-8 gap-y-4">
+                        {[
+                            { value: "785+", label: "Transformações" },
+                            { value: "12+ Anos", label: "Experiência" },
+                            { value: "4.9★", label: "Google Business" }
+                        ].map((item, idx) => (
+                            <div key={idx} className="flex flex-col">
+                                <span className="text-white/80 font-medium text-lg md:text-xl tracking-tight">
+                                    {item.value}
+                                </span>
+                                <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium">
+                                    {item.label}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
 
-                    {/* Metrics removed - moved to SocialProof (Stats.tsx) */}
+                    <div className="hero-btn-wrapper mt-10 opacity-0 group">
+                        <button className="btn-luxury-primary relative overflow-hidden">
+                            <span className="relative z-10 text-white tracking-[0.2em] font-medium">AGENDAR EXPERIÊNCIA</span>
+                        </button>
+                    </div>
                 </div>
 
-                {/* Visual Column / Container */}
-                <div ref={containerRef} className="hero-visual absolute lg:relative inset-0 lg:inset-auto lg:h-full lg:w-1/2 lg:ml-auto pointer-events-none overflow-hidden">
+                {/* Full-Screen Visual Background */}
+                <div ref={containerRef} className="hero-visual absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
                     <div className="visual-wrapper">
                         <canvas
                             ref={canvasRef}
