@@ -126,14 +126,14 @@ export function Hero() {
                     }
                 });
 
-                // Frame Animation - Continues from the end of intro (~60)
+                // Frame Animation - Continues from the end of intro (~90)
                 masterTl.fromTo(playheadRef.current, 
-                    { frame: 60 },
+                    { frame: 90 },
                     {
                         frame: FRAME_COUNT - 1,
                         snap: "frame",
                         ease: "none",
-                        duration: 2,
+                        duration: 1.5,
                         onUpdate: render,
                     }, 0);
 
@@ -172,63 +172,70 @@ export function Hero() {
                     }, 0);
                 }
 
-                // Text Narrative logic - Starts from phrase-1 (already visible)
-                masterTl.to(".phrase-1", {
-                    opacity: 0,
-                    filter: "blur(15px)",
-                    scale: 0.85,
-                    y: -15,
-                    duration: 0.6,
-                    ease: "power2.in"
-                }, 0.6);
-
-                masterTl.fromTo(".phrase-2", {
-                    opacity: 0,
-                    filter: "blur(15px)",
-                    scale: 1.15,
-                    y: 15
-                }, {
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    scale: 1,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "power2.out"
-                }, 1.0);
+                // Text Narrative logic - Handled by introTl mostly, but sync for backward scroll if needed
+                // Currently phrase-2 is visible at end of intro.
             }, sectionRef);
         };
 
-        // Define Intro Tweens
+        // Define Intro Tweens - The Cinematic Transformation
         introTl.to(playheadRef.current, {
-            frame: 60, // Played automatically to set the stage
-            duration: 3.5, // Cinematic duration
+            frame: 90, // Played automatically to set the stage
+            duration: 4.5, // Cinematic duration
             ease: "power2.inOut",
             onUpdate: render
         }, 0);
-
+ 
         introTl.fromTo(textContainerRef.current, 
             { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }, 
+            { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 
         0.5);
 
+        // Phrase 1 to 2 transition during intro
+        introTl.to(".phrase-1", {
+            opacity: 0,
+            filter: "blur(15px)",
+            scale: 0.85,
+            y: -15,
+            duration: 1.2,
+            ease: "power2.inOut"
+        }, 1.8);
+
+        introTl.fromTo(".phrase-2", {
+            opacity: 0,
+            filter: "blur(15px)",
+            scale: 1.15,
+            y: 15
+        }, {
+            opacity: 1,
+            filter: "blur(0px)",
+            scale: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "power2.out"
+        }, 2.4);
+ 
         // Animate metrics and button
         introTl.fromTo(".hero-metrics-subtle",
             { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-        1.2);
-
+            { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
+        3.2);
+ 
         introTl.fromTo(".hero-btn-wrapper",
             { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-        1.5);
+            { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
+        3.5);
 
         // Handle Scroll Handover (Interruption)
         const handleInterrupt = () => {
             if (introTl.isActive()) {
                 introTl.kill();
                 // Jump to intro handover state for consistency
-                playheadRef.current.frame = 60;
+                playheadRef.current.frame = 90;
                 gsap.set(textContainerRef.current, { opacity: 1, y: 0 });
+                gsap.set(".phrase-1", { opacity: 0, filter: "blur(15px)", y: -15, scale: 0.85 });
+                gsap.set(".phrase-2", { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 });
+                gsap.set(".hero-metrics-subtle", { opacity: 1, y: 0 });
+                gsap.set(".hero-btn-wrapper", { opacity: 1, y: 0 });
                 render();
                 initScrollEffects();
             }
@@ -282,7 +289,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 18vh; /* content sitting higher (15-20%) */
+                        padding-top: 22vh; /* Content sitting higher with more breathing room from Navbar */
                         position: relative;
                     }
                     .hero-text {
