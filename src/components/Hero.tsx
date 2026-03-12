@@ -203,10 +203,10 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-end; /* Push text to the bottom below the contained video */
+                        justify-content: center; /* Center the text vertically to balance layout below video */
                         width: 100%;
                         height: 100%;
-                        padding-bottom: 8vh; /* Give space at the very bottom */
+                        padding-top: 25vh; /* Push down just enough to clear the top-aligned video */
                         position: relative;
                     }
                     .hero-text {
