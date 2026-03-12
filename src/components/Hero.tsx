@@ -78,7 +78,6 @@ export function Hero() {
                     position: relative;
                     width: 100%;
                     height: 100vh;
-                    min-height: -webkit-fill-available;
                     background: #000;
                     padding: 0 !important;
                 }

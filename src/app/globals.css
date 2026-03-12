@@ -711,10 +711,8 @@ section:not(.hero) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .hero-video,
   .hero__video {
-    display: none;
     animation-play-state: paused;
   }
 
