@@ -203,10 +203,10 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-start;
+                        justify-content: flex-end; /* Push text to the bottom below the contained video */
                         width: 100%;
                         height: 100%;
-                        padding-top: 15vh;
+                        padding-bottom: 8vh; /* Give space at the very bottom */
                         position: relative;
                     }
                     .hero-text {
@@ -289,13 +289,13 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    <div className="hero-subheadline mt-8 max-w-lg">
+                    <div className="hero-subheadline mt-6 max-w-lg mx-auto">
                         <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed tracking-wide">
                             A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
                         </p>
                     </div>
 
-                    <div className="hero-metrics-subtle mt-10 md:mt-12 flex flex-wrap gap-x-8 gap-y-4">
+                    <div className="hero-metrics-subtle mt-8 md:mt-12 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
                         {[
                             { value: "785+", label: "Transformações" },
                             { value: "12+ Anos", label: "Experiência" },
