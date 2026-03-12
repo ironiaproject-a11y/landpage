@@ -64,10 +64,9 @@ export function Hero() {
             cancelAnimationFrame(renderId);
         };
 
-        // Preload images - Optimized with adaptive loading and frame skipping
         const preloadImages = () => {
-            const isMobile = window.innerWidth <= 768;
-            const skipFrames = isMobile; // Skip every 2nd frame on mobile to save memory
+            // Force frame skipping on all devices to save 50% RAM/CPU (critical for low-end PCs)
+            const skipFrames = true; 
             
             // 1. Load critical frames first (first 15 for immediate intro)
             const CRITICAL_FRAMES = 15;
@@ -103,8 +102,8 @@ export function Hero() {
         };
 
         const loadRest = async (start: number, skip: boolean) => {
-            // Load in chunks to avoid overloading the main thread/network
-            const chunkSize = 15;
+            // Smaller chunk size (5) to reduce CPU spikes during background decoding
+            const chunkSize = 5;
             for (let i = start; i < FRAME_COUNT; i += chunkSize) {
                 const chunk = [];
                 for (let j = 0; j < chunkSize && i + j < FRAME_COUNT; j++) {
@@ -281,8 +280,12 @@ export function Hero() {
             { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
         3.5);
 
-        // Handle Scroll Handover (Interruption)
-        const handleInterrupt = () => {
+        // Handle Scroll Handover (Interruption) with Sensitivity Threshold
+        const handleInterrupt = (e: any) => {
+            // Ignore small movements to prevent accidental intro cancellation
+            const delta = Math.abs(e.deltaY || 0);
+            if (e.type === 'wheel' && delta < 5) return; 
+
             if (introTl.isActive()) {
                 introTl.kill();
                 // Jump to intro handover state for consistency
@@ -303,11 +306,11 @@ export function Hero() {
         window.addEventListener("wheel", handleInterrupt);
         window.addEventListener("touchstart", handleInterrupt);
 
-        // Start Intro when a sufficient buffer is ready
+        // Start Intro when a sufficient buffer is ready (Reduced for faster startup)
         let introTimeout: NodeJS.Timeout;
         const startSequence = () => {
-            // Check if we have enough "decoded" frames for a smooth start (e.g., first 30 frames)
-            const BUFFER_SIZE = 30;
+            // Wait for 10 frames instead of 30 to respect low-end PC limits
+            const BUFFER_SIZE = 10;
             let loadedCount = 0;
             for (let i = 0; i < BUFFER_SIZE; i++) {
                 if (imagesRef.current[i]?.complete) loadedCount++;
