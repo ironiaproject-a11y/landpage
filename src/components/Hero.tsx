@@ -65,8 +65,10 @@ export function Hero() {
         };
 
         const preloadImages = () => {
-            // Force frame skipping on all devices to save 50% RAM/CPU (critical for low-end PCs)
-            const skipFrames = true; 
+            const isMobile = window.innerWidth <= 768;
+            const memory = (navigator as any).deviceMemory || 8;
+            // Only skip frames on mobile or very low-memory machines (< 4GB)
+            const skipFrames = isMobile || memory < 4; 
             
             // 1. Load critical frames first (first 15 for immediate intro)
             const CRITICAL_FRAMES = 15;
@@ -140,10 +142,10 @@ export function Hero() {
             const pcYOffset = !isMobile ? canvas.height * 0.05 : 0; // Desloca levemente para baixo no PC para não ficar "colado" no topo
 
             layoutRef.current = {
-                width: newWidth * 1.02, 
-                height: newHeight * 1.02,
-                x: (canvas.width - newWidth * 1.02) / 2,
-                y: (canvas.height - newHeight * 1.02) / 2 + mobileYOffset + pcYOffset
+                width: newWidth * 1.01, // Reduced over-scale to minimize interpolation artifacts
+                height: newHeight * 1.01,
+                x: (canvas.width - newWidth * 1.01) / 2,
+                y: (canvas.height - newHeight * 1.01) / 2 + mobileYOffset + pcYOffset
             };
 
             render();
@@ -477,22 +479,26 @@ export function Hero() {
                     }
                 }
 
-                /* Optimized Film Grain Texture - CPU Efficient */
+                /* Restored Cinematic Film Grain - GPU Optimized but Alive */
                 .film-grain {
                     position: absolute;
-                    inset: 0;
+                    inset: -50%;
+                    width: 200%;
+                    height: 200%;
                     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-                    opacity: 0.03;
+                    opacity: 0.04;
                     pointer-events: none;
                     z-index: 5;
-                    animation: noise-opacity 0.15s steps(4) infinite;
-                    will-change: opacity;
+                    animation: noise-move 0.2s steps(2) infinite;
+                    will-change: transform;
                 }
 
-                @keyframes noise-opacity {
-                    0% { opacity: 0.02; }
-                    50% { opacity: 0.04; }
-                    100% { opacity: 0.02; }
+                @keyframes noise-move {
+                    0% { transform: translate(0, 0); }
+                    25% { transform: translate(-2%, -1%); }
+                    50% { transform: translate(1%, -2%); }
+                    75% { transform: translate(-1%, 2%); }
+                    100% { transform: translate(0, 0); }
                 }
             `}</style>
 
@@ -500,9 +506,9 @@ export function Hero() {
                 {/* Film Grain Layer */}
                 <div className="film-grain" aria-hidden="true" />
                 
-                {/* Atmospheric Bokeh Particles - Reduced for all for better FPS */}
+                {/* Atmospheric Bokeh Particles - Balanced for depth */}
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    {[...Array(4)].map((_, i) => (
+                    {[...Array(6)].map((_, i) => (
                         <m.div
                             key={i}
                             className="absolute rounded-full bg-[#E6D3A3]/5 blur-[60px]"
