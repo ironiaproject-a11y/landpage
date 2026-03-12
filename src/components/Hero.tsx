@@ -1,14 +1,8 @@
-// Updated: 2026-03-12 - Reverted to High-Quality Video Hero for immediate visibility
+// Updated: 2026-03-12 - Load-only animation, no scroll triggers
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { m } from "framer-motion";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -22,34 +16,12 @@ export function Hero() {
     }, []);
 
     useEffect(() => {
-        if (!mounted || !videoRef.current || !sectionRef.current) return;
+        if (!mounted || !textContainerRef.current) return;
 
-        const video = videoRef.current;
-        const section = sectionRef.current;
-
-        // Force immediate video load to prevent black screen
-        video.load();
-
+        // Load-only fade-in — NO scroll triggers, NO pin, NO scrub
         const ctx = gsap.context(() => {
-            // GSAP Scroll-Sync: Mapeia o progresso do scroll para o tempo do vídeo
-            gsap.fromTo(video, {
-                currentTime: 0
-            }, {
-                currentTime: video.duration || 1,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top top",
-                    end: "+=200%", // Duração do scroll
-                    scrub: 1.2,
-                    pin: true,
-                    anticipatePin: 1
-                }
-            });
-
-            // Fade-in animations for text - Faster for immediate visibility
             const tl = gsap.timeline();
-            
+
             tl.to(textContainerRef.current, {
                 opacity: 1,
                 y: 0,
@@ -57,12 +29,12 @@ export function Hero() {
                 ease: "power2.out"
             }, 0.2);
 
-            tl.fromTo(".phrase-1", 
+            tl.fromTo(".phrase-1",
                 { opacity: 0, y: 20 },
                 { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             0.4);
 
-            tl.fromTo(".phrase-2", 
+            tl.fromTo(".phrase-2",
                 { opacity: 0, y: 20 },
                 { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             0.6);
@@ -81,7 +53,7 @@ export function Hero() {
                 { opacity: 0, y: 20 },
                 { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             1.2);
-        }, sectionRef);
+        }, textContainerRef);
 
         return () => ctx.revert();
     }, [mounted]);
@@ -194,8 +166,10 @@ export function Hero() {
                     <video 
                         ref={videoRef}
                         className="hero-video"
+                        autoPlay
                         playsInline
                         muted
+                        loop
                         preload="auto"
                         poster="/assets/hero-video.webp"
                         crossOrigin="anonymous"
