@@ -216,7 +216,8 @@ export function Hero() {
                         padding: 0 6vw;
                     }
                     .hero-canvas {
-                        object-fit: cover;
+                        object-fit: contain;
+                        object-position: top center;
                     }
                 }
 
