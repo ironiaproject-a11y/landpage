@@ -1,32 +1,109 @@
-// Updated: 2026-03-12 - Load-only animation, no scroll triggers
+// Updated: 2026-03-12 - Reverted to Image Sequence for 'lindo vc'
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
+const FRAME_COUNT = 144;
+const FRAME_PREFIX = "/assets/hero-lindo-vc/frame_";
+const FRAME_SUFFIX = "_delay-0.041s.webp";
+
+// Helper to format frame numbers
+const getFramePath = (index: number) => {
+    const paddedIndex = index.toString().padStart(3, "0");
+    return `${FRAME_PREFIX}${paddedIndex}${FRAME_SUFFIX}`;
+};
+
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
+    const imagesRef = useRef<HTMLImageElement[]>([]);
+    const frameObj = useRef({ frame: 0 });
 
     useEffect(() => {
         setMounted(true);
+        // Preload images
+        const loadedImages: HTMLImageElement[] = [];
+        let loadedCount = 0;
+
+        for (let i = 0; i < FRAME_COUNT; i++) {
+            const img = new Image();
+            img.src = getFramePath(i);
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount === FRAME_COUNT && canvasRef.current) {
+                    // Draw first frame
+                    renderFrame(0);
+                }
+            };
+            loadedImages.push(img);
+        }
+        imagesRef.current = loadedImages;
     }, []);
 
+    const renderFrame = (index: number) => {
+        if (!canvasRef.current || !imagesRef.current[index]) return;
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const img = imagesRef.current[index];
+        if (!img.complete) return;
+
+        // Set dimensions to match window or container
+        const { width, height } = canvas.getBoundingClientRect();
+        if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        // Object cover logic
+        const imgRatio = img.width / img.height;
+        const canvasRatio = canvas.width / canvas.height;
+        let drawWidth, drawHeight, offsetX, offsetY;
+
+        if (canvasRatio > imgRatio) {
+            drawWidth = canvas.width;
+            drawHeight = drawWidth / imgRatio;
+            offsetX = 0;
+            offsetY = (canvas.height - drawHeight) / 2;
+        } else {
+            drawHeight = canvas.height;
+            drawWidth = drawHeight * imgRatio;
+            offsetX = (canvas.width - drawWidth) / 2;
+            offsetY = 0;
+        }
+
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Optional dark filter logic could go here via globalAlpha or just draw image
+        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        
+        // Manual brightness/contrast via semi-transparent black overlay
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
 
     useEffect(() => {
         if (!mounted || !textContainerRef.current) return;
 
-        if (videoRef.current) {
-            videoRef.current.load();
-            videoRef.current.play().catch(() => {
-                // Autoplay blocked (rare on muted videos) — ignore silently
-            });
-        }
+        // Set up infinite play loop for frames since autoplay logic is requested
+        const playAnim = gsap.to(frameObj.current, {
+            frame: FRAME_COUNT - 1,
+            snap: "frame",
+            ease: "none",
+            duration: (FRAME_COUNT * 0.041), // Based on 0.041s delay per frame
+            repeat: -1,
+            onUpdate: () => {
+                renderFrame(frameObj.current.frame);
+            }
+        });
 
-        // Load-only fade-in — NO scroll triggers, NO pin, NO scrub
+        // Load-only fade-in — NO scroll triggers
         const ctx = gsap.context(() => {
             const tl = gsap.timeline();
 
@@ -63,7 +140,17 @@ export function Hero() {
             1.2);
         }, textContainerRef);
 
-        return () => ctx.revert();
+        // Handle resize properly
+        const handleResize = () => {
+             renderFrame(frameObj.current.frame);
+        };
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            ctx.revert();
+            playAnim.kill();
+            window.removeEventListener("resize", handleResize);
+        };
     }, [mounted]);
 
     if (!mounted) return null;
@@ -87,12 +174,10 @@ export function Hero() {
                     height: 100%;
                 }
 
-                .hero-video {
+                .hero-canvas {
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
                     display: block;
-                    filter: brightness(0.4) contrast(1.05); /* Garantir legibilidade sem tirar a vida das cores */
                 }
 
                 .hero-overlay {
@@ -170,19 +255,10 @@ export function Hero() {
                 
                 {/* Visual Background */}
                 <div ref={containerRef} className="video-container">
-                    <video 
-                        ref={videoRef}
-                        className="hero-video"
-                        autoPlay
-                        playsInline
-                        muted
-                        loop
-                        preload="auto"
-                        poster="/hero-video.webp"
-                        crossOrigin="anonymous"
-                    >
-                        <source src="/hero-background.mp4" type="video/mp4" />
-                    </video>
+                    <canvas 
+                        ref={canvasRef}
+                        className="hero-canvas"
+                    />
                     <div className="hero-overlay" />
                 </div>
 
