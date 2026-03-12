@@ -29,46 +29,51 @@ export function Cursor() {
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
-    // Mouse event listeners - runs once on mount
-    // cursorX/cursorY are stable MotionValues, spring configs are constants
+    // Mouse event listeners with lightweight throttling
     useEffect(() => {
+        let rafId: number;
+        let lastUpdate = 0;
+        const THROTTLE_MS = 10; // ~100fps max for cursor updates
+
         const moveCursor = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            const magneticElement = target.closest('a, button, [role="button"], input, textarea, [data-cursor="magnetic"]');
+            const now = performance.now();
+            if (now - lastUpdate < THROTTLE_MS) return;
+            lastUpdate = now;
 
-            if (magneticElement) {
-                const rect = magneticElement.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                const target = e.target as HTMLElement;
+                const magneticElement = target.closest('a, button, [role="button"], input, textarea, [data-cursor="magnetic"]');
 
-                // Enhanced magnetic pull with distance calculation
-                const distanceX = e.clientX - centerX;
-                const distanceY = e.clientY - centerY;
-                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                if (magneticElement) {
+                    const rect = magneticElement.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
 
-                // Stronger pull when closer
-                const pullStrength = Math.min(1.2, 100 / distance); // Slightly stronger pull
-                const targetX = centerX + distanceX * (1 - pullStrength);
-                const targetY = centerY + distanceY * (1 - pullStrength);
+                    const distanceX = e.clientX - centerX;
+                    const distanceY = e.clientY - centerY;
+                    const targetX = centerX + distanceX * 0.2; // Fixed pull for performance
+                    const targetY = centerY + distanceY * 0.2;
 
-                cursorX.set(targetX);
-                cursorY.set(targetY);
-                setIsHovered(true);
-                setIsMagnetic(true);
-                setIsTextHovered(false);
-                setSpringConfig(magneticSpringConfig);
-            } else {
-                cursorX.set(e.clientX);
-                cursorY.set(e.clientY);
-                setIsHovered(false);
-                setIsMagnetic(false);
+                    cursorX.set(targetX);
+                    cursorY.set(targetY);
+                    setIsHovered(true);
+                    setIsMagnetic(true);
+                    setIsTextHovered(false);
+                    setSpringConfig(magneticSpringConfig);
+                } else {
+                    cursorX.set(e.clientX);
+                    cursorY.set(e.clientY);
+                    setIsHovered(false);
+                    setIsMagnetic(false);
 
-                // Check if hovering over text
-                const isText = target.tagName === 'P' || target.tagName === 'SPAN' || target.tagName === 'H1' || target.tagName === 'H2' || target.tagName === 'H3' || target.tagName === 'H4' || target.closest('[data-cursor="text"]');
-                setIsTextHovered(!!isText);
-
-                setSpringConfig(normalSpringConfig);
-            }
+                    const isText = target.tagName === 'P' || target.tagName === 'SPAN' || target.tagName === 'H1' || 
+                                 target.tagName === 'H2' || target.tagName === 'H3' || target.tagName === 'H4' || 
+                                 target.closest('[data-cursor="text"]');
+                    setIsTextHovered(!!isText);
+                    setSpringConfig(normalSpringConfig);
+                }
+            });
         };
 
         const mouseDown = (e: MouseEvent) => {
@@ -88,6 +93,7 @@ export function Cursor() {
         window.addEventListener("mouseup", mouseUp);
 
         return () => {
+            cancelAnimationFrame(rafId);
             window.removeEventListener("mousemove", moveCursor);
             window.removeEventListener("mousedown", mouseDown);
             window.removeEventListener("mouseup", mouseUp);

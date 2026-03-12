@@ -46,8 +46,8 @@ export function PremiumReveal({
             ) : "inset(0 0 0 0)",
             y: type === "slide" ? (direction === "bottom" ? 40 : direction === "top" ? -40 : 0) : 0,
             x: type === "slide" ? (direction === "right" ? 40 : direction === "left" ? -40 : 0) : 0,
-            filter: type === "mask" ? "blur(8px)" : "blur(0px)",
-            scale: type === "mask" ? 1.05 : 1,
+            filter: type === "mask" ? "blur(4px)" : "blur(0px)",
+            scale: type === "mask" ? 1.02 : 1,
         },
         visible: {
             opacity: 1,

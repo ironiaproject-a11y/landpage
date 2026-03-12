@@ -36,16 +36,17 @@ export function AmbientParticles() {
             window.addEventListener("resize", resizeCanvas);
         }
 
-        // Initialize particles - Reduced for mobile
-        const isMobile = window.innerWidth < 768;
-        const particleCount = isMobile ? 15 : 40;
+        // Detect hardware capabilities for adaptive rendering
+        const memory = (navigator as any).deviceMemory || 4;
+        const particleCount = memory < 4 ? 8 : (window.innerWidth < 768 ? 12 : 25);
+        
         particlesRef.current = Array.from({ length: particleCount }, () => ({
             x: Math.random() * (canvas.width || 800),
             y: Math.random() * (canvas.height || 600),
-            size: Math.random() * 2 + 0.5,
-            speedX: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.2),
-            speedY: (Math.random() - 0.5) * (isMobile ? 0.1 : 0.2),
-            opacity: Math.random() * 0.2 + 0.05
+            size: Math.random() * 1.5 + 0.5,
+            speedX: (Math.random() - 0.5) * (memory < 4 ? 0.05 : 0.15),
+            speedY: (Math.random() - 0.5) * (memory < 4 ? 0.05 : 0.15),
+            opacity: Math.random() * 0.15 + 0.05
         }));
 
         let scrollY = typeof window !== "undefined" ? window.scrollY : 0;

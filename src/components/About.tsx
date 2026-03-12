@@ -40,6 +40,12 @@ export function About() {
         const checkMobile = () => setIsMobile(window.innerWidth < 1024);
         checkMobile();
         window.addEventListener("resize", checkMobile);
+
+        // Pre-decode main image for smooth reveal
+        const img = new (window as any).Image();
+        img.src = "/assets/images/reabilitacao-preview.jpg";
+        img.decode?.().catch(() => {});
+
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 

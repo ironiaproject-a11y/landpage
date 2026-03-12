@@ -477,30 +477,22 @@ export function Hero() {
                     }
                 }
 
-                /* Film Grain Texture */
+                /* Optimized Film Grain Texture - CPU Efficient */
                 .film-grain {
                     position: absolute;
-                    inset: -100% -100% -100% -100%;
+                    inset: 0;
                     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-                    opacity: 0.04;
+                    opacity: 0.03;
                     pointer-events: none;
                     z-index: 5;
-                    animation: noise 0.2s infinite;
-                    will-change: transform;
+                    animation: noise-opacity 0.15s steps(4) infinite;
+                    will-change: opacity;
                 }
 
-                @keyframes noise {
-                    0% { transform: translate(0, 0); }
-                    10% { transform: translate(-5%, -5%); }
-                    20% { transform: translate(-10%, 5%); }
-                    30% { transform: translate(5%, -10%); }
-                    40% { transform: translate(-5%, 15%); }
-                    50% { transform: translate(-10%, 5%); }
-                    60% { transform: translate(15%, 0); }
-                    70% { transform: translate(0, 10%); }
-                    80% { transform: translate(-15%, 0); }
-                    90% { transform: translate(10%, 5%); }
-                    100% { transform: translate(5%, 0); }
+                @keyframes noise-opacity {
+                    0% { opacity: 0.02; }
+                    50% { opacity: 0.04; }
+                    100% { opacity: 0.02; }
                 }
             `}</style>
 
@@ -508,22 +500,24 @@ export function Hero() {
                 {/* Film Grain Layer */}
                 <div className="film-grain" aria-hidden="true" />
                 
-                {/* Atmospheric Bokeh Particles */}
+                {/* Atmospheric Bokeh Particles - Reduced for all for better FPS */}
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    {[...Array(6)].map((_, i) => (
+                    {[...Array(4)].map((_, i) => (
                         <m.div
                             key={i}
                             className="absolute rounded-full bg-[#E6D3A3]/5 blur-[60px]"
                             style={{
-                                width: Math.random() * 300 + 200 + 'px',
-                                height: Math.random() * 300 + 200 + 'px',
+                                width: Math.random() * 250 + 150 + 'px',
+                                height: Math.random() * 250 + 150 + 'px',
                                 left: Math.random() * 100 + '%',
                                 top: Math.random() * 100 + '%',
+                                willChange: "transform, opacity",
+                                rotateZ: "0.01deg" // Force GPU layer
                             }}
                             animate={{
-                                x: [0, Math.random() * 100 - 50, 0],
-                                y: [0, Math.random() * 100 - 50, 0],
-                                opacity: [0.3, 0.6, 0.3],
+                                x: [0, Math.random() * 80 - 40, 0],
+                                y: [0, Math.random() * 80 - 40, 0],
+                                opacity: [0.2, 0.4, 0.2],
                             }}
                             transition={{
                                 duration: Math.random() * 10 + 15,

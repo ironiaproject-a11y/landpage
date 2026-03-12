@@ -190,6 +190,19 @@ export function Services() {
 
     useEffect(() => {
         setMounted(true);
+        
+        // Pre-decode priority service images
+        const imagesToDecode = [
+            "/assets/images/service-implant.png",
+            "/assets/images/dental-exam.jpg",
+            "/assets/images/root-canal-treatment.png"
+        ];
+
+        imagesToDecode.forEach(src => {
+            const img = new (window as any).Image();
+            img.src = src;
+            img.decode?.().catch(() => {});
+        });
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener("resize", checkMobile);
