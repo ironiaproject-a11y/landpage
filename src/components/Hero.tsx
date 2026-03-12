@@ -139,13 +139,13 @@ export function Hero() {
 
             // Positioning Logic
             const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; 
-            const pcYOffset = !isMobile ? canvas.height * 0.05 : 0; // Desloca levemente para baixo no PC para não ficar "colado" no topo
+            const pcYOffset = 0; // Removed offset that pushed image down
 
             layoutRef.current = {
-                width: newWidth * 1.01, // Reduced over-scale to minimize interpolation artifacts
-                height: newHeight * 1.01,
-                x: (canvas.width - newWidth * 1.01) / 2,
-                y: (canvas.height - newHeight * 1.01) / 2 + mobileYOffset + pcYOffset
+                width: newWidth * 1.005, // Further reduced over-scale
+                height: newHeight * 1.005,
+                x: (canvas.width - newWidth * 1.005) / 2,
+                y: (canvas.height - newHeight * 1.005) / 2 + mobileYOffset + pcYOffset
             };
 
             render();
@@ -220,7 +220,7 @@ export function Hero() {
                 // Container Scale
                 if (window.innerWidth > 768) {
                     masterTl.to(containerRef.current, {
-                        scale: 1.25,
+                        scale: 1.1, // Reduced from 1.25 to minimize pixelation
                         ease: "none",
                         duration: 2
                     }, 0);
