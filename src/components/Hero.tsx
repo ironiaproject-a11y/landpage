@@ -15,19 +15,16 @@ export function Hero() {
         setMounted(true);
     }, []);
 
-    // Force video load + play immediately — prevents black screen
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        video.load();
-        video.play().catch(() => {
-            // Autoplay blocked (rare on muted videos) — ignore silently
-        });
-    }, []);
 
     useEffect(() => {
         if (!mounted || !textContainerRef.current) return;
+
+        if (videoRef.current) {
+            videoRef.current.load();
+            videoRef.current.play().catch(() => {
+                // Autoplay blocked (rare on muted videos) — ignore silently
+            });
+        }
 
         // Load-only fade-in — NO scroll triggers, NO pin, NO scrub
         const ctx = gsap.context(() => {
