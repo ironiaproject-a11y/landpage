@@ -15,6 +15,17 @@ export function Hero() {
         setMounted(true);
     }, []);
 
+    // Force video load + play immediately — prevents black screen
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        video.load();
+        video.play().catch(() => {
+            // Autoplay blocked (rare on muted videos) — ignore silently
+        });
+    }, []);
+
     useEffect(() => {
         if (!mounted || !textContainerRef.current) return;
 
