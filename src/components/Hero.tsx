@@ -135,13 +135,15 @@ export function Hero() {
             const newWidth = imgWidth * ratio;
             const newHeight = imgHeight * ratio;
 
-            const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; // sobe a imagem 20% da altura do canvas no mobile para garantir o rosto/foco no lugar
+            // Positioning Logic
+            const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; 
+            const pcYOffset = !isMobile ? canvas.height * 0.05 : 0; // Desloca levemente para baixo no PC para não ficar "colado" no topo
 
             layoutRef.current = {
-                width: newWidth * 1.02, // Tighter scale for performance and crispness
+                width: newWidth * 1.02, 
                 height: newHeight * 1.02,
                 x: (canvas.width - newWidth * 1.02) / 2,
-                y: (canvas.height - newHeight * 1.02) / 2 + mobileYOffset
+                y: (canvas.height - newHeight * 1.02) / 2 + mobileYOffset + pcYOffset
             };
 
             render();
@@ -309,19 +311,25 @@ export function Hero() {
         // Start Intro when a sufficient buffer is ready (Reduced for faster startup)
         let introTimeout: NodeJS.Timeout;
         const startSequence = () => {
-            // Wait for 10 frames instead of 30 to respect low-end PC limits
-            const BUFFER_SIZE = 10;
+            // Count actual frames loaded (respecting skipFrames)
             let loadedCount = 0;
-            for (let i = 0; i < BUFFER_SIZE; i++) {
+            const TOTAL_TO_CHECK = 30; // Check up to frame 30
+            for (let i = 0; i < TOTAL_TO_CHECK; i++) {
                 if (imagesRef.current[i]?.complete) loadedCount++;
             }
 
-            if (loadedCount >= BUFFER_SIZE) {
+            // If we have at least 5 frames ready or 3 seconds passed, start intro
+            if (loadedCount >= 5) {
                 introTl.play();
             } else {
-                introTimeout = setTimeout(startSequence, 100);
+                introTimeout = setTimeout(startSequence, 200);
             }
         };
+
+        // Safety fallback: start intro anyway after 3 seconds if not started
+        const safetyTimeout = setTimeout(() => {
+            if (introTl.paused()) introTl.play();
+        }, 3000);
 
         startSequence();
 
@@ -329,6 +337,7 @@ export function Hero() {
             cleanupRender();
             introTl.kill();
             if (introTimeout) clearTimeout(introTimeout);
+            if (safetyTimeout) clearTimeout(safetyTimeout);
             window.removeEventListener("wheel", handleInterrupt);
             window.removeEventListener("touchstart", handleInterrupt);
             window.removeEventListener("resize", updateSize);
@@ -363,7 +372,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 22vh; /* Content sitting higher with more breathing room from Navbar */
+                        padding-top: 25vh; /* Pushed down for better vertical balance with video focus */
                         position: relative;
                     }
                     .hero-text {
