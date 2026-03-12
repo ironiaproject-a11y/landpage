@@ -138,14 +138,17 @@ export function Hero() {
             const newHeight = imgHeight * ratio;
 
             // Positioning Logic
-            const mobileYOffset = isMobile ? -(canvas.height * 0.20) : 0; 
-            const pcYOffset = 0; // Removed offset that pushed image down
+            const mobileYOffset = isMobile ? -(canvas.height * 0.15) : 0; 
+            const pcYOffset = 0; 
+
+            // We use a very small over-scale (1.001) only to avoid sub-pixel gaps at edges
+            const baseScale = 1.002;
 
             layoutRef.current = {
-                width: newWidth * 1.005, // Further reduced over-scale
-                height: newHeight * 1.005,
-                x: (canvas.width - newWidth * 1.005) / 2,
-                y: (canvas.height - newHeight * 1.005) / 2 + mobileYOffset + pcYOffset
+                width: newWidth * baseScale,
+                height: newHeight * baseScale,
+                x: (canvas.width - newWidth * baseScale) / 2,
+                y: (canvas.height - newHeight * baseScale) / 2 + mobileYOffset + pcYOffset
             };
 
             render();
@@ -220,7 +223,7 @@ export function Hero() {
                 // Container Scale
                 if (window.innerWidth > 768) {
                     masterTl.to(containerRef.current, {
-                        scale: 1.1, // Reduced from 1.25 to minimize pixelation
+                        scale: 1.05, // Very subtle zoom to preserve sharpness
                         ease: "none",
                         duration: 2
                     }, 0);
@@ -590,7 +593,8 @@ export function Hero() {
                     <div className="visual-wrapper">
                         <canvas
                             ref={canvasRef}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full"
+                            style={{ imageRendering: 'auto' }}
                         />
                     </div>
                     <div className="hero-overlay absolute inset-0 z-[1]" />
