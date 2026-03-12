@@ -184,6 +184,12 @@ export function InstitutionalTrust() {
                                 <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
+
+                        <PremiumReveal direction="bottom" delay={0.4} className="mt-10 lg:mt-12 max-w-2xl">
+                            <p className="text-[#6B7280] text-lg lg:text-xl font-light leading-relaxed tracking-wide">
+                                Nossa metodologia é sustentada por quatro pilares fundamentais que garantem não apenas resultados estéticos, mas a longevidade e saúde do seu investimento.
+                            </p>
+                        </PremiumReveal>
                     </div>
 
                     <div className="hidden lg:block text-right">

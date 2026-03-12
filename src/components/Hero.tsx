@@ -40,20 +40,28 @@ export function Hero() {
         const currentFrame = (index: number) =>
             `/assets/hero-lindo-vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.webp`;
 
+        let renderId: number;
         const render = () => {
             const frameIndex = playheadRef.current.frame;
             let img = imagesRef.current[frameIndex];
             
-            // Fallback for skipped frames on mobile
             if (!img && frameIndex > 0) {
                 img = imagesRef.current[frameIndex - 1];
             }
             
             if (!img || !img.complete) return;
 
-            const { x, y, width, height } = layoutRef.current;
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(img, x, y, width, height);
+            cancelAnimationFrame(renderId);
+            renderId = requestAnimationFrame(() => {
+                const { x, y, width, height } = layoutRef.current;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.drawImage(img, x, y, width, height);
+            });
+        };
+        
+        // Return cleanup for the inner effect to handle renderId
+        const cleanupRender = () => {
+            cancelAnimationFrame(renderId);
         };
 
         // Preload images - Optimized with adaptive loading and frame skipping
@@ -78,20 +86,33 @@ export function Hero() {
             }, 1000);
         };
 
-        const loadFrame = (i: number) => {
-            if (imagesRef.current[i]) return; // Already loading/loaded
+        const loadFrame = async (i: number) => {
+            if (imagesRef.current[i]) return;
             const img = new Image();
-            img.onload = () => {
-                if (i === 0) render();
-            };
             img.src = currentFrame(i);
             imagesRef.current[i] = img;
+            
+            try {
+                // Pre-decode using the decode() API to move decompression off the main thread
+                // and avoid stutter during animation playback
+                await img.decode();
+                if (i === 0) render();
+            } catch (e) {
+                console.warn(`Error decoding frame ${i}:`, e);
+            }
         };
 
-        const loadRest = (start: number, skip: boolean) => {
-            for (let i = start; i < FRAME_COUNT; i++) {
-                if (skip && i % 2 !== 0) continue;
-                loadFrame(i);
+        const loadRest = async (start: number, skip: boolean) => {
+            // Load in chunks to avoid overloading the main thread/network
+            const chunkSize = 15;
+            for (let i = start; i < FRAME_COUNT; i += chunkSize) {
+                const chunk = [];
+                for (let j = 0; j < chunkSize && i + j < FRAME_COUNT; j++) {
+                    const idx = i + j;
+                    if (skip && idx % 2 !== 0) continue;
+                    chunk.push(loadFrame(idx));
+                }
+                await Promise.all(chunk);
             }
         };
 
@@ -149,9 +170,9 @@ export function Hero() {
                     scrollTrigger: {
                         trigger: sectionRef.current,
                         start: "top top",
-                        end: "+=200%",
+                        end: "+=250%", // Increased scroll length for smoother transformation
                         pin: true,
-                        scrub: 0.5,
+                        scrub: 1.2, // Smoother follow for sequence animations
                         anticipatePin: 1
                     }
                 });
@@ -163,7 +184,7 @@ export function Hero() {
                         frame: FRAME_COUNT - 1,
                         snap: "frame",
                         ease: "none",
-                        duration: 1.5,
+                        duration: 2, // Slightly slower for cinematic feel
                         onUpdate: render,
                     }, 0);
 
@@ -244,6 +265,11 @@ export function Hero() {
             ease: "power2.out"
         }, 2.4);
  
+        introTl.fromTo(".hero-subheadline",
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
+        2.8);
+
         // Animate metrics and button
         introTl.fromTo(".hero-metrics-subtle",
             { opacity: 0, y: 20 },
@@ -264,6 +290,7 @@ export function Hero() {
                 gsap.set(textContainerRef.current, { opacity: 1, y: 0 });
                 gsap.set(".phrase-1", { opacity: 0, filter: "blur(15px)", y: -15, scale: 0.85 });
                 gsap.set(".phrase-2", { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 });
+                gsap.set(".hero-subheadline", { opacity: 1, y: 0 });
                 gsap.set(".hero-metrics-subtle", { opacity: 1, y: 0 });
                 gsap.set(".hero-btn-wrapper", { opacity: 1, y: 0 });
                 render();
@@ -276,10 +303,17 @@ export function Hero() {
         window.addEventListener("wheel", handleInterrupt);
         window.addEventListener("touchstart", handleInterrupt);
 
-        // Start Intro when first frame is ready
+        // Start Intro when a sufficient buffer is ready
         let introTimeout: NodeJS.Timeout;
         const startSequence = () => {
-            if (imagesRef.current[0]?.complete) {
+            // Check if we have enough "decoded" frames for a smooth start (e.g., first 30 frames)
+            const BUFFER_SIZE = 30;
+            let loadedCount = 0;
+            for (let i = 0; i < BUFFER_SIZE; i++) {
+                if (imagesRef.current[i]?.complete) loadedCount++;
+            }
+
+            if (loadedCount >= BUFFER_SIZE) {
                 introTl.play();
             } else {
                 introTimeout = setTimeout(startSequence, 100);
@@ -289,6 +323,7 @@ export function Hero() {
         startSequence();
 
         return () => {
+            cleanupRender();
             introTl.kill();
             if (introTimeout) clearTimeout(introTimeout);
             window.removeEventListener("wheel", handleInterrupt);
@@ -330,10 +365,10 @@ export function Hero() {
                     }
                     .hero-text {
                         width: 50%;
-                        max-width: 600px;
+                        max-width: 650px;
                         z-index: 20;
                         text-align: left !important;
-                        padding-top: 2vh;
+                        padding-top: 5vh;
                     }
                     .phrase-2 {
                         margin-left: 30px; /* Artistic Offset for the main line */
@@ -498,7 +533,7 @@ export function Hero() {
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 mt-4">
+                    <div className="phrase-2 mt-4 text-balance">
                         <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(48px, 10vw, 82px)', 
@@ -506,6 +541,12 @@ export function Hero() {
                         }}>
                             Seu sorriso
                         </h2>
+                    </div>
+
+                    <div className="hero-subheadline mt-8 max-w-lg opacity-0">
+                        <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed tracking-wide" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
+                        </p>
                     </div>
 
                     <div className="hero-metrics-subtle mt-10 md:mt-12 opacity-0 flex flex-wrap gap-x-8 gap-y-4">

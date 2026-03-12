@@ -155,7 +155,7 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-12 text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-12 text-[#F8F8F6] leading-[1.05] tracking-[0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
@@ -165,9 +165,14 @@ export function About() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-[16px] text-[#6B7280] font-normal leading-[1.6] mb-10" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico.
-                            </p>
+                            <div className="space-y-6 mb-12">
+                                <p className="text-[17px] text-[#F8F8F6]/90 font-medium leading-[1.6]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                    Na Clínica Premium, não apenas tratamos sorrisos; cultivamos a confiança através da harmonia facial.
+                                </p>
+                                <p className="text-[15px] text-[#6B7280] font-normal leading-[1.7]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                    Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico convencional. Cada detalhe, do diagnóstico digital ao acabamento artesanal, é pensado para entregar perfeição.
+                                </p>
+                            </div>
                         </PremiumReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">

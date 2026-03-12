@@ -73,6 +73,11 @@ export function Stats() {
             `}</style>
             
             <div className="container mx-auto px-6">
+                <div className="flex justify-center mb-12 md:mb-16">
+                    <span className="text-[10px] font-bold text-[#8E9196] uppercase tracking-[0.4em] border-b border-[#C7A86B]/30 pb-2">
+                        Excelência em Números
+                    </span>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 text-center items-center">
                     {metrics.map((metric, idx) => (
                         <m.div

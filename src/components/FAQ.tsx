@@ -88,7 +88,7 @@ export function FAQ() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(28px,6vw,84px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-[0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Dúvidas</span>
                             </PremiumReveal>

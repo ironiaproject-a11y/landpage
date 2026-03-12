@@ -34,6 +34,10 @@
   --color-text-primary: var(--color-premium-white);
   --color-text-secondary: var(--color-premium-slate);
   --color-accent: var(--color-premium-gold);
+
+  /* Tracking - Brand Identity */
+  --tracking-luxury: 0.05em;
+  --tracking-editorial: -0.015em;
 }
 
 /* ===================================
