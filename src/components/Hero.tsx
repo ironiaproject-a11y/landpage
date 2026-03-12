@@ -41,7 +41,14 @@ export function Hero() {
             `/assets/hero-lindo-vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.webp`;
 
         const render = () => {
-            const img = imagesRef.current[playheadRef.current.frame];
+            const frameIndex = playheadRef.current.frame;
+            let img = imagesRef.current[frameIndex];
+            
+            // Fallback for skipped frames on mobile
+            if (!img && frameIndex > 0) {
+                img = imagesRef.current[frameIndex - 1];
+            }
+            
             if (!img || !img.complete) return;
 
             const { x, y, width, height } = layoutRef.current;
@@ -49,19 +56,42 @@ export function Hero() {
             context.drawImage(img, x, y, width, height);
         };
 
-        // Preload images
+        // Preload images - Optimized with adaptive loading and frame skipping
         const preloadImages = () => {
-            let loadedCount = 0;
-            for (let i = 0; i < FRAME_COUNT; i++) {
-                const img = new Image();
-                img.onload = () => {
-                    loadedCount++;
-                    if (i === 0) {
-                        render();
-                    }
-                };
-                img.src = currentFrame(i);
-                imagesRef.current.push(img);
+            const isMobile = window.innerWidth <= 768;
+            const skipFrames = isMobile; // Skip every 2nd frame on mobile to save memory
+            
+            // 1. Load critical frames first (first 15 for immediate intro)
+            const CRITICAL_FRAMES = 15;
+            for (let i = 0; i < CRITICAL_FRAMES; i++) {
+                if (skipFrames && i % 2 !== 0) continue;
+                loadFrame(i);
+            }
+
+            // 2. Load remaining frames with a slight delay or on idle
+            setTimeout(() => {
+                if (typeof window !== "undefined" && 'requestIdleCallback' in window) {
+                    (window as any).requestIdleCallback(() => loadRest(CRITICAL_FRAMES, skipFrames));
+                } else {
+                    loadRest(CRITICAL_FRAMES, skipFrames);
+                }
+            }, 1000);
+        };
+
+        const loadFrame = (i: number) => {
+            if (imagesRef.current[i]) return; // Already loading/loaded
+            const img = new Image();
+            img.onload = () => {
+                if (i === 0) render();
+            };
+            img.src = currentFrame(i);
+            imagesRef.current[i] = img;
+        };
+
+        const loadRest = (start: number, skip: boolean) => {
+            for (let i = start; i < FRAME_COUNT; i++) {
+                if (skip && i % 2 !== 0) continue;
+                loadFrame(i);
             }
         };
 
@@ -265,6 +295,12 @@ export function Hero() {
             window.removeEventListener("touchstart", handleInterrupt);
             window.removeEventListener("resize", updateSize);
             ScrollTrigger.getById("heroScroll")?.kill();
+            
+            // Memory Cleanup
+            imagesRef.current.forEach(img => {
+                if (img) img.src = ""; 
+            });
+            imagesRef.current = [];
         };
     }, [mounted]);
 

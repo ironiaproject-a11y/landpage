@@ -88,7 +88,7 @@ export function MediaCard({
                     observer.unobserve(entry.target);
                 }
             },
-            { threshold: 0.1, rootMargin: "50px" }
+            { threshold: 0.1, rootMargin: "10px" }
         );
 
         observer.observe(cardRef.current);
