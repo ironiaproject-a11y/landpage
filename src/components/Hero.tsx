@@ -178,10 +178,10 @@ export function Hero() {
                         muted
                         loop
                         preload="auto"
-                        poster="/assets/hero-video.webp"
+                        poster="/hero-video.webp"
                         crossOrigin="anonymous"
                     >
-                        <source src="/assets/hero-lindo-vc.mp4" type="video/mp4" />
+                        <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
                     <div className="hero-overlay" />
                 </div>
