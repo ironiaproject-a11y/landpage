@@ -53,38 +53,20 @@ export function Hero() {
         const img = imagesRef.current[index];
         if (!img.complete) return;
 
-        // Set dimensions to match window or container
-        const { width, height } = canvas.getBoundingClientRect();
-        if (canvas.width !== width || canvas.height !== height) {
-            canvas.width = width;
-            canvas.height = height;
+        // Best Practice: Match canvas internal coordinate system to the exact image size!
+        // This avoids any quality loss from CSS pixel scaling on Retina/High-DPI screens.
+        if (canvas.width !== img.width || canvas.height !== img.height) {
+            canvas.width = img.width;
+            canvas.height = img.height;
         }
 
-        // Object cover logic
-        const imgRatio = img.width / img.height;
-        const canvasRatio = canvas.width / canvas.height;
-        let drawWidth, drawHeight, offsetX, offsetY;
-
-        if (canvasRatio > imgRatio) {
-            drawWidth = canvas.width;
-            drawHeight = drawWidth / imgRatio;
-            offsetX = 0;
-            offsetY = (canvas.height - drawHeight) / 2;
-        } else {
-            drawHeight = canvas.height;
-            drawWidth = drawHeight * imgRatio;
-            offsetX = (canvas.width - drawWidth) / 2;
-            offsetY = 0;
-        }
-
-        ctx.fillStyle = "#000";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Optional dark filter logic could go here via globalAlpha or just draw image
-        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        // Draw the crisp original image
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         
         // Manual brightness/contrast via semi-transparent black overlay
-        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
@@ -140,16 +122,9 @@ export function Hero() {
             1.2);
         }, textContainerRef);
 
-        // Handle resize properly
-        const handleResize = () => {
-             renderFrame(frameObj.current.frame);
-        };
-        window.addEventListener("resize", handleResize);
-
         return () => {
             ctx.revert();
             playAnim.kill();
-            window.removeEventListener("resize", handleResize);
         };
     }, [mounted]);
 
@@ -172,23 +147,28 @@ export function Hero() {
                     z-index: 0;
                     width: 100%;
                     height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .hero-canvas-wrapper {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
                 }
 
                 .hero-canvas {
                     width: 100%;
                     height: 100%;
+                    object-fit: cover;
+                    object-position: center 20%; /* Keep faces near the top aligned properly */
                     display: block;
-                }
-
-                .hero-overlay {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 1;
-                    background: linear-gradient(
-                        rgba(0,0,0,0.5),
-                        rgba(0,0,0,0.2),
-                        rgba(0,0,0,0.6)
-                    );
+                    transform: scale(1.0);
                 }
 
                 @media (min-width: 1024px) {
@@ -206,6 +186,15 @@ export function Hero() {
                         max-width: 650px;
                         z-index: 20;
                         text-align: left !important;
+                    }
+                    .hero-canvas {
+                        /* Decreasing the visual footprint slightly to restore quality and limit oversize on wide screens */
+                        width: 100%;
+                        height: 100%;
+                        max-width: 1800px;
+                        object-fit: contain; /* Shrinks to not stretch completely on very wide screens while keeping quality */
+                        transform: scale(1.15); /* Slight zoom so there are zero black bars on standard 16:9, but avoids 3x zoom on ultrawide */
+                        filter: drop-shadow(0 0 40px rgba(0,0,0,0.5));
                     }
                 }
 
@@ -226,6 +215,20 @@ export function Hero() {
                         width: 100%;
                         padding: 0 6vw;
                     }
+                    .hero-canvas {
+                        object-fit: cover;
+                    }
+                }
+
+                .hero-overlay {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 1;
+                    background: linear-gradient(
+                        rgba(0,0,0,0.6),
+                        rgba(0,0,0,0.2),
+                        rgba(0,0,0,0.8)
+                    );
                 }
 
                 .film-grain {
@@ -255,10 +258,12 @@ export function Hero() {
                 
                 {/* Visual Background */}
                 <div ref={containerRef} className="video-container">
-                    <canvas 
-                        ref={canvasRef}
-                        className="hero-canvas"
-                    />
+                    <div className="hero-canvas-wrapper">
+                        <canvas 
+                            ref={canvasRef}
+                            className="hero-canvas"
+                        />
+                    </div>
                     <div className="hero-overlay" />
                 </div>
 
