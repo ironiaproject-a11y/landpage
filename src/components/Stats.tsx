@@ -251,8 +251,8 @@ export function Stats() {
           line-height: 1.4;
         }
 
-        /* ── Mobile ─────────────────────────────── */
-        @media (max-width: 640px) {
+        /* ── Mobile & Tablet (Unified Breakpoint) ────────────────── */
+        @media (max-width: 1023px) {
           .stats-section { 
             /* Symmetrical padding for balanced hierarchy */
             padding-top: 48px !important; 
@@ -281,12 +281,6 @@ export function Stats() {
 
           .stats-item:first-child { padding-top: 0; }
           .stats-number { font-size: clamp(48px, 14vw, 60px); }
-        }
-
-        /* ── Tablet ─────────────────────────────── */
-        @media (min-width: 641px) and (max-width: 860px) {
-          .stats-item { padding: 0 28px; }
-          .stats-number { font-size: clamp(42px, 7vw, 56px); }
         }
       `}</style>
 
