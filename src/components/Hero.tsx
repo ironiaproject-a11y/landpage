@@ -205,6 +205,11 @@ export function Hero() {
                 }
 
                 @media (max-width: 1023px) {
+                    .hero {
+                        height: auto;
+                        min-height: 85dvh;
+                        padding-bottom: 48px !important;
+                    }
                     .hero-container {
                         display: flex;
                         flex-direction: column;
