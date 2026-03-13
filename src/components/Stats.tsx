@@ -252,7 +252,12 @@ export function Stats() {
 
         /* ── Mobile ─────────────────────────────── */
         @media (max-width: 640px) {
-          .stats-section { padding: 16px 20px 48px; }
+          .stats-section { 
+            padding: 40px 20px 48px; 
+            margin-top: -10vh; /* Puxa a seção para cima, sobrepondo o buraco negro do Hero */
+            z-index: 40; /* Garante que fique acima do canvas/fundo do Hero */
+            border-top: 1px solid rgba(230, 211, 163, 0.1); /* Linha sutil para destacar a sobreposição */
+          }
 
           .stats-grid {
             grid-template-columns: 1fr;
