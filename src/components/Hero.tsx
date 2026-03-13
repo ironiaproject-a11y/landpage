@@ -207,8 +207,8 @@ export function Hero() {
                 @media (max-width: 1023px) {
                     .hero {
                         height: auto;
-                        min-height: 85dvh;
-                        padding-bottom: 48px !important;
+                        min-height: 0;
+                        padding-bottom: 24px !important;
                     }
                     .hero-container {
                         display: flex;
@@ -254,7 +254,7 @@ export function Hero() {
                         left: auto !important;
                         transform: none !important;
                         animation: heroBtn-in-mobile 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards !important;
-                        margin-top: 2rem; 
+                        margin-top: 1.2rem; 
                     }
                     @keyframes heroBtn-in-mobile {
                         from { opacity: 0; transform: translateY(16px); }

@@ -252,7 +252,7 @@ export function Stats() {
 
         /* ── Mobile ─────────────────────────────── */
         @media (max-width: 640px) {
-          .stats-section { padding: 56px 20px 64px; }
+          .stats-section { padding: 16px 20px 48px; }
 
           .stats-grid {
             grid-template-columns: 1fr;
