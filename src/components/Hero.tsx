@@ -212,7 +212,7 @@ export function Hero() {
                         background: #000;
                     }
                     .hero-canvas-wrapper {
-                        height: 72dvh; /* Reduced height to minimize side cropping on vertical screens */
+                        height: 60dvh; /* Reduced dominance to 60% of viewport */
                         top: 0;
                     }
                     .hero-text {
@@ -222,9 +222,9 @@ export function Hero() {
                         padding: 0 8vw;
                         background: linear-gradient(to top, 
                             rgba(0,0,0,1) 0%, 
-                            rgba(0,0,0,0.9) 50%, 
+                            rgba(0,0,0,0.95) 40%, 
                             rgba(0,0,0,0) 100%);
-                        padding-top: 80px;
+                        padding-top: 60px;
                         padding-bottom: 0px;
                     }
                     .hero-canvas {
@@ -234,14 +234,14 @@ export function Hero() {
                         object-position: center 25%;
                     }
                     .hero-subheadline {
-                        margin-top: 1rem !important;
+                        margin-top: 0.75rem !important;
                     }
                     .hero-metrics-subtle {
-                        margin-top: 1.5rem !important;
-                        gap: 1.5rem !important;
+                        margin-top: 1.25rem !important;
+                        gap: 1.25rem !important;
                     }
                     .hero-btn-wrapper {
-                        margin-top: 2rem !important;
+                        margin-top: 1.75rem !important;
                     }
                 }
 
