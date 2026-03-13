@@ -148,7 +148,8 @@ export function Stats() {
   if (!mounted) return null;
 
   return (
-    <section
+    <div
+      id="stats-section"
       className="stats-section"
       aria-label="Estatísticas da clínica"
     >
@@ -253,10 +254,15 @@ export function Stats() {
         /* ── Mobile ─────────────────────────────── */
         @media (max-width: 640px) {
           .stats-section { 
-            padding: 40px 20px 48px; 
-            margin-top: -10vh; /* Puxa a seção para cima, sobrepondo o buraco negro do Hero */
-            z-index: 40; /* Garante que fique acima do canvas/fundo do Hero */
-            border-top: 1px solid rgba(230, 211, 163, 0.1); /* Linha sutil para destacar a sobreposição */
+            /* Strict padding to kill global bleed */
+            padding-top: 16px !important; 
+            padding-bottom: 48px !important;
+            padding-left: 20px;
+            padding-right: 20px;
+            /* Negative margin to pull up over Hero */
+            margin-top: -14vh !important; 
+            z-index: 50 !important; 
+            border-top: 1px solid rgba(230, 211, 163, 0.15); 
           }
 
           .stats-grid {
@@ -302,7 +308,7 @@ export function Stats() {
           />
         ))}
       </m.div>
-    </section>
+    </div>
   );
 }
 
