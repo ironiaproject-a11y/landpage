@@ -207,7 +207,7 @@ export function Hero() {
                         justify-content: flex-end;
                         width: 100%;
                         height: 100%;
-                        padding-bottom: 6dvh;
+                        padding-bottom: 4dvh; /* Pulled up to ensure all content fits within viewport */
                         position: relative;
                         background: #000;
                     }
@@ -224,7 +224,7 @@ export function Hero() {
                             rgba(0,0,0,1) 0%, 
                             rgba(0,0,0,0.98) 35%, 
                             rgba(0,0,0,0) 100%);
-                        padding-top: 50px;
+                        padding-top: 40px; /* Reduced to pull content stack up */
                         padding-bottom: 0px;
                     }
                     .hero-canvas {
@@ -237,11 +237,11 @@ export function Hero() {
                         margin-top: 0.75rem !important;
                     }
                     .hero-metrics-subtle {
-                        margin-top: 1.25rem !important;
+                        margin-top: 1rem !important;
                         gap: 1.25rem !important;
                     }
                     .hero-btn-wrapper {
-                        margin-top: 1.75rem !important;
+                        margin-top: 1.5rem !important;
                     }
                 }
 
