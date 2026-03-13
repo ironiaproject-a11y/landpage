@@ -178,7 +178,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 18vh; /* Exactly 18% of viewport height */
+                        padding-top: 17vh; /* Precisely 17% of viewport height */
                         position: relative;
                     }
                     .hero-text {
@@ -206,7 +206,7 @@ export function Hero() {
                         justify-content: flex-start; /* Changed from flex-end to top-align */
                         width: 100%;
                         height: 100%;
-                        padding-top: 18dvh; /* Centered in the 15-20% range */
+                        padding-top: 17dvh; /* Centered in the 15-20% range */
                         position: relative;
                         background: transparent;
                     }
@@ -249,11 +249,11 @@ export function Hero() {
                     inset: 0;
                     z-index: 1;
                     /* Refined to be more subtle at the top while maintaining protection */
-                    background: rgba(0, 0, 0, 0.4); /* Uniform contrast protection as requested */
+                    background: rgba(0, 0, 0, 0.35); /* Updated for subtle readability as requested */
                 }
 @media (min-width: 1024px) {
     .hero-overlay {
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.35);
     }
 }
 
@@ -296,7 +296,7 @@ export function Hero() {
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-[10px]">
-                        <h1 className="text-[#F5F5F5] font-light tracking-[0.4em] uppercase" style={{ 
+                        <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
                             fontSize: 'clamp(20px, 4vw, 32px)', 
                         }}>
@@ -304,7 +304,7 @@ export function Hero() {
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-[32px]">
+                    <div className="phrase-2 text-balance mb-[30px]">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(40px, 8vw, 72px)', 
