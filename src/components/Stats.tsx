@@ -1,6 +1,6 @@
 "use client";
 
-import { m, useInView } from "framer-motion";
+import { m } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── data ────────────────────────────────────────────────── */
@@ -21,11 +21,12 @@ function useCountUp(target: number, active: boolean, delay: number) {
     started.current = true;
 
     const timer = setTimeout(() => {
-      const start = performance.now();
+      let start: number | null = null;
       const duration = 1600;
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
       const tick = (now: number) => {
+        if (!start) start = now;
         const t = Math.min((now - start) / duration, 1);
         setValue(Math.round(easeOut(t) * target));
         if (t < 1) rafRef.current = requestAnimationFrame(tick);
@@ -38,7 +39,7 @@ function useCountUp(target: number, active: boolean, delay: number) {
       clearTimeout(timer);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [active]);
+  }, [active, delay, target]);
 
   return active ? value : 0;
 }
@@ -64,11 +65,10 @@ function StatItem({
   const count = useCountUp(numeric, counterActive, delay);
 
   return (
-    /* whileInView handles its own visibility — reliable with once:true */
     <m.div
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
       className="stats-item flex flex-col items-center"
     >
@@ -84,7 +84,7 @@ function StatItem({
           className="stats-divider"
           initial={{ scaleY: 0 }}
           whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, delay: delay + 0.3, ease: [0.22, 1, 0.36, 1] }}
           aria-hidden
         />
@@ -96,9 +96,7 @@ function StatItem({
 /* ─── section ──────────────────────────────────────────────── */
 export function Stats() {
   const [mounted, setMounted] = useState(false);
-  // Ref on the grid — fires counter once the numbers are visible
-  const gridRef = useRef<HTMLDivElement>(null);
-  const counterActive = useInView(gridRef, { once: true, amount: 0.1 });
+  const [counterActive, setCounterActive] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
@@ -219,7 +217,11 @@ export function Stats() {
         }
       `}</style>
 
-      <div className="stats-grid" ref={gridRef}>
+      <m.div 
+        className="stats-grid"
+        onViewportEnter={() => setCounterActive(true)}
+        viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+      >
         {metrics.map((metric, i) => (
           <StatItem
             key={i}
@@ -232,7 +234,7 @@ export function Stats() {
             showDivider={i < metrics.length - 1}
           />
         ))}
-      </div>
+      </m.div>
     </section>
   );
 }
