@@ -96,25 +96,33 @@ export function Hero() {
                 ease: "power2.out"
             }, 0.2);
 
-            tl.fromTo(".phrase-1",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            0.4);
+            if (document.querySelector(".phrase-1")) {
+                tl.fromTo(".phrase-1",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                0.4);
+            }
 
-            tl.fromTo(".phrase-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-            0.6);
+            if (document.querySelector(".phrase-2")) {
+                tl.fromTo(".phrase-2",
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+                0.6);
+            }
 
-            tl.fromTo(".hero-subheadline",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            0.8);
+            if (document.querySelector(".hero-subheadline")) {
+                tl.fromTo(".hero-subheadline",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                0.8);
+            }
 
-            tl.fromTo(".hero-metrics-subtle",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            1.0);
+            if (document.querySelector(".hero-metrics-subtle")) {
+                tl.fromTo(".hero-metrics-subtle",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                1.0);
+            }
 
 
         }, textContainerRef);

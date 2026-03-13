@@ -14,14 +14,15 @@ const metrics = [
 function useCountUp(target: number, active: boolean, delay: number) {
   const [value, setValue] = useState(0);
   const rafRef = useRef<number>(0);
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || started.current) return;
+    started.current = true;
 
     const timer = setTimeout(() => {
       const start = performance.now();
       const duration = 1600;
-
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
       const tick = (now: number) => {
@@ -37,9 +38,9 @@ function useCountUp(target: number, active: boolean, delay: number) {
       clearTimeout(timer);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [active, target, delay]);
+  }, [active]);
 
-  return value;
+  return active ? value : 0;
 }
 
 /* ─── single stat column ───────────────────────────────────── */
@@ -49,7 +50,7 @@ function StatItem({
   label,
   accent,
   delay,
-  inView,
+  counterActive,
   showDivider,
 }: {
   numeric: number;
@@ -57,33 +58,33 @@ function StatItem({
   label: string;
   accent?: boolean;
   delay: number;
-  inView: boolean;
+  counterActive: boolean;
   showDivider: boolean;
 }) {
-  const count = useCountUp(numeric, inView, delay);
+  const count = useCountUp(numeric, counterActive, delay);
 
   return (
+    /* whileInView handles its own visibility — reliable with once:true */
     <m.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.0, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
       className="stats-item flex flex-col items-center"
     >
-      {/* number */}
       <span className={`stats-number${accent ? " stats-number--accent" : ""}`}>
-        {count}
+        {counterActive ? count : 0}
         <span className="stats-suffix">{suffix}</span>
       </span>
 
-      {/* label */}
       <span className="stats-label">{label}</span>
 
-      {/* animated divider — draws from center outward */}
       {showDivider && (
         <m.span
           className="stats-divider"
           initial={{ scaleY: 0 }}
-          animate={inView ? { scaleY: 1 } : {}}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, delay: delay + 0.3, ease: [0.22, 1, 0.36, 1] }}
           aria-hidden
         />
@@ -95,15 +96,15 @@ function StatItem({
 /* ─── section ──────────────────────────────────────────────── */
 export function Stats() {
   const [mounted, setMounted] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, margin: "-80px" });
+  // Ref on the grid — fires counter once the numbers are visible
+  const gridRef = useRef<HTMLDivElement>(null);
+  const counterActive = useInView(gridRef, { once: true, amount: 0.1 });
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
 
   return (
     <section
-      ref={sectionRef}
       className="stats-section"
       aria-label="Estatísticas da clínica"
     >
@@ -129,7 +130,7 @@ export function Stats() {
           padding: 0 48px;
         }
 
-        /* Divider — positioned via JS Framer div */
+        /* Divider — animated via Framer scaleY */
         .stats-divider {
           position: absolute;
           right: 0;
@@ -160,7 +161,6 @@ export function Stats() {
         }
 
         .stats-suffix {
-          /* suffix does NOT animate — stays at same weight */
           font-size: 0.8em;
           opacity: 0.85;
         }
@@ -208,9 +208,7 @@ export function Stats() {
           }
 
           .stats-item:first-child { padding-top: 0; }
-
           .stats-divider { display: none; }
-
           .stats-number { font-size: clamp(48px, 14vw, 60px); }
         }
 
@@ -221,7 +219,7 @@ export function Stats() {
         }
       `}</style>
 
-      <div className="stats-grid">
+      <div className="stats-grid" ref={gridRef}>
         {metrics.map((metric, i) => (
           <StatItem
             key={i}
@@ -230,7 +228,7 @@ export function Stats() {
             label={metric.label}
             accent={metric.accent}
             delay={i * 0.18}
-            inView={inView}
+            counterActive={counterActive}
             showDivider={i < metrics.length - 1}
           />
         ))}
