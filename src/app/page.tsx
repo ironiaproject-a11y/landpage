@@ -26,7 +26,7 @@ const Testimonials = nextDynamic(() => import("@/components/Testimonials").then(
 const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), { ssr: false });
 const CTA = nextDynamic(() => import("@/components/CTA").then(mod => mod.CTA), { ssr: false });
 const Contact = nextDynamic(() => import("@/components/Contact").then(mod => mod.Contact), { ssr: false });
-const Stats = nextDynamic(() => import("@/components/Stats"), {
+const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
   ssr: false,
   loading: () => <div className="h-40 bg-transparent" />
 });
@@ -36,6 +36,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
+      <Stats />
       <About />
       <InstitutionalTrust />
       <TrustBar />
