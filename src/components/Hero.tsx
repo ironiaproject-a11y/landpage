@@ -212,7 +212,7 @@ export function Hero() {
                         background: #000;
                     }
                     .hero-canvas-wrapper {
-                        height: 60dvh; /* Reduced dominance to 60% of viewport */
+                        height: 55dvh; /* Final refined height for minimal side cropping */
                         top: 0;
                     }
                     .hero-text {
@@ -222,9 +222,9 @@ export function Hero() {
                         padding: 0 8vw;
                         background: linear-gradient(to top, 
                             rgba(0,0,0,1) 0%, 
-                            rgba(0,0,0,0.95) 40%, 
+                            rgba(0,0,0,0.98) 35%, 
                             rgba(0,0,0,0) 100%);
-                        padding-top: 60px;
+                        padding-top: 50px;
                         padding-bottom: 0px;
                     }
                     .hero-canvas {
