@@ -304,10 +304,10 @@ export function Hero() {
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-[30px]">
+                    <div className="phrase-2 text-balance mb-[38px]">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(40px, 8vw, 72px)', 
+                            fontSize: 'clamp(46px, 9vw, 82px)', 
                             lineHeight: '1.0'
                         }}>
                             Seu sorriso
@@ -338,7 +338,7 @@ export function Hero() {
                     </div>
 
                     <div className="hero-btn-wrapper">
-                        <button className="btn-luxury-primary py-4 px-10 rounded-full border border-[#E6D3A3]/20 bg-black/60 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
+                        <button className="btn-luxury-primary py-[14px] px-[36px] rounded-full border border-[#E6D3A3]/20 bg-[#1a1a1a]/80 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
                             AGENDAR EXPERIÊNCIA
                         </button>
                     </div>
