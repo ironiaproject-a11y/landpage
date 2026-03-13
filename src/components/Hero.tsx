@@ -178,7 +178,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 18vh; /* Adjusted from 25vh to hit 15-20% target */
+                        padding-top: 18vh; /* Exactly 18% of viewport height */
                         position: relative;
                     }
                     .hero-text {
@@ -206,9 +206,9 @@ export function Hero() {
                         justify-content: flex-start; /* Changed from flex-end to top-align */
                         width: 100%;
                         height: 100%;
-                        padding-top: 12dvh; /* Slightly higher for tighter visual flow */
+                        padding-top: 18dvh; /* Centered in the 15-20% range */
                         position: relative;
-                        background: transparent; /* Remove hard black background */
+                        background: transparent;
                     }
                     .hero-canvas-wrapper {
                         height: 55dvh; /* Final refined height for minimal side cropping */
@@ -221,7 +221,7 @@ export function Hero() {
                         padding-left: 7vw;
                         padding-right: 7vw;
                         padding-top: 0;
-                        padding-bottom: 40px;
+                        padding-bottom: 20px;
                     }
                     .hero-canvas {
                         width: 100%;
@@ -249,15 +249,11 @@ export function Hero() {
                     inset: 0;
                     z-index: 1;
                     /* Refined to be more subtle at the top while maintaining protection */
-                    background: transparent; /* Totally removed for maximum video shine on mobile */
+                    background: rgba(0, 0, 0, 0.4); /* Uniform contrast protection as requested */
                 }
 @media (min-width: 1024px) {
     .hero-overlay {
-        background: linear-gradient(
-            rgba(0,0,0,0.5) 0%,
-            rgba(0,0,0,0.2) 50%,
-            rgba(0,0,0,0.7) 100%
-        );
+        background: rgba(0, 0, 0, 0.4);
     }
 }
 
@@ -299,32 +295,32 @@ export function Hero() {
 
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
-                    <div className="phrase-1 mb-3">
-                        <h1 className="text-white/30 font-medium tracking-[0.8em] uppercase" style={{ 
+                    <div className="phrase-1 mb-[10px]">
+                        <h1 className="text-[#F5F5F5] font-light tracking-[0.4em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: '9px', 
+                            fontSize: 'clamp(20px, 4vw, 32px)', 
                         }}>
                             Sua origem
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance">
+                    <div className="phrase-2 text-balance mb-[32px]">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(42px, 10vw, 88px)', 
-                            lineHeight: '0.9'
+                            fontSize: 'clamp(40px, 8vw, 72px)', 
+                            lineHeight: '1.0'
                         }}>
                             Seu sorriso
                         </h2>
                     </div>
 
-                    <div className="hero-subheadline mt-10 max-w-[280px] mx-auto">
+                    <div className="hero-subheadline mt-4 max-w-[280px] mx-auto hidden md:block">
                         <p className="text-white/30 text-[13px] md:text-xl font-light leading-relaxed tracking-[0.05em]">
                             A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
                         </p>
                     </div>
 
-                    <div className="hero-metrics-subtle mt-8 md:mt-12 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
+                    <div className="hero-metrics-subtle mt-8 md:mt-12 hidden md:flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
                         {[
                             { value: "785+", label: "Transformações" },
                             { value: "12+ Anos", label: "Experiência" },
