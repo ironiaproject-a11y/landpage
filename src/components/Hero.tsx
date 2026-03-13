@@ -102,8 +102,8 @@ export function Hero() {
             0.4);
 
             tl.fromTo(".phrase-2",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
             0.6);
 
             tl.fromTo(".hero-subheadline",
@@ -128,7 +128,6 @@ export function Hero() {
         };
     }, [mounted]);
 
-    if (!mounted) return null;
 
     return (
         <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
@@ -179,7 +178,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         padding-left: 8vw;
-                        padding-top: 25vh;
+                        padding-top: 18vh; /* Adjusted from 25vh to hit 15-20% target */
                         position: relative;
                     }
                     .hero-text {
@@ -204,10 +203,10 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-end;
+                        justify-content: flex-start; /* Changed from flex-end to top-align */
                         width: 100%;
                         height: 100%;
-                        padding-bottom: 4dvh; /* Pulled up to ensure all content fits within viewport */
+                        padding-top: 15dvh; /* Adjusted to hit 15-20% target */
                         position: relative;
                         background: #000;
                     }
@@ -219,13 +218,14 @@ export function Hero() {
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding: 0 8vw;
-                        background: linear-gradient(to top, 
-                            rgba(0,0,0,1) 0%, 
-                            rgba(0,0,0,0.98) 35%, 
+                        padding-left: 8vw;
+                        padding-right: 8vw;
+                        background: linear-gradient(to bottom, 
+                            rgba(0,0,0,0.8) 0%, 
+                            rgba(0,0,0,0.4) 40%, 
                             rgba(0,0,0,0) 100%);
-                        padding-top: 40px; /* Reduced to pull content stack up */
-                        padding-bottom: 0px;
+                        padding-top: 20px;
+                        padding-bottom: 40px;
                     }
                     .hero-canvas {
                         width: 100%;
@@ -295,19 +295,19 @@ export function Hero() {
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-2">
-                        <h1 className="text-white/60 font-medium tracking-[0.5em] uppercase" style={{ 
+                        <h1 className="text-white/40 font-medium tracking-[0.6em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: '11px', 
+                            fontSize: '10px', 
                         }}>
                             Sua origem
                         </h1>
                     </div>
                     
                     <div className="phrase-2 text-balance">
-                        <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
+                        <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(38px, 9vw, 82px)', 
-                            lineHeight: '0.95'
+                            fontSize: 'clamp(42px, 10vw, 88px)', 
+                            lineHeight: '0.9'
                         }}>
                             Seu sorriso
                         </h2>
