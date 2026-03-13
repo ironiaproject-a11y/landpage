@@ -206,9 +206,9 @@ export function Hero() {
                         justify-content: flex-start; /* Changed from flex-end to top-align */
                         width: 100%;
                         height: 100%;
-                        padding-top: 15dvh; /* Adjusted to hit 15-20% target */
+                        padding-top: 12dvh; /* Slightly higher for tighter visual flow */
                         position: relative;
-                        background: #000;
+                        background: transparent; /* Remove hard black background */
                     }
                     .hero-canvas-wrapper {
                         height: 55dvh; /* Final refined height for minimal side cropping */
@@ -218,13 +218,9 @@ export function Hero() {
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding-left: 8vw;
-                        padding-right: 8vw;
-                        background: linear-gradient(to bottom, 
-                            rgba(0,0,0,0.8) 0%, 
-                            rgba(0,0,0,0.4) 40%, 
-                            rgba(0,0,0,0) 100%);
-                        padding-top: 20px;
+                        padding-left: 7vw;
+                        padding-right: 7vw;
+                        padding-top: 0;
                         padding-bottom: 40px;
                     }
                     .hero-canvas {
@@ -241,7 +237,10 @@ export function Hero() {
                         gap: 1.25rem !important;
                     }
                     .hero-btn-wrapper {
-                        margin-top: 1.5rem !important;
+                        margin-top: 2.5rem !important; /* Increased breathing room */
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
                     }
                 }
 
@@ -249,12 +248,18 @@ export function Hero() {
                     position: absolute;
                     inset: 0;
                     z-index: 1;
-                    background: linear-gradient(
-                        rgba(0,0,0,0.6),
-                        rgba(0,0,0,0.2),
-                        rgba(0,0,0,0.8)
-                    );
+                    /* Refined to be more subtle at the top while maintaining protection */
+                    background: transparent; /* Totally removed for maximum video shine on mobile */
                 }
+@media (min-width: 1024px) {
+    .hero-overlay {
+        background: linear-gradient(
+            rgba(0,0,0,0.5) 0%,
+            rgba(0,0,0,0.2) 50%,
+            rgba(0,0,0,0.7) 100%
+        );
+    }
+}
 
                 .film-grain {
                     position: absolute;
@@ -294,10 +299,10 @@ export function Hero() {
 
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
-                    <div className="phrase-1 mb-2">
-                        <h1 className="text-white/40 font-medium tracking-[0.6em] uppercase" style={{ 
+                    <div className="phrase-1 mb-3">
+                        <h1 className="text-white/30 font-medium tracking-[0.8em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: '10px', 
+                            fontSize: '9px', 
                         }}>
                             Sua origem
                         </h1>
@@ -313,8 +318,8 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    <div className="hero-subheadline mt-6 max-w-lg mx-auto">
-                        <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed tracking-wide">
+                    <div className="hero-subheadline mt-10 max-w-[280px] mx-auto">
+                        <p className="text-white/30 text-[13px] md:text-xl font-light leading-relaxed tracking-[0.05em]">
                             A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
                         </p>
                     </div>
@@ -336,8 +341,8 @@ export function Hero() {
                         ))}
                     </div>
 
-                    <div className="hero-btn-wrapper mt-10">
-                        <button className="btn-luxury-primary py-4 px-10 rounded-full border border-[#E6D3A3]/30 bg-black/40 backdrop-blur-md text-white tracking-[0.2em] font-medium text-xs hover:bg-[#E6D3A3] hover:text-black transition-all duration-500">
+                    <div className="hero-btn-wrapper">
+                        <button className="btn-luxury-primary py-4 px-10 rounded-full border border-[#E6D3A3]/20 bg-black/60 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
                             AGENDAR EXPERIÊNCIA
                         </button>
                     </div>
