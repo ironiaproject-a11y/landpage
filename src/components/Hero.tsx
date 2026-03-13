@@ -160,6 +160,7 @@ export function Hero() {
                     align-items: center;
                     justify-content: center;
                     overflow: hidden;
+                    top: 0;
                 }
 
                 .hero-canvas {
@@ -203,26 +204,44 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-end; /* Align content towards bottom to leave space for video */
+                        justify-content: flex-end;
                         width: 100%;
                         height: 100%;
-                        padding-bottom: 8vh;
+                        padding-bottom: 6dvh;
                         position: relative;
+                        background: #000;
+                    }
+                    .hero-canvas-wrapper {
+                        height: 72dvh; /* Reduced height to minimize side cropping on vertical screens */
+                        top: 0;
                     }
                     .hero-text {
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding: 0 7vw;
-                        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-                        padding-top: 40px;
-                        padding-bottom: 20px;
+                        padding: 0 8vw;
+                        background: linear-gradient(to top, 
+                            rgba(0,0,0,1) 0%, 
+                            rgba(0,0,0,0.9) 50%, 
+                            rgba(0,0,0,0) 100%);
+                        padding-top: 80px;
+                        padding-bottom: 0px;
                     }
                     .hero-canvas {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
                         object-position: center 25%;
+                    }
+                    .hero-subheadline {
+                        margin-top: 1rem !important;
+                    }
+                    .hero-metrics-subtle {
+                        margin-top: 1.5rem !important;
+                        gap: 1.5rem !important;
+                    }
+                    .hero-btn-wrapper {
+                        margin-top: 2rem !important;
                     }
                 }
 
@@ -287,7 +306,7 @@ export function Hero() {
                     <div className="phrase-2 text-balance">
                         <h2 className="text-[#E6D3A3] font-bold tracking-[-0.02em]" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(44px, 10vw, 82px)', 
+                            fontSize: 'clamp(38px, 9vw, 82px)', 
                             lineHeight: '0.95'
                         }}>
                             Seu sorriso
