@@ -116,10 +116,7 @@ export function Hero() {
                 { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             1.0);
 
-            tl.fromTo(".hero-btn-wrapper",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            1.2);
+
         }, textContainerRef);
 
         return () => {
@@ -237,12 +234,7 @@ export function Hero() {
                         margin-top: 1rem !important;
                         gap: 1.25rem !important;
                     }
-                    .hero-btn-wrapper {
-                        margin-top: 3rem !important; /* 48px — matches headline-to-CTA target */
-                        display: flex;
-                        justify-content: center;
-                        width: 100%;
-                    }
+
                 }
 
                 .hero-overlay {
@@ -277,6 +269,23 @@ export function Hero() {
                     50% { transform: translate(1%, -2%); }
                     75% { transform: translate(-1%, 2%); }
                     100% { transform: translate(0, 0); }
+                }
+
+                /* CTA anchored to hero bottom */
+                .hero-btn-wrapper {
+                    position: absolute;
+                    bottom: 10vh;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 30;
+                    white-space: nowrap;
+                    opacity: 0;
+                    animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards;
+                }
+
+                @keyframes heroBtn-in {
+                    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+                    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
                 }
             `}</style>
 
@@ -338,23 +347,25 @@ export function Hero() {
                         ))}
                     </div>
 
-                    <div className="hero-btn-wrapper">
-                        <button
-                            className="group relative overflow-hidden text-white tracking-[0.28em] font-medium text-[11px] uppercase transition-all duration-700"
-                            style={{
-                                background: 'transparent',
-                                border: '1px solid rgba(255,255,255,0.6)',
-                                borderRadius: '40px',
-                                padding: '14px 40px',
-                            }}
-                        >
-                            <span
-                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                                style={{ background: 'rgba(255,255,255,0.08)' }}
-                            />
-                            AGENDAR CONSULTA
-                        </button>
-                    </div>
+                </div>
+
+                {/* CTA — anchored to hero bottom, outside text block so video breathes */}
+                <div className="hero-btn-wrapper">
+                    <button
+                        className="group relative overflow-hidden text-white tracking-[0.28em] font-medium text-[11px] uppercase transition-all duration-700"
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid rgba(255,255,255,0.6)',
+                            borderRadius: '40px',
+                            padding: '14px 40px',
+                        }}
+                    >
+                        <span
+                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                            style={{ background: 'rgba(255,255,255,0.08)' }}
+                        />
+                        AGENDAR CONSULTA
+                    </button>
                 </div>
             </div>
         </section>
