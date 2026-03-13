@@ -136,7 +136,7 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 100vh;
+                    height: 100dvh; /* Dynamic viewport height for mobile */
                     background: #000;
                     padding: 0 !important;
                 }
@@ -203,21 +203,26 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: center; /* Center the text vertically to balance layout below video */
+                        justify-content: flex-end; /* Align content towards bottom to leave space for video */
                         width: 100%;
                         height: 100%;
-                        padding-top: 25vh; /* Push down just enough to clear the top-aligned video */
+                        padding-bottom: 8vh;
                         position: relative;
                     }
                     .hero-text {
                         z-index: 20;
                         text-align: center;
                         width: 100%;
-                        padding: 0 6vw;
+                        padding: 0 7vw;
+                        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+                        padding-top: 40px;
+                        padding-bottom: 20px;
                     }
                     .hero-canvas {
-                        object-fit: contain;
-                        object-position: top center;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center 25%;
                     }
                 }
 
