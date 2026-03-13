@@ -50,7 +50,7 @@ function StatItem({
   suffix,
   label,
   accent,
-  delay,
+  index,
   counterActive,
   showDivider,
 }: {
@@ -58,18 +58,54 @@ function StatItem({
   suffix: string;
   label: string;
   accent?: boolean;
-  delay: number;
+  index: number;
   counterActive: boolean;
   showDivider: boolean;
 }) {
-  const count = useCountUp(numeric, counterActive, delay);
+  // Cascading delay calculation
+  // Item 0 starts at 0.1s
+  // Item 1 starts at 0.5s (after item 0's divider)
+  // Item 2 starts at 0.9s
+  const baseDelay = 0.1;
+  const staggerStep = 0.4; 
+  const itemDelay = baseDelay + (index * staggerStep);
+  const dividerDelay = itemDelay + 0.3; // Divider appears right after the number
+  
+  const count = useCountUp(numeric, counterActive, itemDelay);
+
+  // Variants for organized staggered orchestration
+  const itemVariants = {
+    hidden: { opacity: 0, y: 28 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.9, delay: itemDelay, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const dividerVariants = {
+    hidden: { scaleY: 0, opacity: 0 },
+    visible: { 
+      scaleY: 1, 
+      opacity: 1,
+      transition: { duration: 0.7, delay: dividerDelay, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const mobileDividerVariants = {
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: { 
+      scaleX: 1, 
+      opacity: 1,
+      transition: { duration: 0.7, delay: dividerDelay, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
 
   return (
     <m.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
+      variants={itemVariants}
+      initial="hidden"
+      animate={counterActive ? "visible" : "hidden"}
       className="stats-item flex flex-col items-center"
     >
       <span className={`stats-number${accent ? " stats-number--accent" : ""}`}>
@@ -80,14 +116,24 @@ function StatItem({
       <span className="stats-label">{label}</span>
 
       {showDivider && (
-        <m.span
-          className="stats-divider"
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, delay: delay + 0.3, ease: [0.22, 1, 0.36, 1] }}
-          aria-hidden
-        />
+        <>
+          {/* Desktop Vertical Divider */}
+          <m.span
+            variants={dividerVariants}
+            initial="hidden"
+            animate={counterActive ? "visible" : "hidden"}
+            className="stats-divider hidden sm:block"
+            aria-hidden
+          />
+          {/* Mobile Horizontal Divider */}
+          <m.span
+            variants={mobileDividerVariants}
+            initial="hidden"
+            animate={counterActive ? "visible" : "hidden"}
+            className="stats-divider-mobile sm:hidden"
+            aria-hidden
+          />
+        </>
       )}
     </m.div>
   );
@@ -146,6 +192,24 @@ export function Stats() {
           display: block;
         }
 
+        /* Mobile specific horizontal divider */
+        .stats-divider-mobile {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          transform-origin: center;
+          height: 1px;
+          width: 60%;
+          background: linear-gradient(
+            to right,
+            transparent,
+            rgba(230, 211, 163, 0.15),
+            transparent
+          );
+          display: block;
+        }
+
         .stats-number {
           font-family: var(--font-playfair), serif;
           font-size: clamp(48px, 6vw, 64px);
@@ -197,16 +261,14 @@ export function Stats() {
 
           .stats-item {
             padding: 40px 0;
-            border-bottom: 1px solid rgba(230, 211, 163, 0.1);
+            border-bottom: none; /* Replaced default border with animated stats-divider-mobile */
           }
 
           .stats-item:last-child {
-            border-bottom: none;
             padding-bottom: 0;
           }
 
           .stats-item:first-child { padding-top: 0; }
-          .stats-divider { display: none; }
           .stats-number { font-size: clamp(48px, 14vw, 60px); }
         }
 
@@ -229,7 +291,7 @@ export function Stats() {
             suffix={metric.suffix}
             label={metric.label}
             accent={metric.accent}
-            delay={i * 0.18}
+            index={i}
             counterActive={counterActive}
             showDivider={i < metrics.length - 1}
           />

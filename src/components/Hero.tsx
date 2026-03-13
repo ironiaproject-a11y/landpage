@@ -209,15 +209,15 @@ export function Hero() {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: flex-start; /* Changed from flex-end to top-align */
+                        justify-content: flex-start;
                         width: 100%;
                         height: 100%;
-                        padding-top: 17dvh; /* Centered in the 15-20% range */
+                        padding-top: 25dvh; /* Increased from 17dvh to give breathing room from Navbar */
                         position: relative;
                         background: transparent;
                     }
                     .hero-canvas-wrapper {
-                        height: 55dvh; /* Final refined height for minimal side cropping */
+                        height: 55dvh; 
                         top: 0;
                     }
                     .hero-text {
@@ -227,7 +227,7 @@ export function Hero() {
                         padding-left: 7vw;
                         padding-right: 7vw;
                         padding-top: 0;
-                        padding-bottom: 80px;
+                        padding-bottom: 24px; /* Reduced from 80px to pull the CTA closer */
                     }
                     .hero-canvas {
                         width: 100%;
@@ -242,7 +242,19 @@ export function Hero() {
                         margin-top: 1rem !important;
                         gap: 1.25rem !important;
                     }
-
+                    /* Override CTA absolute positioning to relative flex flow */
+                    .hero-btn-wrapper {
+                        position: relative !important;
+                        bottom: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        animation: heroBtn-in-mobile 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards !important;
+                        margin-top: 2rem; 
+                    }
+                    @keyframes heroBtn-in-mobile {
+                        from { opacity: 0; transform: translateY(16px); }
+                        to   { opacity: 1; transform: translateY(0); }
+                    }
                 }
 
                 .hero-overlay {
