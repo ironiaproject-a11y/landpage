@@ -186,6 +186,7 @@ export function Hero() {
                         max-width: 650px;
                         z-index: 20;
                         text-align: left !important;
+                        padding-bottom: 80px;
                     }
                     .hero-canvas {
                         /* Decreasing the visual footprint slightly to restore quality and limit oversize on wide screens */
@@ -221,7 +222,7 @@ export function Hero() {
                         padding-left: 7vw;
                         padding-right: 7vw;
                         padding-top: 0;
-                        padding-bottom: 20px;
+                        padding-bottom: 80px;
                     }
                     .hero-canvas {
                         width: 100%;
@@ -237,7 +238,7 @@ export function Hero() {
                         gap: 1.25rem !important;
                     }
                     .hero-btn-wrapper {
-                        margin-top: 2.5rem !important; /* Increased breathing room */
+                        margin-top: 3rem !important; /* 48px — matches headline-to-CTA target */
                         display: flex;
                         justify-content: center;
                         width: 100%;
@@ -304,7 +305,7 @@ export function Hero() {
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-[38px]">
+                    <div className="phrase-2 text-balance mb-[48px]">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(46px, 9vw, 82px)', 
@@ -338,8 +339,20 @@ export function Hero() {
                     </div>
 
                     <div className="hero-btn-wrapper">
-                        <button className="btn-luxury-primary py-[14px] px-[36px] rounded-full border border-[#E6D3A3]/20 bg-[#1a1a1a]/80 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
-                            AGENDAR EXPERIÊNCIA
+                        <button
+                            className="group relative overflow-hidden text-white tracking-[0.28em] font-medium text-[11px] uppercase transition-all duration-700"
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid rgba(255,255,255,0.6)',
+                                borderRadius: '40px',
+                                padding: '14px 40px',
+                            }}
+                        >
+                            <span
+                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                                style={{ background: 'rgba(255,255,255,0.08)' }}
+                            />
+                            AGENDAR CONSULTA
                         </button>
                     </div>
                 </div>
