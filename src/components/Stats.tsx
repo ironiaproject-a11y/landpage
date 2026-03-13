@@ -254,13 +254,13 @@ export function Stats() {
         /* ── Mobile ─────────────────────────────── */
         @media (max-width: 640px) {
           .stats-section { 
-            /* Strict padding to kill global bleed */
-            padding-top: 16px !important; 
+            /* Symmetrical padding for balanced hierarchy */
+            padding-top: 48px !important; 
             padding-bottom: 48px !important;
             padding-left: 20px;
             padding-right: 20px;
-            /* Negative margin to pull up over Hero */
-            margin-top: -14vh !important; 
+            /* Balanced overlap to pull content into Hero area */
+            margin-top: -16vh !important; 
             z-index: 50 !important; 
             border-top: 1px solid rgba(230, 211, 163, 0.15); 
           }
@@ -271,8 +271,8 @@ export function Stats() {
           }
 
           .stats-item {
-            padding: 40px 0;
-            border-bottom: none; /* Replaced default border with animated stats-divider-mobile */
+            padding: 32px 0; /* Tighter vertical rhythm */
+            border-bottom: none; 
           }
 
           .stats-item:last-child {
