@@ -67,22 +67,22 @@ export function Hero() {
             canvas.height = displayH;
         }
 
-        // Cover scale: fill the canvas entirely
-        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
+        // Cover scale: fill the canvas
+        const coverScale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
+
+        // On portrait mobile: zoom out by 70% of cover scale so we see more of the
+        // original frame without harsh side-cropping. Center the result.
+        // 1.0 = full cover (crops sides), 0.5 = nearly contain (shows bars top/bottom)
+        const MOBILE_ZOOM = 0.7;
+        const isPortrait = displayH > displayW;
+        const scale = isPortrait ? coverScale * MOBILE_ZOOM : coverScale;
+
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
 
-        // Crop anchor:
-        // - Portrait mobile → 0.35 = slightly left of center (skull composition)
-        // - Landscape / desktop → 0.5 = center
-        // Tune MOBILE_CROP_X between 0 (far left) and 0.5 (center) as needed
-        const MOBILE_CROP_X = 0.35;
-        const isPortrait = displayH > displayW;
-        const cropAnchorX = isPortrait ? MOBILE_CROP_X : 0.5;
-        const cropAnchorY = 0.5;
-
-        const offsetX = (displayW - drawW) * cropAnchorX;
-        const offsetY = (displayH - drawH) * cropAnchorY;
+        // Always center
+        const offsetX = (displayW - drawW) / 2;
+        const offsetY = (displayH - drawH) / 2;
 
         ctx.clearRect(0, 0, displayW, displayH);
         ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
