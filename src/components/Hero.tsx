@@ -163,18 +163,9 @@ export function Hero() {
 
                 .video-container {
                     position: relative;
-                    width: 80vw;
-                    height: 80vh;
+                    width: 100%;
+                    height: 100%;
                     overflow: hidden;
-                    border: 1px solid rgba(230, 211, 163, 0.2);
-                    box-shadow: 0 0 100px rgba(0,0,0,0.8);
-                }
-
-                @media (max-width: 1023px) {
-                    .video-container {
-                        width: 90vw;
-                        height: 60vh;
-                    }
                 }
 
                 .hero-canvas-wrapper {
