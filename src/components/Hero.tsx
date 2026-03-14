@@ -169,6 +169,13 @@ export function Hero() {
                         overflow: hidden;
                     }
 
+                    @media (max-width: 767px) {
+                        .hero {
+                            height: 100vh;
+                            height: 100dvh; /* Support for dynamic viewport height */
+                        }
+                    }
+
                     .video-bg-layer {
                         position: absolute;
                         inset: 0;
