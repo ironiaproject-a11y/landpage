@@ -83,29 +83,34 @@ export function Hero() {
 
         mm.add("(min-width: 0px)", () => {
             const ctx = gsap.context(() => {
-                // 1. Initial "Natural" Animation
+                // 1. Initial "Natural" Animation (will run alongside ScrollTrigger)
                 const naturalPlay = gsap.to(frameObj.current, {
                     frame: FRAME_COUNT - 1,
                     snap: "frame",
                     ease: "none",
-                    duration: 2.0, // Slightly slower for better natural feel
+                    duration: 1.8, 
                     onUpdate: () => {
-                        renderFrame(frameObj.current.frame);
-                    },
-                    onComplete: () => {
-                        // 2. Initialize Scroll-Scrub after natural play ends
-                        ScrollTrigger.create({
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "+=300%", // Longer scroll for smoother scrubbing
-                            pin: true,
-                            scrub: 0.5, // Smoother scrub
-                            onUpdate: (self) => {
-                                // Ensure it only scrubs AFTER the natural play is done OR if we scroll deep
-                                const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
-                                renderFrame(frameIndex);
-                            }
-                        });
+                        // Only update if ScrollTrigger hasn't taken over (progress is near 0)
+                        if (scrollST && scrollST.progress < 0.01) {
+                            renderFrame(frameObj.current.frame);
+                        }
+                    }
+                });
+
+                // 2. Initialize Scroll-Scrub IMMEDIATELY to prevent layout gaps
+                const scrollST = ScrollTrigger.create({
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=200%", 
+                    pin: true,
+                    scrub: 0.5,
+                    onUpdate: (self) => {
+                        // If user scrolls even slightly, stop natural play and follow scroll
+                        if (self.progress > 0.001) {
+                            naturalPlay.pause();
+                            const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
+                            renderFrame(frameIndex);
+                        }
                     }
                 });
 
@@ -181,6 +186,14 @@ export function Hero() {
                     object-fit: cover;
                     object-position: center center;
                     display: block;
+                }
+
+                @media (max-width: 1023px) {
+                    .hero-canvas {
+                        /* Force a bit more zoom/scale on mobile to center the skull without cutting sides */
+                        transform: scale(1.15);
+                        object-position: center 40%;
+                    }
                 }
 
                 /* Typographic Excellence: Dominant Hierarchy */
