@@ -58,27 +58,34 @@ export function Hero() {
         const img = imagesRef.current[index];
         if (!img.complete || !img.naturalWidth) return;
 
-        // Set canvas internal size to its CSS display size (in physical pixels)
-        const dpr = window.devicePixelRatio || 1;
-        const displayW = canvas.clientWidth || window.innerWidth;
-        const displayH = canvas.clientHeight || window.innerHeight;
-        canvas.width = displayW * dpr;
-        canvas.height = displayH * dpr;
-        ctx.scale(dpr, dpr);
+        // Match canvas pixels to display size
+        const displayW = Math.round(canvas.clientWidth) || window.innerWidth;
+        const displayH = Math.round(canvas.clientHeight) || window.innerHeight;
 
-        // Manual "object-fit: cover" — scale to fill, crop to center
-        const scaleX = displayW / img.naturalWidth;
-        const scaleY = displayH / img.naturalHeight;
-        const scale = Math.max(scaleX, scaleY); // cover
+        if (canvas.width !== displayW || canvas.height !== displayH) {
+            canvas.width = displayW;
+            canvas.height = displayH;
+        }
+
+        // Cover scale: fill the canvas entirely
+        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
-        const offsetX = (displayW - drawW) / 2; // center horizontally
-        const offsetY = (displayH - drawH) / 2; // center vertically
+
+        // Crop anchor:
+        // - Portrait mobile → show left-side of frame (where skull is)
+        // - Landscape / desktop → center
+        const isPortrait = displayH > displayW;
+        const cropAnchorX = isPortrait ? 0.15 : 0.5; // 0 = far left, 0.5 = center
+        const cropAnchorY = 0.5;
+
+        const offsetX = (displayW - drawW) * cropAnchorX;
+        const offsetY = (displayH - drawH) * cropAnchorY;
 
         ctx.clearRect(0, 0, displayW, displayH);
         ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
 
-        // Subtle darkness overlay
+        // Darkness overlay
         ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
         ctx.fillRect(0, 0, displayW, displayH);
     };
