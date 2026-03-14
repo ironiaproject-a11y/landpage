@@ -263,12 +263,15 @@ button {
     }
 
     .hero-video {
+        position: absolute;
+        inset: 0;
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
-        object-position: center !important;
+        object-position: 80% center !important;
         transform: none !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
 
     .hero-title {

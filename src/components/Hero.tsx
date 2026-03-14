@@ -187,15 +187,23 @@ export function Hero() {
                             height: 100% !important;
                             transform: none !important;
                             object-fit: cover !important;
-                            object-position: center !important;
+                            object-position: 80% center !important;
                             display: block;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            top: 0 !important;
+                            bottom: 0 !important;
                         }
 
                         .hero-video canvas {
                             width: 100% !important;
                             height: 100% !important;
                             object-fit: cover !important;
-                            object-position: center !important;
+                            object-position: 80% center !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
                         }
                     }
 
