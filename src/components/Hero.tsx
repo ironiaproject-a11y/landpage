@@ -173,7 +173,7 @@ export function Hero() {
                         .hero {
                             width: 100vw;
                             height: 100vh;
-                            height: 100dvh; /* Support for dynamic viewport height */
+                            height: 100dvh;
                             margin: 0;
                             padding: 0 !important;
                             position: relative;
@@ -182,17 +182,13 @@ export function Hero() {
 
                         .hero-video {
                             position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 100vw;
-                            height: 100vh;
-                            height: 100dvh;
-                            transform: none; /* Remove centering transform on mobile */
-                            object-fit: cover;
-                            object-position: center; /* Initial alignment */
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
+                            inset: 0;
+                            width: 100% !important;
+                            height: 100% !important;
+                            transform: none !important;
+                            object-fit: cover !important;
+                            object-position: center !important;
+                            display: block;
                         }
 
                         .hero-video canvas {
