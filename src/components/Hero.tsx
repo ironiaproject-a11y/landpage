@@ -73,10 +73,12 @@ export function Hero() {
         const drawH = img.naturalHeight * scale;
 
         // Crop anchor:
-        // - Portrait mobile → show left-side of frame (where skull is)
-        // - Landscape / desktop → center
+        // - Portrait mobile → 0.35 = slightly left of center (skull composition)
+        // - Landscape / desktop → 0.5 = center
+        // Tune MOBILE_CROP_X between 0 (far left) and 0.5 (center) as needed
+        const MOBILE_CROP_X = 0.35;
         const isPortrait = displayH > displayW;
-        const cropAnchorX = isPortrait ? 0.15 : 0.5; // 0 = far left, 0.5 = center
+        const cropAnchorX = isPortrait ? MOBILE_CROP_X : 0.5;
         const cropAnchorY = 0.5;
 
         const offsetX = (displayW - drawW) * cropAnchorX;
