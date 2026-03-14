@@ -5,7 +5,6 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Preloader } from "@/components/Preloader";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
 import ClientSideExtras from "@/components/ClientSideExtras";
 
 const inter = Inter({
@@ -92,7 +91,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <SmoothScroll>
           <MotionProvider>
             <Preloader />
             <ScrollProgress />
@@ -100,7 +98,6 @@ export default function RootLayout({
             <Navbar />
             {children}
           </MotionProvider>
-        </SmoothScroll>
       </body>
     </html>
   );

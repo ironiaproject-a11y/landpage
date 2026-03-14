@@ -217,7 +217,7 @@ export function Hero() {
                         justify-content: flex-start;
                         width: 100%;
                         height: 100%;
-                        padding-top: 25dvh; /* Increased from 17dvh to give breathing room from Navbar */
+                        padding-top: 17dvh; /* Restored to 17% for editorial alignment */
                         position: relative;
                         background: transparent;
                     }
@@ -247,18 +247,16 @@ export function Hero() {
                         margin-top: 1rem !important;
                         gap: 1.25rem !important;
                     }
-                    /* Override CTA absolute positioning to relative flex flow */
+                    /* Simplified mobile CTA placement matching stable model */
                     .hero-btn-wrapper {
+                        margin-top: 2.5rem !important;
                         position: relative !important;
                         bottom: auto !important;
                         left: auto !important;
                         transform: none !important;
-                        animation: heroBtn-in-mobile 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards !important;
-                        margin-top: 1.2rem; 
-                    }
-                    @keyframes heroBtn-in-mobile {
-                        from { opacity: 0; transform: translateY(16px); }
-                        to   { opacity: 1; transform: translateY(0); }
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
                     }
                 }
 
@@ -378,20 +376,8 @@ export function Hero() {
 
                 {/* CTA — anchored to hero bottom, outside text block so video breathes */}
                 <div className="hero-btn-wrapper">
-                    <button
-                        className="group relative overflow-hidden text-white tracking-[0.28em] font-medium text-[11px] uppercase transition-all duration-700"
-                        style={{
-                            background: 'transparent',
-                            border: '1px solid rgba(255,255,255,0.6)',
-                            borderRadius: '40px',
-                            padding: '14px 40px',
-                        }}
-                    >
-                        <span
-                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                            style={{ background: 'rgba(255,255,255,0.08)' }}
-                        />
-                        AGENDAR CONSULTA
+                    <button className="btn-luxury-primary py-[14px] px-[36px] rounded-full border border-[#E6D3A3]/20 bg-[#1a1a1a]/80 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
+                        AGENDAR EXPERIÊNCIA
                     </button>
                 </div>
             </div>
