@@ -1,4 +1,4 @@
-// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
+﻿// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -130,24 +130,31 @@ export function Hero() {
                     height: 100dvh;
                     background: #000;
                     padding: 0 !important;
-                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
-                /* Fixed Cinematic Layer: Full Viewport Immersion */
+                /* Fixed Cinematic Layer: Decoupled from Page Flow */
                 .video-bg-layer {
                     position: absolute;
                     inset: 0;
                     z-index: 0;
                     pointer-events: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: #000;
                 }
 
                 .video-container {
-                    position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
+                    position: relative;
+                    width: 92vw; /* Physical Margin: 4vw on each side */
+                    height: 92vh; /* Physical Margin: 4vh on each side */
                     overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .hero-canvas-wrapper {
@@ -163,16 +170,15 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center 38%;
+                    object-position: center 38.5%;
                     display: block;
-                    transform: scale(1.0); /* Removed unwanted zoom */
                 }
 
                 .hero-bg-shading {
                     position: absolute;
                     inset: 0;
                     z-index: 1;
-                    background: rgba(0, 0, 0, 0.4);
+                    background: rgba(0, 0, 0, 0.35);
                 }
 
                 .film-grain {
@@ -195,15 +201,13 @@ export function Hero() {
                     100% { transform: translate(0, 0); }
                 }
 
-                /* Content Layer: Precision Alignment & Hierarchy */
+                /* Typography Container: Precision Alignment */
                 .hero-container {
                     position: absolute;
                     inset: 0;
                     width: 100%;
                     height: 100%;
                     z-index: 10;
-                    display: flex;
-                    flex-direction: column;
                     pointer-events: none;
                 }
 
@@ -211,60 +215,62 @@ export function Hero() {
                     .hero-content {
                         position: absolute;
                         left: 8vw;
-                        top: 20vh;
+                        top: 17vh;
                         width: 50%;
                         max-width: 650px;
                         pointer-events: auto;
-                        text-align: left;
                     }
                 }
 
                 @media (max-width: 1023px) {
                     .hero-content {
-                        position: relative;
+                        position: absolute;
+                        top: 17dvh;
+                        left: 0;
                         width: 100%;
-                        height: 100%;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        justify-content: center;
                         padding: 0 7vw;
                         text-align: center;
                         pointer-events: auto;
                     }
+                    .video-container {
+                        width: 90vw;
+                        height: 55dvh;
+                        top: 0;
+                    }
                 }
 
-                /* CTA - Slender Prestige Anchor */
-                .hero-btn-wrapper {
-                    position: absolute;
-                    bottom: 8vh;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    z-index: 30;
-                    pointer-events: auto;
-                    opacity: 0;
-                    animation: heroBtn-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                /* CTA - Desktop Silent Anchor */
+                @media (min-width: 1024px) {
+                    .hero-btn-wrapper {
+                        position: absolute;
+                        bottom: 8vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        z-index: 30;
+                        pointer-events: auto;
+                        opacity: 0;
+                        animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                    }
                 }
 
                 @media (max-width: 1023px) {
                     .hero-btn-wrapper {
-                        position: relative;
-                        bottom: auto;
-                        left: auto;
-                        transform: none;
-                        margin-top: 3rem;
+                        margin-top: 48px;
+                        pointer-events: auto;
                         opacity: 1;
-                        animation: none;
                     }
                 }
 
                 @keyframes heroBtn-in {
-                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
                     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
                 }
             `}</style>
 
-            {/* Cinematic Background Layer */}
+            {/* Background Layers - Physically Centered Safe Margin */}
             <div className="video-bg-layer">
                 <div className="film-grain" aria-hidden="true" />
                 <div ref={containerRef} className="video-container">
@@ -273,20 +279,20 @@ export function Hero() {
                 </div>
             </div>
 
-            {/* Content Layer */}
             <div className="hero-container">
+                {/* Typography Block - Editorial Alignment */}
                 <div ref={textContainerRef} className="hero-content opacity-0 translate-y-8">
-                    <div className="phrase-1 mb-2">
+                    <div className="phrase-1 mb-[10px]">
                         <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
                             fontSize: 'clamp(20px, 4vw, 32px)',
-                            lineHeight: '1.2'
+                            lineHeight: '1.0'
                         }}>
                             Sua origem
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-8">
+                    <div className="phrase-2 text-balance mb-[48px]">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(46px, 9vw, 82px)', 
@@ -297,17 +303,17 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    <div className="hero-subheadline mt-4 max-w-[280px] md:max-w-[450px] mx-auto lg:mx-0">
+                    <div className="hero-subheadline mt-4 max-w-[280px] mx-auto hidden md:block">
                         <p className="text-white/30 text-[13px] md:text-xl font-light leading-relaxed tracking-[0.05em]">
-                            A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
+                            A uni├úo entre a alta tecnologia alem├ú e a sensibilidade art├¡stica para criar resultados que transcendem a est├®tica.
                         </p>
                     </div>
 
-                    <div className="hero-metrics-subtle mt-10 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
+                    <div className="hero-metrics-subtle mt-8 md:mt-12 hidden md:flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
                         {[
-                            { value: "785+", label: "Transformações" },
-                            { value: "12+ Anos", label: "Experiência" },
-                            { value: "4.9★", label: "Satisfação" }
+                            { value: "785+", label: "Transforma├º├Áes" },
+                            { value: "12+ Anos", label: "Experi├¬ncia" },
+                            { value: "4.9Ôÿà", label: "Satisfa├º├úo" }
                         ].map((item, idx) => (
                             <div key={idx} className="flex flex-col">
                                 <span className="text-white/80 font-medium text-lg md:text-xl tracking-tight">
@@ -320,18 +326,18 @@ export function Hero() {
                         ))}
                     </div>
 
-                    {/* Mobile Button Placement */}
+                    {/* CTA - For mobile it follows the flow, for desktop it is fixed via CSS wrapper */}
                     <div className="hero-btn-wrapper lg:hidden">
-                        <button className="btn-luxury-primary px-12 py-3.5">
-                            AGENDAR EXPERIÊNCIA
+                        <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
+                            AGENDAR EXPERI├èNCIA
                         </button>
                     </div>
                 </div>
 
-                {/* Desktop Button Placement */}
+                {/* Desktop Specific CTA Anchor */}
                 <div className="hero-btn-wrapper hidden lg:block">
-                    <button className="btn-luxury-primary px-12 py-3.5">
-                        AGENDAR EXPERIÊNCIA
+                    <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
+                        AGENDAR EXPERI├èNCIA
                     </button>
                 </div>
             </div>
