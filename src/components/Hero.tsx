@@ -138,7 +138,16 @@ export function Hero() {
                     inset: 0;
                     z-index: 0;
                     pointer-events: none;
-                    display: flex;
+                }
+
+                .video-container {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 100%; /* Ensure it takes full width of its content */
+                    height: 100%; /* Ensure it takes full height of its content */
+                    display: flex; /* Use flex to center canvas-wrapper if needed, though canvas-wrapper is 100% */
                     align-items: center;
                     justify-content: center;
                 }
@@ -163,7 +172,7 @@ export function Hero() {
                     transform: scale(0.95); /* Adjusted to 0.95x for clear safe-margin */
                 }
 
-                .hero-overlay {
+                .hero-bg-shading {
                     position: absolute;
                     inset: 0;
                     z-index: 1;
@@ -250,7 +259,7 @@ export function Hero() {
                         opacity: 1 !important;
                         animation: none !important;
                     }
-                    .hero-canvas, .hero-overlay {
+                    .hero-canvas, .hero-bg-shading {
                         transform: scale(0.95); /* Ensure safe margin on mobile too */
                     }
                 }
@@ -275,14 +284,14 @@ export function Hero() {
                 }
             `}</style>
 
-            {/* Background Layers - Perfectly Centered */}
+            {/* Background Layers - Locked at Viewport Center */}
             <div className="video-bg-layer">
                 <div className="film-grain" aria-hidden="true" />
                 <div ref={containerRef} className="video-container">
                     <div className="hero-canvas-wrapper">
                         <canvas ref={canvasRef} className="hero-canvas" />
+                        <div className="hero-bg-shading" />
                     </div>
-                    <div className="hero-overlay" />
                 </div>
             </div>
 
