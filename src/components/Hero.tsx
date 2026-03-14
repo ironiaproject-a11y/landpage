@@ -67,8 +67,8 @@ export function Hero() {
             canvas.height = displayH;
         }
 
-        // Contain scale: fit the image inside the canvas without cropping
-        const scale = Math.min(displayW / img.naturalWidth, displayH / img.naturalHeight);
+        // Cover scale: fill the canvas
+        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
 
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
@@ -158,7 +158,7 @@ export function Hero() {
                         position: sticky;
                         top: 0;
                         width: 100%;
-                        height: 100dvh;
+                        height: 85vh;
                         background: #000;
                         padding: 0 !important;
                         display: flex;
@@ -181,17 +181,18 @@ export function Hero() {
                     .hero-video {
                         position: relative;
                         width: 100%;
-                        aspect-ratio: 16 / 9;
+                        height: 100%;
                         overflow: hidden;
                     }
 
                     .hero-video canvas {
                         width: 100%;
                         height: 100%;
-                        object-fit: contain;
+                        object-fit: cover;
                         object-position: center center;
                         display: block;
                     }
+
 
 
 
