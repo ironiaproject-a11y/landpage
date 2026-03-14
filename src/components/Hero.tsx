@@ -174,34 +174,31 @@ export function Hero() {
                             width: 100vw;
                             height: 100vh;
                             height: 100dvh;
-                            margin: 0;
-                            padding: 0 !important;
                             position: relative;
                             overflow: hidden;
+                            margin: 0;
+                            padding: 0 !important;
                         }
 
                         .hero-video {
                             position: absolute;
-                            inset: 0;
-                            width: 100% !important;
-                            height: 100% !important;
-                            transform: none !important;
-                            object-fit: cover !important;
-                            object-position: 80% center !important;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            min-width: 100%;
+                            min-height: 100%;
+                            width: auto;
+                            height: auto;
                             display: block;
                             margin: 0 !important;
                             padding: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            top: 0 !important;
-                            bottom: 0 !important;
                         }
 
                         .hero-video canvas {
                             width: 100% !important;
                             height: 100% !important;
                             object-fit: cover !important;
-                            object-position: 80% center !important;
+                            object-position: center !important;
                             margin: 0 !important;
                             padding: 0 !important;
                         }
