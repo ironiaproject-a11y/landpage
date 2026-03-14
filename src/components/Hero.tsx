@@ -334,7 +334,7 @@ export function Hero() {
                             fontSize: 'clamp(20px, 4vw, 32px)',
                             lineHeight: '1.0'
                         }}>
-                            [ Sua origem ]
+                            Sua origem
                         </h1>
                     </div>
                     
@@ -345,7 +345,7 @@ export function Hero() {
                             lineHeight: '1.0',
                             letterSpacing: '-0.015em'
                         }}>
-                            [ Seu sorriso ]
+                            Seu sorriso
                         </h2>
                     </div>
 
@@ -376,7 +376,7 @@ export function Hero() {
 
                 {/* CTA — anchored to hero bottom, outside text block so video breathes */}
                 <div className="hero-btn-wrapper">
-                    <button className="btn-luxury-primary py-[14px] px-[36px] rounded-full border border-[#E6D3A3]/20 bg-[#1a1a1a]/80 backdrop-blur-md text-white tracking-[0.25em] font-medium text-[10px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700">
+                    <button className="btn-luxury-primary py-[16px] px-[42px] rounded-full border border-[#E6D3A3]/40 bg-[#1a1a1a]/95 backdrop-blur-md text-white tracking-[0.3em] font-semibold text-[11px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700 shadow-[0_0_20px_rgba(230,211,163,0.15)]">
                         AGENDAR EXPERIÊNCIA
                     </button>
                 </div>
