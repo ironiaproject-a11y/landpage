@@ -1,129 +1,57 @@
-// Updated: 2026-03-14 - CSS Sticky approach to fix ghost hero
+// Updated: 2026-03-14 - Video Scrubbing approach with perfect centering
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const FRAME_COUNT = 30;
-const FRAME_PREFIX = "/assets/hero-new/ezgif-frame-";
-const FRAME_SUFFIX = ".png";
-
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const getFramePath = (index: number) => {
-    const paddedIndex = (index + 1).toString().padStart(3, "0");
-    return `${FRAME_PREFIX}${paddedIndex}${FRAME_SUFFIX}`;
-};
-
 export function Hero() {
-    // scrollDriverRef wraps the sticky hero and drives the scroll animation
     const scrollDriverRef = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
-    const imagesRef = useRef<HTMLImageElement[]>([]);
-    const frameObj = useRef({ frame: 0 });
 
     useEffect(() => {
         setMounted(true);
-        const loadedImages: HTMLImageElement[] = [];
-        let loadedCount = 0;
-
-        for (let i = 0; i < FRAME_COUNT; i++) {
-            const img = new Image();
-            img.src = getFramePath(i);
-            img.onload = () => {
-                loadedCount++;
-                if (loadedCount === FRAME_COUNT) {
-                    // Wait for layout so canvas has its display dimensions
-                    requestAnimationFrame(() => renderFrame(0));
-                }
-            };
-            loadedImages.push(img);
-        }
-        imagesRef.current = loadedImages;
     }, []);
 
-    const renderFrame = (index: number) => {
-        if (!canvasRef.current || !imagesRef.current[index]) return;
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        const img = imagesRef.current[index];
-        if (!img.complete || !img.naturalWidth) return;
-
-        // Match canvas pixels to display size
-        const displayW = Math.round(canvas.clientWidth) || window.innerWidth;
-        const displayH = Math.round(canvas.clientHeight) || window.innerHeight;
-
-        if (canvas.width !== displayW || canvas.height !== displayH) {
-            canvas.width = displayW;
-            canvas.height = displayH;
-        }
-
-        // Cover scale: fill the canvas
-        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
-
-        const drawW = img.naturalWidth * scale;
-        const drawH = img.naturalHeight * scale;
-
-        // Perfect center horizontally and vertically
-        const offsetX = (displayW - drawW) / 2;
-        const offsetY = (displayH - drawH) / 2;
-
-        ctx.clearRect(0, 0, displayW, displayH);
-        ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
-
-        // Darkness overlay
-        ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
-        ctx.fillRect(0, 0, displayW, displayH);
-    };
-
     useEffect(() => {
-        if (!mounted || !textContainerRef.current || !scrollDriverRef.current) return;
+        if (!mounted || !textContainerRef.current || !scrollDriverRef.current || !videoRef.current) return;
+
+        const video = videoRef.current;
 
         const ctx = gsap.context(() => {
-            // 1. Natural intro animation on load
-            let naturalPlayPaused = false;
-            const naturalPlay = gsap.to(frameObj.current, {
-                frame: FRAME_COUNT - 1,
-                snap: "frame",
-                ease: "none",
+            // 1. Natural intro animation
+            // We want to play the first bit naturally or just have it ready
+            gsap.to(video, {
+                currentTime: 1.5, // Initial reveal
                 duration: 1.8,
-                onUpdate: () => {
-                    if (!naturalPlayPaused) {
-                        renderFrame(Math.round(frameObj.current.frame));
-                    }
-                }
+                ease: "power2.out"
             });
 
-            // 2. Scroll-scrub — triggered by the wrapper, NOT the section itself
-            // NO pin: true here — CSS sticky handles the visual pinning
+            // 2. Scroll-scrub
             ScrollTrigger.create({
                 trigger: scrollDriverRef.current,
                 start: "top top",
                 end: "bottom bottom",
                 scrub: 0.5,
                 onUpdate: (self) => {
-                    if (self.progress > 0.001) {
-                        if (!naturalPlayPaused) {
-                            naturalPlay.pause();
-                            naturalPlayPaused = true;
-                        }
-                        const frameIndex = Math.round(self.progress * (FRAME_COUNT - 1));
-                        renderFrame(frameIndex);
-                    } else {
-                        if (naturalPlayPaused) {
-                            naturalPlayPaused = false;
-                            if (!naturalPlay.isActive()) naturalPlay.restart();
-                        }
-                    }
+                    const duration = video.duration || 1;
+                    // Map scroll progress to video time
+                    // We can adjust the multiplier if we want it to go faster/slower
+                    const targetTime = self.progress * duration;
+                    
+                    gsap.to(video, {
+                        currentTime: targetTime,
+                        duration: 0.1,
+                        ease: "none",
+                        overwrite: true
+                    });
                 }
             });
 
@@ -149,11 +77,9 @@ export function Hero() {
     }, [mounted]);
 
     return (
-        // Scroll driver: this tall wrapper provides the scroll range for the sticky section
         <div ref={scrollDriverRef} style={{ height: "280dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
                 <style>{`
-                    /* The scroll driver wrapper sets height, hero stays sticky inside it */
                     .hero {
                         position: sticky;
                         top: 0;
@@ -179,29 +105,6 @@ export function Hero() {
                             margin: 0;
                             padding: 0 !important;
                         }
-
-                        .hero-video {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            min-width: 100%;
-                            min-height: 100%;
-                            width: auto;
-                            height: auto;
-                            display: block;
-                            margin: 0 !important;
-                            padding: 0 !important;
-                        }
-
-                        .hero-video canvas {
-                            width: 100% !important;
-                            height: 100% !important;
-                            object-fit: cover !important;
-                            object-position: center !important;
-                            margin: 0 !important;
-                            padding: 0 !important;
-                        }
                     }
 
                     .video-bg-layer {
@@ -215,7 +118,7 @@ export function Hero() {
                         justify-content: center;
                     }
 
-                    .hero-video {
+                    .hero-video-container {
                         position: absolute;
                         top: 50%;
                         left: 50%;
@@ -223,18 +126,28 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         overflow: hidden;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                     }
 
-                    .hero-video canvas {
-                        width: 100%;
-                        height: 100%;
+                    .hero-video-container video {
+                        min-width: 100%;
+                        min-height: 100%;
+                        width: auto;
+                        height: auto;
                         object-fit: cover;
                         object-position: center;
                         display: block;
                     }
 
-
-
+                    /* Darkness overlay directly on top of video */
+                    .hero-video-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: rgba(0, 0, 0, 0.35);
+                        z-index: 1;
+                    }
 
                     .hero-container {
                         position: absolute;
@@ -327,10 +240,17 @@ export function Hero() {
                     }
                 `}</style>
 
-                {/* Background Layer */}
+                {/* Background Layer with Video */}
                 <div className="video-bg-layer">
-                    <div ref={containerRef} className="hero-video">
-                        <canvas ref={canvasRef} />
+                    <div className="hero-video-container">
+                        <video
+                            ref={videoRef}
+                            src="/hero-background-new.mp4"
+                            muted
+                            playsInline
+                            preload="auto"
+                        />
+                        <div className="hero-video-overlay" />
                     </div>
                 </div>
 
