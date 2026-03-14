@@ -91,23 +91,24 @@ export function Hero() {
                     duration: 1.8, 
                     onUpdate: () => {
                         // Only update if ScrollTrigger hasn't taken over (progress is near 0)
-                        if (scrollST && scrollST.progress < 0.01) {
+                        if (scrollST && scrollST.progress < 0.005) {
                             renderFrame(frameObj.current.frame);
                         }
                     }
                 });
 
-                // 2. Initialize Scroll-Scrub IMMEDIATELY to prevent layout gaps
+                // 2. Initialize Scroll-Scrub IMMEDIATELY
                 const scrollST = ScrollTrigger.create({
                     trigger: sectionRef.current,
                     start: "top top",
                     end: "+=200%", 
                     pin: true,
+                    anticipatePin: 1, // Smooth out pinning transition
                     scrub: 0.5,
                     onUpdate: (self) => {
                         // If user scrolls even slightly, stop natural play and follow scroll
                         if (self.progress > 0.001) {
-                            naturalPlay.pause();
+                            if (naturalPlay.isActive()) naturalPlay.pause();
                             const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
                             renderFrame(frameIndex);
                         }
@@ -320,19 +321,12 @@ export function Hero() {
                         </h2>
                     </div>
 
-                    {/* Mobile CTA */}
-                    <div className="hero-btn-wrapper lg:hidden">
+                    {/* Main CTA */}
+                    <div className="hero-btn-wrapper">
                         <button className="btn-premium-cta">
                             AGENDAR EXPERIÊNCIA
                         </button>
                     </div>
-                </div>
-
-                {/* Desktop CTA */}
-                <div className="hero-btn-wrapper hidden lg:block">
-                    <button className="btn-premium-cta">
-                        AGENDAR EXPERIÊNCIA
-                    </button>
                 </div>
             </div>
         </section>

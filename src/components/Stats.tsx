@@ -193,11 +193,11 @@ export function Stats() {
 
         @media (max-width: 1023px) {
           .stats-section { 
-            padding-top: 64px !important; 
-            padding-bottom: 64px !important;
-            margin-top: -32px !important; 
+            padding-top: 100px !important; 
+            padding-bottom: 80px !important;
+            margin-top: 0 !important; 
             z-index: 50 !important; 
-            background: linear-gradient(to bottom, transparent, #0B0B0B 40px);
+            background: #0B0B0B;
           }
 
           .stats-grid {
