@@ -158,7 +158,7 @@ export function Hero() {
                         position: sticky;
                         top: 0;
                         width: 100%;
-                        height: 85vh;
+                        height: 75vh;
                         background: #000;
                         padding: 0 !important;
                         display: flex;
