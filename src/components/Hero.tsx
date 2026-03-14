@@ -1,16 +1,23 @@
-// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
+// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering + Scroll-Scrub
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const FRAME_COUNT = 144;
-const FRAME_PREFIX = "/assets/hero-lindo-vc/frame_";
-const FRAME_SUFFIX = "_delay-0.041s.webp";
+const FRAME_COUNT = 30; // Updated to 30 frames from 16;9.zip
+const FRAME_PREFIX = "/assets/hero-new/ezgif-frame-";
+const FRAME_SUFFIX = ".png";
 
-// Helper to format frame numbers
+// Important: Register GSAP Plugins
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
+// Helper to format frame numbers (ezgif-frame-001.png etc)
 const getFramePath = (index: number) => {
-    const paddedIndex = index.toString().padStart(3, "0");
+    // Files are 1-indexed based on directory listing: 001 to 030
+    const paddedIndex = (index + 1).toString().padStart(3, "0");
     return `${FRAME_PREFIX}${paddedIndex}${FRAME_SUFFIX}`;
 };
 
@@ -72,53 +79,60 @@ export function Hero() {
     useEffect(() => {
         if (!mounted || !textContainerRef.current) return;
 
-        // Set up infinite play loop for frames since autoplay logic is requested
-        const playAnim = gsap.to(frameObj.current, {
-            frame: FRAME_COUNT - 1,
-            snap: "frame",
-            ease: "none",
-            duration: (FRAME_COUNT * 0.041), 
-            repeat: -1,
-            onUpdate: () => {
-                renderFrame(frameObj.current.frame);
-            }
+        const mm = gsap.matchMedia();
+
+        mm.add("(min-width: 0px)", () => {
+            const ctx = gsap.context(() => {
+                // 1. Initial "Natural" Animation
+                const naturalPlay = gsap.to(frameObj.current, {
+                    frame: FRAME_COUNT - 1,
+                    snap: "frame",
+                    ease: "none",
+                    duration: 1.5, // Natural speed
+                    onUpdate: () => {
+                        renderFrame(frameObj.current.frame);
+                    },
+                    onComplete: () => {
+                        // 2. Initialize Scroll-Scrub after natural play ends
+                        ScrollTrigger.create({
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "+=200%", // Longer scroll for the 30 frames
+                            pin: true,
+                            scrub: 1,
+                            onUpdate: (self) => {
+                                const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
+                                renderFrame(frameIndex);
+                            }
+                        });
+                    }
+                });
+
+                // Text Animations
+                const tl = gsap.timeline();
+
+                tl.to(textContainerRef.current, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                }, 0.2);
+
+                tl.fromTo(".phrase-1",
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                0.4);
+
+                tl.fromTo(".phrase-2",
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+                0.6);
+            }, sectionRef);
+
+            return () => ctx.revert();
         });
 
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline();
-
-            tl.to(textContainerRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            }, 0.2);
-
-            tl.fromTo(".phrase-1",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            0.4);
-
-            tl.fromTo(".phrase-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-            0.6);
-
-            tl.fromTo(".hero-subheadline",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            0.8);
-
-            tl.fromTo(".hero-metrics-subtle",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            1.0);
-        }, textContainerRef);
-
-        return () => {
-            ctx.revert();
-            playAnim.kill();
-        };
+        return () => mm.revert();
     }, [mounted]);
 
     return (
@@ -142,14 +156,25 @@ export function Hero() {
                     z-index: 0;
                     pointer-events: none;
                     background: #000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .video-container {
-                    position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
+                    position: relative;
+                    width: 80vw;
+                    height: 80vh;
                     overflow: hidden;
+                    border: 1px solid rgba(230, 211, 163, 0.2);
+                    box-shadow: 0 0 100px rgba(0,0,0,0.8);
+                }
+
+                @media (max-width: 1023px) {
+                    .video-container {
+                        width: 90vw;
+                        height: 60vh;
+                    }
                 }
 
                 .hero-canvas-wrapper {
@@ -181,8 +206,8 @@ export function Hero() {
                 @media (min-width: 1024px) {
                     .hero-content {
                         position: absolute;
-                        left: 8vw;
-                        top: 22vh;
+                        left: 15vw;
+                        top: 25vh;
                         width: 55%;
                         max-width: 750px;
                         pointer-events: auto;
@@ -208,7 +233,7 @@ export function Hero() {
                 /* High-End CTA: Glassmorphism & Precision */
                 .hero-btn-wrapper {
                     position: absolute;
-                    bottom: 10vh;
+                    bottom: 15vh;
                     left: 50%;
                     transform: translateX(-50%);
                     z-index: 30;
@@ -223,7 +248,7 @@ export function Hero() {
                         bottom: auto;
                         left: auto;
                         transform: none;
-                        margin-top: 4rem;
+                        margin-top: 2rem;
                         opacity: 1;
                         animation: none;
                     }
@@ -279,7 +304,7 @@ export function Hero() {
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-8">
+                    <div className="phrase-2 text-balance mb-12">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(52px, 11vw, 102px)', 
@@ -288,29 +313,6 @@ export function Hero() {
                         }}>
                             Seu sorriso
                         </h2>
-                    </div>
-
-                    <div className="hero-subheadline mt-6 max-w-[480px] mx-auto lg:mx-0">
-                        <p className="text-white/40 text-[14px] md:text-xl font-light leading-relaxed tracking-[0.03em]">
-                            A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
-                        </p>
-                    </div>
-
-                    <div className="hero-metrics-subtle mt-12 flex flex-wrap justify-center lg:justify-start gap-x-12 gap-y-6">
-                        {[
-                            { value: "785+", label: "Transformações" },
-                            { value: "12+ Anos", label: "Experiência" },
-                            { value: "4.9★", label: "Satisfação" }
-                        ].map((item, idx) => (
-                            <div key={idx} className="flex flex-col">
-                                <span className="text-white/90 font-medium text-xl md:text-2xl tracking-tighter">
-                                    {item.value}
-                                </span>
-                                <span className="text-white/30 text-[9px] uppercase tracking-[0.4em] font-semibold mt-1">
-                                    {item.label}
-                                </span>
-                            </div>
-                        ))}
                     </div>
 
                     {/* Mobile CTA */}
