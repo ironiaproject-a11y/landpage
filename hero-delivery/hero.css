@@ -245,7 +245,32 @@ button {
 
 @media (max-width: 767px) {
     .hero {
-        min-height: 100svh;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        height: 100svh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    .video-container {
+        position: absolute;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100svh;
+        z-index: 0;
+    }
+
+    .hero-video {
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100svh !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        transform: none !important;
+        margin: 0 !important;
     }
 
     .hero-title {

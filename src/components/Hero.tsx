@@ -171,8 +171,35 @@ export function Hero() {
 
                     @media (max-width: 767px) {
                         .hero {
+                            width: 100vw;
                             height: 100vh;
                             height: 100dvh; /* Support for dynamic viewport height */
+                            margin: 0;
+                            padding: 0 !important;
+                            position: relative;
+                            overflow: hidden;
+                        }
+
+                        .hero-video {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100vw;
+                            height: 100vh;
+                            height: 100dvh;
+                            transform: none; /* Remove centering transform on mobile */
+                            object-fit: cover;
+                            object-position: center; /* Initial alignment */
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .hero-video canvas {
+                            width: 100% !important;
+                            height: 100% !important;
+                            object-fit: cover !important;
+                            object-position: center !important;
                         }
                     }
 
