@@ -157,9 +157,11 @@ export function Hero() {
                     .hero {
                         position: sticky;
                         top: 0;
-                        width: 100%;
+                        width: 100vw;
                         height: 85vh;
                         background: #000;
+                        margin-left: calc(-50vw + 50%);
+                        margin-right: calc(-50vw + 50%);
                         padding: 0 !important;
                         display: flex;
                         align-items: center;
@@ -182,11 +184,9 @@ export function Hero() {
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        transform: translate(-50%, -50%) scale(1.05);
-                        min-width: 100%;
-                        min-height: 100%;
-                        width: auto;
-                        height: auto;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100%;
                         overflow: hidden;
                     }
 
