@@ -171,9 +171,8 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center 38%; /* Adjusted to show more of the chin/skull base */
+                    object-position: center 38%;
                     display: block;
-                    transform: scale(1.0);
                 }
 
                 .hero-overlay {
@@ -193,14 +192,6 @@ export function Hero() {
                     pointer-events: none;
                     z-index: 5;
                     animation: noise-move 0.2s steps(2) infinite;
-                }
-
-                @keyframes noise-move {
-                    0% { transform: translate(0, 0); }
-                    25% { transform: translate(-2%, -1%); }
-                    50% { transform: translate(1%, -2%); }
-                    75% { transform: translate(-1%, 2%); }
-                    100% { transform: translate(0, 0); }
                 }
 
                 @media (min-width: 1024px) {
@@ -226,7 +217,7 @@ export function Hero() {
                 @media (max-width: 1023px) {
                     .hero {
                         height: auto;
-                        min-height: 0;
+                        min-height: 100dvh; /* Maintain height for centering */
                         padding-bottom: 80px !important;
                     }
                     .hero-container {
@@ -243,7 +234,6 @@ export function Hero() {
                     .hero-canvas-wrapper {
                         height: 55dvh; 
                         top: 0;
-                        z-index: 0;
                     }
                     .hero-text {
                         z-index: 20;
@@ -251,27 +241,32 @@ export function Hero() {
                         width: 100%;
                         padding-left: 7vw;
                         padding-right: 7vw;
-                        padding-top: 0;
                         padding-bottom: 24px;
                     }
-                    .hero-canvas {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        object-position: center 38%;
+                    /* For mobile, we restore the relative button to avoid overlap */
+                    .hero-btn-wrapper {
+                        margin-top: 4rem !important;
+                        position: relative !important;
+                        bottom: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        opacity: 1 !important;
+                        animation: none !important;
                     }
                 }
 
-                /* CTA — Anchored outside layout flow for pure position */
-                .hero-btn-wrapper {
-                    position: absolute;
-                    bottom: 8vh;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    z-index: 30;
-                    white-space: nowrap;
-                    opacity: 0;
-                    animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                /* Desktop Silent Anchor */
+                @media (min-width: 1024px) {
+                    .hero-btn-wrapper {
+                        position: absolute;
+                        bottom: 8vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        z-index: 30;
+                        white-space: nowrap;
+                        opacity: 0;
+                        animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                    }
                 }
 
                 @keyframes heroBtn-in {
@@ -280,21 +275,20 @@ export function Hero() {
                 }
             `}</style>
 
-            {/* Background Layers - Moved out for absolute centering */}
-            <div className="film-grain" aria-hidden="true" />
-            <div ref={containerRef} className="video-container">
-                <div className="hero-canvas-wrapper">
-                    <canvas 
-                        ref={canvasRef}
-                        className="hero-canvas"
-                    />
+            {/* Structured Layers for Perfect Z-Index and Alignment */}
+            <div className="video-bg-layer">
+                <div className="film-grain" aria-hidden="true" />
+                <div ref={containerRef} className="video-container absolute inset-0">
+                    <div className="hero-canvas-wrapper">
+                        <canvas ref={canvasRef} className="hero-canvas" />
+                    </div>
+                    <div className="hero-overlay" />
                 </div>
-                <div className="hero-overlay" />
             </div>
 
-            <div className="hero-container w-full h-full">
+            <div className="hero-container relative z-10 w-full h-full">
                 {/* Text Column */}
-                <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
+                <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8">
                     <div className="phrase-1 mb-[10px]">
                         <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
@@ -340,7 +334,7 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* CTA — anchored to hero bottom, outside text block so video breathes */}
+                {/* CTA */}
                 <div className="hero-btn-wrapper">
                     <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
                         AGENDAR EXPERIÊNCIA
