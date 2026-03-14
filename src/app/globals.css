@@ -35,9 +35,10 @@
   --color-text-secondary: var(--color-premium-slate);
   --color-accent: var(--color-premium-gold);
 
-  /* Tracking - Brand Identity */
-  --tracking-luxury: 0.05em;
+  /* Tracking - Brand Identity (PRESTIGE Standards) */
+  --tracking-luxury: 0.4em;
   --tracking-editorial: -0.015em;
+  --tracking-body: 0.01em;
 }
 
 /* ===================================
@@ -61,8 +62,8 @@ body {
   overflow-x: hidden;
   position: relative;
   cursor: none;
-  line-height: 1.6;
-  letter-spacing: -0.011em;
+  line-height: 1.7;
+  letter-spacing: var(--tracking-body);
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
   margin: 0;
@@ -200,7 +201,7 @@ h1 {
   font-size: var(--font-h1);
   font-weight: var(--font-weight-semibold);
   line-height: 1.0;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-editorial);
 }
 
 .text-hero-editorial {
@@ -226,12 +227,25 @@ h1 {
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
+.editorial-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8em;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: var(--tracking-luxury);
+  text-transform: uppercase;
+  color: var(--color-premium-gold);
+  margin-bottom: 3rem;
+}
+
 h2 {
   font-size: var(--font-h2);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  margin-bottom: 2rem;
+  line-height: 1.1;
+  letter-spacing: var(--tracking-editorial);
+  margin-bottom: 3rem;
 }
 
 h3 {

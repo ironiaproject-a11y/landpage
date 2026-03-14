@@ -330,7 +330,7 @@ export function Services() {
 
             <div className="max-w-4xl mb-16 md:mb-24 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
-                    <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                    <span className="editorial-label">
                         Tratamentos de Elite
                     </span>
                 </PremiumReveal>

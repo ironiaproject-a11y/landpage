@@ -156,12 +156,12 @@ export function About() {
                     {/* Content Side */}
                     <div className="w-full lg:w-1/2 flex flex-col items-start">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="editorial-label">
                                 Excelência Master
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-12 text-[#F8F8F6] leading-[1.05] tracking-[0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-16 text-[#F8F8F6] leading-[1.1] tracking-[-0.015em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
@@ -171,11 +171,11 @@ export function About() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <div className="space-y-6 mb-12">
-                                <p className="text-[17px] text-[#F8F8F6]/90 font-medium leading-[1.6]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <div className="space-y-8 mb-16">
+                                <p className="text-[17px] text-[#F8F8F6]/90 font-medium leading-[1.7] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     Na Clínica Premium, não apenas tratamos sorrisos; cultivamos a confiança através da harmonia facial.
                                 </p>
-                                <p className="text-[15px] text-[#6B7280] font-normal leading-[1.7]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <p className="text-[15px] text-[#6B7280] font-normal leading-[1.8] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico convencional. Cada detalhe, do diagnóstico digital ao acabamento artesanal, é pensado para entregar perfeição.
                                 </p>
                             </div>
@@ -187,7 +187,7 @@ export function About() {
                                     <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
                                         <ArrowUpRight className="w-3 h-3 text-[#6B7280] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-[#6B7280] font-medium text-[14px] tracking-wide group-hover:text-[#F8F8F6]" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
+                                    <span className="text-[#6B7280] font-medium text-[14px] tracking-[0.05em] group-hover:text-[#F8F8F6] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
                                 </div>
                             ))}
                         </div>

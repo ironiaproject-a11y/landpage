@@ -171,12 +171,12 @@ export function InstitutionalTrust() {
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-12 border-b border-white/5 pb-20">
                     <div className="max-w-4xl">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="editorial-label">
                                 Fundamentos do Cuidado
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[#F8F8F6] text-[clamp(36px,6vw,72px)] font-semibold leading-[1.05] uppercase tracking-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[#F8F8F6] text-[clamp(36px,6vw,72px)] font-semibold leading-[1.1] uppercase tracking-[-0.015em]" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o</span>
                             </PremiumReveal>
@@ -185,8 +185,8 @@ export function InstitutionalTrust() {
                             </PremiumReveal>
                         </h2>
 
-                        <PremiumReveal direction="bottom" delay={0.4} className="mt-10 lg:mt-12 max-w-2xl">
-                            <p className="text-[#6B7280] text-lg lg:text-xl font-light leading-relaxed tracking-wide">
+                        <PremiumReveal direction="bottom" delay={0.4} className="mt-12 lg:mt-16 max-w-2xl">
+                            <p className="text-[#6B7280] text-lg lg:text-xl font-light leading-[1.7] tracking-[0.02em]">
                                 Nossa metodologia é sustentada por quatro pilares fundamentais que garantem não apenas resultados estéticos, mas a longevidade e saúde do seu investimento.
                             </p>
                         </PremiumReveal>
@@ -213,18 +213,18 @@ export function InstitutionalTrust() {
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-[#F8F8F6] text-[20px] font-semibold mb-6 transition-transform duration-500 uppercase tracking-wide" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <h3 className="text-[#F8F8F6] text-[20px] font-semibold mb-6 transition-transform duration-500 uppercase tracking-[0.05em]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {card.title}
                                 </h3>
 
-                                <p className="text-[#6B7280] text-[15px] font-normal leading-[1.6] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <p className="text-[#6B7280] text-[15px] font-normal leading-[1.7] tracking-[0.015em] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {card.subtitle}
                                 </p>
                             </div>
 
                             {/* Bottom Detail */}
-                            <div className="mt-12 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-                                <div className="text-[9px] uppercase tracking-[0.08em] text-[#E6D3A3]">Pilar de Excelência</div>
+                            <div className="mt-12 opacity-30 group-hover:opacity-100 transition-all duration-700">
+                                <div className="text-[9px] uppercase tracking-[0.2em] text-[#E6D3A3] font-bold">[ Pilar de Excelência ]</div>
                             </div>
                         </LuxuryCard>
                     ))}

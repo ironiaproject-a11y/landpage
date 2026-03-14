@@ -333,9 +333,10 @@ export function Hero() {
                     <div className="phrase-1 mb-[10px]">
                         <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: 'clamp(20px, 4vw, 32px)', 
+                            fontSize: 'clamp(20px, 4vw, 32px)',
+                            lineHeight: '1.0'
                         }}>
-                            Sua origem
+                            [ Sua origem ]
                         </h1>
                     </div>
                     
@@ -343,9 +344,10 @@ export function Hero() {
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
                             fontSize: 'clamp(46px, 9vw, 82px)', 
-                            lineHeight: '1.0'
+                            lineHeight: '1.0',
+                            letterSpacing: '-0.015em'
                         }}>
-                            Seu sorriso
+                            [ Seu sorriso ]
                         </h2>
                     </div>
 
