@@ -73,9 +73,9 @@ export function Hero() {
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
 
-        // Center horizontally, align at 30% vertically
+        // Perfect center horizontally and vertically
         const offsetX = (displayW - drawW) / 2;
-        const offsetY = (displayH - drawH) * 0.30;
+        const offsetY = (displayH - drawH) / 2;
 
         ctx.clearRect(0, 0, displayW, displayH);
         ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
@@ -158,7 +158,7 @@ export function Hero() {
                         position: sticky;
                         top: 0;
                         width: 100%;
-                        height: 75vh;
+                        height: 80vh;
                         background: #000;
                         padding: 0 !important;
                         display: flex;
@@ -179,9 +179,14 @@ export function Hero() {
                     }
 
                     .hero-video {
-                        position: relative;
-                        width: 100%;
-                        height: 100%;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        min-width: 100%;
+                        min-height: 100%;
+                        width: auto;
+                        height: auto;
                         overflow: hidden;
                     }
 
@@ -189,7 +194,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
-                        object-position: center 30%;
+                        object-position: center;
                         display: block;
                     }
 
