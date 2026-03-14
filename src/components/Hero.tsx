@@ -1,4 +1,4 @@
-// Updated: 2026-03-12 - Reverted to Image Sequence for 'lindo vc'
+// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -54,7 +54,6 @@ export function Hero() {
         if (!img.complete) return;
 
         // Best Practice: Match canvas internal coordinate system to the exact image size!
-        // This avoids any quality loss from CSS pixel scaling on Retina/High-DPI screens.
         if (canvas.width !== img.width || canvas.height !== img.height) {
             canvas.width = img.width;
             canvas.height = img.height;
@@ -78,14 +77,13 @@ export function Hero() {
             frame: FRAME_COUNT - 1,
             snap: "frame",
             ease: "none",
-            duration: (FRAME_COUNT * 0.041), // Based on 0.041s delay per frame
+            duration: (FRAME_COUNT * 0.041), 
             repeat: -1,
             onUpdate: () => {
                 renderFrame(frameObj.current.frame);
             }
         });
 
-        // Load-only fade-in — NO scroll triggers
         const ctx = gsap.context(() => {
             const tl = gsap.timeline();
 
@@ -96,40 +94,191 @@ export function Hero() {
                 ease: "power2.out"
             }, 0.2);
 
-            if (document.querySelector(".phrase-1")) {
-                tl.fromTo(".phrase-1",
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                0.4);
-            }
+            tl.fromTo(".phrase-1",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            0.4);
 
-            if (document.querySelector(".phrase-2")) {
-                tl.fromTo(".phrase-2",
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-                0.6);
-            }
+            tl.fromTo(".phrase-2",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            0.6);
 
-            if (document.querySelector(".hero-subheadline")) {
-                tl.fromTo(".hero-subheadline",
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                0.8);
-            }
+            tl.fromTo(".hero-subheadline",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            0.8);
 
-            if (document.querySelector(".hero-metrics-subtle")) {
-                tl.fromTo(".hero-metrics-subtle",
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                1.0);
-            }
-
-
+            tl.fromTo(".hero-metrics-subtle",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            1.0);
         }, textContainerRef);
 
         return () => {
             ctx.revert();
             playAnim.kill();
+        };
+    }, [mounted]);
+
+    return (
+        <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
+            <style>{`
+                .hero {
+                    position: relative;
+                    width: 100%;
+                    height: 100dvh;
+                    background: #000;
+                    padding: 0 !important;
+                }
+
+                /* Structured Layers for Perfect Z-Index and Alignment */
+                .video-bg-layer {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                    pointer-events: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .hero-canvas-wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .hero-canvas {
+                    width: 100%;
+                    height: 100%;
+                    max-width: 100vw;
+                    max-height: 100dvh;
+                    object-fit: cover;
+                    object-position: center 38.5%;
+                    display: block;
+                    transform: scale(0.95); /* Adjusted to 0.95x for clear safe-margin */
+                }
+
+                .hero-overlay {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 1;
+                    background: rgba(0, 0, 0, 0.35);
+                    transform: scale(0.95); /* Match video scale exactly */
+                }
+
+                .film-grain {
+                    position: absolute;
+                    inset: -100%;
+                    width: 300%;
+                    height: 300%;
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                    opacity: 0.04;
+                    pointer-events: none;
+                    z-index: 5;
+                    animation: noise-move 0.2s steps(2) infinite;
+                }
+
+                @keyframes noise-move {
+                    0% { transform: translate(0, 0); }
+                    25% { transform: translate(-2%, -1%); }
+                    50% { transform: translate(1%, -2%); }
+                    75% { transform: translate(-1%, 2%); }
+                    100% { transform: translate(0, 0); }
+                }
+
+                @media (min-width: 1024px) {
+                    .hero-container {
+                        display: flex;
+                        align-items: flex-start;
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 8vw;
+                        padding-top: 17vh;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .hero-text {
+                        width: 50%;
+                        max-width: 650px;
+                        z-index: 20;
+                        text-align: left !important;
+                        padding-bottom: 80px;
+                    }
+                }
+
+                @media (max-width: 1023px) {
+                    .hero {
+                        height: auto;
+                        min-height: 100dvh;
+                        padding-bottom: 80px !important;
+                    }
+                    .hero-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: flex-start;
+                        width: 100%;
+                        height: 100%;
+                        padding-top: 17dvh;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .hero-canvas-wrapper {
+                        height: 55dvh; 
+                        top: 0;
+                    }
+                    .hero-text {
+                        z-index: 20;
+                        text-align: center;
+                        width: 100%;
+                        padding-left: 7vw;
+                        padding-right: 7vw;
+                        padding-bottom: 24px;
+                    }
+                    /* For mobile, we restore the relative button to avoid overlap */
+                    .hero-btn-wrapper {
+                        margin-top: 4rem !important;
+                        position: relative !important;
+                        bottom: auto !important;
+                        left: auto !important;
+                        transform: none !important;
+                        opacity: 1 !important;
+                        animation: none !important;
+                    }
+                    .hero-canvas, .hero-overlay {
+                        transform: scale(0.95); /* Ensure safe margin on mobile too */
+                    }
+                }
+
+                /* Desktop Silent Anchor */
+                @media (min-width: 1024px) {
+                    .hero-btn-wrapper {
+                        position: absolute;
+                        bottom: 8vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        z-index: 30;
+                        white-space: nowrap;
+                        opacity: 0;
+                        animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                    }
+                }
+
+                @keyframes heroBtn-in {
+                    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+                    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+            `}</style>
+
+            {/* Background Layers - Perfectly Centered */}
+            <div className="video-bg-layer">
+                <div className="film-grain" aria-hidden="true" />
+                <div ref={containerRef} className="video-container">
                     <div className="hero-canvas-wrapper">
                         <canvas ref={canvasRef} className="hero-canvas" />
                     </div>
@@ -137,8 +286,8 @@ export function Hero() {
                 </div>
             </div>
 
-            <div className="hero-container relative z-10 w-full h-full">
-                {/* Text Column */}
+            <div className="hero-container w-full h-full">
+                {/* Text Content */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8">
                     <div className="phrase-1 mb-[10px]">
                         <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
