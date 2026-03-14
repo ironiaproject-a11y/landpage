@@ -140,11 +140,12 @@ export function Hero() {
                 .hero {
                     position: relative;
                     width: 100%;
-                    height: 100dvh; /* Dynamic viewport height for mobile */
+                    height: 100dvh;
                     background: #000;
                     padding: 0 !important;
                 }
 
+                /* Background isolation - strictly decoupled from layout padding */
                 .video-container {
                     position: absolute;
                     inset: 0;
@@ -158,8 +159,7 @@ export function Hero() {
 
                 .hero-canvas-wrapper {
                     position: absolute;
-                    width: 100%;
-                    height: 100%;
+                    inset: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -171,107 +171,17 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center center; /* Perfectly centered framing */
+                    object-position: center 38%; /* Adjusted to show more of the chin/skull base */
                     display: block;
                     transform: scale(1.0);
-                }
-
-                @media (min-width: 1024px) {
-                    .hero-container {
-                        display: flex;
-                        align-items: flex-start;
-                        width: 100%;
-                        height: 100%;
-                        padding-left: 8vw;
-                        padding-top: 17vh; /* Precisely 17% of viewport height */
-                        position: relative;
-                    }
-                    .hero-text {
-                        width: 50%;
-                        max-width: 650px;
-                        z-index: 20;
-                        text-align: left !important;
-                        padding-bottom: 80px;
-                    }
-                    .hero-canvas {
-                        /* Decreasing the visual footprint slightly to restore quality and limit oversize on wide screens */
-                        width: 100%;
-                        height: 100%;
-                        max-width: 1800px;
-                        object-fit: contain; /* Shrinks to not stretch completely on very wide screens while keeping quality */
-                        transform: scale(1.0); /* Removed scale to prevent off-margin clipping */
-                        filter: drop-shadow(0 0 40px rgba(0,0,0,0.5));
-                    }
-                }
-
-                @media (max-width: 1023px) {
-                    .hero {
-                        height: auto;
-                        min-height: 0;
-                        padding-bottom: 80px !important; /* Increased to avoid clash with Stats section */
-                    }
-                    .hero-container {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: flex-start;
-                        width: 100%;
-                        height: 100%;
-                        padding-top: 17dvh; /* Restored to 17% for editorial alignment */
-                        position: relative;
-                        background: transparent;
-                    }
-                    .hero-canvas-wrapper {
-                        height: 55dvh; 
-                        top: 0;
-                    }
-                    .hero-text {
-                        z-index: 20;
-                        text-align: center;
-                        width: 100%;
-                        padding-left: 7vw;
-                        padding-right: 7vw;
-                        padding-top: 0;
-                        padding-bottom: 24px; /* Reduced from 80px to pull the CTA closer */
-                    }
-                    .hero-canvas {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        object-position: center center;
-                    }
-                    .hero-subheadline {
-                        margin-top: 0.75rem !important;
-                    }
-                    .hero-metrics-subtle {
-                        margin-top: 1rem !important;
-                        gap: 1.25rem !important;
-                    }
-                    /* Slender mobile CTA: Elegant, non-competing placement */
-                    .hero-btn-wrapper {
-                        margin-top: 3.5rem !important; /* Increased air for hierarchy */
-                        position: relative !important;
-                        bottom: auto !important;
-                        left: auto !important;
-                        transform: none !important;
-                        display: flex;
-                        justify-content: center;
-                        width: 100%;
-                    }
                 }
 
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
                     z-index: 1;
-                    /* Refined to be more subtle at the top while maintaining protection */
-                    background: rgba(0, 0, 0, 0.35); /* Updated for subtle readability as requested */
+                    background: rgba(0, 0, 0, 0.35);
                 }
-@media (min-width: 1024px) {
-    .hero-overlay {
-        background: rgba(0, 0, 0, 0.35);
-    }
-}
 
                 .film-grain {
                     position: absolute;
@@ -283,7 +193,6 @@ export function Hero() {
                     pointer-events: none;
                     z-index: 5;
                     animation: noise-move 0.2s steps(2) infinite;
-                    will-change: transform;
                 }
 
                 @keyframes noise-move {
@@ -294,10 +203,69 @@ export function Hero() {
                     100% { transform: translate(0, 0); }
                 }
 
-                /* CTA anchored to hero bottom - Silent Anchor style */
+                @media (min-width: 1024px) {
+                    .hero-container {
+                        display: flex;
+                        align-items: flex-start;
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 8vw;
+                        padding-top: 17vh;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .hero-text {
+                        width: 50%;
+                        max-width: 650px;
+                        z-index: 20;
+                        text-align: left !important;
+                        padding-bottom: 80px;
+                    }
+                }
+
+                @media (max-width: 1023px) {
+                    .hero {
+                        height: auto;
+                        min-height: 0;
+                        padding-bottom: 80px !important;
+                    }
+                    .hero-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: flex-start;
+                        width: 100%;
+                        height: 100%;
+                        padding-top: 17dvh;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .hero-canvas-wrapper {
+                        height: 55dvh; 
+                        top: 0;
+                        z-index: 0;
+                    }
+                    .hero-text {
+                        z-index: 20;
+                        text-align: center;
+                        width: 100%;
+                        padding-left: 7vw;
+                        padding-right: 7vw;
+                        padding-top: 0;
+                        padding-bottom: 24px;
+                    }
+                    .hero-canvas {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center 38%;
+                    }
+                }
+
+                /* CTA — Anchored outside layout flow for pure position */
                 .hero-btn-wrapper {
                     position: absolute;
-                    bottom: 8vh; /* Lowered slightly for more breathing room */
+                    bottom: 8vh;
                     left: 50%;
                     transform: translateX(-50%);
                     z-index: 30;
@@ -312,20 +280,19 @@ export function Hero() {
                 }
             `}</style>
 
-            <div className="hero-container relative z-10 w-full h-full">
-                <div className="film-grain" aria-hidden="true" />
-                
-                {/* Visual Background */}
-                <div ref={containerRef} className="video-container">
-                    <div className="hero-canvas-wrapper">
-                        <canvas 
-                            ref={canvasRef}
-                            className="hero-canvas"
-                        />
-                    </div>
-                    <div className="hero-overlay" />
+            {/* Background Layers - Moved out for absolute centering */}
+            <div className="film-grain" aria-hidden="true" />
+            <div ref={containerRef} className="video-container">
+                <div className="hero-canvas-wrapper">
+                    <canvas 
+                        ref={canvasRef}
+                        className="hero-canvas"
+                    />
                 </div>
+                <div className="hero-overlay" />
+            </div>
 
+            <div className="hero-container w-full h-full">
                 {/* Text Column */}
                 <div ref={textContainerRef} className="hero-text opacity-0 translate-y-8" aria-hidden="false">
                     <div className="phrase-1 mb-[10px]">
@@ -371,7 +338,6 @@ export function Hero() {
                             </div>
                         ))}
                     </div>
-
                 </div>
 
                 {/* CTA — anchored to hero bottom, outside text block so video breathes */}
