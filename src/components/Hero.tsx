@@ -105,6 +105,8 @@ export function Hero() {
                     pin: true,
                     anticipatePin: 1, // Smooth out pinning transition
                     scrub: 0.5,
+                    onLeave: () => gsap.to(sectionRef.current, { opacity: 0, duration: 0.5, ease: "power2.inOut" }),
+                    onEnterBack: () => gsap.to(sectionRef.current, { opacity: 1, duration: 0.5, ease: "power2.inOut" }),
                     onUpdate: (self) => {
                         // If user scrolls even slightly, stop natural play and follow scroll
                         if (self.progress > 0.001) {
