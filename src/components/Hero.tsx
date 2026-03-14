@@ -79,69 +79,71 @@ export function Hero() {
     useEffect(() => {
         if (!mounted || !textContainerRef.current) return;
 
-        const mm = gsap.matchMedia();
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+        const scrollEnd = isMobile ? "+=130%" : "+=200%";
 
-        mm.add("(min-width: 0px)", () => {
-            const ctx = gsap.context(() => {
-                // 1. Initial "Natural" Animation (will run alongside ScrollTrigger)
-                const naturalPlay = gsap.to(frameObj.current, {
-                    frame: FRAME_COUNT - 1,
-                    snap: "frame",
-                    ease: "none",
-                    duration: 1.8, 
-                    onUpdate: () => {
-                        // Only update if ScrollTrigger hasn't taken over (progress is near 0)
-                        if (scrollST && scrollST.progress < 0.005) {
-                            renderFrame(frameObj.current.frame);
+        const ctx = gsap.context(() => {
+            // 1. Natural intro animation (plays automatically on load)
+            let naturalPlayPaused = false;
+            const naturalPlay = gsap.to(frameObj.current, {
+                frame: FRAME_COUNT - 1,
+                snap: "frame",
+                ease: "none",
+                duration: 1.8,
+                onUpdate: () => {
+                    // Only render frame if scroll hasn't hijacked control
+                    if (!naturalPlayPaused) {
+                        renderFrame(Math.round(frameObj.current.frame));
+                    }
+                }
+            });
+
+            // 2. Scroll-scrub animation
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "top top",
+                end: scrollEnd,
+                pin: true,
+                anticipatePin: 1,
+                scrub: 0.5,
+                onUpdate: (self) => {
+                    if (self.progress > 0.001) {
+                        // Pause the natural animation only once
+                        if (!naturalPlayPaused) {
+                            naturalPlay.pause();
+                            naturalPlayPaused = true;
+                        }
+                        const frameIndex = Math.round(self.progress * (FRAME_COUNT - 1));
+                        renderFrame(frameIndex);
+                    } else {
+                        // Allow natural play to resume if scrolled back to top
+                        if (naturalPlayPaused) {
+                            naturalPlayPaused = false;
+                            if (!naturalPlay.isActive()) naturalPlay.restart();
                         }
                     }
-                });
+                }
+            });
 
-                // 2. Initialize Scroll-Scrub IMMEDIATELY
-                const scrollST = ScrollTrigger.create({
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=200%", 
-                    pin: true,
-                    anticipatePin: 1, // Smooth out pinning transition
-                    scrub: 0.5,
-                    onLeave: () => gsap.to(sectionRef.current, { opacity: 0, duration: 0.5, ease: "power2.inOut" }),
-                    onEnterBack: () => gsap.to(sectionRef.current, { opacity: 1, duration: 0.5, ease: "power2.inOut" }),
-                    onUpdate: (self) => {
-                        // If user scrolls even slightly, stop natural play and follow scroll
-                        if (self.progress > 0.001) {
-                            if (naturalPlay.isActive()) naturalPlay.pause();
-                            const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
-                            renderFrame(frameIndex);
-                        }
-                    }
-                });
+            // 3. Text Animations
+            const tl = gsap.timeline();
+            tl.to(textContainerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }, 0.2);
+            tl.fromTo(".phrase-1",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            0.4);
+            tl.fromTo(".phrase-2",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            0.6);
+        }, sectionRef);
 
-                // Text Animations
-                const tl = gsap.timeline();
-
-                tl.to(textContainerRef.current, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power2.out"
-                }, 0.2);
-
-                tl.fromTo(".phrase-1",
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                0.4);
-
-                tl.fromTo(".phrase-2",
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-                0.6);
-            }, sectionRef);
-
-            return () => ctx.revert();
-        });
-
-        return () => mm.revert();
+        return () => ctx.revert();
     }, [mounted]);
 
     return (
