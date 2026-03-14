@@ -247,9 +247,9 @@ export function Hero() {
                         margin-top: 1rem !important;
                         gap: 1.25rem !important;
                     }
-                    /* Simplified mobile CTA placement matching stable model */
+                    /* Slender mobile CTA: Elegant, non-competing placement */
                     .hero-btn-wrapper {
-                        margin-top: 2.5rem !important;
+                        margin-top: 3.5rem !important; /* Increased air for hierarchy */
                         position: relative !important;
                         bottom: auto !important;
                         left: auto !important;
@@ -294,16 +294,16 @@ export function Hero() {
                     100% { transform: translate(0, 0); }
                 }
 
-                /* CTA anchored to hero bottom */
+                /* CTA anchored to hero bottom - Silent Anchor style */
                 .hero-btn-wrapper {
                     position: absolute;
-                    bottom: 10vh;
+                    bottom: 8vh; /* Lowered slightly for more breathing room */
                     left: 50%;
                     transform: translateX(-50%);
                     z-index: 30;
                     white-space: nowrap;
                     opacity: 0;
-                    animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards;
+                    animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
                 }
 
                 @keyframes heroBtn-in {
@@ -376,7 +376,7 @@ export function Hero() {
 
                 {/* CTA — anchored to hero bottom, outside text block so video breathes */}
                 <div className="hero-btn-wrapper">
-                    <button className="btn-luxury-primary py-[16px] px-[42px] rounded-full border border-[#E6D3A3]/40 bg-[#1a1a1a]/95 backdrop-blur-md text-white tracking-[0.3em] font-semibold text-[11px] hover:bg-[#E6D3A3] hover:text-black transition-all duration-700 shadow-[0_0_20px_rgba(230,211,163,0.15)]">
+                    <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
                         AGENDAR EXPERIÊNCIA
                     </button>
                 </div>
