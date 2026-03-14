@@ -39,8 +39,9 @@ export function Hero() {
             img.src = getFramePath(i);
             img.onload = () => {
                 loadedCount++;
-                if (loadedCount === FRAME_COUNT && canvasRef.current) {
-                    renderFrame(0);
+                if (loadedCount === FRAME_COUNT) {
+                    // Wait for layout so canvas has its display dimensions
+                    requestAnimationFrame(() => renderFrame(0));
                 }
             };
             loadedImages.push(img);
@@ -55,17 +56,31 @@ export function Hero() {
         if (!ctx) return;
 
         const img = imagesRef.current[index];
-        if (!img.complete) return;
+        if (!img.complete || !img.naturalWidth) return;
 
-        if (canvas.width !== img.width || canvas.height !== img.height) {
-            canvas.width = img.width;
-            canvas.height = img.height;
-        }
+        // Set canvas internal size to its CSS display size (in physical pixels)
+        const dpr = window.devicePixelRatio || 1;
+        const displayW = canvas.clientWidth || window.innerWidth;
+        const displayH = canvas.clientHeight || window.innerHeight;
+        canvas.width = displayW * dpr;
+        canvas.height = displayH * dpr;
+        ctx.scale(dpr, dpr);
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        // Manual "object-fit: cover" — scale to fill, crop to center
+        const scaleX = displayW / img.naturalWidth;
+        const scaleY = displayH / img.naturalHeight;
+        const scale = Math.max(scaleX, scaleY); // cover
+        const drawW = img.naturalWidth * scale;
+        const drawH = img.naturalHeight * scale;
+        const offsetX = (displayW - drawW) / 2; // center horizontally
+        const offsetY = (displayH - drawH) / 2; // center vertically
+
+        ctx.clearRect(0, 0, displayW, displayH);
+        ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+
+        // Subtle darkness overlay
         ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, displayW, displayH);
     };
 
     useEffect(() => {
@@ -176,12 +191,6 @@ export function Hero() {
                         display: block;
                     }
 
-                    @media (max-width: 1023px) {
-                        .hero-canvas {
-                            transform: scale(1.15);
-                            object-position: center 40%;
-                        }
-                    }
 
                     .hero-container {
                         position: absolute;
