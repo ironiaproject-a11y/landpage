@@ -1,4 +1,4 @@
-﻿// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
+// Updated: 2026-03-14 - Final Refinement: 0.95x Scale & Absolute Centering
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -141,29 +141,21 @@ export function Hero() {
                     inset: 0;
                     z-index: 0;
                     pointer-events: none;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
                     background: #000;
                 }
 
                 .video-container {
-                    position: relative;
-                    width: 92vw; /* Physical Margin: 4vw on each side */
-                    height: 92vh; /* Physical Margin: 4vh on each side */
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
                     overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
                 }
 
                 .hero-canvas-wrapper {
                     position: relative;
                     width: 100%;
                     height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
                 }
 
                 .hero-canvas {
@@ -174,34 +166,7 @@ export function Hero() {
                     display: block;
                 }
 
-                .hero-bg-shading {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 1;
-                    background: rgba(0, 0, 0, 0.35);
-                }
-
-                .film-grain {
-                    position: absolute;
-                    inset: -100%;
-                    width: 300%;
-                    height: 300%;
-                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-                    opacity: 0.04;
-                    pointer-events: none;
-                    z-index: 5;
-                    animation: noise-move 0.2s steps(2) infinite;
-                }
-
-                @keyframes noise-move {
-                    0% { transform: translate(0, 0); }
-                    25% { transform: translate(-2%, -1%); }
-                    50% { transform: translate(1%, -2%); }
-                    75% { transform: translate(-1%, 2%); }
-                    100% { transform: translate(0, 0); }
-                }
-
-                /* Typography Container: Precision Alignment */
+                /* Typographic Excellence: Dominant Hierarchy */
                 .hero-container {
                     position: absolute;
                     inset: 0;
@@ -209,135 +174,157 @@ export function Hero() {
                     height: 100%;
                     z-index: 10;
                     pointer-events: none;
+                    display: flex;
+                    flex-direction: column;
                 }
 
                 @media (min-width: 1024px) {
                     .hero-content {
                         position: absolute;
                         left: 8vw;
-                        top: 17vh;
-                        width: 50%;
-                        max-width: 650px;
+                        top: 22vh;
+                        width: 55%;
+                        max-width: 750px;
                         pointer-events: auto;
+                        text-align: left;
                     }
                 }
 
                 @media (max-width: 1023px) {
                     .hero-content {
-                        position: absolute;
-                        top: 17dvh;
-                        left: 0;
+                        position: relative;
                         width: 100%;
+                        height: 100%;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        padding: 0 7vw;
+                        justify-content: center;
+                        padding: 0 8vw;
                         text-align: center;
                         pointer-events: auto;
                     }
-                    .video-container {
-                        width: 90vw;
-                        height: 55dvh;
-                        top: 0;
-                    }
                 }
 
-                /* CTA - Desktop Silent Anchor */
-                @media (min-width: 1024px) {
-                    .hero-btn-wrapper {
-                        position: absolute;
-                        bottom: 8vh;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        z-index: 30;
-                        pointer-events: auto;
-                        opacity: 0;
-                        animation: heroBtn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
-                    }
+                /* High-End CTA: Glassmorphism & Precision */
+                .hero-btn-wrapper {
+                    position: absolute;
+                    bottom: 10vh;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 30;
+                    pointer-events: auto;
+                    opacity: 0;
+                    animation: heroBtn-in 1s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
                 }
 
                 @media (max-width: 1023px) {
                     .hero-btn-wrapper {
-                        margin-top: 48px;
-                        pointer-events: auto;
+                        position: relative;
+                        bottom: auto;
+                        left: auto;
+                        transform: none;
+                        margin-top: 4rem;
                         opacity: 1;
+                        animation: none;
                     }
                 }
 
                 @keyframes heroBtn-in {
-                    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+                    from { opacity: 0; transform: translateX(-50%) translateY(24px); }
                     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+
+                .btn-premium-cta {
+                    background: rgba(26, 26, 26, 0.45);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(230, 211, 163, 0.3);
+                    color: #FFFFFF;
+                    padding: 18px 56px;
+                    border-radius: 100px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.25em;
+                    text-transform: uppercase;
+                    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+                }
+
+                .btn-premium-cta:hover {
+                    background: rgba(230, 211, 163, 0.15);
+                    border-color: rgba(230, 211, 163, 0.8);
+                    box-shadow: 0 15px 50px -10px rgba(230, 211, 163, 0.25);
+                    transform: translateY(-2px);
+                    letter-spacing: 0.28em;
                 }
             `}</style>
 
-            {/* Background Layers - Physically Centered Safe Margin */}
+            {/* Background Layer: Clean Video Immersion */}
             <div className="video-bg-layer">
-                <div className="film-grain" aria-hidden="true" />
                 <div ref={containerRef} className="video-container">
                     <canvas ref={canvasRef} className="hero-canvas" />
-                    <div className="hero-bg-shading" />
                 </div>
             </div>
 
             <div className="hero-container">
-                {/* Typography Block - Editorial Alignment */}
+                {/* Content Block */}
                 <div ref={textContainerRef} className="hero-content opacity-0 translate-y-8">
-                    <div className="phrase-1 mb-[10px]">
-                        <h1 className="text-[#F5F5F5] font-medium tracking-[0.4em] uppercase" style={{ 
+                    <div className="phrase-1 mb-4">
+                        <h1 className="text-white/60 font-medium tracking-[0.45em] uppercase" style={{ 
                             fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: 'clamp(20px, 4vw, 32px)',
+                            fontSize: 'clamp(14px, 2vw, 18px)',
                             lineHeight: '1.0'
                         }}>
                             Sua origem
                         </h1>
                     </div>
                     
-                    <div className="phrase-2 text-balance mb-[48px]">
+                    <div className="phrase-2 text-balance mb-8">
                         <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{ 
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(46px, 9vw, 82px)', 
-                            lineHeight: '1.0',
-                            letterSpacing: '-0.015em'
+                            fontSize: 'clamp(52px, 11vw, 102px)', 
+                            lineHeight: '0.95',
+                            letterSpacing: '-0.02em'
                         }}>
                             Seu sorriso
                         </h2>
                     </div>
 
-                    <div className="hero-subheadline mt-4 max-w-[280px] mx-auto hidden md:block">
-                        <p className="text-white/30 text-[13px] md:text-xl font-light leading-relaxed tracking-[0.05em]">
-                            A uni├úo entre a alta tecnologia alem├ú e a sensibilidade art├¡stica para criar resultados que transcendem a est├®tica.
+                    <div className="hero-subheadline mt-6 max-w-[480px] mx-auto lg:mx-0">
+                        <p className="text-white/40 text-[14px] md:text-xl font-light leading-relaxed tracking-[0.03em]">
+                            A união entre a alta tecnologia alemã e a sensibilidade artística para criar resultados que transcendem a estética.
                         </p>
                     </div>
 
-                    <div className="hero-metrics-subtle mt-8 md:mt-12 hidden md:flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
+                    <div className="hero-metrics-subtle mt-12 flex flex-wrap justify-center lg:justify-start gap-x-12 gap-y-6">
                         {[
-                            { value: "785+", label: "Transforma├º├Áes" },
-                            { value: "12+ Anos", label: "Experi├¬ncia" },
-                            { value: "4.9Ôÿà", label: "Satisfa├º├úo" }
+                            { value: "785+", label: "Transformações" },
+                            { value: "12+ Anos", label: "Experiência" },
+                            { value: "4.9★", label: "Satisfação" }
                         ].map((item, idx) => (
                             <div key={idx} className="flex flex-col">
-                                <span className="text-white/80 font-medium text-lg md:text-xl tracking-tight">
+                                <span className="text-white/90 font-medium text-xl md:text-2xl tracking-tighter">
                                     {item.value}
                                 </span>
-                                <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium">
+                                <span className="text-white/30 text-[9px] uppercase tracking-[0.4em] font-semibold mt-1">
                                     {item.label}
                                 </span>
                             </div>
                         ))}
                     </div>
 
-                    {/* CTA - For mobile it follows the flow, for desktop it is fixed via CSS wrapper */}
+                    {/* Mobile CTA */}
                     <div className="hero-btn-wrapper lg:hidden">
-                        <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
-                            AGENDAR EXPERI├èNCIA
+                        <button className="btn-premium-cta">
+                            AGENDAR EXPERIÊNCIA
                         </button>
                     </div>
                 </div>
 
-                {/* Desktop Specific CTA Anchor */}
+                {/* Desktop CTA */}
                 <div className="hero-btn-wrapper hidden lg:block">
-                    <button className="btn-luxury-primary group px-[48px] py-[14px] rounded-full border border-[#E6D3A3]/25 bg-[#1a1a1a]/40 backdrop-blur-md text-white tracking-[0.4em] font-medium text-[10px] hover:bg-[#E6D3A3]/10 hover:border-[#E6D3A3]/60 hover:shadow-[0_0_30px_rgba(230,211,163,0.2)] transition-all duration-700">
-                        AGENDAR EXPERI├èNCIA
+                    <button className="btn-premium-cta">
+                        AGENDAR EXPERIÊNCIA
                     </button>
                 </div>
             </div>
