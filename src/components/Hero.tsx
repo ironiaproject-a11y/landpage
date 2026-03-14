@@ -88,7 +88,7 @@ export function Hero() {
                     frame: FRAME_COUNT - 1,
                     snap: "frame",
                     ease: "none",
-                    duration: 1.5, // Natural speed
+                    duration: 2.0, // Slightly slower for better natural feel
                     onUpdate: () => {
                         renderFrame(frameObj.current.frame);
                     },
@@ -97,10 +97,11 @@ export function Hero() {
                         ScrollTrigger.create({
                             trigger: sectionRef.current,
                             start: "top top",
-                            end: "+=200%", // Longer scroll for the 30 frames
+                            end: "+=300%", // Longer scroll for smoother scrubbing
                             pin: true,
-                            scrub: 1,
+                            scrub: 0.5, // Smoother scrub
                             onUpdate: (self) => {
+                                // Ensure it only scrubs AFTER the natural play is done OR if we scroll deep
                                 const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
                                 renderFrame(frameIndex);
                             }
@@ -178,7 +179,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center 38.5%;
+                    object-position: center center;
                     display: block;
                 }
 
