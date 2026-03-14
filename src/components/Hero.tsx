@@ -67,15 +67,8 @@ export function Hero() {
             canvas.height = displayH;
         }
 
-        // Cover scale: fill the canvas
-        const coverScale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
-
-        // On portrait mobile: zoom out by 70% of cover scale so we see more of the
-        // original frame without harsh side-cropping. Center the result.
-        // 1.0 = full cover (crops sides), 0.5 = nearly contain (shows bars top/bottom)
-        const MOBILE_ZOOM = 0.7;
-        const isPortrait = displayH > displayW;
-        const scale = isPortrait ? coverScale * MOBILE_ZOOM : coverScale;
+        // Contain scale: fit the image inside the canvas without cropping
+        const scale = Math.min(displayW / img.naturalWidth, displayH / img.naturalHeight);
 
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
@@ -185,20 +178,21 @@ export function Hero() {
                         justify-content: center;
                     }
 
-                    .video-container {
+                    .hero-video {
                         position: relative;
                         width: 100%;
-                        height: 100%;
+                        aspect-ratio: 16 / 9;
                         overflow: hidden;
                     }
 
-                    .hero-canvas {
+                    .hero-video canvas {
                         width: 100%;
                         height: 100%;
-                        object-fit: cover;
+                        object-fit: contain;
                         object-position: center center;
                         display: block;
                     }
+
 
 
                     .hero-container {
@@ -294,8 +288,8 @@ export function Hero() {
 
                 {/* Background Layer */}
                 <div className="video-bg-layer">
-                    <div ref={containerRef} className="video-container">
-                        <canvas ref={canvasRef} className="hero-canvas" />
+                    <div ref={containerRef} className="hero-video">
+                        <canvas ref={canvasRef} />
                     </div>
                 </div>
 
