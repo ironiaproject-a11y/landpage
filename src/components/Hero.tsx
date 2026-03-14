@@ -171,7 +171,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center 20%; /* Keep faces near the top aligned properly */
+                    object-position: center center; /* Perfectly centered framing */
                     display: block;
                     transform: scale(1.0);
                 }
@@ -199,7 +199,7 @@ export function Hero() {
                         height: 100%;
                         max-width: 1800px;
                         object-fit: contain; /* Shrinks to not stretch completely on very wide screens while keeping quality */
-                        transform: scale(1.15); /* Slight zoom so there are zero black bars on standard 16:9, but avoids 3x zoom on ultrawide */
+                        transform: scale(1.0); /* Removed scale to prevent off-margin clipping */
                         filter: drop-shadow(0 0 40px rgba(0,0,0,0.5));
                     }
                 }
@@ -238,7 +238,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
-                        object-position: center 25%;
+                        object-position: center center;
                     }
                     .hero-subheadline {
                         margin-top: 0.75rem !important;
