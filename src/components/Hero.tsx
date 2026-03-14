@@ -208,7 +208,7 @@ export function Hero() {
                     .hero {
                         height: auto;
                         min-height: 0;
-                        padding-bottom: 24px !important;
+                        padding-bottom: 80px !important; /* Increased to avoid clash with Stats section */
                     }
                     .hero-container {
                         display: flex;

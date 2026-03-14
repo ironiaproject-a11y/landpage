@@ -255,14 +255,14 @@ export function Stats() {
         @media (max-width: 1023px) {
           .stats-section { 
             /* Symmetrical padding for balanced hierarchy */
-            padding-top: 48px !important; 
-            padding-bottom: 48px !important;
+            padding-top: 64px !important; 
+            padding-bottom: 64px !important;
             padding-left: 20px;
             padding-right: 20px;
-            /* Balanced overlap to pull content into Hero area */
-            margin-top: -16vh !important; 
+            /* REFINED TRANSITION: Small negative margin to bridge Hero/Stats without covering text/CTA */
+            margin-top: -32px !important; 
             z-index: 50 !important; 
-            border-top: 1px solid rgba(230, 211, 163, 0.15); 
+            background: linear-gradient(to bottom, transparent, #0B0B0B 32px);
           }
 
           .stats-grid {
