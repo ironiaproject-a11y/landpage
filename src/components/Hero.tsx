@@ -73,8 +73,8 @@ export function Hero() {
         const drawW = img.naturalWidth * scale;
         const drawH = img.naturalHeight * scale;
 
-        // Always center
-        const offsetX = (displayW - drawW) / 2;
+        // Align at 65% horizontally, centar vertically
+        const offsetX = (displayW - drawW) * 0.65;
         const offsetY = (displayH - drawH) / 2;
 
         ctx.clearRect(0, 0, displayW, displayH);
@@ -189,7 +189,7 @@ export function Hero() {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
-                        object-position: center center;
+                        object-position: 65% center;
                         display: block;
                     }
 
