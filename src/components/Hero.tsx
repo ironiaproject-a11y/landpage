@@ -21,63 +21,61 @@ export function Hero() {
         setMounted(true);
     }, []);
 
-    // Function to initialize GSAP once video is ready
-    const initAnimations = () => {
-        if (!textContainerRef.current || !scrollDriverRef.current || !videoRef.current) return;
+
+
+    // 1. Text entrance - Run as soon as mounted
+    useEffect(() => {
+        if (!mounted || !textContainerRef.current) return;
+        
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+            
+            // Initial reveal of container
+            tl.to(textContainerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 1
+            })
+            // Stagger phrases and button
+            .to(".phrase-1, .phrase-2, .hero-btn-wrapper", {
+                opacity: 1,
+                y: 0,
+                stagger: 0.15,
+                duration: 1
+            }, "-=0.6");
+        }, textContainerRef);
+
+        return () => ctx.revert();
+    }, [mounted]);
+
+    // 2. Video Intro & Scroll Scrubbing - Run when video is ready
+    useEffect(() => {
+        if (!mounted || !videoReady || !videoRef.current) return;
         
         const video = videoRef.current;
         const duration = video.duration || 1;
         let isIntroComplete = false;
 
-        // Ensure video is paused so GSAP has total control
-        video.pause();
-
         const ctx = gsap.context(() => {
+            // Intro animation - only scrub if we haven't scrolled yet
             const introTl = gsap.timeline({
-                defaults: { ease: "power3.out" },
                 onComplete: () => { isIntroComplete = true; }
             });
 
-            // 1. Reveal Parent Container first
-            introTl.to(textContainerRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8
-            })
-            // 2. Start video playback naturally
-            .to(video, {
+            introTl.to(video, {
                 currentTime: Math.min(2.5, duration),
-                duration: 2.8,
+                duration: 2.5,
                 ease: "power2.inOut"
-            }, "-=0.4")
-            // 3. Stagger Phrases
-            .to(".phrase-1", {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-            }, "-=2.2")
-            .to(".phrase-2", {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-            }, "-=1.9")
-            .to(".hero-btn-wrapper", {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-            }, "-=1.6");
+            });
 
-            // 2. Scroll-scrub with Fluid Handover
+            // Scroll-scrub with Fluid Handover
             ScrollTrigger.create({
                 trigger: scrollDriverRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 1.2, // Slightly slower scrub for premium feel
+                scrub: 1.2,
                 onUpdate: (self) => {
                     const targetTime = self.progress * duration;
-                    
-                    // Only takeover if intro is finished OR if scroll progress has overtaken 2.5s
-                    // This prevents the jump back to 0 at the start.
                     if (isIntroComplete || targetTime > 2.5) {
                         gsap.to(video, {
                             currentTime: targetTime,
@@ -89,7 +87,7 @@ export function Hero() {
                 }
             });
 
-            // 3. Content Transformation (Scale & Fade out as user scrolls)
+            // Content Transformation on Scroll
             gsap.to(textContainerRef.current, {
                 scrollTrigger: {
                     trigger: scrollDriverRef.current,
@@ -104,45 +102,36 @@ export function Hero() {
             });
         });
 
-        return ctx;
-    };
+        return () => ctx.revert();
+    }, [mounted, videoReady]);
 
+    // Robust video detection
     useEffect(() => {
-        if (!mounted) return;
-
-        const checkVideo = () => {
-            if (videoRef.current && videoRef.current.readyState >= 1) {
+        if (!mounted || !videoRef.current) return;
+        
+        const video = videoRef.current;
+        
+        const checkReady = () => {
+            if (video.readyState >= 1) {
                 setVideoReady(true);
             }
         };
 
-        // Failsafe: if video doesn't "ready up" in 3s, force reveal
+        const timer = setInterval(checkReady, 500);
         const failsafe = setTimeout(() => {
-            console.warn("Hero video failsafe triggered");
             setVideoReady(true);
-        }, 3500);
+            clearInterval(timer);
+        }, 3000);
 
-        checkVideo(); // Sync check
+        checkReady();
 
-        return () => clearTimeout(failsafe);
+        return () => {
+            clearInterval(timer);
+            clearTimeout(failsafe);
+        };
     }, [mounted]);
 
-    useEffect(() => {
-        if (!mounted || !videoReady) return;
-        const ctx = initAnimations();
-        return () => ctx?.revert();
-    }, [mounted, videoReady]);
-
-    // Handle video metadata loaded
-    const handleLoadedMetadata = () => {
-        console.log("Video metadata loaded");
-        setVideoReady(true);
-    };
-
-    const handleCanPlay = () => {
-        console.log("Video can play");
-        setVideoReady(true);
-    };
+    const handleVideoEvent = () => setVideoReady(true);
 
     return (
         <div ref={scrollDriverRef} style={{ height: "280dvh", position: "relative" }}>
@@ -315,10 +304,11 @@ export function Hero() {
                             src="/hero-background-new.mp4"
                             muted
                             playsInline
+                            autoPlay
                             loop
                             preload="auto"
-                            onLoadedMetadata={handleLoadedMetadata}
-                            onCanPlay={handleCanPlay}
+                            onLoadedMetadata={handleVideoEvent}
+                            onCanPlay={handleVideoEvent}
                         />
                         <div className="hero-video-overlay" />
                     </div>
