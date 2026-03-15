@@ -27,10 +27,15 @@ export function Hero() {
         
         const video = videoRef.current;
         const duration = video.duration || 1;
+        let isIntroComplete = false;
+
+        // Ensure video is paused so GSAP has total control
+        video.pause();
 
         const ctx = gsap.context(() => {
             const introTl = gsap.timeline({
-                defaults: { ease: "power3.out" }
+                defaults: { ease: "power3.out" },
+                onComplete: () => { isIntroComplete = true; }
             });
 
             // 1. Reveal Parent Container first
@@ -67,17 +72,35 @@ export function Hero() {
                 trigger: scrollDriverRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 0.8,
+                scrub: 1.2, // Slightly slower scrub for premium feel
                 onUpdate: (self) => {
                     const targetTime = self.progress * duration;
-                    // Overwrite intro if user starts scrolling
-                    gsap.to(video, {
-                        currentTime: targetTime,
-                        duration: 0.5,
-                        ease: "none",
-                        overwrite: "auto" 
-                    });
+                    
+                    // Only takeover if intro is finished OR if scroll progress has overtaken 2.5s
+                    // This prevents the jump back to 0 at the start.
+                    if (isIntroComplete || targetTime > 2.5) {
+                        gsap.to(video, {
+                            currentTime: targetTime,
+                            duration: 0.5,
+                            ease: "none",
+                            overwrite: "auto" 
+                        });
+                    }
                 }
+            });
+
+            // 3. Content Transformation (Scale & Fade out as user scrolls)
+            gsap.to(textContainerRef.current, {
+                scrollTrigger: {
+                    trigger: scrollDriverRef.current,
+                    start: "top top",
+                    end: "50% top",
+                    scrub: true,
+                },
+                scale: 0.9,
+                opacity: 0,
+                y: -50,
+                ease: "none"
             });
         });
 
