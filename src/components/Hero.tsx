@@ -29,38 +29,53 @@ export function Hero() {
         const duration = video.duration || 1;
 
         const ctx = gsap.context(() => {
-            // 1. Natural intro animation - Start at the very beginning to ensure visibility
-            gsap.to(video, {
-                currentTime: 0,
-                duration: 1.8,
-                ease: "power2.out"
+            // 1. Initial Video Intro + Content Stagger
+            const introTl = gsap.timeline({
+                defaults: { ease: "power3.out" }
             });
 
-            // 2. Scroll-scrub
+            // Start video playback naturally
+            introTl.to(video, {
+                currentTime: Math.min(2.5, duration),
+                duration: 2.8,
+                ease: "power2.inOut"
+            })
+            // Reveal "Sua origem"
+            .to(".phrase-1", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+            }, "-=1.8")
+            // Reveal "Seu sorriso"
+            .to(".phrase-2", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+            }, "-=1.5")
+            // Reveal Button
+            .to(".hero-btn-wrapper", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+            }, "-=1.2");
+
+            // 2. Scroll-scrub with Fluid Handover
             ScrollTrigger.create({
                 trigger: scrollDriverRef.current,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 0.5,
+                scrub: 0.8,
                 onUpdate: (self) => {
                     const targetTime = self.progress * duration;
+                    // Overwrite intro if user starts scrolling
                     gsap.to(video, {
                         currentTime: targetTime,
-                        duration: 0.1,
+                        duration: 0.5,
                         ease: "none",
-                        overwrite: true
+                        overwrite: "auto" 
                     });
                 }
             });
-
-            // 3. Text entrance
-            const tl = gsap.timeline();
-            tl.to(textContainerRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            }, 0.2);
         });
 
         return ctx;
@@ -206,7 +221,7 @@ export function Hero() {
                     @media (max-width: 1023px) {
                         .hero-btn-wrapper {
                             margin-top: 2rem;
-                            opacity: 1;
+                            opacity: 0;
                             animation: none;
                         }
                     }
@@ -260,7 +275,7 @@ export function Hero() {
 
                 <div className="hero-container">
                     <div ref={textContainerRef} className="hero-content opacity-0 translate-y-8">
-                        <div className="phrase-1 mb-4">
+                        <div className="phrase-1 opacity-0 translate-y-8 mb-4">
                             <h1 className="text-white/60 font-medium tracking-[0.45em] uppercase" style={{
                                 fontFamily: 'var(--font-body), sans-serif',
                                 fontSize: 'clamp(14px, 2vw, 18px)',
@@ -270,7 +285,7 @@ export function Hero() {
                             </h1>
                         </div>
 
-                        <div className="phrase-2 text-balance mb-12">
+                        <div className="phrase-2 opacity-0 translate-y-8 text-balance mb-12">
                             <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{
                                 fontFamily: '"Playfair Display", serif',
                                 fontSize: 'clamp(52px, 11vw, 102px)',
@@ -282,7 +297,7 @@ export function Hero() {
                         </div>
 
                         {/* Main CTA */}
-                        <div className="hero-btn-wrapper">
+                        <div className="hero-btn-wrapper opacity-0 translate-y-8">
                             <button className="btn-premium-cta">
                                 AGENDAR EXPERIÊNCIA
                             </button>
