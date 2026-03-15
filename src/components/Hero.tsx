@@ -266,7 +266,6 @@ export function Hero() {
                             src="/hero-background-new.mp4"
                             muted
                             playsInline
-                            autoPlay
                             loop
                             preload="auto"
                             onLoadedMetadata={handleLoadedMetadata}
