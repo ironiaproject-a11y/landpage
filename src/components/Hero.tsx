@@ -60,7 +60,7 @@ export function Hero() {
                 duration: 1.2,
                 ease: "power2.out"
             })
-            // Animate video currentTime linearly (looks like normal playback)
+            // Animate video currentTime linearly
             .to(video, {
                 currentTime: 1.5,
                 duration: 1.5,
@@ -73,17 +73,12 @@ export function Hero() {
                 ease: "expo.out"
             }, "0.5")
 
-            // Phase 2: The Morph (Automatic Transition)
+            // Phase 2: The Transition to Phrase 2
             .to(video, {
                 currentTime: 3.5,
                 duration: 2.0,
             }, "1.5")
-            .to(".phrase-1-inner", {
-                opacity: 0,
-                filter: "blur(12px)",
-                y: -15,
-                duration: 1.0,
-            }, "1.8")
+            // REMOVED: Hiding phrase-1 here. Let's keep it visible for the "narrative".
             .to(".phrase-2-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
@@ -106,73 +101,49 @@ export function Hero() {
 
             // Function to setup SCROLL-BASED logic AFTER intro
             function setupPostIntroScroll() {
-                // Ensure video is at the right spot before handover
                 const scrollStartVideoTime = introDuration;
+                const remaining = videoDuration - scrollStartVideoTime;
 
-                // Main Video Scrubbing (Continues from intro end)
-                ScrollTrigger.create({
-                    trigger: scrollDriver,
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: 1.5,
-                    onUpdate: (self) => {
-                        // Start scrubbing from where intro left off to end of video
-                        const remaining = videoDuration - scrollStartVideoTime;
-                        const targetTime = scrollStartVideoTime + (self.progress * remaining);
-                        
-                        gsap.to(video, {
-                            currentTime: targetTime,
-                            duration: 0.8,
-                            ease: "power2.out",
-                            overwrite: "auto"
-                        });
+                // SINGLE MASTER SCROLL TIMELINE - Unifies everything for perfect smoothness
+                const masterScrollTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: scrollDriver,
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1.2, // Smoother scrub
+                        invalidateOnRefresh: true
                     }
                 });
 
-                // Narrative Exit: Fade out text as we scroll past 20%
-                gsap.to(".hero-content", {
-                    scrollTrigger: {
-                        trigger: scrollDriver,
-                        start: "10% top",
-                        end: "40% top",
-                        scrub: 1,
-                    },
-                    opacity: 0,
-                    y: -100,
-                    scale: 0.9,
-                    ease: "power2.inOut"
-                });
-
-                // Mask Reveal / Wipe Animation synced with scroll
-                gsap.to([".phrase-1-inner", ".phrase-2-inner"], {
-                    scrollTrigger: {
-                        trigger: scrollDriver,
-                        start: "top top",
-                        end: "30% top",
-                        scrub: 1,
-                    },
-                    clipPath: "inset(0% 0 100% 0)",
-                    filter: "blur(12px)",
-                    y: -30,
-                    stagger: 0.1,
-                    ease: "power1.inOut"
-                });
-
-
-
-                // Atmospheric Zoom
-                gsap.to(video, {
-                    scrollTrigger: {
-                        trigger: scrollDriver,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: 1.5,
-                    },
-                    scale: 1.08,
-                    ease: "none"
-                });
+                masterScrollTl
+                    // 1. Video Scrubbing
+                    .to(video, {
+                        currentTime: videoDuration,
+                        ease: "none"
+                    }, 0)
+                    // 2. Atmospheric Zoom
+                    .to(video, {
+                        scale: 1.08,
+                        ease: "none"
+                    }, 0)
+                    // 3. Narrative Exit: Fade out container
+                    .to(".hero-content", {
+                        opacity: 0,
+                        y: -100,
+                        scale: 0.9,
+                        ease: "power2.inOut"
+                    }, 0.1)
+                    // 4. Mask Reveal / Wipe with Blur (The specific effect requested)
+                    .to([".phrase-1-inner", ".phrase-2-inner"], {
+                        clipPath: "inset(0% 0 100% 0)",
+                        filter: "blur(15px)",
+                        y: -40,
+                        stagger: 0.05,
+                        ease: "power1.inOut"
+                    }, 0);
             }
         });
+
 
         return () => {
             ctx.revert();
