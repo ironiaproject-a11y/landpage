@@ -101,58 +101,69 @@ export function Hero() {
 
             // Function to setup SCROLL-BASED logic AFTER intro
             function setupPostIntroScroll() {
-                const scrollStartVideoTime = introDuration;
-                
-                // Ensure we have the latest duration
                 const latestVideoDuration = video.duration || videoDuration;
+                
+                // Calculate the scroll position that corresponds to the end of the intro
+                // (introDuration / latestVideoDuration) * totalScrollableRange
+                const totalScrollHeight = scrollDriver.offsetHeight - window.innerHeight;
+                const scrollHandoverPoint = (introDuration / latestVideoDuration) * totalScrollHeight;
 
-                // SINGLE MASTER SCROLL TIMELINE - Unifies everything for perfect smoothness
+                // 1. Instantly align scroll to match the video's current frame
+                // This prevents the "jump" to 0s when the user first scrolls
+                window.scrollTo({ top: scrollHandoverPoint, behavior: "auto" });
+
+                // 2. MASTER TIMELINE - Maps 0% scroll -> 0s video, 100% scroll -> End of video
+                // This ensures "todos os frames" (all frames) are accessible by scrolling back/forth
                 const masterScrollTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: scrollDriver,
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 1.5, // Even smoother
-                        invalidateOnRefresh: true
+                        scrub: 1.8, // Increased for ultra-premium smoothness
+                        invalidateOnRefresh: true,
                     }
                 });
 
-                // Mapping all animations to a 1.0 duration scale for perfect sync
                 masterScrollTl
-                    // 1. Video Scrubbing: Spans the EXACT full length of the scroll
-                    .to(video, {
-                        currentTime: latestVideoDuration - 0.05, // Avoid end-of-video flickering
-                        duration: 1.0,
-                        ease: "none"
-                    }, 0)
+                    // Video Scrubbing: Perfect 1:1 mapping from start to absolute end
+                    .fromTo(video, 
+                        { currentTime: 0 },
+                        { 
+                            currentTime: latestVideoDuration, 
+                            duration: 1.0,
+                            ease: "none" // Linear mapping for predictable scrubbing
+                        }, 0)
                     
-                    // 2. Atmospheric Zoom: Also spans the full length
-                    .to(video, {
-                        scale: 1.12, // Slightly more pronounced zoom
-                        duration: 1.0,
-                        ease: "none"
-                    }, 0)
+                    // Atmospheric Zoom
+                    .fromTo(video,
+                        { scale: 1 },
+                        { 
+                            scale: 1.15, // Slightly more pronounced zoom for depth
+                            duration: 1.0,
+                            ease: "none"
+                        }, 0)
                     
-                    // 3. Narrative Exit: Fades out and moves up
+                    // Narrative Exit
                     .to(".hero-content", {
                         opacity: 0,
                         y: -150,
                         scale: 0.85,
-                        duration: 0.6, // Fades out by 60% of the scroll
+                        duration: 0.4, // Fades out earlier to clear the view for the skull
                         ease: "power2.inOut"
-                    }, 0.1)
+                    }, 0.2)
                     
-                    // 4. Mask Reveal / Wipe with Blur: The transition effect
+                    // Mask Reveal / Wipe with Blur
                     .to([".phrase-1-inner", ".phrase-2-inner"], {
                         clipPath: "inset(0% 0 100% 0)",
-                        filter: "blur(20px)",
-                        y: -60,
-                        stagger: 0.1,
-                        duration: 0.5, // Completes the wipe by 50% scroll
+                        filter: "blur(25px)",
+                        y: -80,
+                        stagger: 0.08,
+                        duration: 0.4,
                         ease: "power1.inOut"
-                    }, 0);
+                    }, 0.1);
             }
         });
+
 
 
 
@@ -187,7 +198,8 @@ export function Hero() {
     const handleVideoEvent = () => setVideoReady(true);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "280dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
+
             <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
                 <style>{`
                     .hero {
