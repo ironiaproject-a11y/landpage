@@ -68,21 +68,9 @@ export function Hero() {
                 letterSpacing: "0.45em",
                 duration: 1.2,
                 ease: "expo.out"
-            }, "-=3.0") 
+            }, "-=3.0");
 
-            // Phase 3: Woman Phrase ("Seu sorriso") - Appears as woman emerges
-            .to(".phrase-2-inner", {
-                clipPath: "inset(0% 0 0 0)",
-                y: 0,
-                duration: 1.5,
-                ease: "expo.out"
-            }, "-=1.0") 
-
-            .to(".hero-btn-wrapper", {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-            }, "-=0.6");
+            // Removed phrase-2 and btn from intro timeline to sync with scroll later
 
             // 2. SCROLL-SCRUBBING WITH CATCH-UP
             ScrollTrigger.create({
@@ -102,18 +90,46 @@ export function Hero() {
                 }
             });
 
-            // 3. POST-INTRO Z-SPACE TRANSFORMATION
-            gsap.to(textContainerRef.current, {
+            // 3. SCROLL-SYNCHRONIZED PHRASES & BUTTON
+            // Phrase 1 Fades Out as we scroll (Sua origem)
+            gsap.to(".phrase-1-inner", {
                 scrollTrigger: {
                     trigger: scrollDriver,
                     start: "top top",
+                    end: "20% top",
+                    scrub: 1,
+                },
+                opacity: 0,
+                y: -20,
+                filter: "blur(10px)",
+                ease: "none"
+            });
+
+            // Phrase 2 Fades In (Seu sorriso)
+            gsap.to(".phrase-2-inner", {
+                scrollTrigger: {
+                    trigger: scrollDriver,
+                    start: "25% top",
+                    end: "45% top",
+                    scrub: 1,
+                },
+                clipPath: "inset(0% 0 0 0)",
+                y: 0,
+                opacity: 1,
+                ease: "power2.out"
+            });
+
+            // CTA Button Fades In
+            gsap.to(".hero-btn-wrapper", {
+                scrollTrigger: {
+                    trigger: scrollDriver,
+                    start: "40% top",
                     end: "60% top",
                     scrub: 1,
                 },
-                scale: 0.8,
-                opacity: 0,
-                y: -60,
-                ease: "power2.inOut"
+                opacity: 1,
+                y: 0,
+                ease: "power2.out"
             });
 
             // Video zooms in (Depth Effect)
