@@ -39,62 +39,98 @@ export function Hero() {
         document.body.style.overflow = "hidden";
 
         const ctx = gsap.context(() => {
-            // 1. MASTER INTRO TIMELINE (Cinematic Playback)
+            const introDuration = 4.5; // Seconds for the cinematic narrative
+            const videoDuration = duration;
+
+            // 1. MASTER INTRO TIMELINE (Frame-Locked Cinematic)
             const introTl = gsap.timeline({
-                defaults: { ease: "power3.out" },
-                onStart: () => {
-                    video.play(); // Start natural playback
-                },
+                defaults: { ease: "none" }, // Linear for "normal playback" feel
                 onComplete: () => { 
                     isIntroComplete = true; 
-                    video.pause(); // Handover to GSAP scrubbing
                     document.body.style.overflow = "auto";
                     ScrollTrigger.refresh();
                     setupPostIntroScroll();
                 }
             });
 
-            // Phase 1: Reveal Container & Initial Text ("Sua origem")
+            // Phase 1: Total Reveal & Video Start (Skull Phase)
             introTl.to(textContainerRef.current, {
                 opacity: 1,
                 y: 0,
-                duration: 1.2
+                duration: 1.2,
+                ease: "power2.out"
             })
+            // Animate video currentTime linearly (looks like normal playback)
+            .to(video, {
+                currentTime: 1.5,
+                duration: 1.5,
+            }, "0") 
             .to(".phrase-1-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
                 letterSpacing: "0.45em",
                 duration: 1.2,
                 ease: "expo.out"
-            }, "-=0.6")
+            }, "0.5")
 
-            // Phase 2: Transição Automática (Synced with video morphing around 2-2.5s)
+            // Phase 2: The Morph (Automatic Transition)
+            .to(video, {
+                currentTime: 3.5,
+                duration: 2.0,
+            }, "1.5")
             .to(".phrase-1-inner", {
                 opacity: 0,
-                y: -10,
-                filter: "blur(8px)",
-                duration: 0.8,
-                delay: 1.2 // Stay on screen for a bit
-            })
+                filter: "blur(12px)",
+                y: -15,
+                duration: 1.0,
+            }, "1.8")
             .to(".phrase-2-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
                 opacity: 1,
                 duration: 1.2,
                 ease: "expo.out"
-            }, "-=0.4")
+            }, "2.5")
 
-            // Phase 3: Final Reveal (Button)
+            // Phase 3: Final Detail (Button)
+            .to(video, {
+                currentTime: introDuration,
+                duration: 1.0,
+            }, "3.5")
             .to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 1,
-            }, "-=0.6");
+                ease: "back.out(1.7)"
+            }, "3.8");
 
-            // Function to setup SCROLL-BASED logic AFTER intro completes
+            // Function to setup SCROLL-BASED logic AFTER intro
             function setupPostIntroScroll() {
-                // Exit animations for things that appeared in intro
-                gsap.to(".phrase-2-inner, .hero-btn-wrapper", {
+                // Ensure video is at the right spot before handover
+                const scrollStartVideoTime = introDuration;
+
+                // Main Video Scrubbing (Continues from intro end)
+                ScrollTrigger.create({
+                    trigger: scrollDriver,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5,
+                    onUpdate: (self) => {
+                        // Start scrubbing from where intro left off to end of video
+                        const remaining = videoDuration - scrollStartVideoTime;
+                        const targetTime = scrollStartVideoTime + (self.progress * remaining);
+                        
+                        gsap.to(video, {
+                            currentTime: targetTime,
+                            duration: 0.8,
+                            ease: "power2.out",
+                            overwrite: "auto"
+                        });
+                    }
+                });
+
+                // Narrative Exit: Fade out text as we scroll past 20%
+                gsap.to(".hero-content", {
                     scrollTrigger: {
                         trigger: scrollDriver,
                         start: "10% top",
@@ -102,28 +138,12 @@ export function Hero() {
                         scrub: 1,
                     },
                     opacity: 0,
-                    y: -40,
+                    y: -100,
+                    scale: 0.9,
                     ease: "power2.inOut"
                 });
 
-                // Video Scrubbing Catch-up
-                ScrollTrigger.create({
-                    trigger: scrollDriver,
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: 1.2,
-                    onUpdate: (self) => {
-                        const targetTime = self.progress * duration;
-                        gsap.to(video, {
-                            currentTime: targetTime,
-                            duration: 0.8,
-                            ease: "power1.out",
-                            overwrite: "auto"
-                        });
-                    }
-                });
-
-                // Global Parallax/Depth
+                // Atmospheric Zoom
                 gsap.to(video, {
                     scrollTrigger: {
                         trigger: scrollDriver,
