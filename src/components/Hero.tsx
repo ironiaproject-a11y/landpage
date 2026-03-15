@@ -44,12 +44,18 @@ export function Hero() {
 
             // 1. MASTER INTRO TIMELINE (Frame-Locked Cinematic)
             const introTl = gsap.timeline({
-                defaults: { ease: "none" }, // Linear for "normal playback" feel
+                defaults: { ease: "none" },
                 onComplete: () => { 
                     isIntroComplete = true; 
+                    // Release scroll ONLY after the intro narrative is done
                     document.body.style.overflow = "auto";
-                    ScrollTrigger.refresh();
-                    setupPostIntroScroll();
+                    
+                    // Allow the browser a moment to acknowledge the overflow change
+                    // before setting up the scroll triggers
+                    setTimeout(() => {
+                        setupPostIntroScroll();
+                        ScrollTrigger.refresh();
+                    }, 100);
                 }
             });
 
@@ -78,7 +84,6 @@ export function Hero() {
                 currentTime: 3.5,
                 duration: 2.0,
             }, "1.5")
-            // REMOVED: Hiding phrase-1 here. Let's keep it visible for the "narrative".
             .to(".phrase-2-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
@@ -103,66 +108,68 @@ export function Hero() {
             function setupPostIntroScroll() {
                 const latestVideoDuration = video.duration || videoDuration;
                 
-                // Calculate the scroll position that corresponds to the end of the intro
-                // (introDuration / latestVideoDuration) * totalScrollableRange
+                // Calculate total scrollable distance
                 const totalScrollHeight = scrollDriver.offsetHeight - window.innerHeight;
-                const scrollHandoverPoint = (introDuration / latestVideoDuration) * totalScrollHeight;
+                
+                // Map the exact frame reached at intro end (4.5s) to the scroll position
+                // Calculation: (Current Frame / Total Frames) * Total Scroll Distance
+                const targetScrollPos = (introDuration / latestVideoDuration) * totalScrollHeight;
 
-                // 1. Instantly align scroll to match the video's current frame
-                // This prevents the "jump" to 0s when the user first scrolls
-                window.scrollTo({ top: scrollHandoverPoint, behavior: "auto" });
+                // 1. SILENTLY ALIGN - Teleport the scroll to match the video frame exactly
+                // This ensures that when the user starts scrolling, the video doesn't "jump" back to 0s
+                window.scrollTo({ top: targetScrollPos, behavior: "auto" });
 
-                // 2. MASTER TIMELINE - Maps 0% scroll -> 0s video, 100% scroll -> End of video
-                // This ensures "todos os frames" (all frames) are accessible by scrolling back/forth
+                // 2. MASTER TIMELINE - Maps 100% of the video to the 100% of the scroll track
                 const masterScrollTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: scrollDriver,
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 1.8, // Increased for ultra-premium smoothness
+                        scrub: 2.0, // Maximum smoothness (Luxury feel)
                         invalidateOnRefresh: true,
                     }
                 });
 
                 masterScrollTl
-                    // Video Scrubbing: Perfect 1:1 mapping from start to absolute end
+                    // Video Scrubbing: LOSSLESS - from 0.0s to the very last frame
                     .fromTo(video, 
                         { currentTime: 0 },
                         { 
                             currentTime: latestVideoDuration, 
-                            duration: 1.0,
-                            ease: "none" // Linear mapping for predictable scrubbing
+                            duration: 1.0, // Logic duration 
+                            ease: "none"
                         }, 0)
                     
-                    // Atmospheric Zoom
+                    // Atmospheric Depth (Zoom)
                     .fromTo(video,
                         { scale: 1 },
                         { 
-                            scale: 1.15, // Slightly more pronounced zoom for depth
+                            scale: 1.15, 
                             duration: 1.0,
                             ease: "none"
                         }, 0)
                     
-                    // Narrative Exit
+                    // Exit Strategy: Content disappears as skull detail is reached
                     .to(".hero-content", {
                         opacity: 0,
                         y: -150,
-                        scale: 0.85,
-                        duration: 0.4, // Fades out earlier to clear the view for the skull
+                        scale: 0.8,
+                        duration: 0.4,
                         ease: "power2.inOut"
                     }, 0.2)
                     
-                    // Mask Reveal / Wipe with Blur
+                    // Premium Blur & Mask Wipe
                     .to([".phrase-1-inner", ".phrase-2-inner"], {
                         clipPath: "inset(0% 0 100% 0)",
                         filter: "blur(25px)",
                         y: -80,
-                        stagger: 0.08,
-                        duration: 0.4,
+                        stagger: 0.1,
+                        duration: 0.45,
                         ease: "power1.inOut"
                     }, 0.1);
             }
         });
+
 
 
 
