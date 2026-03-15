@@ -32,26 +32,20 @@ export function Hero() {
         const scrollDriver = scrollDriverRef.current;
         let isIntroComplete = false;
 
-        // Ensure video is paused so GSAP has total control
         video.pause();
-
-        // BLOCK SCROLL initially
         document.body.style.overflow = "hidden";
 
         const ctx = gsap.context(() => {
-            const introDuration = 4.5; // Seconds for the cinematic narrative
+            const introDuration = 5.0; // Seconds for the cinematic narrative
             const videoDuration = duration;
 
             // 1. MASTER INTRO TIMELINE (Frame-Locked Cinematic)
             const introTl = gsap.timeline({
-                defaults: { ease: "none" },
+                defaults: { ease: "power2.out" },
                 onComplete: () => { 
                     isIntroComplete = true; 
-                    // Release scroll ONLY after the intro narrative is done
                     document.body.style.overflow = "auto";
                     
-                    // Allow the browser a moment to acknowledge the overflow change
-                    // before setting up the scroll triggers
                     setTimeout(() => {
                         setupPostIntroScroll();
                         ScrollTrigger.refresh();
@@ -59,88 +53,62 @@ export function Hero() {
                 }
             });
 
-            // Phase 1: Total Reveal & Video Start (Skull Phase)
-            introTl.to(textContainerRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 1.2,
-                ease: "power2.out"
-            })
-            // Animate video currentTime linearly
-            .to(video, {
-                currentTime: 1.5,
-                duration: 1.5,
-            }, "0") 
-            .to(".phrase-1-inner", {
-                clipPath: "inset(0% 0 0 0)",
-                y: 0,
-                letterSpacing: "0.45em",
-                duration: 1.2,
-                ease: "expo.out"
-            }, "0.5")
-
-            // Phase 2: The Transition to Phrase 2
-            .to(video, {
-                currentTime: 3.5,
-                duration: 2.0,
-            }, "1.5")
-            .to(".phrase-2-inner", {
-                clipPath: "inset(0% 0 0 0)",
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "expo.out"
-            }, "2.5")
-
-            // Phase 3: Final Detail (Button)
-            .to(video, {
+            // Start Video immediately
+            introTl.to(video, {
                 currentTime: introDuration,
-                duration: 1.0,
-            }, "3.5")
-            .to(".hero-btn-wrapper", {
+                duration: introDuration,
+                ease: "none"
+            }, 0);
+
+            // Timeline timings as requested:
+            // 1.5s → "Sua origem" fades in near the skull
+            introTl.to(".phrase-1-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1,
+                duration: 1.2,
+            }, 1.5);
+
+            // 3.5s → "Seu sorriso" fades in near the woman's face
+            introTl.to(".phrase-2-wrapper", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+            }, 3.5);
+
+            // 4.5s → Button and Final Polish
+            introTl.to(".hero-btn-wrapper", {
+                opacity: 1,
+                y: 0,
+                duration: 1.0,
                 ease: "back.out(1.7)"
-            }, "3.8");
+            }, 4.2);
 
             // Function to setup SCROLL-BASED logic AFTER intro
             function setupPostIntroScroll() {
                 const latestVideoDuration = video.duration || videoDuration;
-                
-                // Calculate total scrollable distance
                 const totalScrollHeight = scrollDriver.offsetHeight - window.innerHeight;
-                
-                // Map the exact frame reached at intro end (4.5s) to the scroll position
-                // Calculation: (Current Frame / Total Frames) * Total Scroll Distance
                 const targetScrollPos = (introDuration / latestVideoDuration) * totalScrollHeight;
 
-                // 1. SILENTLY ALIGN - Teleport the scroll to match the video frame exactly
-                // This ensures that when the user starts scrolling, the video doesn't "jump" back to 0s
                 window.scrollTo({ top: targetScrollPos, behavior: "auto" });
 
-                // 2. MASTER TIMELINE - Maps 100% of the video to the 100% of the scroll track
                 const masterScrollTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: scrollDriver,
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 2.0, // Maximum smoothness (Luxury feel)
+                        scrub: 2.0,
                         invalidateOnRefresh: true,
                     }
                 });
 
                 masterScrollTl
-                    // Video Scrubbing: LOSSLESS - from 0.0s to the very last frame
                     .fromTo(video, 
                         { currentTime: 0 },
                         { 
                             currentTime: latestVideoDuration, 
-                            duration: 1.0, // Logic duration 
+                            duration: 1.0, 
                             ease: "none"
                         }, 0)
-                    
-                    // Atmospheric Depth (Zoom)
                     .fromTo(video,
                         { scale: 1 },
                         { 
@@ -148,31 +116,15 @@ export function Hero() {
                             duration: 1.0,
                             ease: "none"
                         }, 0)
-                    
-                    // Exit Strategy: Content disappears as skull detail is reached
-                    .to(".hero-content", {
+                    .to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
                         opacity: 0,
-                        y: -150,
-                        scale: 0.8,
+                        y: -100,
+                        stagger: 0.05,
                         duration: 0.4,
                         ease: "power2.inOut"
-                    }, 0.2)
-                    
-                    // Premium Blur & Mask Wipe
-                    .to([".phrase-1-inner", ".phrase-2-inner"], {
-                        clipPath: "inset(0% 0 100% 0)",
-                        filter: "blur(25px)",
-                        y: -80,
-                        stagger: 0.1,
-                        duration: 0.45,
-                        ease: "power1.inOut"
-                    }, 0.1);
+                    }, 0.2);
             }
         });
-
-
-
-
 
         return () => {
             ctx.revert();
@@ -180,43 +132,31 @@ export function Hero() {
         };
     }, [mounted, videoReady]);
 
-    // Robust video detection (Hybrid)
+    // Robust video detection
     useEffect(() => {
         if (!mounted || !videoRef.current) return;
-        
         const video = videoRef.current;
-        const checkReady = () => {
-            if (video.readyState >= 1) setVideoReady(true);
-        };
-
+        const checkReady = () => { if (video.readyState >= 1) setVideoReady(true); };
         const timer = setInterval(checkReady, 500);
-        const failsafe = setTimeout(() => {
-            setVideoReady(true);
-            clearInterval(timer);
-        }, 3000);
-
+        const failsafe = setTimeout(() => { setVideoReady(true); clearInterval(timer); }, 3000);
         checkReady();
-        return () => {
-            clearInterval(timer);
-            clearTimeout(failsafe);
-        };
+        return () => { clearInterval(timer); clearTimeout(failsafe); };
     }, [mounted]);
 
     const handleVideoEvent = () => setVideoReady(true);
 
     return (
         <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
-
             <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
                 <style>{`
                     .hero {
                         position: sticky;
                         top: 0;
                         width: 100vw;
-                        height: 85vh;
+                        height: 100vh;
+                        height: 100dvh;
                         background: #000;
-                        margin-left: calc(-50vw + 50%);
-                        margin-right: calc(-50vw + 50%);
+                        margin: 0;
                         padding: 0 !important;
                         display: flex;
                         align-items: center;
@@ -224,42 +164,19 @@ export function Hero() {
                         overflow: hidden;
                     }
 
-                    @media (max-width: 767px) {
-                        .hero {
-                            width: 100vw;
-                            height: 100vh;
-                            height: 100dvh;
-                            overflow: hidden;
-                            margin: 0;
-                            padding: 0 !important;
-                        }
-                    }
-
                     .video-bg-layer {
                         position: absolute;
                         inset: 0;
                         z-index: 0;
-                        pointer-events: none;
-                        background: #000;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
                         opacity: 0;
                         transition: opacity 1.2s ease-out;
                     }
 
-                    .video-bg-layer.ready {
-                        opacity: 1;
-                    }
+                    .video-bg-layer.ready { opacity: 1; }
 
                     .hero-video-container {
                         position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        width: 100%;
-                        height: 100%;
-                        overflow: hidden;
+                        inset: 0;
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -268,19 +185,14 @@ export function Hero() {
                     .hero-video-container video {
                         min-width: 100%;
                         min-height: 100%;
-                        width: auto;
-                        height: auto;
                         object-fit: cover;
                         object-position: 25% center;
-                        display: block;
-                        transform: scale(0.98);
                     }
 
-                    /* Darkness overlay directly on top of video */
                     .hero-video-overlay {
                         position: absolute;
                         inset: 0;
-                        background: rgba(0, 0, 0, 0.35);
+                        background: rgba(0, 0, 0, 0.3);
                         z-index: 1;
                     }
 
@@ -291,56 +203,36 @@ export function Hero() {
                         height: 100%;
                         z-index: 10;
                         pointer-events: none;
-                        display: flex;
-                        flex-direction: column;
                     }
 
-                    @media (min-width: 1024px) {
-                        .hero-content {
-                            position: absolute;
-                            left: 15vw;
-                            top: 25vh;
-                            width: 55%;
-                            max-width: 750px;
-                            pointer-events: auto;
-                            text-align: left;
-                        }
+                    /* Cinematic Positioning */
+                    .phrase-1-wrapper {
+                        position: absolute;
+                        left: 10vw;
+                        top: 15vh;
+                        opacity: 0;
+                        transform: translateY(20px);
+                        text-align: left;
                     }
 
-                    @media (max-width: 1023px) {
-                        .hero-content {
-                            position: relative;
-                            width: 100%;
-                            height: 100%;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            padding: 0 8vw;
-                            text-align: center;
-                            pointer-events: auto;
-                        }
+                    .phrase-2-wrapper {
+                        position: absolute;
+                        left: 50%;
+                        bottom: 20vh;
+                        transform: translate(-50%, 20px);
+                        opacity: 0;
+                        text-align: center;
+                        width: 100%;
+                        max-width: 90vw;
                     }
 
                     .hero-btn-wrapper {
-                        position: relative;
-                        margin-top: 4rem;
-                        z-index: 30;
-                        pointer-events: auto;
+                        position: absolute;
+                        left: 50%;
+                        bottom: 10vh;
+                        transform: translate(-50%, 20px);
                         opacity: 0;
-                        /* GSAP handles reveal */
-                    }
-
-                    @media (max-width: 1023px) {
-                        .hero-btn-wrapper {
-                            margin-top: 2rem;
-                            opacity: 0;
-                        }
-                    }
-
-                    @keyframes heroBtn-in {
-                        from { opacity: 0; transform: translateY(24px); }
-                        to   { opacity: 1; transform: translateY(0); }
+                        pointer-events: auto;
                     }
 
                     .btn-premium-cta {
@@ -349,32 +241,25 @@ export function Hero() {
                         -webkit-backdrop-filter: blur(12px);
                         border: 1px solid rgba(230, 211, 163, 0.3);
                         color: #FFFFFF;
-                        padding: 18px 56px;
+                        padding: 16px 48px;
                         border-radius: 100px;
                         font-size: 13px;
                         font-weight: 600;
                         letter-spacing: 0.25em;
                         text-transform: uppercase;
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-                        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
                     }
 
                     .btn-premium-cta:hover {
                         background: rgba(230, 211, 163, 0.15);
                         border-color: rgba(230, 211, 163, 0.8);
-                        box-shadow: 0 15px 50px -10px rgba(230, 211, 163, 0.25);
                         transform: translateY(-2px);
-                        letter-spacing: 0.28em;
                     }
 
-                    .phrase-reveal-container {
-                        overflow: hidden;
-                        position: relative;
-                    }
-
-                    .phrase-inner {
-                        clip-path: inset(100% 0 0 0);
-                        transform: translateY(30px);
+                    @media (max-width: 767px) {
+                        .phrase-1-wrapper { left: 8vw; top: 18vh; }
+                        .phrase-2-wrapper { bottom: 25vh; }
+                        .hero-btn-wrapper { bottom: 12vh; }
                     }
                 `}</style>
 
@@ -397,38 +282,37 @@ export function Hero() {
                 </div>
 
                 <div className="hero-container">
-                    <div ref={textContainerRef} className="hero-content opacity-0">
-                        <div className="phrase-1 phrase-reveal-container mb-4">
-                            <h1 className="phrase-1-inner phrase-inner text-white/80 font-medium uppercase" style={{
-                                fontFamily: 'var(--font-body), sans-serif',
-                                fontSize: 'clamp(14px, 2vw, 18px)',
-                                lineHeight: '1.0',
-                                letterSpacing: '0.3em'
-                            }}>
-                                Sua origem
-                            </h1>
-                        </div>
+                    {/* Line 1: Near the skull (Upper-Left) */}
+                    <div className="phrase-1-wrapper">
+                        <h1 className="text-white/80 font-medium uppercase" style={{
+                            fontFamily: 'var(--font-body), sans-serif',
+                            fontSize: 'clamp(14px, 2vw, 18px)',
+                            letterSpacing: '0.4em'
+                        }}>
+                            Sua origem
+                        </h1>
+                    </div>
 
-                        <div className="phrase-2 phrase-reveal-container text-balance mb-12">
-                            <h2 className="phrase-2-inner phrase-inner text-[#E6D3A3] font-bold tracking-tight" style={{
-                                fontFamily: '"Playfair Display", serif',
-                                fontSize: 'clamp(52px, 11vw, 102px)',
-                                lineHeight: '0.95',
-                                letterSpacing: '-0.02em'
-                            }}>
-                                Seu sorriso
-                            </h2>
-                        </div>
+                    {/* Line 2: Near the woman's face (Center-Lower) */}
+                    <div className="phrase-2-wrapper">
+                        <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{
+                            fontFamily: '"Playfair Display", serif',
+                            fontSize: 'clamp(42px, 9vw, 92px)',
+                            lineHeight: '0.95'
+                        }}>
+                            Seu sorriso
+                        </h2>
+                    </div>
 
-                        {/* Main CTA */}
-                        <div className="hero-btn-wrapper opacity-0 translate-y-8">
-                            <button className="btn-premium-cta">
-                                AGENDAR EXPERIÊNCIA
-                            </button>
-                        </div>
+                    {/* Main CTA */}
+                    <div className="hero-btn-wrapper">
+                        <button className="btn-premium-cta">
+                            AGENDAR EXPERIÊNCIA
+                        </button>
                     </div>
                 </div>
             </section>
         </div>
     );
 }
+
