@@ -46,10 +46,11 @@ export function Hero() {
                     isIntroComplete = true; 
                     document.body.style.overflow = "auto";
                     ScrollTrigger.refresh();
+                    setupTextScrollSync();
                 }
             });
 
-            // Phase 1: Reveal Container & Start Video (Skull Phase)
+            // ... phase 1 reveal container ...
             introTl.to(textContainerRef.current, {
                 opacity: 1,
                 y: 0,
@@ -57,7 +58,7 @@ export function Hero() {
             })
             .to(video, {
                 currentTime: Math.min(2.5, duration),
-                duration: 3.2, // Slightly longer for a more cinematic transition
+                duration: 3.2,
                 ease: "power2.inOut"
             }, "-=0.8")
 
@@ -70,9 +71,51 @@ export function Hero() {
                 ease: "expo.out"
             }, "-=3.0");
 
-            // Removed phrase-2 and btn from intro timeline to sync with scroll later
+            // Function to setup scroll-triggered text animations AFTER intro
+            function setupTextScrollSync() {
+                // Phrase 1 Fades Out as we scroll (Sua origem)
+                gsap.to(".phrase-1-inner", {
+                    scrollTrigger: {
+                        trigger: scrollDriver,
+                        start: "top top",
+                        end: "20% top",
+                        scrub: 1,
+                    },
+                    opacity: 0,
+                    y: -20,
+                    filter: "blur(10px)",
+                    ease: "none"
+                });
 
-            // 2. SCROLL-SCRUBBING WITH CATCH-UP
+                // Phrase 2 Fades In (Seu sorriso)
+                gsap.to(".phrase-2-inner", {
+                    scrollTrigger: {
+                        trigger: scrollDriver,
+                        start: "25% top",
+                        end: "45% top",
+                        scrub: 1,
+                    },
+                    clipPath: "inset(0% 0 0 0)",
+                    y: 0,
+                    opacity: 1,
+                    ease: "power2.out"
+                });
+
+                // CTA Button Fades In
+                gsap.to(".hero-btn-wrapper", {
+                    scrollTrigger: {
+                        trigger: scrollDriver,
+                        start: "40% top",
+                        end: "60% top",
+                        scrub: 1,
+                    },
+                    opacity: 1,
+                    y: 0,
+                    ease: "power2.out"
+                });
+            }
+
+            // 2. SCROLL-SCRUBBING WITH CATCH-UP (Always active but respects isIntroComplete)
             ScrollTrigger.create({
                 trigger: scrollDriver,
                 start: "top top",
@@ -90,49 +133,7 @@ export function Hero() {
                 }
             });
 
-            // 3. SCROLL-SYNCHRONIZED PHRASES & BUTTON
-            // Phrase 1 Fades Out as we scroll (Sua origem)
-            gsap.to(".phrase-1-inner", {
-                scrollTrigger: {
-                    trigger: scrollDriver,
-                    start: "top top",
-                    end: "20% top",
-                    scrub: 1,
-                },
-                opacity: 0,
-                y: -20,
-                filter: "blur(10px)",
-                ease: "none"
-            });
-
-            // Phrase 2 Fades In (Seu sorriso)
-            gsap.to(".phrase-2-inner", {
-                scrollTrigger: {
-                    trigger: scrollDriver,
-                    start: "25% top",
-                    end: "45% top",
-                    scrub: 1,
-                },
-                clipPath: "inset(0% 0 0 0)",
-                y: 0,
-                opacity: 1,
-                ease: "power2.out"
-            });
-
-            // CTA Button Fades In
-            gsap.to(".hero-btn-wrapper", {
-                scrollTrigger: {
-                    trigger: scrollDriver,
-                    start: "40% top",
-                    end: "60% top",
-                    scrub: 1,
-                },
-                opacity: 1,
-                y: 0,
-                ease: "power2.out"
-            });
-
-            // Video zooms in (Depth Effect)
+            // Video zooms in (Depth Effect) - Safe to keep here as it doesn't touch intro props
             gsap.to(video, {
                 scrollTrigger: {
                     trigger: scrollDriver,
