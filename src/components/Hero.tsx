@@ -15,21 +15,23 @@ export function Hero() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
+    const [videoReady, setVideoReady] = useState(false);
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    useEffect(() => {
-        if (!mounted || !textContainerRef.current || !scrollDriverRef.current || !videoRef.current) return;
-
+    // Function to initialize GSAP once video is ready
+    const initAnimations = () => {
+        if (!textContainerRef.current || !scrollDriverRef.current || !videoRef.current) return;
+        
         const video = videoRef.current;
+        const duration = video.duration || 1;
 
         const ctx = gsap.context(() => {
             // 1. Natural intro animation
-            // We want to play the first bit naturally or just have it ready
             gsap.to(video, {
-                currentTime: 1.5, // Initial reveal
+                currentTime: Math.min(1.5, duration),
                 duration: 1.8,
                 ease: "power2.out"
             });
@@ -41,11 +43,7 @@ export function Hero() {
                 end: "bottom bottom",
                 scrub: 0.5,
                 onUpdate: (self) => {
-                    const duration = video.duration || 1;
-                    // Map scroll progress to video time
-                    // We can adjust the multiplier if we want it to go faster/slower
                     const targetTime = self.progress * duration;
-                    
                     gsap.to(video, {
                         currentTime: targetTime,
                         duration: 0.1,
@@ -55,7 +53,7 @@ export function Hero() {
                 }
             });
 
-            // 3. Text entrance animations
+            // 3. Text entrance
             const tl = gsap.timeline();
             tl.to(textContainerRef.current, {
                 opacity: 1,
@@ -63,18 +61,21 @@ export function Hero() {
                 duration: 0.8,
                 ease: "power2.out"
             }, 0.2);
-            tl.fromTo(".phrase-1",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            0.4);
-            tl.fromTo(".phrase-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-            0.6);
         });
 
-        return () => ctx.revert();
-    }, [mounted]);
+        return ctx;
+    };
+
+    useEffect(() => {
+        if (!mounted || !videoReady) return;
+        const ctx = initAnimations();
+        return () => ctx?.revert();
+    }, [mounted, videoReady]);
+
+    // Handle video metadata loaded
+    const handleLoadedMetadata = () => {
+        setVideoReady(true);
+    };
 
     return (
         <div ref={scrollDriverRef} style={{ height: "280dvh", position: "relative" }}>
@@ -116,6 +117,12 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        opacity: 0;
+                        transition: opacity 1.2s ease-out;
+                    }
+
+                    .video-bg-layer.ready {
+                        opacity: 1;
                     }
 
                     .hero-video-container {
@@ -241,14 +248,17 @@ export function Hero() {
                 `}</style>
 
                 {/* Background Layer with Video */}
-                <div className="video-bg-layer">
+                <div className={`video-bg-layer ${videoReady ? 'ready' : ''}`}>
                     <div className="hero-video-container">
                         <video
                             ref={videoRef}
                             src="/hero-background-new.mp4"
                             muted
                             playsInline
+                            autoPlay
+                            loop
                             preload="auto"
+                            onLoadedMetadata={handleLoadedMetadata}
                         />
                         <div className="hero-video-overlay" />
                     </div>
