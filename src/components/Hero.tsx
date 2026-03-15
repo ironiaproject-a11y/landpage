@@ -101,7 +101,6 @@ export function Hero() {
                             width: 100vw;
                             height: 100vh;
                             height: 100dvh;
-                            position: relative;
                             overflow: hidden;
                             margin: 0;
                             padding: 0 !important;
@@ -196,10 +195,8 @@ export function Hero() {
                     }
 
                     .hero-btn-wrapper {
-                        position: absolute;
-                        bottom: 15vh;
-                        left: 50%;
-                        transform: translateX(-50%);
+                        position: relative;
+                        margin-top: 4rem;
                         z-index: 30;
                         pointer-events: auto;
                         opacity: 0;
@@ -208,10 +205,6 @@ export function Hero() {
 
                     @media (max-width: 1023px) {
                         .hero-btn-wrapper {
-                            position: relative;
-                            bottom: auto;
-                            left: auto;
-                            transform: none;
                             margin-top: 2rem;
                             opacity: 1;
                             animation: none;
@@ -219,8 +212,8 @@ export function Hero() {
                     }
 
                     @keyframes heroBtn-in {
-                        from { opacity: 0; transform: translateX(-50%) translateY(24px); }
-                        to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+                        from { opacity: 0; transform: translateY(24px); }
+                        to   { opacity: 1; transform: translateY(0); }
                     }
 
                     .btn-premium-cta {
