@@ -23,81 +23,97 @@ export function Hero() {
 
 
 
-    // 1. Text entrance - Run as soon as mounted
+    // Unified Master Intro & Scroll Logic
     useEffect(() => {
-        if (!mounted || !textContainerRef.current) return;
-        
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-            
-            // Initial reveal of container
-            tl.to(textContainerRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 1
-            })
-            // Stagger phrases and button
-            .to(".phrase-1, .phrase-2, .hero-btn-wrapper", {
-                opacity: 1,
-                y: 0,
-                stagger: 0.15,
-                duration: 1
-            }, "-=0.6");
-        }, textContainerRef);
-
-        return () => ctx.revert();
-    }, [mounted]);
-
-    // 2. Video Intro & Scroll Scrubbing - Run when video is ready
-    useEffect(() => {
-        if (!mounted || !videoReady || !videoRef.current) return;
+        if (!mounted || !videoReady || !videoRef.current || !textContainerRef.current || !scrollDriverRef.current) return;
         
         const video = videoRef.current;
         const duration = video.duration || 1;
+        const scrollDriver = scrollDriverRef.current;
         let isIntroComplete = false;
 
+        // Ensure video is paused so GSAP has total control
+        video.pause();
+
         const ctx = gsap.context(() => {
-            // Intro animation - only scrub if we haven't scrolled yet
+            // 1. MASTER INTRO TIMELINE
             const introTl = gsap.timeline({
-                onComplete: () => { isIntroComplete = true; }
+                defaults: { ease: "power3.out" },
+                onComplete: () => { 
+                    isIntroComplete = true; 
+                    // Refresh ScrollTrigger to ensure correct initial state post-intro
+                    ScrollTrigger.refresh();
+                }
             });
 
-            introTl.to(video, {
+            // Phase 1: Reveal Container & Start Video
+            introTl.to(textContainerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 1.2
+            })
+            .to(video, {
                 currentTime: Math.min(2.5, duration),
-                duration: 2.5,
+                duration: 2.8,
                 ease: "power2.inOut"
-            });
+            }, "-=0.8")
 
-            // Scroll-scrub with Fluid Handover
+            // Phase 2: Coherent Text & Button Entrance (integrated with video progress)
+            .to(".phrase-1", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+            }, "-=2.2")
+            .to(".phrase-2", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+            }, "-=1.8")
+            .to(".hero-btn-wrapper", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+            }, "-=1.4");
+
+            // 2. SCROLL-SCRUBBING WITH CATCH-UP
             ScrollTrigger.create({
-                trigger: scrollDriverRef.current,
+                trigger: scrollDriver,
                 start: "top top",
                 end: "bottom bottom",
                 scrub: 1.2,
                 onUpdate: (self) => {
+                    // BLOCK scroll if intro is still playing
+                    if (!isIntroComplete) return;
+
                     const targetTime = self.progress * duration;
-                    if (isIntroComplete || targetTime > 2.5) {
-                        gsap.to(video, {
-                            currentTime: targetTime,
-                            duration: 0.5,
-                            ease: "none",
-                            overwrite: "auto" 
-                        });
-                    }
+                    
+                    // Smoothly animate to the scroll position to prevent jumps
+                    gsap.to(video, {
+                        currentTime: targetTime,
+                        duration: 0.6,
+                        ease: "power1.out",
+                        overwrite: "auto"
+                    });
                 }
             });
 
-            // Content Transformation on Scroll
+            // 3. POST-INTRO CONTENT TRANSFORMATION
             gsap.to(textContainerRef.current, {
                 scrollTrigger: {
-                    trigger: scrollDriverRef.current,
+                    trigger: scrollDriver,
                     start: "top top",
-                    end: "50% top",
+                    end: "40% top",
                     scrub: true,
+                    // Only activate after intro
+                    onEnter: () => {
+                        if (!isIntroComplete) {
+                            // If user scrolls before intro ends, we don't transform yet
+                        }
+                    }
                 },
-                scale: 0.9,
+                scale: 0.95,
                 opacity: 0,
-                y: -50,
+                y: -40,
                 ease: "none"
             });
         });
@@ -105,16 +121,13 @@ export function Hero() {
         return () => ctx.revert();
     }, [mounted, videoReady]);
 
-    // Robust video detection
+    // Robust video detection (Hybrid)
     useEffect(() => {
         if (!mounted || !videoRef.current) return;
         
         const video = videoRef.current;
-        
         const checkReady = () => {
-            if (video.readyState >= 1) {
-                setVideoReady(true);
-            }
+            if (video.readyState >= 1) setVideoReady(true);
         };
 
         const timer = setInterval(checkReady, 500);
@@ -124,7 +137,6 @@ export function Hero() {
         }, 3000);
 
         checkReady();
-
         return () => {
             clearInterval(timer);
             clearTimeout(failsafe);
