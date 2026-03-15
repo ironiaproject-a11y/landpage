@@ -29,35 +29,38 @@ export function Hero() {
         const duration = video.duration || 1;
 
         const ctx = gsap.context(() => {
-            // 1. Initial Video Intro + Content Stagger
             const introTl = gsap.timeline({
                 defaults: { ease: "power3.out" }
             });
 
-            // Start video playback naturally
-            introTl.to(video, {
+            // 1. Reveal Parent Container first
+            introTl.to(textContainerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            })
+            // 2. Start video playback naturally
+            .to(video, {
                 currentTime: Math.min(2.5, duration),
                 duration: 2.8,
                 ease: "power2.inOut"
-            })
-            // Reveal "Sua origem"
+            }, "-=0.4")
+            // 3. Stagger Phrases
             .to(".phrase-1", {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
-            }, "-=1.8")
-            // Reveal "Seu sorriso"
+                duration: 1,
+            }, "-=2.2")
             .to(".phrase-2", {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
-            }, "-=1.5")
-            // Reveal Button
+                duration: 1,
+            }, "-=1.9")
             .to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-            }, "-=1.2");
+                duration: 0.8,
+            }, "-=1.6");
 
             // 2. Scroll-scrub with Fluid Handover
             ScrollTrigger.create({
@@ -215,14 +218,13 @@ export function Hero() {
                         z-index: 30;
                         pointer-events: auto;
                         opacity: 0;
-                        animation: heroBtn-in 1s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+                        /* GSAP handles reveal */
                     }
 
                     @media (max-width: 1023px) {
                         .hero-btn-wrapper {
                             margin-top: 2rem;
                             opacity: 0;
-                            animation: none;
                         }
                     }
 
