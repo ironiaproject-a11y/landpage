@@ -29,9 +29,9 @@ export function Hero() {
         const duration = video.duration || 1;
 
         const ctx = gsap.context(() => {
-            // 1. Natural intro animation
+            // 1. Natural intro animation - Start slightly earlier (0.5s) to ensure skull is in frame
             gsap.to(video, {
-                currentTime: Math.min(1.5, duration),
+                currentTime: Math.min(0.5, duration),
                 duration: 1.8,
                 ease: "power2.out"
             });
@@ -144,8 +144,9 @@ export function Hero() {
                         width: auto;
                         height: auto;
                         object-fit: cover;
-                        object-position: center;
+                        object-position: 80% center;
                         display: block;
+                        transform: scale(0.98);
                     }
 
                     /* Darkness overlay directly on top of video */
