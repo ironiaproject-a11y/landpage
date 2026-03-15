@@ -144,7 +144,7 @@ export function Hero() {
                         width: auto;
                         height: auto;
                         object-fit: cover;
-                        object-position: 80% center;
+                        object-position: 85% center;
                         display: block;
                         transform: scale(0.98);
                     }
