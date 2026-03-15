@@ -108,6 +108,26 @@ export function Hero() {
     };
 
     useEffect(() => {
+        if (!mounted) return;
+
+        const checkVideo = () => {
+            if (videoRef.current && videoRef.current.readyState >= 1) {
+                setVideoReady(true);
+            }
+        };
+
+        // Failsafe: if video doesn't "ready up" in 3s, force reveal
+        const failsafe = setTimeout(() => {
+            console.warn("Hero video failsafe triggered");
+            setVideoReady(true);
+        }, 3500);
+
+        checkVideo(); // Sync check
+
+        return () => clearTimeout(failsafe);
+    }, [mounted]);
+
+    useEffect(() => {
         if (!mounted || !videoReady) return;
         const ctx = initAnimations();
         return () => ctx?.revert();
@@ -115,6 +135,12 @@ export function Hero() {
 
     // Handle video metadata loaded
     const handleLoadedMetadata = () => {
+        console.log("Video metadata loaded");
+        setVideoReady(true);
+    };
+
+    const handleCanPlay = () => {
+        console.log("Video can play");
         setVideoReady(true);
     };
 
@@ -292,6 +318,7 @@ export function Hero() {
                             loop
                             preload="auto"
                             onLoadedMetadata={handleLoadedMetadata}
+                            onCanPlay={handleCanPlay}
                         />
                         <div className="hero-video-overlay" />
                     </div>
