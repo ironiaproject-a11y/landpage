@@ -102,7 +102,9 @@ export function Hero() {
             // Function to setup SCROLL-BASED logic AFTER intro
             function setupPostIntroScroll() {
                 const scrollStartVideoTime = introDuration;
-                const remaining = videoDuration - scrollStartVideoTime;
+                
+                // Ensure we have the latest duration
+                const latestVideoDuration = video.duration || videoDuration;
 
                 // SINGLE MASTER SCROLL TIMELINE - Unifies everything for perfect smoothness
                 const masterScrollTl = gsap.timeline({
@@ -110,39 +112,48 @@ export function Hero() {
                         trigger: scrollDriver,
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 1.2, // Smoother scrub
+                        scrub: 1.5, // Even smoother
                         invalidateOnRefresh: true
                     }
                 });
 
+                // Mapping all animations to a 1.0 duration scale for perfect sync
                 masterScrollTl
-                    // 1. Video Scrubbing
+                    // 1. Video Scrubbing: Spans the EXACT full length of the scroll
                     .to(video, {
-                        currentTime: videoDuration,
+                        currentTime: latestVideoDuration - 0.05, // Avoid end-of-video flickering
+                        duration: 1.0,
                         ease: "none"
                     }, 0)
-                    // 2. Atmospheric Zoom
+                    
+                    // 2. Atmospheric Zoom: Also spans the full length
                     .to(video, {
-                        scale: 1.08,
+                        scale: 1.12, // Slightly more pronounced zoom
+                        duration: 1.0,
                         ease: "none"
                     }, 0)
-                    // 3. Narrative Exit: Fade out container
+                    
+                    // 3. Narrative Exit: Fades out and moves up
                     .to(".hero-content", {
                         opacity: 0,
-                        y: -100,
-                        scale: 0.9,
+                        y: -150,
+                        scale: 0.85,
+                        duration: 0.6, // Fades out by 60% of the scroll
                         ease: "power2.inOut"
                     }, 0.1)
-                    // 4. Mask Reveal / Wipe with Blur (The specific effect requested)
+                    
+                    // 4. Mask Reveal / Wipe with Blur: The transition effect
                     .to([".phrase-1-inner", ".phrase-2-inner"], {
                         clipPath: "inset(0% 0 100% 0)",
-                        filter: "blur(15px)",
-                        y: -40,
-                        stagger: 0.05,
+                        filter: "blur(20px)",
+                        y: -60,
+                        stagger: 0.1,
+                        duration: 0.5, // Completes the wipe by 50% scroll
                         ease: "power1.inOut"
                     }, 0);
             }
         });
+
 
 
         return () => {
