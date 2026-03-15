@@ -35,18 +35,21 @@ export function Hero() {
         // Ensure video is paused so GSAP has total control
         video.pause();
 
+        // BLOCK SCROLL initially
+        document.body.style.overflow = "hidden";
+
         const ctx = gsap.context(() => {
-            // 1. MASTER INTRO TIMELINE
+            // 1. MASTER INTRO TIMELINE (Skull -> Transition -> Woman)
             const introTl = gsap.timeline({
                 defaults: { ease: "power3.out" },
                 onComplete: () => { 
                     isIntroComplete = true; 
-                    // Refresh ScrollTrigger to ensure correct initial state post-intro
+                    document.body.style.overflow = "auto";
                     ScrollTrigger.refresh();
                 }
             });
 
-            // Phase 1: Reveal Container & Start Video
+            // Phase 1: Reveal Container & Start Video (Skull Phase)
             introTl.to(textContainerRef.current, {
                 opacity: 1,
                 y: 0,
@@ -54,29 +57,32 @@ export function Hero() {
             })
             .to(video, {
                 currentTime: Math.min(2.5, duration),
-                duration: 2.8,
+                duration: 3.2, // Slightly longer for a more cinematic transition
                 ease: "power2.inOut"
             }, "-=0.8")
 
-            // Phase 2: Coherent Masked Reveal & Tracking expansion
+            // Phase 2: Skull Phrase ("Sua origem") - Appears during the skull phase
             .to(".phrase-1-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
                 letterSpacing: "0.45em",
-                duration: 1.5,
+                duration: 1.2,
                 ease: "expo.out"
-            }, "-=2.2")
+            }, "-=3.0") 
+
+            // Phase 3: Woman Phrase ("Seu sorriso") - Appears as woman emerges
             .to(".phrase-2-inner", {
                 clipPath: "inset(0% 0 0 0)",
                 y: 0,
                 duration: 1.5,
                 ease: "expo.out"
-            }, "-=1.9")
+            }, "-=1.0") 
+
             .to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
-            }, "-=1.5");
+                duration: 1,
+            }, "-=0.6");
 
             // 2. SCROLL-SCRUBBING WITH CATCH-UP
             ScrollTrigger.create({
@@ -89,7 +95,7 @@ export function Hero() {
                     const targetTime = self.progress * duration;
                     gsap.to(video, {
                         currentTime: targetTime,
-                        duration: 0.6,
+                        duration: 0.8,
                         ease: "power1.out",
                         overwrite: "auto"
                     });
@@ -97,7 +103,6 @@ export function Hero() {
             });
 
             // 3. POST-INTRO Z-SPACE TRANSFORMATION
-            // Text zooms out and fades
             gsap.to(textContainerRef.current, {
                 scrollTrigger: {
                     trigger: scrollDriver,
@@ -124,7 +129,10 @@ export function Hero() {
             });
         });
 
-        return () => ctx.revert();
+        return () => {
+            ctx.revert();
+            document.body.style.overflow = "auto";
+        };
     }, [mounted, videoReady]);
 
     // Robust video detection (Hybrid)
