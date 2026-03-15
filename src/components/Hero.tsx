@@ -1,4 +1,4 @@
-// Updated: 2026-03-14 - Video Scrubbing approach with perfect centering
+// Updated: 2026-03-15 - Canvas Image Sequence with Refined Layout
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -12,138 +12,173 @@ if (typeof window !== "undefined") {
 export function Hero() {
     const scrollDriverRef = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
-    const [videoReady, setVideoReady] = useState(false);
+    const [imagesReady, setImagesReady] = useState(false);
+    const imagesRef = useRef<HTMLImageElement[]>([]);
+    
+    // Config
+    const frameCount = 144;
+    const introFrames = 70; // Half-way roughly for the intro
 
     useEffect(() => {
         setMounted(true);
+        
+        // Preload Image Sequence
+        let loadedCount = 0;
+        const loadImages = () => {
+            for (let i = 0; i < frameCount; i++) {
+                const img = new Image();
+                img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
+                img.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === frameCount) {
+                        setImagesReady(true);
+                    }
+                };
+                imagesRef.current[i] = img;
+            }
+        };
+        loadImages();
     }, []);
 
+    const render = (frame: number) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (!canvas || !ctx || !imagesRef.current[frame]) return;
 
-
-    // Unified Master Intro & Scroll Logic
-    useEffect(() => {
-        if (!mounted || !videoReady || !videoRef.current || !textContainerRef.current || !scrollDriverRef.current) return;
+        const img = imagesRef.current[frame];
         
-        const video = videoRef.current;
-        const duration = video.duration || 1;
-        const scrollDriver = scrollDriverRef.current;
-        let isIntroComplete = false;
+        // Responsive Scaling (Cover behavior)
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
 
-        video.pause();
+        const imgRatio = img.width / img.height;
+        const canvasRatio = w / h;
+
+        let drawW, drawH, drawX, drawY;
+
+        if (canvasRatio > imgRatio) {
+            drawW = w;
+            drawH = w / imgRatio;
+            drawX = 0;
+            drawY = (h - drawH) / 2;
+        } else {
+            drawW = h * imgRatio;
+            drawH = h;
+            drawX = (w - drawW) / 2;
+            drawY = 0;
+        }
+
+        // --- POSITIONING TWEAK ---
+        // "Position after E of word origem"
+        // Move the image slightly to the right so the focal point (skull) doesn't overlap the left text.
+        const lateralShift = w * 0.18; // 18% of viewport width shift to the right
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(img, drawX + lateralShift, drawY, drawW, drawH);
+    };
+
+    // Master Animation Logic
+    useEffect(() => {
+        if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
+
+        const sequence = { frame: 0 };
         document.body.style.overflow = "hidden";
 
         const ctx = gsap.context(() => {
-            const introDuration = 5.0; // Seconds for the cinematic narrative
-            const videoDuration = duration;
-
-            // 1. MASTER INTRO TIMELINE (Frame-Locked Cinematic)
+            // 1. MASTER INTRO TIMELINE
             const introTl = gsap.timeline({
                 defaults: { ease: "power2.out" },
-                onComplete: () => { 
-                    isIntroComplete = true; 
+                onComplete: () => {
                     document.body.style.overflow = "auto";
-                    
-                    setTimeout(() => {
-                        setupPostIntroScroll();
-                        ScrollTrigger.refresh();
-                    }, 100);
+                    setupScrollScrub();
+                    ScrollTrigger.refresh();
                 }
             });
 
-            // Start Video immediately
-            introTl.to(video, {
-                currentTime: introDuration,
-                duration: introDuration,
-                ease: "none"
+            // Intro Sequence (frames 0 -> 70)
+            introTl.to(sequence, {
+                frame: introFrames,
+                duration: 4.5,
+                ease: "none",
+                onUpdate: () => render(Math.round(sequence.frame))
             }, 0);
 
-            // Timeline timings as requested:
-            // 1.5s → "Sua origem" fades in near the skull
+            // Text Animations
             introTl.to(".phrase-1-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 1.2,
-            }, 1.5);
+            }, 1.2);
 
-            // 3.5s → "Seu sorriso" fades in near the woman's face
             introTl.to(".phrase-2-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 1.2,
-            }, 3.5);
+            }, 3.0);
 
-            // 4.5s → Button and Final Polish
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 1.0,
                 ease: "back.out(1.7)"
-            }, 4.2);
+            }, 3.8);
 
-            // Function to setup SCROLL-BASED logic AFTER intro
-            function setupPostIntroScroll() {
-                const latestVideoDuration = video.duration || videoDuration;
-                const totalScrollHeight = scrollDriver.offsetHeight - window.innerHeight;
-                const targetScrollPos = (introDuration / latestVideoDuration) * totalScrollHeight;
-
-                window.scrollTo({ top: targetScrollPos, behavior: "auto" });
-
-                const masterScrollTl = gsap.timeline({
+            function setupScrollScrub() {
+                const scrubTl = gsap.timeline({
                     scrollTrigger: {
-                        trigger: scrollDriver,
+                        trigger: scrollDriverRef.current,
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 2.0,
+                        scrub: 1.5,
                         invalidateOnRefresh: true,
                     }
                 });
 
-                masterScrollTl
-                    .fromTo(video, 
-                        { currentTime: 0 },
-                        { 
-                            currentTime: latestVideoDuration, 
-                            duration: 1.0, 
-                            ease: "none"
-                        }, 0)
-                    .fromTo(video,
-                        { scale: 1 },
-                        { 
-                            scale: 1.15, 
-                            duration: 1.0,
-                            ease: "none"
-                        }, 0)
-                    .to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
-                        opacity: 0,
-                        y: -100,
-                        stagger: 0.05,
-                        duration: 0.4,
-                        ease: "power2.inOut"
-                    }, 0.2);
+                scrubTl.to(sequence, {
+                    frame: frameCount - 1,
+                    onUpdate: () => render(Math.round(sequence.frame)),
+                    ease: "none"
+                }, 0);
+
+                // Zoom effect for "limitless" feel
+                scrubTl.to(canvasRef.current, {
+                    scale: 1.1,
+                    ease: "none"
+                }, 0);
+
+                // Fade out UI
+                scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
+                    opacity: 0,
+                    y: -100,
+                    stagger: 0.05,
+                    duration: 0.4,
+                    ease: "power2.inOut"
+                }, 0.1);
             }
         });
+
+        // Initial render
+        render(0);
 
         return () => {
             ctx.revert();
             document.body.style.overflow = "auto";
         };
-    }, [mounted, videoReady]);
+    }, [mounted, imagesReady]);
 
-    // Robust video detection
+    // Handle Resize
     useEffect(() => {
-        if (!mounted || !videoRef.current) return;
-        const video = videoRef.current;
-        const checkReady = () => { if (video.readyState >= 1) setVideoReady(true); };
-        const timer = setInterval(checkReady, 500);
-        const failsafe = setTimeout(() => { setVideoReady(true); clearInterval(timer); }, 3000);
-        checkReady();
-        return () => { clearInterval(timer); clearTimeout(failsafe); };
-    }, [mounted]);
-
-    const handleVideoEvent = () => setVideoReady(true);
+        const handleResize = () => {
+            render(imagesReady ? Math.round(frameCount / 2) : 0); // Re-render preview
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [imagesReady]);
 
     return (
         <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
@@ -151,10 +186,9 @@ export function Hero() {
                 <style>{`
                     .hero {
                         position: sticky;
-                        top: 0;
+                        top: -5vh; /* MOVED UP SLIGHTLY */
                         width: 100vw;
-                        height: 100vh;
-                        height: 100dvh;
+                        height: 105vh; /* TALLER TO COVER THE TOP SHIFT */
                         background: #000;
                         margin: 0;
                         padding: 0 !important;
@@ -164,36 +198,37 @@ export function Hero() {
                         overflow: hidden;
                     }
 
-                    .video-bg-layer {
+                    .canvas-container {
                         position: absolute;
                         inset: 0;
+                        width: 100%;
+                        height: 100%;
                         z-index: 0;
                         opacity: 0;
-                        transition: opacity 1.2s ease-out;
-                    }
-
-                    .video-bg-layer.ready { opacity: 1; }
-
-                    .hero-video-container {
-                        position: absolute;
-                        inset: 0;
+                        transition: opacity 1.5s ease;
                         display: flex;
-                        align-items: center;
                         justify-content: center;
+                        align-items: center;
+                        transform: scale(1.05); /* LARGE BY DEFAULT */
                     }
 
-                    .hero-video-container video {
-                        min-width: 100%;
-                        min-height: 100%;
+                    .canvas-container.ready {
+                        opacity: 1;
+                    }
+
+                    .hero-canvas {
+                        width: 100% !important;
+                        height: 100% !important;
                         object-fit: cover;
-                        object-position: 25% center;
                     }
 
-                    .hero-video-overlay {
+                    /* Vignette to make it feel premium and limitless */
+                    .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: rgba(0, 0, 0, 0.3);
+                        background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
                         z-index: 1;
+                        pointer-events: none;
                     }
 
                     .hero-container {
@@ -205,109 +240,92 @@ export function Hero() {
                         pointer-events: none;
                     }
 
-                    /* Cinematic Positioning */
                     .phrase-1-wrapper {
                         position: absolute;
                         left: 10vw;
-                        top: 15vh;
+                        top: 25vh; /* ADJUSTED FOR HIGHER CONTAINER */
                         opacity: 0;
-                        transform: translateY(20px);
-                        text-align: left;
+                        transform: translateY(30px);
                     }
 
                     .phrase-2-wrapper {
                         position: absolute;
                         left: 50%;
-                        bottom: 20vh;
-                        transform: translate(-50%, 20px);
+                        bottom: 25vh;
+                        transform: translate(-50%, 30px);
                         opacity: 0;
                         text-align: center;
                         width: 100%;
-                        max-width: 90vw;
                     }
 
                     .hero-btn-wrapper {
                         position: absolute;
                         left: 50%;
-                        bottom: 10vh;
-                        transform: translate(-50%, 20px);
+                        bottom: 12vh;
+                        transform: translate(-50%, 30px);
                         opacity: 0;
                         pointer-events: auto;
                     }
 
                     .btn-premium-cta {
-                        background: rgba(26, 26, 26, 0.45);
-                        backdrop-filter: blur(12px);
-                        -webkit-backdrop-filter: blur(12px);
-                        border: 1px solid rgba(230, 211, 163, 0.3);
+                        background: rgba(255, 255, 255, 0.05);
+                        backdrop-filter: blur(15px);
+                        -webkit-backdrop-filter: blur(15px);
+                        border: 1px solid rgba(230, 211, 163, 0.4);
                         color: #FFFFFF;
-                        padding: 16px 48px;
+                        padding: 20px 56px;
                         border-radius: 100px;
                         font-size: 13px;
                         font-weight: 600;
-                        letter-spacing: 0.25em;
+                        letter-spacing: 0.3em;
                         text-transform: uppercase;
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                     }
 
                     .btn-premium-cta:hover {
-                        background: rgba(230, 211, 163, 0.15);
-                        border-color: rgba(230, 211, 163, 0.8);
-                        transform: translateY(-2px);
+                        background: rgba(230, 211, 163, 0.2);
+                        border-color: #E6D3A3;
+                        transform: scale(1.05);
                     }
 
-                    @media (max-width: 767px) {
-                        .phrase-1-wrapper { left: 8vw; top: 18vh; }
-                        .phrase-2-wrapper { bottom: 25vh; }
-                        .hero-btn-wrapper { bottom: 12vh; }
+                    @media (max-width: 768px) {
+                        .phrase-1-wrapper { top: 20vh; left: 8vw; }
+                        .phrase-2-wrapper { bottom: 30vh; }
+                        .btn-premium-cta { padding: 16px 40px; font-size: 11px; }
+                        /* Shifting less on mobile to keep skull visible */
+                        .hero-canvas { transform: translateX(5%); } 
                     }
                 `}</style>
 
-                {/* Background Layer with Video */}
-                <div className={`video-bg-layer ${videoReady ? 'ready' : ''}`}>
-                    <div className="hero-video-container">
-                        <video
-                            ref={videoRef}
-                            src="/hero-background-new.mp4"
-                            muted
-                            playsInline
-                            autoPlay
-                            loop
-                            preload="auto"
-                            onLoadedMetadata={handleVideoEvent}
-                            onCanPlay={handleVideoEvent}
-                        />
-                        <div className="hero-video-overlay" />
-                    </div>
+                <div className={`canvas-container ${imagesReady ? 'ready' : ''}`}>
+                    <canvas ref={canvasRef} className="hero-canvas" />
+                    <div className="hero-overlay" />
                 </div>
 
                 <div className="hero-container">
-                    {/* Line 1: Near the skull (Upper-Left) */}
                     <div className="phrase-1-wrapper">
-                        <h1 className="text-white/80 font-medium uppercase" style={{
-                            fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: 'clamp(14px, 2vw, 18px)',
-                            letterSpacing: '0.4em'
+                        <h1 className="text-white/70 font-light uppercase" style={{
+                            fontSize: 'clamp(14px, 1.5vw, 20px)',
+                            letterSpacing: '0.5em'
                         }}>
                             Sua origem
                         </h1>
                     </div>
 
-                    {/* Line 2: Near the woman's face (Center-Lower) */}
                     <div className="phrase-2-wrapper">
-                        <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{
+                        <h2 className="text-[#E6D3A3] font-bold" style={{
                             fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(42px, 9vw, 92px)',
-                            lineHeight: '0.95'
+                            fontSize: 'clamp(48px, 8vw, 110px)',
+                            lineHeight: '0.9',
+                            letterSpacing: '-0.02em'
                         }}>
                             Seu sorriso
                         </h2>
                     </div>
 
-                    {/* Main CTA */}
                     <div className="hero-btn-wrapper">
                         <button className="btn-premium-cta">
-                            AGENDAR EXPERIÊNCIA
+                            Descubra a Experiência
                         </button>
                     </div>
                 </div>
@@ -315,4 +333,5 @@ export function Hero() {
         </div>
     );
 }
+
 
