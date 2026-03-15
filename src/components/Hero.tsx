@@ -143,6 +143,23 @@ export function Hero() {
                     ease: "power2.inOut"
                 });
 
+                // Mask Reveal / Wipe Animation synced with scroll
+                gsap.to([".phrase-1-inner", ".phrase-2-inner"], {
+                    scrollTrigger: {
+                        trigger: scrollDriver,
+                        start: "top top",
+                        end: "30% top",
+                        scrub: 1,
+                    },
+                    clipPath: "inset(0% 0 100% 0)",
+                    filter: "blur(12px)",
+                    y: -30,
+                    stagger: 0.1,
+                    ease: "power1.inOut"
+                });
+
+
+
                 // Atmospheric Zoom
                 gsap.to(video, {
                     scrollTrigger: {
