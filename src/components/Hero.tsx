@@ -58,22 +58,25 @@ export function Hero() {
                 ease: "power2.inOut"
             }, "-=0.8")
 
-            // Phase 2: Coherent Text & Button Entrance (integrated with video progress)
-            .to(".phrase-1", {
-                opacity: 1,
+            // Phase 2: Coherent Masked Reveal & Tracking expansion
+            .to(".phrase-1-inner", {
+                clipPath: "inset(0% 0 0 0)",
                 y: 0,
-                duration: 1.2,
+                letterSpacing: "0.45em",
+                duration: 1.5,
+                ease: "expo.out"
             }, "-=2.2")
-            .to(".phrase-2", {
-                opacity: 1,
+            .to(".phrase-2-inner", {
+                clipPath: "inset(0% 0 0 0)",
                 y: 0,
-                duration: 1.2,
-            }, "-=1.8")
+                duration: 1.5,
+                ease: "expo.out"
+            }, "-=1.9")
             .to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-            }, "-=1.4");
+                duration: 1.2,
+            }, "-=1.5");
 
             // 2. SCROLL-SCRUBBING WITH CATCH-UP
             ScrollTrigger.create({
@@ -82,12 +85,8 @@ export function Hero() {
                 end: "bottom bottom",
                 scrub: 1.2,
                 onUpdate: (self) => {
-                    // BLOCK scroll if intro is still playing
                     if (!isIntroComplete) return;
-
                     const targetTime = self.progress * duration;
-                    
-                    // Smoothly animate to the scroll position to prevent jumps
                     gsap.to(video, {
                         currentTime: targetTime,
                         duration: 0.6,
@@ -97,23 +96,30 @@ export function Hero() {
                 }
             });
 
-            // 3. POST-INTRO CONTENT TRANSFORMATION
+            // 3. POST-INTRO Z-SPACE TRANSFORMATION
+            // Text zooms out and fades
             gsap.to(textContainerRef.current, {
                 scrollTrigger: {
                     trigger: scrollDriver,
                     start: "top top",
-                    end: "40% top",
-                    scrub: true,
-                    // Only activate after intro
-                    onEnter: () => {
-                        if (!isIntroComplete) {
-                            // If user scrolls before intro ends, we don't transform yet
-                        }
-                    }
+                    end: "60% top",
+                    scrub: 1,
                 },
-                scale: 0.95,
+                scale: 0.8,
                 opacity: 0,
-                y: -40,
+                y: -60,
+                ease: "power2.inOut"
+            });
+
+            // Video zooms in (Depth Effect)
+            gsap.to(video, {
+                scrollTrigger: {
+                    trigger: scrollDriver,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1.5,
+                },
+                scale: 1.08,
                 ease: "none"
             });
         });
@@ -306,6 +312,16 @@ export function Hero() {
                         transform: translateY(-2px);
                         letter-spacing: 0.28em;
                     }
+
+                    .phrase-reveal-container {
+                        overflow: hidden;
+                        position: relative;
+                    }
+
+                    .phrase-inner {
+                        clip-path: inset(100% 0 0 0);
+                        transform: translateY(30px);
+                    }
                 `}</style>
 
                 {/* Background Layer with Video */}
@@ -327,19 +343,20 @@ export function Hero() {
                 </div>
 
                 <div className="hero-container">
-                    <div ref={textContainerRef} className="hero-content opacity-0 translate-y-8">
-                        <div className="phrase-1 opacity-0 translate-y-8 mb-4">
-                            <h1 className="text-white/60 font-medium tracking-[0.45em] uppercase" style={{
+                    <div ref={textContainerRef} className="hero-content opacity-0">
+                        <div className="phrase-1 phrase-reveal-container mb-4">
+                            <h1 className="phrase-1-inner phrase-inner text-white/80 font-medium uppercase" style={{
                                 fontFamily: 'var(--font-body), sans-serif',
                                 fontSize: 'clamp(14px, 2vw, 18px)',
-                                lineHeight: '1.0'
+                                lineHeight: '1.0',
+                                letterSpacing: '0.3em'
                             }}>
                                 Sua origem
                             </h1>
                         </div>
 
-                        <div className="phrase-2 opacity-0 translate-y-8 text-balance mb-12">
-                            <h2 className="text-[#E6D3A3] font-bold tracking-tight" style={{
+                        <div className="phrase-2 phrase-reveal-container text-balance mb-12">
+                            <h2 className="phrase-2-inner phrase-inner text-[#E6D3A3] font-bold tracking-tight" style={{
                                 fontFamily: '"Playfair Display", serif',
                                 fontSize: 'clamp(52px, 11vw, 102px)',
                                 lineHeight: '0.95',
