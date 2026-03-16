@@ -174,25 +174,20 @@ export function Hero() {
                 ease: "none"
             }, 0);
 
-            // Text recedes into distance (Parallax)
+            // Text recedes into distance (Parallax) with Atmospheric Dissolution
             scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper"], {
-                scale: 0.8,
-                z: -150,
-                ease: "none"
-            }, 0);
-
-            // Fade out UI - Delayed until AFTER the transformation
-            scrubTl.to(".hero-text-cluster", {
+                scale: 0.7,
+                z: -300,
+                filter: "blur(12px)",
+                letterSpacing: "0.25em",
                 opacity: 0,
-                x: -120,
-                scale: 0.85,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }, 0.6); // Delay to 60% of scroll to preserve intro visibility
+                ease: "power2.inOut",
+                duration: 0.4
+            }, 0.6); 
 
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
-                y: 80,
+                y: 100,
                 duration: 0.3,
                 ease: "power2.inOut"
             }, 0.6);
@@ -406,11 +401,11 @@ export function Hero() {
                         font-style: italic;
                         letter-spacing: -0.05em;
                         line-height: 0.7;
-                        color: #FFFB00 !important;
+                        color: #E6D3A3 !important;
                         text-shadow: 
                             0 20px 80px rgba(0,0,0,0.9), 
-                            0 0 50px rgba(255, 251, 0, 0.6),
-                            0 0 100px rgba(255, 251, 0, 0.2);
+                            0 0 50px rgba(230, 211, 163, 0.4),
+                            0 0 100px rgba(230, 211, 163, 0.15);
                         white-space: nowrap;
                         margin: 0;
                         padding: 0;
