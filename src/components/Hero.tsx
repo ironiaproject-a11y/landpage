@@ -4,9 +4,10 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
 export function Hero() {
@@ -99,25 +100,58 @@ export function Hero() {
         document.body.style.overflow = "hidden";
 
         const ctx = gsap.context(() => {
-            // 1. MASTER INTRO TIMELINE
+            // 1. Setup Scroll Scrub immediately
+            const scrubTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: scrollDriverRef.current,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 0.8,
+                    invalidateOnRefresh: true,
+                }
+            });
+
+            scrubTl.to(sequence, {
+                frame: frameCount - 1,
+                onUpdate: () => render(Math.round(sequence.frame)),
+                ease: "none"
+            }, 0);
+
+            // Zoom effect
+            scrubTl.to(canvasRef.current, {
+                scale: 1.1,
+                ease: "none"
+            }, 0);
+
+            // Fade out UI
+            scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
+                opacity: 0,
+                y: -100,
+                stagger: 0.05,
+                duration: 0.4,
+                ease: "power2.inOut"
+            }, 0.1);
+
+            // 2. MASTER INTRO TIMELINE (Auto-scrolls the page)
             const introTl = gsap.timeline({
                 defaults: { ease: "power2.out" },
                 onComplete: () => {
                     document.body.style.overflow = "auto";
-                    setupScrollScrub();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // Intro Sequence (frames 0 -> 70)
-            introTl.to(sequence, {
-                frame: introFrames,
+            // Intro Auto-Scroll (Simulate scrubbing frames 0 -> 70)
+            // We scroll the window so ScrollTrigger naturally updates the frames
+            const scrollDistance = (window.innerHeight * 4) * (introFrames / frameCount);
+            
+            introTl.to(window, {
+                scrollTo: scrollDistance,
                 duration: 4.5,
-                ease: "none",
-                onUpdate: () => render(Math.round(sequence.frame))
+                ease: "power2.inOut",
             }, 0);
 
-            // Text Animations
+            // Text Animations (synced with auto-scroll)
             introTl.to(".phrase-1-wrapper", {
                 opacity: 1,
                 y: 0,
@@ -136,39 +170,6 @@ export function Hero() {
                 duration: 1.0,
                 ease: "back.out(1.7)"
             }, 3.8);
-
-            function setupScrollScrub() {
-                const scrubTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: scrollDriverRef.current,
-                        start: "top top",
-                        end: "bottom bottom", // Full height of the track
-                        scrub: 0.8, // Slightly faster for more "complete" feel
-                        invalidateOnRefresh: true,
-                    }
-                });
-
-                scrubTl.to(sequence, {
-                    frame: frameCount - 1,
-                    onUpdate: () => render(Math.round(sequence.frame)),
-                    ease: "none"
-                }, 0);
-
-                // Zoom effect for "limitless" feel
-                scrubTl.to(canvasRef.current, {
-                    scale: 1.1,
-                    ease: "none"
-                }, 0);
-
-                // Fade out UI
-                scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
-                    opacity: 0,
-                    y: -100,
-                    stagger: 0.05,
-                    duration: 0.4,
-                    ease: "power2.inOut"
-                }, 0.1);
-            }
         });
 
         // Initial render
