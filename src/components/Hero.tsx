@@ -130,6 +130,7 @@ export function Hero() {
                     y: yPct * 15,
                     duration: 1.2,
                     ease: "power2.out",
+                    overwrite: "auto"
                 });
                 
                 // Bloom follows mouse
@@ -166,6 +167,7 @@ export function Hero() {
             // "Seu sorriso" moves slightly upward but stays visible
             scrubTl.to(".hero-line-2", {
                 y: -20,
+                xPercent: -50,
                 duration: 0.5,
                 ease: "power2.out"
             }, 0);
@@ -204,8 +206,8 @@ export function Hero() {
 
             // 1.4s - "Sua origem" fades in
             introTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" },
+                { opacity: 0, y: 20, xPercent: -50 },
+                { opacity: 1, y: 0, xPercent: -50, duration: 1.0, ease: "power2.out" },
                 1.4
             );
 
@@ -218,8 +220,8 @@ export function Hero() {
 
             // 3.2s - "Seu sorriso" fades in
             introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
+                { opacity: 0, y: 30, xPercent: -50 },
+                { opacity: 1, y: 0, xPercent: -50, duration: 1.2, ease: "power3.out" },
                 3.2
             );
 
@@ -279,7 +281,6 @@ export function Hero() {
                         height: 100%;
                         z-index: 0;
                         opacity: 0;
-                        transition: opacity 1.5s ease;
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -358,7 +359,6 @@ export function Hero() {
                         position: absolute;
                         top: 32vh;
                         left: 50%;
-                        transform: translateX(-50%);
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
@@ -374,7 +374,6 @@ export function Hero() {
                         position: absolute;
                         top: 60vh;
                         left: 50%;
-                        transform: translateX(-50%);
                         text-align: center;
                         opacity: 0;
                     }
@@ -434,7 +433,7 @@ export function Hero() {
 
                     @media (max-width: 768px) {
                         .hero-text {
-                            top: 56vh;
+                            top: 0;
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
