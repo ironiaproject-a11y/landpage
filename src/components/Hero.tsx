@@ -389,9 +389,9 @@ export function Hero() {
                         opacity: 0;
                         transform: translateZ(60px) translateY(20px);
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(18px, 2.5vw, 26px);
+                        font-size: clamp(16px, 2vw, 22px);
                         font-weight: 400;
-                        letter-spacing: 0.35em;
+                        letter-spacing: 0.45em;
                         color: #F3E7C8;
                         text-transform: uppercase;
                         text-shadow: 0 4px 15px rgba(0,0,0,0.5);
@@ -401,12 +401,15 @@ export function Hero() {
                         opacity: 0;
                         transform: translateZ(160px) translateY(20px);
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(80px, 18vw, 280px);
+                        font-size: clamp(110px, 24vw, 420px);
                         font-weight: 600;
-                        letter-spacing: -0.03em;
-                        line-height: 0.75;
-                        color: #FFCC00;
-                        text-shadow: 0 20px 80px rgba(0,0,0,0.9), 0 0 40px rgba(255, 204, 0, 0.25);
+                        letter-spacing: -0.05em;
+                        line-height: 0.7;
+                        color: #FFD700;
+                        text-shadow: 
+                            0 20px 80px rgba(0,0,0,0.9), 
+                            0 0 50px rgba(255, 215, 0, 0.4),
+                            0 0 100px rgba(255, 215, 0, 0.15);
                         white-space: nowrap;
                     }
 
