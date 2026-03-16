@@ -144,7 +144,7 @@ export function Hero() {
 
             window.addEventListener("mousemove", handleMouseMove);
 
-            // 1. Setup Scroll Scrub immediately
+            // 1. Setup Scroll Scrub for narrative exit
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: scrollDriverRef.current,
@@ -155,99 +155,85 @@ export function Hero() {
                 }
             });
 
+            // Video scrubbing alignment
             scrubTl.to(sequence, {
                 frame: frameCount - 1,
                 onUpdate: () => render(Math.round(sequence.frame)),
                 ease: "none"
             }, 0);
 
-            // 0a. End frame sequence early to prevent skip
-            // The frames (0-143) will complete at 75% scroll progress
-            gsap.to(scrubTl.getChildren()[0], {
-                duration: 0.75, // Percentage of timeline
-                ease: "none"
-            });
-
-            // Enhanced Z-Space effect
-            scrubTl.to(canvasRef.current, {
-                scale: 1.15,
-                ease: "none"
+            // Exit Narrative Animation
+            scrubTl.to(".phrase-1-wrapper", {
+                opacity: 0,
+                duration: 0.4,
+                ease: "power2.inOut"
             }, 0);
 
-            // Text recedes into distance (Parallax) with Atmospheric Dissolution
-            scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper"], {
-                scale: 0.7,
-                z: -300,
-                filter: "blur(12px)",
-                letterSpacing: "0.25em",
+            scrubTl.to(".phrase-2-wrapper h2", {
+                y: -20,
                 opacity: 0,
-                ease: "power2.inOut",
-                duration: 0.4
-            }, 0.6); 
+                duration: 0.5,
+                ease: "power2.inOut"
+            }, 0);
 
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
-                y: 100,
+                y: 40,
                 duration: 0.3,
                 ease: "power2.inOut"
-            }, 0.6);
+            }, 0);
+
+            // Subtle video zoom during scroll
+            scrubTl.to(canvasRef.current, {
+                scale: 1.08,
+                ease: "none"
+            }, 0);
 
             // The Exit Sequence that previously caused a blackout has been removed 
             // to ensure the hero video remains visible throughout the entire scroll.
 
-            // 2. MASTER INTRO TIMELINE (Sequential Reveal)
+            // 2. MASTER INTRO TIMELINE (Narrative Alignment)
             const introTl = gsap.timeline({
-                defaults: { ease: "power3.inOut" },
-                delay: 1.0, // Initial breath
+                defaults: { ease: "power3.out" },
                 onComplete: () => {
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // PHASE 1: The Origin (Skull)
-            introTl.to(".phrase-1-wrapper", {
-                opacity: 0.8,
-                y: 0,
-                duration: 1.8,
-                ease: "power2.out"
+            // 0.0s - Video fade-in
+            introTl.to([".canvas-container", ".hero"], {
+                opacity: 1,
+                duration: 1.5,
+                ease: "power2.inOut"
             }, 0);
 
-            // PHASE 2 & 3: Movement and Transformation
-            // Synchronized with skull end sequence
-            introTl.to(".phrase-1-wrapper", {
-                opacity: 0,
-                scale: 0.7,
-                y: -60,
-                duration: 1.5,
-                ease: "power3.in"
-            }, 5.5); // Fades out as the auto-scroll reaches the transformation point
+            // 0.6s - Subtle video zoom
+            introTl.to(".canvas-container", {
+                scale: 1.05,
+                duration: 3,
+                ease: "power2.out"
+            }, 0.6);
 
-            // Balanced for 400dvh track - lands at exactly the transformation point
-            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 3);
-            const scrollDistance = trackHeight * 0.48; 
+            // 1.4s - "Sua origem" entrance
+            introTl.fromTo(".phrase-1-wrapper", 
+                { opacity: 0, y: 20 },
+                { opacity: 0.9, y: 0, duration: 1.5 },
+                1.4
+            );
 
-            introTl.to(window, {
-                scrollTo: scrollDistance,
-                duration: 4.5,
-                ease: "expo.inOut",
-            }, 3.5);
+            // 2.2s - "Seu sorriso" reveal
+            introTl.fromTo(".phrase-2-wrapper",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 1.8 },
+                2.2
+            );
 
-            // PHASE 4: The Smile (Reveal)
-            // Starts appearing exactly when the face sequence begins in the video
-            introTl.to(".phrase-2-wrapper", {
-                opacity: 1,
-                y: 0,
-                duration: 2.5,
-                ease: "power4.out"
-            }, 7.8);
-
+            // 3.0s - CTA button softly
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
-                y: 0,
                 duration: 1.5,
-                ease: "back.out(1.4)"
-            }, 9.0);
+            }, 3.0);
         });
 
         // Initial render logic
@@ -366,15 +352,15 @@ export function Hero() {
 
                     .hero-text-cluster {
                         position: absolute;
-                        top: 50vh;
+                        top: 56vh;
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
-                        z-index: 20;
+                        z-index: 5;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        gap: 15px;
+                        gap: 12px;
                         pointer-events: none;
                         width: 100%;
                         max-width: 95vw;
@@ -382,30 +368,26 @@ export function Hero() {
 
                     .phrase-1-wrapper {
                         opacity: 0;
-                        transform: translateZ(60px) translateY(20px);
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(16px, 2vw, 22px);
+                        font-size: clamp(20px, 3vw, 26px);
                         font-weight: 400;
-                        letter-spacing: 0.45em;
+                        letter-spacing: 0.04em;
                         color: #F3E7C8;
-                        text-transform: uppercase;
-                        text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                        text-transform: none;
+                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                     }
 
                     .phrase-2-wrapper h2 {
                         opacity: inherit;
                         transform: inherit;
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(120px, 28vw, 480px);
+                        font-size: clamp(44px, 6vw, 56px);
                         font-weight: 600;
-                        font-style: italic;
-                        letter-spacing: -0.05em;
-                        line-height: 0.7;
+                        font-style: normal;
+                        letter-spacing: -0.01em;
+                        line-height: 1.1;
                         color: #E6D3A3 !important;
-                        text-shadow: 
-                            0 20px 80px rgba(0,0,0,0.9), 
-                            0 0 50px rgba(230, 211, 163, 0.4),
-                            0 0 100px rgba(230, 211, 163, 0.15);
+                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                         white-space: nowrap;
                         margin: 0;
                         padding: 0;
@@ -413,7 +395,6 @@ export function Hero() {
 
                     .phrase-2-wrapper {
                         opacity: 0;
-                        transform: translateZ(160px) translateY(20px);
                     }
 
                     .hero-btn-wrapper {
