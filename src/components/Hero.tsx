@@ -401,15 +401,15 @@ export function Hero() {
                         opacity: 0;
                         transform: translateZ(160px) translateY(20px);
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(110px, 24vw, 420px);
+                        font-size: clamp(120px, 26vw, 460px);
                         font-weight: 600;
                         letter-spacing: -0.05em;
                         line-height: 0.7;
-                        color: #FFD700;
+                        color: #FFFB00;
                         text-shadow: 
                             0 20px 80px rgba(0,0,0,0.9), 
-                            0 0 50px rgba(255, 215, 0, 0.4),
-                            0 0 100px rgba(255, 215, 0, 0.15);
+                            0 0 40px rgba(255, 251, 0, 0.5),
+                            0 0 80px rgba(255, 251, 0, 0.2);
                         white-space: nowrap;
                     }
 
