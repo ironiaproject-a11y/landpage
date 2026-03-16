@@ -219,14 +219,14 @@ export function Hero() {
             }, 0);
 
             // PHASE 2 & 3: Movement and Transformation
-            // Keep phrase 1 visible as a subtle label during scroll
+            // Synchronized with skull end sequence
             introTl.to(".phrase-1-wrapper", {
-                opacity: 0.4,
-                scale: 0.85,
-                y: -40,
-                duration: 2.0,
-                ease: "power2.inOut"
-            }, 3.5);
+                opacity: 0,
+                scale: 0.7,
+                y: -60,
+                duration: 1.5,
+                ease: "power3.in"
+            }, 5.5); // Fades out as the auto-scroll reaches the transformation point
 
             // Balanced for 400dvh track - lands at exactly the transformation point
             const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 3);
@@ -239,19 +239,20 @@ export function Hero() {
             }, 3.5);
 
             // PHASE 4: The Smile (Reveal)
+            // Starts appearing exactly when the face sequence begins in the video
             introTl.to(".phrase-2-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 2.5,
-                ease: "power3.out"
-            }, 7.5);
+                ease: "power4.out"
+            }, 7.8);
 
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
                 duration: 1.5,
                 ease: "back.out(1.4)"
-            }, 8.5);
+            }, 9.0);
         });
 
         // Initial render logic
@@ -398,14 +399,14 @@ export function Hero() {
 
                     .phrase-2-wrapper {
                         opacity: 0;
-                        transform: translateZ(120px) translateY(20px);
+                        transform: translateZ(140px) translateY(20px);
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(60px, 11vw, 150px);
+                        font-size: clamp(70px, 14vw, 220px);
                         font-weight: 600;
                         letter-spacing: -0.02em;
-                        line-height: 0.85;
-                        color: #E6D3A3;
-                        text-shadow: 0 10px 40px rgba(0,0,0,0.7);
+                        line-height: 0.8;
+                        color: #FFD21F;
+                        text-shadow: 0 10px 60px rgba(0,0,0,0.8), 0 0 20px rgba(255, 210, 31, 0.2);
                         white-space: nowrap;
                     }
 
@@ -480,7 +481,7 @@ export function Hero() {
 
                         <div className="phrase-2-wrapper">
                             <h2 className="block italic">
-                                e seu sorriso
+                                Seu sorriso
                             </h2>
                         </div>
                     </div>
