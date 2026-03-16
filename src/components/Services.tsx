@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { ArrowRight, CircleDashed, Diamond, Crown, Cpu, Sparkles, Activity, Shield, Microscope, ScanLine, Stethoscope } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
 import VisualContainer from "./VisualContainer";
 import Image from "next/image";
@@ -27,18 +27,6 @@ interface Service {
     video: string;
 }
 
-const ICON_MAP: Record<string, any> = {
-    CircleDashed: CircleDashed,
-    Diamond: Diamond,
-    Crown: Crown,
-    Cpu: Cpu,
-    Sparkles: Sparkles,
-    Activity: Activity,
-    Shield: Shield,
-    Microscope: Microscope,
-    ScanLine: ScanLine,
-    Stethoscope: Stethoscope
-};
 
 function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
     const [isVideoActive, setIsVideoActive] = useState(false);
@@ -77,12 +65,6 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#E6D3A3]/5 border border-[#E6D3A3]/10 text-[#E6D3A3] group-hover:border-[#E6D3A3]/30 transition-all duration-500 service-icon-rotate">
-                            {(() => {
-                                const IconComp = ICON_MAP[service.icon] || CircleDashed;
-                                return <IconComp strokeWidth={1} className="w-4 h-4" />;
-                            })()}
-                        </div>
                         <span className="text-white/40 font-display text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
@@ -113,7 +95,6 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
 export function Services() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
-    const overlayDarkRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
     // Agent: Prioritize the first video to avoid black frames on entry
@@ -268,18 +249,6 @@ export function Services() {
                 }
             });
 
-            // Dark overlay fade-in
-            if (overlayDarkRef.current) {
-                gsap.to(overlayDarkRef.current, {
-                    opacity: 0.4,
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top center",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-            }
 
             // Animate card descriptions and CTAs
             gsap.fromTo(".service-card-description",
@@ -315,37 +284,18 @@ export function Services() {
                 }
             );
 
-            // Icon rotation on scroll
-            gsap.utils.toArray(".service-icon-rotate").forEach((icon: any) => {
-                gsap.to(icon, {
-                    rotation: 180,
-                    scrollTrigger: {
-                        trigger: icon.closest(".service-card-wrapper"),
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 1.5
-                    }
-                });
-            });
         }, sectionRef);
 
         return () => ctx.revert();
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 bg-[var(--color-deep-black)] relative overflow-hidden" id="servicos">
+        <section ref={sectionRef} className="py-24 md:py-40 bg-black relative overflow-hidden" id="servicos">
             {/* Priority Preload for the first card video */}
             <link rel="preload" href={firstVideo} as="video" type="video/mp4" />
 
-            {/* Background Texture */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
-
-            {/* Dark Overlay (Animated on Scroll) */}
-            <div
-                ref={overlayDarkRef}
-                className="absolute inset-0 z-[1] bg-black/0 pointer-events-none"
-                style={{ opacity: 0 }}
-            />
+            {/* Background Texture (Reduced opacity to prevent gray effect) */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 
             <div className="max-w-4xl mb-16 md:mb-32 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
