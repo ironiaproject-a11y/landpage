@@ -397,20 +397,28 @@ export function Hero() {
                         text-shadow: 0 4px 15px rgba(0,0,0,0.5);
                     }
 
+                    .phrase-2-wrapper h2 {
+                        opacity: inherit;
+                        transform: inherit;
+                        font-family: var(--font-bodoni), "Libre Bodoni", serif;
+                        font-size: clamp(120px, 28vw, 480px);
+                        font-weight: 600;
+                        font-style: italic;
+                        letter-spacing: -0.05em;
+                        line-height: 0.7;
+                        color: #FFFB00 !important;
+                        text-shadow: 
+                            0 20px 80px rgba(0,0,0,0.9), 
+                            0 0 50px rgba(255, 251, 0, 0.6),
+                            0 0 100px rgba(255, 251, 0, 0.2);
+                        white-space: nowrap;
+                        margin: 0;
+                        padding: 0;
+                    }
+
                     .phrase-2-wrapper {
                         opacity: 0;
                         transform: translateZ(160px) translateY(20px);
-                        font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(120px, 26vw, 460px);
-                        font-weight: 600;
-                        letter-spacing: -0.05em;
-                        line-height: 0.7;
-                        color: #FFFB00;
-                        text-shadow: 
-                            0 20px 80px rgba(0,0,0,0.9), 
-                            0 0 40px rgba(255, 251, 0, 0.5),
-                            0 0 80px rgba(255, 251, 0, 0.2);
-                        white-space: nowrap;
                     }
 
                     .hero-btn-wrapper {
@@ -445,8 +453,8 @@ export function Hero() {
                     }
 
                     @media (max-width: 1024px) {
-                        .phrase-2-wrapper {
-                            font-size: clamp(50px, 14vw, 90px);
+                        .phrase-2-wrapper h2 {
+                            font-size: clamp(60px, 16vw, 110px);
                             white-space: normal;
                             max-width: 90vw;
                         }
@@ -456,8 +464,8 @@ export function Hero() {
                         .hero-text-cluster {
                             top: 45vh;
                         }
-                        .phrase-2-wrapper {
-                            font-size: clamp(40px, 18vw, 70px);
+                        .phrase-2-wrapper h2 {
+                            font-size: clamp(50px, 20vw, 85px);
                         }
                         .hero-btn-wrapper { 
                             left: 50%;
