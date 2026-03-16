@@ -218,15 +218,16 @@ export function Hero() {
                 ease: "power2.out"
             }, 0);
 
-            // PHASE 2: The Disappearance
+            // PHASE 2 & 3: Movement and Transformation
+            // Keep phrase 1 visible as a subtle label during scroll
             introTl.to(".phrase-1-wrapper", {
-                opacity: 0,
-                y: -20,
-                duration: 1.5,
-                ease: "power2.in"
-            }, 2.5);
+                opacity: 0.4,
+                scale: 0.85,
+                y: -40,
+                duration: 2.0,
+                ease: "power2.inOut"
+            }, 3.5);
 
-            // PHASE 3: The Transformation (Auto-Scroll)
             // Balanced for 400dvh track - lands at exactly the transformation point
             const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 3);
             const scrollDistance = trackHeight * 0.48; 
@@ -241,8 +242,8 @@ export function Hero() {
             introTl.to(".phrase-2-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 2.0,
-                ease: "power2.out"
+                duration: 2.5,
+                ease: "power3.out"
             }, 7.5);
 
             introTl.to(".hero-btn-wrapper", {
@@ -369,46 +370,50 @@ export function Hero() {
 
                     .hero-text-cluster {
                         position: absolute;
-                        top: 55vh;
+                        top: 50vh;
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
                         z-index: 20;
                         display: flex;
                         flex-direction: column;
-                        gap: 10px;
+                        align-items: center;
+                        gap: 15px;
                         pointer-events: none;
                         width: 100%;
-                        max-width: 90vw;
+                        max-width: 95vw;
                     }
 
                     .phrase-1-wrapper {
                         opacity: 0;
-                        transform: translateZ(40px) translateY(20px);
-                        font-family: "Playfair Display", serif;
-                        font-size: clamp(20px, 3vw, 28px);
+                        transform: translateZ(60px) translateY(20px);
+                        font-family: var(--font-playfair), "Playfair Display", serif;
+                        font-size: clamp(18px, 2.5vw, 26px);
                         font-weight: 400;
-                        letter-spacing: 0.04em;
+                        letter-spacing: 0.35em;
                         color: #F3E7C8;
-                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+                        text-transform: uppercase;
+                        text-shadow: 0 4px 15px rgba(0,0,0,0.5);
                     }
 
                     .phrase-2-wrapper {
                         opacity: 0;
-                        transform: translateZ(80px) translateY(20px);
-                        font-family: "Playfair Display", serif;
-                        font-size: clamp(40px, 6vw, 56px);
+                        transform: translateZ(120px) translateY(20px);
+                        font-family: var(--font-playfair), "Playfair Display", serif;
+                        font-size: clamp(60px, 11vw, 150px);
                         font-weight: 600;
-                        letter-spacing: -0.01em;
+                        letter-spacing: -0.02em;
+                        line-height: 0.85;
                         color: #E6D3A3;
-                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+                        text-shadow: 0 10px 40px rgba(0,0,0,0.7);
+                        white-space: nowrap;
                     }
 
                     .hero-btn-wrapper {
                         position: absolute;
                         left: 6vw;
-                        top: calc(18vh + 300px);
-                        transform: translateZ(100px);
+                        bottom: 8vh;
+                        transform: translateZ(150px);
                         opacity: 0;
                         pointer-events: auto;
                     }
@@ -417,11 +422,11 @@ export function Hero() {
                         background: transparent;
                         backdrop-filter: blur(10px);
                         -webkit-backdrop-filter: blur(15px);
-                        border: 1px solid rgba(248, 248, 246, 0.6);
+                        border: 1px solid rgba(248, 248, 246, 0.4);
                         color: #F8F8F6;
-                        padding: 16px 30px;
+                        padding: 18px 40px;
                         border-radius: 999px;
-                        font-size: 12px;
+                        font-size: 13px;
                         font-weight: 500;
                         letter-spacing: 0.25em;
                         text-transform: uppercase;
@@ -429,21 +434,33 @@ export function Hero() {
                     }
 
                     .btn-premium-cta:hover {
-                        background: rgba(230, 211, 163, 0.2);
+                        background: rgba(230, 211, 163, 0.15);
                         border-color: #E6D3A3;
                         transform: scale(1.05);
+                        letter-spacing: 0.3em;
+                    }
+
+                    @media (max-width: 1024px) {
+                        .phrase-2-wrapper {
+                            font-size: clamp(50px, 14vw, 90px);
+                            white-space: normal;
+                            max-width: 90vw;
+                        }
                     }
 
                     @media (max-width: 768px) {
                         .hero-text-cluster {
-                            top: 55vh;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            padding: 0 20px;
+                            top: 45vh;
                         }
-                        .hero-btn-wrapper { bottom: 15vh; }
-                        .btn-premium-cta { padding: 16px 40px; font-size: 11px; }
-                        .hero-canvas { transform: translateX(0); } 
+                        .phrase-2-wrapper {
+                            font-size: clamp(40px, 18vw, 70px);
+                        }
+                        .hero-btn-wrapper { 
+                            left: 50%;
+                            transform: translateX(-50%) translateZ(150px);
+                            bottom: 12vh;
+                        }
+                        .btn-premium-cta { padding: 14px 30px; font-size: 11px; }
                     }
                 `}</style>
 
@@ -456,14 +473,14 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text-cluster">
                         <div className="phrase-1-wrapper">
-                            <span className="uppercase block">
+                            <span className="block">
                                 Sua origem
                             </span>
                         </div>
 
                         <div className="phrase-2-wrapper">
-                            <h2 className="block">
-                                Seu sorriso
+                            <h2 className="block italic">
+                                e seu sorriso
                             </h2>
                         </div>
                     </div>
