@@ -144,7 +144,7 @@ export function Hero() {
 
             window.addEventListener("mousemove", handleMouseMove);
 
-            // 1. Setup Scroll Scrub for narrative exit
+            // 1. Setup Scroll Scrub for Narrative Exit
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: scrollDriverRef.current,
@@ -162,14 +162,16 @@ export function Hero() {
                 ease: "none"
             }, 0);
 
-            // Exit Narrative Animation
-            scrubTl.to(".phrase-1-wrapper", {
+            // EXIT ANIMATION (Narrative Transition)
+            // "Sua origem" fade out smoothly
+            scrubTl.to(".hero-line-1", {
                 opacity: 0,
                 duration: 0.4,
                 ease: "power2.inOut"
             }, 0);
 
-            scrubTl.to(".phrase-2-wrapper h2", {
+            // "Seu sorriso" moves slightly upward
+            scrubTl.to(".hero-line-2", {
                 y: -20,
                 opacity: 0,
                 duration: 0.5,
@@ -178,23 +180,16 @@ export function Hero() {
 
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
-                y: 40,
+                y: 50,
                 duration: 0.3,
                 ease: "power2.inOut"
-            }, 0);
-
-            // Subtle video zoom during scroll
-            scrubTl.to(canvasRef.current, {
-                scale: 1.08,
-                ease: "none"
             }, 0);
 
             // The Exit Sequence that previously caused a blackout has been removed 
             // to ensure the hero video remains visible throughout the entire scroll.
 
-            // 2. MASTER INTRO TIMELINE (Narrative Alignment)
+            // 2. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
-                defaults: { ease: "power3.out" },
                 onComplete: () => {
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
@@ -211,28 +206,29 @@ export function Hero() {
             // 0.6s - Subtle video zoom
             introTl.to(".canvas-container", {
                 scale: 1.05,
-                duration: 3,
+                duration: 4,
                 ease: "power2.out"
             }, 0.6);
 
-            // 1.4s - "Sua origem" entrance
-            introTl.fromTo(".phrase-1-wrapper", 
+            // 1.4s - "Sua origem" fades in from below
+            introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 20 },
-                { opacity: 0.9, y: 0, duration: 1.5 },
+                { opacity: 0.9, y: 0, duration: 1.2, ease: "power2.out" },
                 1.4
             );
 
-            // 2.2s - "Seu sorriso" reveal
-            introTl.fromTo(".phrase-2-wrapper",
+            // 2.2s - "Seu sorriso" appears with stronger reveal
+            introTl.fromTo(".hero-line-2",
                 { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 1.8 },
+                { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" },
                 2.2
             );
 
-            // 3.0s - CTA button softly
+            // 3.0s - CTA button fades in softly
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
                 duration: 1.5,
+                ease: "power2.inOut"
             }, 3.0);
         });
 
@@ -350,7 +346,7 @@ export function Hero() {
                         transform-style: preserve-3d;
                     }
 
-                    .hero-text-cluster {
+                    .hero-text {
                         position: absolute;
                         top: 56vh;
                         left: 50%;
@@ -363,21 +359,19 @@ export function Hero() {
                         gap: 12px;
                         pointer-events: none;
                         width: 100%;
-                        max-width: 95vw;
                     }
 
-                    .phrase-1-wrapper {
+                    .hero-line-1 {
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
                         font-size: clamp(20px, 3vw, 26px);
                         font-weight: 400;
                         letter-spacing: 0.04em;
                         color: #F3E7C8;
-                        text-transform: none;
                         text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                     }
 
-                    .phrase-2-wrapper h2 {
+                    .hero-line-2 h2 {
                         opacity: inherit;
                         transform: inherit;
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
@@ -393,7 +387,7 @@ export function Hero() {
                         padding: 0;
                     }
 
-                    .phrase-2-wrapper {
+                    .hero-line-2 {
                         opacity: 0;
                     }
 
@@ -429,19 +423,19 @@ export function Hero() {
                     }
 
                     @media (max-width: 1024px) {
-                        .phrase-2-wrapper h2 {
-                            font-size: clamp(60px, 16vw, 110px);
+                        .hero-line-2 h2 {
+                            font-size: clamp(40px, 8vw, 50px);
                             white-space: normal;
                             max-width: 90vw;
                         }
                     }
 
                     @media (max-width: 768px) {
-                        .hero-text-cluster {
-                            top: 45vh;
+                        .hero-text {
+                            top: 56vh;
                         }
-                        .phrase-2-wrapper h2 {
-                            font-size: clamp(50px, 20vw, 85px);
+                        .hero-line-2 h2 {
+                            font-size: clamp(36px, 10vw, 46px);
                         }
                         .hero-btn-wrapper { 
                             left: 50%;
@@ -459,15 +453,15 @@ export function Hero() {
                 </div>
 
                 <div className="hero-container">
-                    <div className="hero-text-cluster">
-                        <div className="phrase-1-wrapper">
+                    <div className="hero-text">
+                        <div className="hero-line-1">
                             <span className="block">
                                 Sua origem
                             </span>
                         </div>
 
-                        <div className="phrase-2-wrapper">
-                            <h2 className="block italic">
+                        <div className="hero-line-2">
+                            <h2 className="block">
                                 Seu sorriso
                             </h2>
                         </div>
