@@ -218,7 +218,7 @@ export function Hero() {
             scrubTl.to(".hero-overlay", {
                 background: "#0B0B0B", // Force solid blackout color
                 opacity: 1,
-                duration: 0.4,
+                duration: 0.2, // Shorter duration for faster track
                 ease: "none"
             }, 0.8);
 
@@ -296,7 +296,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "350dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "200dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
