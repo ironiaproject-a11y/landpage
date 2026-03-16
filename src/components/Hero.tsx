@@ -150,7 +150,7 @@ export function Hero() {
                     trigger: scrollDriverRef.current,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 1.2, // Increased for buttery smoothness
+                    scrub: 0.5, // Faster follow-through
                     invalidateOnRefresh: true,
                 }
             });
