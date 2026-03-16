@@ -369,28 +369,39 @@ export function Hero() {
 
                     .hero-text-cluster {
                         position: absolute;
-                        left: 6vw;
-                        top: 18vh;
-                        z-index: 10;
+                        top: 55vh;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        text-align: center;
+                        z-index: 20;
                         display: flex;
                         flex-direction: column;
-                        gap: 12px;
+                        gap: 10px;
                         pointer-events: none;
-                        max-width: 520px;
+                        width: 100%;
+                        max-width: 90vw;
                     }
 
                     .phrase-1-wrapper {
                         opacity: 0;
                         transform: translateZ(40px) translateY(20px);
-                        filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
-                        font-weight: 500;
+                        font-family: "Playfair Display", serif;
+                        font-size: clamp(20px, 3vw, 28px);
+                        font-weight: 400;
+                        letter-spacing: 0.04em;
+                        color: #F3E7C8;
+                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                     }
 
                     .phrase-2-wrapper {
                         opacity: 0;
                         transform: translateZ(80px) translateY(20px);
-                        filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
-                        font-weight: 700;
+                        font-family: "Playfair Display", serif;
+                        font-size: clamp(40px, 6vw, 56px);
+                        font-weight: 600;
+                        letter-spacing: -0.01em;
+                        color: #E6D3A3;
+                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                     }
 
                     .hero-btn-wrapper {
@@ -425,11 +436,9 @@ export function Hero() {
 
                     @media (max-width: 768px) {
                         .hero-text-cluster {
+                            top: 55vh;
                             left: 50%;
-                            top: 35%;
                             transform: translate(-50%, -50%);
-                            width: 100%;
-                            text-align: center;
                             padding: 0 20px;
                         }
                         .hero-btn-wrapper { bottom: 15vh; }
@@ -447,22 +456,13 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text-cluster">
                         <div className="phrase-1-wrapper">
-                            <h1 className="text-white/80 font-light uppercase" style={{
-                                fontSize: 'clamp(20px, 4vw, 34px)',
-                                letterSpacing: '0.5em',
-                                lineHeight: '1.05'
-                            }}>
+                            <span className="uppercase block">
                                 Sua origem
-                            </h1>
+                            </span>
                         </div>
 
                         <div className="phrase-2-wrapper">
-                            <h2 className="text-[#E6D3A3]" style={{
-                                fontFamily: '"Playfair Display", serif',
-                                fontSize: 'clamp(48px, 8.5vw, 105px)',
-                                lineHeight: '1.02',
-                                letterSpacing: '-0.01em'
-                            }}>
+                            <h2 className="block">
                                 Seu sorriso
                             </h2>
                         </div>
