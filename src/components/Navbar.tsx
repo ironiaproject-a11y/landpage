@@ -83,7 +83,7 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl border-b border-white/5" : "pt-12 pb-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl" : "pt-12 pb-8 bg-transparent"
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">

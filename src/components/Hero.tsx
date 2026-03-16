@@ -340,9 +340,7 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: 
-                            radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.4) 60%, #000 100%),
-                            linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%);
+                        background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.45) 65%, #000 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
