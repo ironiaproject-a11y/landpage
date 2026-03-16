@@ -18,6 +18,8 @@ export function Hero() {
     const [mounted, setMounted] = useState(false);
     const [imagesReady, setImagesReady] = useState(false);
     const imagesRef = useRef<HTMLImageElement[]>([]);
+    const sequenceRef = useRef({ frame: 0 });
+    const mouseRef = useRef({ x: 0, y: 0 });
     
     // Config
     const frameCount = 144;
@@ -105,10 +107,41 @@ export function Hero() {
     useEffect(() => {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
-        const sequence = { frame: 0 };
+        const sequence = sequenceRef.current;
         document.body.style.overflow = "hidden";
 
         const ctx = gsap.context(() => {
+            // --- 3D TILT INTERACTION ---
+            const handleMouseMove = (e: MouseEvent) => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+                const xPct = (clientX / innerWidth - 0.5) * 2; // -1 to 1
+                const yPct = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+                
+                mouseRef.current = { x: xPct, y: yPct };
+                
+                // Subtle tilt
+                gsap.to(".canvas-container", {
+                    rotateY: xPct * 4,
+                    rotateX: -yPct * 4,
+                    x: xPct * 15,
+                    y: yPct * 15,
+                    duration: 1.2,
+                    ease: "power2.out",
+                });
+                
+                // Bloom follows mouse
+                gsap.to(".hero-bloom", {
+                    x: xPct * 50,
+                    y: yPct * 50,
+                    opacity: 0.4 + (Math.abs(xPct) * 0.2),
+                    duration: 1.5,
+                    ease: "power2.out",
+                });
+            };
+
+            window.addEventListener("mousemove", handleMouseMove);
+
             // 1. Setup Scroll Scrub immediately
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
@@ -126,9 +159,16 @@ export function Hero() {
                 ease: "none"
             }, 0);
 
-            // Zoom effect
+            // Enhanced Z-Space effect
             scrubTl.to(canvasRef.current, {
-                scale: 1.1,
+                scale: 1.2, // More aggressive zoom
+                ease: "none"
+            }, 0);
+
+            // Text recedes into distance (Parallax)
+            scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper"], {
+                scale: 0.85,
+                z: -100,
                 ease: "none"
             }, 0);
 
@@ -197,7 +237,7 @@ export function Hero() {
     useEffect(() => {
         const handleResize = () => {
             updateDimensions();
-            render(Math.round(sequence.frame)); 
+            render(Math.round(sequenceRef.current.frame)); 
         };
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
@@ -232,7 +272,9 @@ export function Hero() {
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        transform: scale(1.05); /* LARGE BY DEFAULT */
+                        transform: scale(1.05);
+                        perspective: 1000px;
+                        transform-style: preserve-3d;
                     }
 
                     .canvas-container.ready {
@@ -243,16 +285,33 @@ export function Hero() {
                         width: 100% !important;
                         height: 100% !important;
                         object-fit: cover;
+                        filter: brightness(1.1) contrast(1.05);
                     }
 
-                    /* Subtle vignette to blend edges without looking like a "box" */
+                    /* Atmospheric Bloom layer */
+                    .hero-bloom {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 80vw;
+                        height: 80vh;
+                        background: radial-gradient(circle at center, rgba(230, 211, 163, 0.15) 0%, transparent 70%);
+                        transform: translate(-50%, -50%);
+                        z-index: 1;
+                        pointer-events: none;
+                        filter: blur(80px);
+                        mix-blend-mode: screen;
+                    }
+
+                    /* Multi-layered sophisticated vignette */
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: radial-gradient(circle at center, transparent 30%, #000 100%);
-                        z-index: 1;
+                        background: 
+                            radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.4) 60%, #000 100%),
+                            linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%);
+                        z-index: 2;
                         pointer-events: none;
-                        opacity: 0.6;
                     }
 
                     .hero-container {
@@ -262,31 +321,35 @@ export function Hero() {
                         height: 100%;
                         z-index: 10;
                         pointer-events: none;
+                        perspective: 1200px;
+                        transform-style: preserve-3d;
                     }
 
                     .phrase-1-wrapper {
                         position: absolute;
                         left: 10vw;
-                        top: 25vh; /* ADJUSTED FOR HIGHER CONTAINER */
+                        top: 25vh;
                         opacity: 0;
-                        transform: translateY(30px);
+                        transform: translateZ(50px) translateY(30px);
+                        filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
                     }
 
                     .phrase-2-wrapper {
                         position: absolute;
                         left: 50%;
                         bottom: 25vh;
-                        transform: translate(-50%, 30px);
+                        transform: translate(-50%, 30px) translateZ(80px);
                         opacity: 0;
                         text-align: center;
                         width: 100%;
+                        filter: drop-shadow(0 0 30px rgba(0,0,0,0.9));
                     }
 
                     .hero-btn-wrapper {
                         position: absolute;
                         left: 50%;
                         bottom: 12vh;
-                        transform: translate(-50%, 30px);
+                        transform: translate(-50%, 30px) translateZ(100px);
                         opacity: 0;
                         pointer-events: auto;
                     }
@@ -304,6 +367,7 @@ export function Hero() {
                         letter-spacing: 0.3em;
                         text-transform: uppercase;
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
                     }
 
                     .btn-premium-cta:hover {
@@ -323,6 +387,7 @@ export function Hero() {
 
                 <div className={`canvas-container ${imagesReady ? 'ready' : ''}`}>
                     <canvas ref={canvasRef} className="hero-canvas" />
+                    <div className="hero-bloom" />
                     <div className="hero-overlay" />
                 </div>
 
