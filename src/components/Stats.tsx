@@ -41,6 +41,22 @@ export function Stats() {
         }
       });
 
+      // 0. Section Entrance Continuity (Hand-off from Hero)
+      gsap.fromTo(sectionRef.current,
+        { opacity: 0, scale: 0.98 },
+        { 
+          opacity: 1, 
+          scale: 1,
+          duration: 1.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 95%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
       mainTl.fromTo(items, 
         { opacity: 0, y: 30 },
         { 

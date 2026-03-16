@@ -161,6 +161,13 @@ export function Hero() {
                 ease: "none"
             }, 0);
 
+            // 0a. End frame sequence early to prevent skip
+            // The frames (0-143) will complete at 75% scroll progress
+            gsap.to(scrubTl.getChildren()[0], {
+                duration: 0.75, // Percentage of timeline
+                ease: "none"
+            });
+
             // Enhanced Z-Space effect
             scrubTl.to(canvasRef.current, {
                 scale: 1.25,
@@ -201,7 +208,7 @@ export function Hero() {
             }, 0.8);
 
             scrubTl.to(".hero-overlay", {
-                background: "radial-gradient(circle at center, transparent 0%, #000 80%)",
+                background: "radial-gradient(circle at center, transparent 0%, #0B0B0B 90%)",
                 duration: 0.4,
                 ease: "power2.in"
             }, 0.8);
