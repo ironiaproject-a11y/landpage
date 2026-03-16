@@ -150,7 +150,7 @@ export function Hero() {
                     trigger: scrollDriverRef.current,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 0.5, // Faster follow-through
+                    scrub: 0.5,
                     invalidateOnRefresh: true,
                 }
             });
@@ -163,47 +163,48 @@ export function Hero() {
 
             // Enhanced Z-Space effect
             scrubTl.to(canvasRef.current, {
-                scale: 1.2, // More aggressive zoom
+                scale: 1.25,
                 ease: "none"
             }, 0);
 
             // Text recedes into distance (Parallax)
             scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper"], {
-                scale: 0.85,
-                z: -100,
+                scale: 0.8,
+                z: -150,
                 ease: "none"
             }, 0);
 
-            // Fade out UI
+            // Fade out UI - Delayed until AFTER the transformation
             scrubTl.to(".hero-text-cluster", {
                 opacity: 0,
-                x: -100,
-                scale: 0.9,
-                duration: 0.5,
+                x: -120,
+                scale: 0.85,
+                duration: 0.4,
                 ease: "power2.inOut"
-            }, 0.1);
+            }, 0.6); // Delay to 60% of scroll to preserve intro visibility
 
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
-                y: 50,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }, 0.1);
-
-            // 1a. Exit Sequence (Push-Through) - Starts at ~80% of scroll
-            scrubTl.to(".canvas-container", {
-                scale: 1.4, // Maginify for the "crossing through" feel
-                opacity: 0,
-                filter: "brightness(0.2) contrast(1.2)", // Darken as we go
+                y: 80,
                 duration: 0.3,
+                ease: "power2.inOut"
+            }, 0.6);
+
+            // 1a. Exit Sequence (Push-Through) - Extended for fluidity
+            // Magnify and Blur into the distance
+            scrubTl.to(".canvas-container", {
+                scale: 1.5,
+                opacity: 0,
+                filter: "brightness(0.05) contrast(1.2) blur(10px)",
+                duration: 0.4,
                 ease: "power2.in"
-            }, 0.7);
+            }, 0.8);
 
             scrubTl.to(".hero-overlay", {
-                background: "radial-gradient(circle at center, transparent 0%, #000 70%)",
-                duration: 0.3,
+                background: "radial-gradient(circle at center, transparent 0%, #000 80%)",
+                duration: 0.4,
                 ease: "power2.in"
-            }, 0.7);
+            }, 0.8);
 
             // 2. MASTER INTRO TIMELINE (Sequential Reveal)
             const introTl = gsap.timeline({
@@ -279,7 +280,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "500dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
                 <style>{`
                     .hero {
