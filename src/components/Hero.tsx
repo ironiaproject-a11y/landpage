@@ -197,30 +197,8 @@ export function Hero() {
                 ease: "power2.inOut"
             }, 0.6);
 
-            // 1a. Exit Sequence (Parallax Recess) - Replaces the "vanishing" effect
-            // The video now lifts up slightly as it fades, creating a more natural transition
-            scrubTl.to(".canvas-container", {
-                yPercent: -15, // Subtle vertical lift
-                opacity: 0, // Absolute blackout
-                filter: "brightness(0) contrast(1.1) blur(10px)",
-                duration: 0.4,
-                ease: "power1.inOut"
-            }, 0.8);
-
-            // Suppression of atmospheric layers
-            scrubTl.to(".hero-bloom", {
-                opacity: 0,
-                scale: 0.5,
-                duration: 0.3,
-                ease: "power2.in"
-            }, 0.8);
-
-            scrubTl.to(".hero-overlay", {
-                background: "#0B0B0B", // Force solid blackout color
-                opacity: 1,
-                duration: 0.2, // Shorter duration for faster track
-                ease: "none"
-            }, 0.8);
+            // The Exit Sequence that previously caused a blackout has been removed 
+            // to ensure the hero video remains visible throughout the entire scroll.
 
             // 2. MASTER INTRO TIMELINE (Sequential Reveal)
             const introTl = gsap.timeline({
