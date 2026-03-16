@@ -173,10 +173,17 @@ export function Hero() {
             }, 0);
 
             // Fade out UI
-            scrubTl.to([".phrase-1-wrapper", ".phrase-2-wrapper", ".hero-btn-wrapper"], {
+            scrubTl.to(".hero-text-cluster", {
                 opacity: 0,
-                y: -100,
-                stagger: 0.05,
+                x: -100,
+                scale: 0.9,
+                duration: 0.5,
+                ease: "power2.inOut"
+            }, 0.1);
+
+            scrubTl.to(".hero-btn-wrapper", {
+                opacity: 0,
+                y: 50,
                 duration: 0.4,
                 ease: "power2.inOut"
             }, 0.1);
@@ -202,23 +209,25 @@ export function Hero() {
 
             // Text Animations (synced with auto-scroll)
             introTl.to(".phrase-1-wrapper", {
-                opacity: 1,
+                opacity: 0.6,
                 y: 0,
-                duration: 1.2,
+                duration: 1.5,
+                ease: "power3.out"
             }, 1.2);
 
             introTl.to(".phrase-2-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
-            }, 3.0);
+                duration: 1.5,
+                ease: "power3.out"
+            }, 1.8);
 
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1.0,
-                ease: "back.out(1.7)"
-            }, 3.8);
+                duration: 1.2,
+                ease: "back.out(1.4)"
+            }, 3.5);
         });
 
         // Initial render logic
@@ -325,24 +334,28 @@ export function Hero() {
                         transform-style: preserve-3d;
                     }
 
-                    .phrase-1-wrapper {
+                    .hero-text-cluster {
                         position: absolute;
-                        left: 10vw;
-                        top: 25vh;
+                        left: 12vw;
+                        top: 45%;
+                        transform: translateY(-50%);
+                        z-index: 10;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        pointer-events: none;
+                    }
+
+                    .phrase-1-wrapper {
                         opacity: 0;
-                        transform: translateZ(50px) translateY(30px);
-                        filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
+                        transform: translateZ(40px) translateY(20px);
+                        filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
                     }
 
                     .phrase-2-wrapper {
-                        position: absolute;
-                        left: 50%;
-                        bottom: 25vh;
-                        transform: translate(-50%, 30px) translateZ(80px);
                         opacity: 0;
-                        text-align: center;
-                        width: 100%;
-                        filter: drop-shadow(0 0 30px rgba(0,0,0,0.9));
+                        transform: translateZ(80px) translateY(20px);
+                        filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
                     }
 
                     .hero-btn-wrapper {
@@ -377,11 +390,17 @@ export function Hero() {
                     }
 
                     @media (max-width: 768px) {
-                        .phrase-1-wrapper { top: 20vh; left: 8vw; }
-                        .phrase-2-wrapper { bottom: 30vh; }
+                        .hero-text-cluster {
+                            left: 50%;
+                            top: 35%;
+                            transform: translate(-50%, -50%);
+                            width: 100%;
+                            text-align: center;
+                            padding: 0 20px;
+                        }
+                        .hero-btn-wrapper { bottom: 15vh; }
                         .btn-premium-cta { padding: 16px 40px; font-size: 11px; }
-                        /* Shifting less on mobile to keep skull visible */
-                        .hero-canvas { transform: translateX(5%); } 
+                        .hero-canvas { transform: translateX(0); } 
                     }
                 `}</style>
 
@@ -392,24 +411,26 @@ export function Hero() {
                 </div>
 
                 <div className="hero-container">
-                    <div className="phrase-1-wrapper">
-                        <h1 className="text-white/70 font-light uppercase" style={{
-                            fontSize: 'clamp(14px, 1.5vw, 20px)',
-                            letterSpacing: '0.5em'
-                        }}>
-                            Sua origem
-                        </h1>
-                    </div>
+                    <div className="hero-text-cluster">
+                        <div className="phrase-1-wrapper">
+                            <h1 className="text-white/60 font-light uppercase" style={{
+                                fontSize: 'clamp(12px, 1.2vw, 16px)',
+                                letterSpacing: '0.6em'
+                            }}>
+                                Sua origem
+                            </h1>
+                        </div>
 
-                    <div className="phrase-2-wrapper">
-                        <h2 className="text-[#E6D3A3] font-bold" style={{
-                            fontFamily: '"Playfair Display", serif',
-                            fontSize: 'clamp(48px, 8vw, 110px)',
-                            lineHeight: '0.9',
-                            letterSpacing: '-0.02em'
-                        }}>
-                            Seu sorriso
-                        </h2>
+                        <div className="phrase-2-wrapper">
+                            <h2 className="text-[#E6D3A3] font-bold" style={{
+                                fontFamily: '"Playfair Display", serif',
+                                fontSize: 'clamp(42px, 6vw, 90px)',
+                                lineHeight: '1.0',
+                                letterSpacing: '-0.01em'
+                            }}>
+                                Seu sorriso
+                            </h2>
+                        </div>
                     </div>
 
                     <div className="hero-btn-wrapper">
