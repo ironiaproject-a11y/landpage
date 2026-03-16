@@ -114,9 +114,9 @@ export function Stats() {
     >
       <style>{`
         .stats-section {
-          background: #0B0B0B;
-          padding: 100px 24px;
-          margin-top: -30vh; /* Deep overlap for aggressive connection */
+          background: #0F0F0F;
+          padding: 80px 24px;
+          margin-top: 0;
           position: relative;
           overflow: hidden;
           z-index: 20; /* Ensure it stays above Hero exit */

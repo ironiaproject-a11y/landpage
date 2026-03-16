@@ -152,6 +152,7 @@ export function Hero() {
                     end: "bottom bottom",
                     scrub: 0.5,
                     invalidateOnRefresh: true,
+                    once: true,
                 }
             });
 
@@ -340,9 +341,20 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.45) 65%, #000 100%);
+                        /* Linear gradient targeted for left-side text legibility */
+                        background: linear-gradient(90deg, 
+                            rgba(0,0,0,0.65) 0%, 
+                            rgba(0,0,0,0.3) 40%, 
+                            transparent 80%
+                        );
                         z-index: 2;
                         pointer-events: none;
+                    }
+
+                    @media (max-width: 768px) {
+                        .hero-overlay {
+                            background: rgba(0,0,0,0.45);
+                        }
                     }
 
                     .hero-container {
@@ -358,51 +370,52 @@ export function Hero() {
 
                     .hero-text-cluster {
                         position: absolute;
-                        left: 12vw;
-                        top: 45%;
-                        transform: translateY(-50%);
+                        left: 6vw;
+                        top: 18vh;
                         z-index: 10;
                         display: flex;
                         flex-direction: column;
-                        gap: 8px;
+                        gap: 12px;
                         pointer-events: none;
+                        max-width: 520px;
                     }
 
                     .phrase-1-wrapper {
                         opacity: 0;
                         transform: translateZ(40px) translateY(20px);
                         filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
+                        font-weight: 500;
                     }
 
                     .phrase-2-wrapper {
                         opacity: 0;
                         transform: translateZ(80px) translateY(20px);
                         filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
+                        font-weight: 700;
                     }
 
                     .hero-btn-wrapper {
                         position: absolute;
-                        left: 50%;
-                        bottom: 12vh;
-                        transform: translate(-50%, 30px) translateZ(100px);
+                        left: 6vw;
+                        top: calc(18vh + 300px);
+                        transform: translateZ(100px);
                         opacity: 0;
                         pointer-events: auto;
                     }
 
                     .btn-premium-cta {
-                        background: rgba(255, 255, 255, 0.05);
-                        backdrop-filter: blur(15px);
+                        background: transparent;
+                        backdrop-filter: blur(10px);
                         -webkit-backdrop-filter: blur(15px);
-                        border: 1px solid rgba(230, 211, 163, 0.4);
-                        color: #FFFFFF;
-                        padding: 20px 56px;
-                        border-radius: 100px;
-                        font-size: 13px;
-                        font-weight: 600;
-                        letter-spacing: 0.3em;
+                        border: 1px solid rgba(248, 248, 246, 0.6);
+                        color: #F8F8F6;
+                        padding: 16px 30px;
+                        border-radius: 999px;
+                        font-size: 12px;
+                        font-weight: 500;
+                        letter-spacing: 0.25em;
                         text-transform: uppercase;
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-                        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
                     }
 
                     .btn-premium-cta:hover {
@@ -436,18 +449,19 @@ export function Hero() {
                     <div className="hero-text-cluster">
                         <div className="phrase-1-wrapper">
                             <h1 className="text-white/80 font-light uppercase" style={{
-                                fontSize: 'clamp(14px, 1.4vw, 20px)',
-                                letterSpacing: '0.5em'
+                                fontSize: 'clamp(20px, 4vw, 34px)',
+                                letterSpacing: '0.5em',
+                                lineHeight: '1.05'
                             }}>
                                 Sua origem
                             </h1>
                         </div>
 
                         <div className="phrase-2-wrapper">
-                            <h2 className="text-[#E6D3A3] font-bold" style={{
+                            <h2 className="text-[#E6D3A3]" style={{
                                 fontFamily: '"Playfair Display", serif',
-                                fontSize: 'clamp(42px, 6vw, 90px)',
-                                lineHeight: '1.0',
+                                fontSize: 'clamp(48px, 8.5vw, 105px)',
+                                lineHeight: '1.02',
                                 letterSpacing: '-0.01em'
                             }}>
                                 Seu sorriso
