@@ -205,55 +205,55 @@ export function Hero() {
                 ease: "power2.in"
             }, 0.7);
 
-            // 2. MASTER INTRO TIMELINE (Auto-scrolls the page)
+            // 2. MASTER INTRO TIMELINE (Sequential Reveal)
             const introTl = gsap.timeline({
-                defaults: { ease: "power2.out" },
-                delay: 0.5, // Small buffer for layout stabilization
+                defaults: { ease: "power3.inOut" },
+                delay: 1.0, // Initial breath
                 onComplete: () => {
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // Intro Auto-Scroll using Lenis to prevent "ghosting"
-            const scrollDistance = (window.innerHeight * 4) * (introFrames / frameCount);
-            
-            if (lenis) {
-                introTl.to(lenis, {
-                    scrollTo: scrollDistance,
-                    duration: 4.5,
-                    ease: "power2.inOut",
-                }, 0);
-            } else {
-                // Fallback if lenis is not ready
-                introTl.to(window, {
-                    scrollTo: scrollDistance,
-                    duration: 4.5,
-                    ease: "power2.inOut",
-                }, 0);
-            }
-
-            // Text Animations (synced with auto-scroll)
+            // PHASE 1: The Origin (Skull)
             introTl.to(".phrase-1-wrapper", {
-                opacity: 0.6,
+                opacity: 0.8,
                 y: 0,
-                duration: 1.5,
-                ease: "power3.out"
-            }, 1.2);
+                duration: 1.8,
+                ease: "power2.out"
+            }, 0);
 
+            // PHASE 2: The Disappearance
+            introTl.to(".phrase-1-wrapper", {
+                opacity: 0,
+                y: -20,
+                duration: 1.5,
+                ease: "power2.in"
+            }, 2.5);
+
+            // PHASE 3: The Transformation (Auto-Scroll)
+            const scrollDistance = (window.innerHeight * 4) * (introFrames / frameCount);
+
+            introTl.to(window, {
+                scrollTo: scrollDistance,
+                duration: 4.5,
+                ease: "expo.inOut",
+            }, 3.5);
+
+            // PHASE 4: The Smile (Reveal)
             introTl.to(".phrase-2-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1.5,
-                ease: "power3.out"
-            }, 1.8);
+                duration: 2.0,
+                ease: "power2.out"
+            }, 7.5);
 
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
+                duration: 1.5,
                 ease: "back.out(1.4)"
-            }, 3.5);
+            }, 8.5);
         });
 
         // Initial render logic
