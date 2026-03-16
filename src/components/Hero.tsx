@@ -163,19 +163,11 @@ export function Hero() {
             }, 0);
 
             // EXIT ANIMATION (Narrative Transition)
-            // "Sua origem" fade out smoothly
-            scrubTl.to(".hero-line-1", {
-                opacity: 0,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }, 0);
-
-            // "Seu sorriso" moves slightly upward
+            // "Seu sorriso" moves slightly upward but stays visible
             scrubTl.to(".hero-line-2", {
                 y: -20,
-                opacity: 0,
                 duration: 0.5,
-                ease: "power2.inOut"
+                ease: "power2.out"
             }, 0);
 
             scrubTl.to(".hero-btn-wrapper", {
@@ -210,26 +202,33 @@ export function Hero() {
                 ease: "power2.out"
             }, 0.6);
 
-            // 1.4s - "Sua origem" fades in from below
+            // 1.4s - "Sua origem" fades in
             introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 20 },
-                { opacity: 0.9, y: 0, duration: 1.2, ease: "power2.out" },
+                { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" },
                 1.4
             );
 
-            // 2.2s - "Seu sorriso" appears with stronger reveal
-            introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" },
-                2.2
-            );
-
-            // 3.0s - CTA button fades in softly
-            introTl.to(".hero-btn-wrapper", {
-                opacity: 1,
-                duration: 1.5,
+            // 3.0s - "Sua origem" fades out slowly
+            introTl.to(".hero-line-1", {
+                opacity: 0,
+                duration: 0.8,
                 ease: "power2.inOut"
             }, 3.0);
+
+            // 3.2s - "Seu sorriso" fades in
+            introTl.fromTo(".hero-line-2",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" },
+                3.2
+            );
+
+            // 4.0s - CTA button fades in
+            introTl.to(".hero-btn-wrapper", {
+                opacity: 1,
+                duration: 1.2,
+                ease: "power2.inOut"
+            }, 4.0);
         });
 
         // Initial render logic
@@ -348,20 +347,19 @@ export function Hero() {
 
                     .hero-text {
                         position: absolute;
-                        top: 56vh;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        text-align: center;
+                        inset: 0;
                         z-index: 5;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 12px;
                         pointer-events: none;
                         width: 100%;
+                        height: 100%;
                     }
 
                     .hero-line-1 {
+                        position: absolute;
+                        top: 32vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
                         font-size: clamp(20px, 3vw, 26px);
@@ -369,11 +367,19 @@ export function Hero() {
                         letter-spacing: 0.04em;
                         color: #F3E7C8;
                         text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+                        white-space: nowrap;
+                    }
+
+                    .hero-line-2 {
+                        position: absolute;
+                        top: 60vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        text-align: center;
+                        opacity: 0;
                     }
 
                     .hero-line-2 h2 {
-                        opacity: inherit;
-                        transform: inherit;
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
                         font-size: clamp(44px, 6vw, 56px);
                         font-weight: 600;
@@ -385,10 +391,6 @@ export function Hero() {
                         white-space: nowrap;
                         margin: 0;
                         padding: 0;
-                    }
-
-                    .hero-line-2 {
-                        opacity: 0;
                     }
 
                     .hero-btn-wrapper {
