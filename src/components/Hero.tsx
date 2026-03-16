@@ -44,24 +44,24 @@ export function Hero() {
         loadImages();
     }, []);
 
-    const render = (frame: number) => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext("2d");
-        if (!canvas || !ctx || !imagesRef.current[frame]) return;
+    const drawParamsRef = useRef({ drawW: 0, drawH: 0, drawX: 0, drawY: 0 });
 
-        const img = imagesRef.current[frame];
-        
-        // Responsive Scaling (Cover behavior)
+    const updateDimensions = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
         const w = window.innerWidth;
         const h = window.innerHeight;
         canvas.width = w;
         canvas.height = h;
 
+        const img = imagesRef.current[0] || new Image();
+        if (!img.width) return;
+
         const imgRatio = img.width / img.height;
         const canvasRatio = w / h;
 
         let drawW, drawH, drawX, drawY;
-
         if (canvasRatio > imgRatio) {
             drawW = w;
             drawH = w / imgRatio;
@@ -74,22 +74,31 @@ export function Hero() {
             drawY = 0;
         }
 
-        // --- POSITIONING TWEAK ---
-        // Overscale the image slightly to allow lateral shifting without showing canvas edges
         const scaleFactor = 1.08; 
         const finalW = drawW * scaleFactor;
         const finalH = drawH * scaleFactor;
-        
-        // Center it first
         const centerX = (w - finalW) / 2;
         const centerY = (h - finalH) / 2;
-        
-        // "Position after E of word origem"
-        // Move slightly to the right so focal point (skull) doesn't overlap left text.
         const lateralShift = w * 0.25; 
+
+        drawParamsRef.current = { 
+            drawW: finalW, 
+            drawH: finalH, 
+            drawX: centerX + lateralShift, 
+            drawY: centerY 
+        };
+    };
+
+    const render = (frame: number) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        const img = imagesRef.current[frame];
+        if (!canvas || !ctx || !img) return;
+
+        const { drawW, drawH, drawX, drawY } = drawParamsRef.current;
         
-        ctx.clearRect(0, 0, w, h);
-        ctx.drawImage(img, centerX + lateralShift, centerY, finalW, finalH);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, drawX, drawY, drawW, drawH);
     };
 
     // Master Animation Logic
@@ -106,7 +115,7 @@ export function Hero() {
                     trigger: scrollDriverRef.current,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 0.8,
+                    scrub: 1.2, // Increased for buttery smoothness
                     invalidateOnRefresh: true,
                 }
             });
@@ -172,8 +181,11 @@ export function Hero() {
             }, 3.8);
         });
 
-        // Initial render
-        render(0);
+        // Initial render logic
+        if (imagesReady) {
+            updateDimensions();
+            render(0);
+        }
 
         return () => {
             ctx.revert();
@@ -184,7 +196,8 @@ export function Hero() {
     // Handle Resize
     useEffect(() => {
         const handleResize = () => {
-            render(imagesReady ? Math.round(frameCount / 2) : 0); // Re-render preview
+            updateDimensions();
+            render(Math.round(sequence.frame)); 
         };
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);

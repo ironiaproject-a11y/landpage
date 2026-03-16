@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Preloader } from "@/components/Preloader";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 import ClientSideExtras from "@/components/ClientSideExtras";
 
@@ -92,6 +93,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
           <MotionProvider>
+            <SmoothScroll />
             <Preloader />
             <ScrollProgress />
             <ClientSideExtras />
