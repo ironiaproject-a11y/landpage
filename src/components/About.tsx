@@ -125,8 +125,8 @@ export function About() {
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="sobre">
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            <div className="container mx-auto px-6 pb-32 relative z-10">
+                <div className="flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
                     {/* Image Side */}
                     <m.div
                         className="w-full lg:w-1/2 relative group"
@@ -161,7 +161,7 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-16 text-[#F8F8F6] leading-[1.1] tracking-[-0.015em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-20 text-[#F8F8F6] leading-[1.1] tracking-[-0.015em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>

@@ -116,7 +116,7 @@ export function Experience() {
             <div ref={textureRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6]/10 to-transparent" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+                <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center">
                     {/* Left Side */}
                     <div className="lg:w-1/2">
                         <PremiumReveal direction="bottom" delay={0.1}>
@@ -134,7 +134,7 @@ export function Experience() {
                             </PremiumReveal>
                         </h2>
 
-                        <div ref={stepsRef} className="space-y-8 md:space-y-12 relative">
+                        <div ref={stepsRef} className="space-y-8 md:space-y-16 relative">
                             <div className="absolute left-[23px] top-4 bottom-12 w-[1px] bg-gradient-to-b from-[#F8F8F6]/30 via-[#F8F8F6]/5 to-transparent md:hidden" />
 
                             {steps.map((step, index) => (

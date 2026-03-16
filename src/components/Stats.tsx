@@ -115,7 +115,7 @@ export function Stats() {
       <style>{`
         .stats-section {
           background: #0F0F0F;
-          padding: 80px 24px;
+          padding: 80px 32px;
           margin-top: -5vh; /* Subtle overlap for hand-off fluidity */
           position: relative;
           overflow: hidden;
@@ -126,7 +126,7 @@ export function Stats() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 0;
-          max-width: 1000px;
+          max-width: 1200px;
           margin: 0 auto;
           position: relative;
         }

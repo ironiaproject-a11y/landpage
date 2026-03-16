@@ -347,7 +347,7 @@ export function Services() {
                 style={{ opacity: 0 }}
             />
 
-            <div className="max-w-4xl mb-16 md:mb-24 px-6 md:px-0">
+            <div className="max-w-4xl mb-16 md:mb-32 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
                     <span className="editorial-label">
                         Tratamentos de Elite
@@ -365,7 +365,7 @@ export function Services() {
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32">
                 {
                     services.map((service, index) => (
                         <div key={index} className="service-card-wrapper h-full">

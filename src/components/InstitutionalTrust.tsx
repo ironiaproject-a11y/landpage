@@ -168,7 +168,7 @@ export function InstitutionalTrust() {
             <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #F8F8F6 1px, transparent 1px)' }}></div>
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-12 border-b border-white/5 pb-20">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-40 gap-12 border-b border-white/5 pb-20">
                     <div className="max-w-4xl">
                         <PremiumReveal direction="bottom" delay={0.1}>
                             <span className="editorial-label">
@@ -201,7 +201,7 @@ export function InstitutionalTrust() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {cards.map((card, index) => (
                         <LuxuryCard key={index} delay={0.2 + (index * 0.1)}>
                             {/* Numerical Indicator - Editorial Style */}
