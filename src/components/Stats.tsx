@@ -43,15 +43,15 @@ export function Stats() {
 
       // 0. Section Entrance Continuity (Hand-off from Hero)
       gsap.fromTo(sectionRef.current,
-        { opacity: 0, scale: 0.98 },
+        { opacity: 0, y: 100 },
         { 
           opacity: 1, 
-          scale: 1,
+          y: 0,
           duration: 1.5,
-          ease: "power2.out",
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 95%",
+            start: "top 90%",
             toggleActions: "play none none reverse"
           }
         }

@@ -197,18 +197,19 @@ export function Hero() {
                 ease: "power2.inOut"
             }, 0.6);
 
-            // 1a. Exit Sequence (Push-Through) - Extended for fluidity
-            // Magnify and Blur into the distance
+            // 1a. Exit Sequence (Parallax Recess) - Replaces the "vanishing" effect
+            // The video now lifts up slightly as it fades, creating a more natural transition
             scrubTl.to(".canvas-container", {
-                scale: 1.5,
-                opacity: 0,
-                filter: "brightness(0.05) contrast(1.2) blur(10px)",
+                yPercent: -15, // Subtle vertical lift
+                opacity: 0.2, // Keep a faint ghost of the image longer
+                filter: "brightness(0.3) contrast(1.1) blur(5px)",
                 duration: 0.4,
-                ease: "power2.in"
+                ease: "power1.inOut"
             }, 0.8);
 
             scrubTl.to(".hero-overlay", {
-                background: "radial-gradient(circle at center, transparent 0%, #0B0B0B 90%)",
+                background: "linear-gradient(to top, #0B0B0B 0%, #0B0B0B 50%, transparent 100%)",
+                opacity: 1,
                 duration: 0.4,
                 ease: "power2.in"
             }, 0.8);
@@ -288,7 +289,7 @@ export function Hero() {
 
     return (
         <div ref={scrollDriverRef} style={{ height: "500dvh", position: "relative" }}>
-            <section ref={sectionRef} className="hero relative overflow-hidden bg-black">
+            <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
                         position: sticky;
