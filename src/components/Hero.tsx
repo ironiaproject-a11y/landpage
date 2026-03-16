@@ -296,7 +296,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "500dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "350dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
