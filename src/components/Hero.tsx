@@ -86,7 +86,7 @@ export function Hero() {
         
         // "Position after E of word origem"
         // Move slightly to the right so focal point (skull) doesn't overlap left text.
-        const lateralShift = w * 0.12; 
+        const lateralShift = w * 0.20; 
         
         ctx.clearRect(0, 0, w, h);
         ctx.drawImage(img, centerX + lateralShift, centerY, finalW, finalH);
