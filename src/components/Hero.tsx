@@ -249,13 +249,10 @@ export function Hero() {
             }, 2.5);
 
             // PHASE 3: The Transformation (Auto-Scroll)
-            const scrollDistance = (window.innerHeight * 4) * (introFrames / frameCount);
-
-            introTl.to(window, {
-                scrollTo: scrollDistance,
-                duration: 4.5,
-                ease: "expo.inOut",
-            }, 3.5);
+            // Synchronized with the new compressed 200dvh track
+            // We want to land at approx 48% of the Hero scroll range (the transformation point)
+            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 2);
+            const scrollDistance = trackHeight * 0.48; 
 
             // PHASE 4: The Smile (Reveal)
             introTl.to(".phrase-2-wrapper", {
