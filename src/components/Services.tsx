@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { ArrowRight, CircleDashed, Diamond, Crown, Cpu, Sparkles, Activity, ShieldPath, Microscope, ScanLine, Stethoscope } from "lucide-react";
+import { ArrowRight, CircleDashed, Diamond, Crown, Cpu, Sparkles, Activity, Shield, Microscope, ScanLine, Stethoscope } from "lucide-react";
 import { clsx } from "clsx";
 import VisualContainer from "./VisualContainer";
 import Image from "next/image";
@@ -34,7 +34,7 @@ const ICON_MAP: Record<string, any> = {
     Cpu: Cpu,
     Sparkles: Sparkles,
     Activity: Activity,
-    ShieldPath: ShieldPath,
+    Shield: Shield,
     Microscope: Microscope,
     ScanLine: ScanLine,
     Stethoscope: Stethoscope
@@ -122,7 +122,7 @@ export function Services() {
 
     const services: Service[] = [
         {
-            icon: "ShieldPath",
+            icon: "Shield",
             title: "Implantes Dentários",
             description: "Recupere a função e a estética do seu sorriso com implantes de alta durabilidade e precisão.",
             tag: "01",
