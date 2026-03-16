@@ -349,7 +349,7 @@ export function Hero() {
                     .phrase-1-wrapper {
                         opacity: 0;
                         transform: translateZ(40px) translateY(20px);
-                        filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+                        filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
                     }
 
                     .phrase-2-wrapper {
@@ -413,9 +413,9 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text-cluster">
                         <div className="phrase-1-wrapper">
-                            <h1 className="text-white/60 font-light uppercase" style={{
-                                fontSize: 'clamp(12px, 1.2vw, 16px)',
-                                letterSpacing: '0.6em'
+                            <h1 className="text-white/80 font-light uppercase" style={{
+                                fontSize: 'clamp(14px, 1.4vw, 20px)',
+                                letterSpacing: '0.5em'
                             }}>
                                 Sua origem
                             </h1>
