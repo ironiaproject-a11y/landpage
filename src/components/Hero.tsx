@@ -152,7 +152,6 @@ export function Hero() {
                     end: "bottom bottom",
                     scrub: 0.5,
                     invalidateOnRefresh: true,
-                    once: true,
                 }
             });
 
@@ -229,7 +228,7 @@ export function Hero() {
 
             // PHASE 3: The Transformation (Auto-Scroll)
             // Balanced for 400dvh track - lands at exactly the transformation point
-            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 4);
+            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 3);
             const scrollDistance = trackHeight * 0.48; 
 
             introTl.to(window, {
@@ -277,7 +276,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "300dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
