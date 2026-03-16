@@ -74,12 +74,21 @@ export function Hero() {
         }
 
         // --- POSITIONING TWEAK ---
+        // Overscale the image slightly to allow lateral shifting without showing canvas edges
+        const scaleFactor = 1.15; 
+        const finalW = drawW * scaleFactor;
+        const finalH = drawH * scaleFactor;
+        
+        // Center it first
+        const centerX = (w - finalW) / 2;
+        const centerY = (h - finalH) / 2;
+        
         // "Position after E of word origem"
-        // Move the image slightly to the right so the focal point (skull) doesn't overlap the left text.
-        const lateralShift = w * 0.18; // 18% of viewport width shift to the right
+        // Move slightly to the right so focal point (skull) doesn't overlap left text.
+        const lateralShift = w * 0.12; 
         
         ctx.clearRect(0, 0, w, h);
-        ctx.drawImage(img, drawX + lateralShift, drawY, drawW, drawH);
+        ctx.drawImage(img, centerX + lateralShift, centerY, finalW, finalH);
     };
 
     // Master Animation Logic
@@ -133,8 +142,8 @@ export function Hero() {
                     scrollTrigger: {
                         trigger: scrollDriverRef.current,
                         start: "top top",
-                        end: "bottom bottom",
-                        scrub: 1.5,
+                        end: "bottom bottom", // Full height of the track
+                        scrub: 0.8, // Slightly faster for more "complete" feel
                         invalidateOnRefresh: true,
                     }
                 });
@@ -186,9 +195,9 @@ export function Hero() {
                 <style>{`
                     .hero {
                         position: sticky;
-                        top: -5vh; /* MOVED UP SLIGHTLY */
+                        top: 0;
                         width: 100vw;
-                        height: 105vh; /* TALLER TO COVER THE TOP SHIFT */
+                        height: 100vh;
                         background: #000;
                         margin: 0;
                         padding: 0 !important;
@@ -222,13 +231,14 @@ export function Hero() {
                         object-fit: cover;
                     }
 
-                    /* Vignette to make it feel premium and limitless */
+                    /* Subtle vignette to blend edges without looking like a "box" */
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
+                        background: radial-gradient(circle at center, transparent 30%, #000 100%);
                         z-index: 1;
                         pointer-events: none;
+                        opacity: 0.6;
                     }
 
                     .hero-container {
