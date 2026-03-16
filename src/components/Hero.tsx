@@ -201,17 +201,25 @@ export function Hero() {
             // The video now lifts up slightly as it fades, creating a more natural transition
             scrubTl.to(".canvas-container", {
                 yPercent: -15, // Subtle vertical lift
-                opacity: 0.2, // Keep a faint ghost of the image longer
-                filter: "brightness(0.3) contrast(1.1) blur(5px)",
+                opacity: 0, // Absolute blackout
+                filter: "brightness(0) contrast(1.1) blur(10px)",
                 duration: 0.4,
                 ease: "power1.inOut"
             }, 0.8);
 
+            // Suppression of atmospheric layers
+            scrubTl.to(".hero-bloom", {
+                opacity: 0,
+                scale: 0.5,
+                duration: 0.3,
+                ease: "power2.in"
+            }, 0.8);
+
             scrubTl.to(".hero-overlay", {
-                background: "linear-gradient(to top, #0B0B0B 0%, #0B0B0B 50%, transparent 100%)",
+                background: "#0B0B0B", // Force solid blackout color
                 opacity: 1,
                 duration: 0.4,
-                ease: "power2.in"
+                ease: "none"
             }, 0.8);
 
             // 2. MASTER INTRO TIMELINE (Sequential Reveal)
@@ -292,18 +300,19 @@ export function Hero() {
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
-                        position: sticky;
-                        top: 0;
-                        width: 100vw;
-                        height: 100vh;
-                        background: #000;
-                        margin: 0;
-                        padding: 0 !important;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        overflow: hidden;
-                    }
+                    position: sticky;
+                    top: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: #0B0B0B;
+                    margin: 0;
+                    padding: 0 !important;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    z-index: 10;
+                }
 
                     .canvas-container {
                         position: absolute;

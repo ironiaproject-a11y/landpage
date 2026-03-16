@@ -118,6 +118,7 @@ export function Stats() {
           padding: 80px 24px;
           position: relative;
           overflow: hidden;
+          z-index: 20; /* Ensure it stays above Hero exit */
         }
 
         .stats-grid {
