@@ -194,7 +194,7 @@ export function Experience() {
                         <div className="hidden md:block w-[1px] h-6 bg-[#F8F8F6]/10" />
                         <span className="text-[#F8F8F6] text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3">
                             Falar com um Especialista
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                            <ArrowRight strokeWidth={1} className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                         </span>
                     </div>
                 </div>

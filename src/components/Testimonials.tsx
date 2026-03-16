@@ -215,12 +215,12 @@ export function Testimonials() {
                                     >
                                         <div className="relative z-10 flex flex-col h-full">
                                             <div className="mb-10 relative">
-                                                <Quote strokeWidth={1.2} className="quote-icon-rotate w-12 h-12 text-[#F8F8F6]/10" />
+                                                <Quote strokeWidth={1} className="quote-icon-rotate w-12 h-12 text-[#F8F8F6]/10" />
                                             </div>
 
                                             <div className="flex gap-2 mb-8">
                                                 {[...Array(testimonial.rating)].map((_, i) => (
-                                                    <Star key={i} strokeWidth={1.2} className="star-icon w-3.5 h-3.5 fill-[#F8F8F6] text-[#F8F8F6] opacity-80" />
+                                                    <Star key={i} strokeWidth={1} className="star-icon w-3.5 h-3.5 fill-[#F8F8F6] text-[#F8F8F6] opacity-80" />
                                                 ))}
                                             </div>
 

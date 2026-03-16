@@ -44,7 +44,7 @@ export function BackToTop() {
                     className="fixed bottom-8 right-8 z-[100] w-12 h-12 flex items-center justify-center bg-[#F8F8F6]/5 backdrop-blur-xl border border-[#F8F8F6]/10 text-[#F8F8F6] rounded-full shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-[#F8F8F6]/20"
                     aria-label="Back to top"
                 >
-                    <ChevronUp className="w-5 h-5 opacity-80" />
+                    <ChevronUp strokeWidth={1} className="w-5 h-5 opacity-80" />
                 </m.button>
             )}
         </AnimatePresence>

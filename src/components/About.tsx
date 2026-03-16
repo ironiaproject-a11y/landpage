@@ -185,7 +185,7 @@ export function About() {
                             {highlights.map((item, index) => (
                                 <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-colors">
                                     <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
-                                        <ArrowUpRight className="w-3 h-3 text-[#6B7280] group-hover:text-black transition-colors" />
+                                        <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[#6B7280] group-hover:text-black transition-colors" />
                                     </div>
                                     <span className="text-[#6B7280] font-medium text-[14px] tracking-[0.05em] group-hover:text-[#F8F8F6] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
                                 </div>

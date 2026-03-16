@@ -87,7 +87,7 @@ export function CTA() {
 
                     <PremiumReveal type="fade" direction="top" delay={0.2}>
                         <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#E6D3A3]/5 text-[#E6D3A3] text-[10px] font-bold uppercase tracking-[0.2em] border border-[#E6D3A3]/10 mb-12">
-                            <Calendar strokeWidth={1.2} className="w-3.5 h-3.5" />
+                            <Calendar strokeWidth={1} className="w-3.5 h-3.5" />
                             Agenda Aberta 2026
                         </div>
                     </PremiumReveal>
@@ -113,7 +113,7 @@ export function CTA() {
                             >
                                 <span className="relative z-10 flex items-center gap-2">
                                     Agendar Avaliação
-                                    <ArrowRight strokeWidth={1.2} className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500 ease-out" />
+                                    <ArrowRight strokeWidth={1} className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500 ease-out" />
                                 </span>
                             </button>
                         </Magnetic>

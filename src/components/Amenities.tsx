@@ -21,32 +21,32 @@ export function Amenities() {
 
     const items = [
         {
-            icon: <Car strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <Car strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Valet Privativo",
             description: "Segurança e conforto desde a sua chegada com serviço de manobrista exclusivo."
         },
         {
-            icon: <Coffee strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <Coffee strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Premium Lounge",
             description: "Ambiente sofisticado com menu de cafés selecionados e Wi-Fi de alta velocidade."
         },
         {
-            icon: <Heart strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <Heart strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Sedação Consciente",
             description: "Tratamentos absolutamente indolores e tranquilos para pacientes com fobia."
         },
         {
-            icon: <ShieldCheck strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <ShieldCheck strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Padrão Hospitalar",
             description: "Protocolos rigorosos de biossegurança e esterilização de nível cirúrgico."
         },
         {
-            icon: <Sparkles strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <Sparkles strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Concierge Dedicado",
             description: "Um assistente pessoal para cuidar de toda a sua jornada e necessidades burocráticas."
         },
         {
-            icon: <Clock strokeWidth={1.2} className="w-5 h-5" />,
+            icon: <Clock strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />,
             title: "Pontualidade VIP",
             description: "Respeitamos seu tempo com rigor britânico e atendimento personalizado sem esperas."
         }

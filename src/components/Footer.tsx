@@ -71,9 +71,9 @@ export function Footer() {
     }, [mounted]);
 
     const socialLinks = [
-        { icon: <Instagram strokeWidth={1.2} className="w-5 h-5" />, href: SOCIAL_LINKS.instagram, label: "Instagram" },
-        { icon: <Facebook strokeWidth={1.2} className="w-5 h-5" />, href: SOCIAL_LINKS.facebook, label: "Facebook" },
-        { icon: <Linkedin strokeWidth={1.2} className="w-5 h-5" />, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
+        { icon: <Instagram strokeWidth={1} className="w-5 h-5" />, href: SOCIAL_LINKS.instagram, label: "Instagram" },
+        { icon: <Facebook strokeWidth={1} className="w-5 h-5" />, href: SOCIAL_LINKS.facebook, label: "Facebook" },
+        { icon: <Linkedin strokeWidth={1} className="w-5 h-5" />, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
     ];
 
     const quickLinks = [
@@ -103,7 +103,7 @@ export function Footer() {
                         <div className="space-y-8">
                             <div className="flex items-center gap-4 group/logo cursor-pointer">
                                 <div className="w-14 h-14 bg-[#F8F8F6]/5 rounded-2xl flex items-center justify-center text-[#F8F8F6] border border-[#F8F8F6]/10 group-hover/logo:border-[#E6D3A3]/50 transition-all duration-700 relative overflow-hidden light-sweep">
-                                    <Sparkles strokeWidth={1.2} className="w-7 h-7 fill-[#F8F8F6]/5" />
+                                    <Sparkles strokeWidth={1} className="w-7 h-7 fill-[#F8F8F6]/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
                                     <h3 className="text-lg font-display font-semibold tracking-[0.15em] text-[#F8F8F6] leading-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
@@ -187,7 +187,7 @@ export function Footer() {
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
                                 <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[#E6D3A3]/30 transition-colors">
-                                    <MapPin strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
+                                    <MapPin strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                 </div>
                                 <div className="text-sm">
                                     <p className="font-bold text-[#F8F8F6] mb-1">Unidade Central</p>
@@ -197,11 +197,11 @@ export function Footer() {
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[#E6D3A3]/30 transition-colors">
                                 <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[#F8F8F6] hover:text-[#E6D3A3] transition-colors">
-                                    <Phone strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
+                                    <Phone strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_PHONE}
                                 </a>
                                 <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[#6B7280] hover:text-[#E6D3A3] transition-colors">
-                                    <Mail strokeWidth={1.2} className="w-5 h-5 text-[#E6D3A3]" />
+                                    <Mail strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_EMAIL}
                                 </a>
                             </div>
@@ -247,7 +247,7 @@ export function Footer() {
                             onClick={scrollToTop}
                             className="w-14 h-14 bg-[#F8F8F6]/5 text-[#F8F8F6] border border-[#F8F8F6]/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[#E6D3A3] hover:text-black hover:scale-110 transition-all duration-500"
                         >
-                            <ArrowUp strokeWidth={1.2} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
+                            <ArrowUp strokeWidth={1} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
                         </button>
                     </Magnetic>
                 </div>

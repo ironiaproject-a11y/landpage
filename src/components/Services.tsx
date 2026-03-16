@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CircleDashed, Diamond, Crown, Cpu, Sparkles, Activity, ShieldPath, Microscope, ScanLine, Stethoscope } from "lucide-react";
 import { clsx } from "clsx";
 import VisualContainer from "./VisualContainer";
 import Image from "next/image";
@@ -26,6 +26,19 @@ interface Service {
     image: string;
     video: string;
 }
+
+const ICON_MAP: Record<string, any> = {
+    CircleDashed: CircleDashed,
+    Diamond: Diamond,
+    Crown: Crown,
+    Cpu: Cpu,
+    Sparkles: Sparkles,
+    Activity: Activity,
+    ShieldPath: ShieldPath,
+    Microscope: Microscope,
+    ScanLine: ScanLine,
+    Stethoscope: Stethoscope
+};
 
 function ServiceCard({ service, index, isMobile }: { service: Service; index: number; isMobile: boolean }) {
     const [isVideoActive, setIsVideoActive] = useState(false);
@@ -64,6 +77,12 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#E6D3A3]/5 border border-[#E6D3A3]/10 text-[#E6D3A3] group-hover:border-[#E6D3A3]/30 transition-all duration-500 service-icon-rotate">
+                            {(() => {
+                                const IconComp = ICON_MAP[service.icon] || CircleDashed;
+                                return <IconComp strokeWidth={1} className="w-4 h-4" />;
+                            })()}
+                        </div>
                         <span className="text-white/40 font-display text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
@@ -103,7 +122,7 @@ export function Services() {
 
     const services: Service[] = [
         {
-            icon: "CircleDashed",
+            icon: "ShieldPath",
             title: "Implantes Dentários",
             description: "Recupere a função e a estética do seu sorriso com implantes de alta durabilidade e precisão.",
             tag: "01",
@@ -111,7 +130,7 @@ export function Services() {
             video: "/assets/videos/services/implant_new.mp4"
         },
         {
-            icon: "Diamond",
+            icon: "Activity",
             title: "Tratamento de Bruxismo e Dor",
             description: "Alívio eficaz para dores orofaciais e proteção dos dentes contra o desgaste excessivo.",
             tag: "02",
@@ -119,7 +138,7 @@ export function Services() {
             video: "/assets/videos/services/bruxismo.mp4"
         },
         {
-            icon: "Crown",
+            icon: "Microscope",
             title: "Tratamento de Canal",
             description: "Procedimentos endodônticos avançados para salvar seus dentes com máximo conforto e segurança.",
             tag: "03",
@@ -127,7 +146,7 @@ export function Services() {
             video: "/assets/videos/services/canal.mp4"
         },
         {
-            icon: "Cpu",
+            icon: "Stethoscope",
             title: "Odontopediatria",
             description: "Cuidado especializado e acolhedor para a saúde bucal dos pequenos desde os primeiros anos.",
             tag: "04",
@@ -135,7 +154,7 @@ export function Services() {
             video: "/assets/videos/services/pediatrics.mp4"
         },
         {
-            icon: "Diamond",
+            icon: "Sparkles",
             title: "Estética Dental",
             description: "Transforme seu sorriso com facetas, clareamento e procedimentos que harmonizam sua face.",
             tag: "05",
@@ -143,7 +162,7 @@ export function Services() {
             video: "/assets/videos/services/aesthetic_new_2.mp4"
         },
         {
-            icon: "CircleDashed",
+            icon: "Diamond",
             title: "Tratamento de Sensibilidade",
             description: "Tratamentos específicos para eliminar o desconforto e devolver o prazer de comer e beber.",
             tag: "06",
@@ -151,7 +170,7 @@ export function Services() {
             video: "/assets/videos/services/grok-sensibilidade.mp4"
         },
         {
-            icon: "Crown",
+            icon: "Activity",
             title: "Cirurgias e Extrações",
             description: "Procedimentos cirúrgicos seguros, realizados por especialistas com técnicas minimamente invasivas.",
             tag: "07",
@@ -159,7 +178,7 @@ export function Services() {
             video: "/assets/videos/services/grok-surgery.mp4"
         },
         {
-            icon: "Cpu",
+            icon: "ScanLine",
             title: "Radiografia Panorâmica",
             description: "Diagnóstico completo com imagens amplas da arcada dentária para um planejamento preciso.",
             tag: "08",
@@ -167,7 +186,7 @@ export function Services() {
             video: "/assets/videos/services/panoramic.mp4"
         },
         {
-            icon: "Cpu",
+            icon: "Diamond",
             title: "Protocolo Ortodôntico",
             description: "Correção e alinhamento dental com protocolos modernos para um sorriso funcional e estético.",
             tag: "09",
@@ -175,7 +194,7 @@ export function Services() {
             video: "/assets/videos/services/ortho_protocol.mp4"
         },
         {
-            icon: "CircleDashed",
+            icon: "ScanLine",
             title: "Radiografia Digital",
             description: "Imagens radiográficas de alta definição com menor exposição à radiação e resultado imediato.",
             tag: "11",

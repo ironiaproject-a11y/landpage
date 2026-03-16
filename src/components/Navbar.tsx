@@ -201,7 +201,7 @@ export function Navbar() {
                                 className="md:hidden relative z-50 text-white"
                                 onClick={() => setIsMobileOpen(!isMobileOpen)}
                             >
-                                {isMobileOpen ? <X strokeWidth={1.2} /> : <Menu strokeWidth={1.2} />}
+                                {isMobileOpen ? <X strokeWidth={1} /> : <Menu strokeWidth={1} />}
                             </m.button>
                         )}
                     </AnimatePresence>
@@ -333,7 +333,7 @@ export function Navbar() {
                                                 className="text-white/40 transition-colors"
                                                 aria-label={social.name}
                                             >
-                                                <social.icon strokeWidth={1.2} size={20} />
+                                                <social.icon strokeWidth={1} size={20} />
                                             </m.a>
                                         ))}
                                     </div>

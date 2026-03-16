@@ -63,7 +63,7 @@ export function Contact() {
                                 <PremiumReveal key={i} direction="left" delay={0.5 + i * 0.1}>
                                     <div className="flex items-center gap-5 group p-2">
                                         <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[#F8F8F6] group-hover:bg-[#E6D3A3] group-hover:text-black transition-all duration-500">
-                                            <item.icon strokeWidth={1.5} className="w-4 h-4" />
+                                            <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
                                             <h4 className="text-[10px] font-bold text-[#6B7280]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
