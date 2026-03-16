@@ -76,7 +76,7 @@ export function Hero() {
 
         // --- POSITIONING TWEAK ---
         // Overscale the image slightly to allow lateral shifting without showing canvas edges
-        const scaleFactor = 1.15; 
+        const scaleFactor = 1.08; 
         const finalW = drawW * scaleFactor;
         const finalH = drawH * scaleFactor;
         
@@ -86,7 +86,7 @@ export function Hero() {
         
         // "Position after E of word origem"
         // Move slightly to the right so focal point (skull) doesn't overlap left text.
-        const lateralShift = w * 0.20; 
+        const lateralShift = w * 0.25; 
         
         ctx.clearRect(0, 0, w, h);
         ctx.drawImage(img, centerX + lateralShift, centerY, finalW, finalH);
