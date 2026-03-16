@@ -21,14 +21,18 @@ export function Navbar() {
         return () => window.removeEventListener("preloader-exiting", handleReveal);
     }, []);
 
-    // Scroll lock for mobile menu
+    // Scroll lock for mobile menu using Lenis
     useEffect(() => {
+        const lenis = (window as any).lenis;
         if (isMobileOpen) {
+            if (lenis) lenis.stop();
             document.body.style.overflow = "hidden";
         } else {
+            if (lenis) lenis.start();
             document.body.style.overflow = "unset";
         }
         return () => {
+            if (lenis) lenis.start();
             document.body.style.overflow = "unset";
         };
     }, [isMobileOpen]);

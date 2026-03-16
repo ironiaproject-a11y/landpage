@@ -14,7 +14,7 @@ export function SmoothScroll() {
             gestureOrientation: "vertical",
             smoothWheel: true,
             wheelMultiplier: 1,
-            touchMultiplier: 2,
+            touchMultiplier: 1.5,
             infinite: false,
         });
 
@@ -27,9 +27,17 @@ export function SmoothScroll() {
 
         gsap.ticker.lagSmoothing(0);
 
+        // Normalize scroll for mobile and better consistency
+        ScrollTrigger.normalizeScroll(true);
+        
+        // Expose lenis for other components
+        (window as any).lenis = lenis;
+
         return () => {
             lenis.destroy();
             gsap.ticker.remove(lenis.raf as any);
+            ScrollTrigger.normalizeScroll(false);
+            (window as any).lenis = undefined;
         };
     }, []);
 

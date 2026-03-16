@@ -108,7 +108,9 @@ export function Hero() {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
         const sequence = sequenceRef.current;
-        document.body.style.overflow = "hidden";
+        const lenis = (window as any).lenis;
+        
+        if (lenis) lenis.stop();
 
         const ctx = gsap.context(() => {
             // --- 3D TILT INTERACTION ---
@@ -191,21 +193,30 @@ export function Hero() {
             // 2. MASTER INTRO TIMELINE (Auto-scrolls the page)
             const introTl = gsap.timeline({
                 defaults: { ease: "power2.out" },
+                delay: 0.5, // Small buffer for layout stabilization
                 onComplete: () => {
-                    document.body.style.overflow = "auto";
+                    if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // Intro Auto-Scroll (Simulate scrubbing frames 0 -> 70)
-            // We scroll the window so ScrollTrigger naturally updates the frames
+            // Intro Auto-Scroll using Lenis to prevent "ghosting"
             const scrollDistance = (window.innerHeight * 4) * (introFrames / frameCount);
             
-            introTl.to(window, {
-                scrollTo: scrollDistance,
-                duration: 4.5,
-                ease: "power2.inOut",
-            }, 0);
+            if (lenis) {
+                introTl.to(lenis, {
+                    scrollTo: scrollDistance,
+                    duration: 4.5,
+                    ease: "power2.inOut",
+                }, 0);
+            } else {
+                // Fallback if lenis is not ready
+                introTl.to(window, {
+                    scrollTo: scrollDistance,
+                    duration: 4.5,
+                    ease: "power2.inOut",
+                }, 0);
+            }
 
             // Text Animations (synced with auto-scroll)
             introTl.to(".phrase-1-wrapper", {
@@ -238,7 +249,7 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            document.body.style.overflow = "auto";
+            if (lenis) lenis.start();
         };
     }, [mounted, imagesReady]);
 
