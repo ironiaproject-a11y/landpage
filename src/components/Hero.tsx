@@ -399,14 +399,14 @@ export function Hero() {
 
                     .phrase-2-wrapper {
                         opacity: 0;
-                        transform: translateZ(140px) translateY(20px);
-                        font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(70px, 14vw, 220px);
+                        transform: translateZ(160px) translateY(20px);
+                        font-family: var(--font-bodoni), "Libre Bodoni", serif;
+                        font-size: clamp(80px, 18vw, 280px);
                         font-weight: 600;
-                        letter-spacing: -0.02em;
-                        line-height: 0.8;
-                        color: #FFD21F;
-                        text-shadow: 0 10px 60px rgba(0,0,0,0.8), 0 0 20px rgba(255, 210, 31, 0.2);
+                        letter-spacing: -0.03em;
+                        line-height: 0.75;
+                        color: #FFCC00;
+                        text-shadow: 0 20px 80px rgba(0,0,0,0.9), 0 0 40px rgba(255, 204, 0, 0.25);
                         white-space: nowrap;
                     }
 
