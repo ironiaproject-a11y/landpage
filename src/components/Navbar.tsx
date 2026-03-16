@@ -39,13 +39,13 @@ export function Navbar() {
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;
-        if (latest > previous && latest > 150) {
+        if (latest > previous && latest > 600) {
             setIsHidden(true);
         } else {
             setIsHidden(false);
         }
-
-        if (latest > 50) {
+        
+        if (latest > 400) {
             setIsScrolled(true);
         } else {
             setIsScrolled(false);
