@@ -190,6 +190,21 @@ export function Hero() {
                 ease: "power2.inOut"
             }, 0.1);
 
+            // 1a. Exit Sequence (Push-Through) - Starts at ~80% of scroll
+            scrubTl.to(".canvas-container", {
+                scale: 1.4, // Maginify for the "crossing through" feel
+                opacity: 0,
+                filter: "brightness(0.2) contrast(1.2)", // Darken as we go
+                duration: 0.3,
+                ease: "power2.in"
+            }, 0.7);
+
+            scrubTl.to(".hero-overlay", {
+                background: "radial-gradient(circle at center, transparent 0%, #000 70%)",
+                duration: 0.3,
+                ease: "power2.in"
+            }, 0.7);
+
             // 2. MASTER INTRO TIMELINE (Auto-scrolls the page)
             const introTl = gsap.timeline({
                 defaults: { ease: "power2.out" },
