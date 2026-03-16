@@ -76,7 +76,7 @@ export function Hero() {
             drawY = 0;
         }
 
-        const scaleFactor = 1.08; 
+        const scaleFactor = 1.02; 
         const finalW = drawW * scaleFactor;
         const finalH = drawH * scaleFactor;
         const centerX = (w - finalW) / 2;
@@ -170,7 +170,7 @@ export function Hero() {
 
             // Enhanced Z-Space effect
             scrubTl.to(canvasRef.current, {
-                scale: 1.25,
+                scale: 1.15,
                 ease: "none"
             }, 0);
 
@@ -305,7 +305,7 @@ export function Hero() {
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        transform: scale(1.05);
+                        transform: scale(1.02);
                         perspective: 1000px;
                         transform-style: preserve-3d;
                     }
