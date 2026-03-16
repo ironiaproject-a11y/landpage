@@ -249,10 +249,15 @@ export function Hero() {
             }, 2.5);
 
             // PHASE 3: The Transformation (Auto-Scroll)
-            // Synchronized with the new compressed 200dvh track
-            // We want to land at approx 48% of the Hero scroll range (the transformation point)
-            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 2);
+            // Balanced for 400dvh track - lands at exactly the transformation point
+            const trackHeight = scrollDriverRef.current?.offsetHeight || (window.innerHeight * 4);
             const scrollDistance = trackHeight * 0.48; 
+
+            introTl.to(window, {
+                scrollTo: scrollDistance,
+                duration: 4.5,
+                ease: "expo.inOut",
+            }, 3.5);
 
             // PHASE 4: The Smile (Reveal)
             introTl.to(".phrase-2-wrapper", {
@@ -293,7 +298,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "200dvh", position: "relative" }}>
+        <div ref={scrollDriverRef} style={{ height: "400dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
