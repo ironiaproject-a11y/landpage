@@ -188,6 +188,13 @@ export function Hero() {
                         0
                     );
 
+                    // RESET STATES AT START OF SCRUB
+                    // This ensures that when scrolling back to the very top, 
+                    // the elements return to their neutral "skull" phase state.
+                    scrubTl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
+                    scrubTl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
+                    scrubTl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
+
                     // Replicate the text animation logic from introTl into scrubTl
                     // Proportions out of 10 duration:
                     // 1.5s / 6s = 2.5s here
@@ -201,7 +208,7 @@ export function Hero() {
                             ease: "expo.out",
                             immediateRender: false
                         },
-                        2.5
+                        1.5 // Move back to match intro timing proportionally
                     );
 
                     // 3.5s / 6s = 5.83s
