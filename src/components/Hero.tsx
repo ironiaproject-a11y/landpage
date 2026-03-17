@@ -118,7 +118,7 @@ export function Hero() {
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "top top",
-                end: "+=250vh",
+                end: "+=500vh", // Extended scroll distance for heavy, deliberate control
                 pin: true,
                 pinSpacing: true,
                 invalidateOnRefresh: true
@@ -129,8 +129,8 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                 start: "top top",
-                end: "+=250vh",
-                scrub: 1.2,
+                end: "+=500vh", // Match the extended pinning length
+                scrub: 2.5, // Increased inertia so the user feels the "weight" and control over the video
                     invalidateOnRefresh: true,
                     onLeave: () => {
                         gsap.set(sequence, { frame: frameCount - 1 });
