@@ -139,25 +139,26 @@ export function Hero() {
                 }
             });
 
-            // Video Frame Scrubbing
-            scrubTl.fromTo(sequence, 
-                { frame: 0 }, 
-                {
-                    frame: frameCount - 1,
-                    onUpdate: () => {
-                        if (imagesReady) render(Math.round(sequence.frame));
-                    },
-                    ease: "none",
-                    duration: 10
-                }, 
-                0
-            );
-
             // 3. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
                     // Enable scrubbed text transitions ONLY AFTER intro is complete
                     setupScrubbedAnimations(scrubTl);
+                    
+                    // Video Frame Scrubbing (Now bound AFTER intro completes to prevent snapback)
+                    scrubTl.fromTo(sequence, 
+                        { frame: frameCount - 1 }, // Start from where the intro left off
+                        {
+                            frame: frameCount - 1, // Stay on the last frame if no more scroll video frames, or adjust if you have a longer sequence for scroll
+                            onUpdate: () => {
+                                if (imagesReady) render(Math.round(sequence.frame));
+                            },
+                            ease: "none",
+                            duration: 10
+                        }, 
+                        0
+                    );
+
                     const lenis = (window as any).lenis;
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
