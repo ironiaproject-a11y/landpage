@@ -81,12 +81,13 @@ export function Hero() {
         const finalH = drawH * scaleFactor;
         const centerX = (w - finalW) / 2;
         const centerY = (h - finalH) / 2;
-        const lateralShift = w * 0.25; 
+        // Lateral shift removed to center content (skull/smile) perfectly
+        // const lateralShift = w * 0.25; 
 
         drawParamsRef.current = { 
             drawW: finalW, 
             drawH: finalH, 
-            drawX: centerX + lateralShift, 
+            drawX: centerX, 
             drawY: centerY 
         };
     };
@@ -108,9 +109,9 @@ export function Hero() {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
         const sequence = sequenceRef.current;
-        // Scroll blocking removed to prevent "stuck" feeling
-        // const lenis = (window as any).lenis;
-        // if (lenis) lenis.stop();
+        // Re-enabling scroll lock during cinematic intro for premium feel
+        const lenis = (window as any).lenis;
+        if (lenis) lenis.stop();
 
         const ctx = gsap.context(() => {
             // --- 3D TILT INTERACTION ---
@@ -192,7 +193,7 @@ export function Hero() {
             // 2. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
-                    // if (lenis) lenis.start();
+                    if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
@@ -420,15 +421,15 @@ export function Hero() {
 
                     .hero-line-2 h2 {
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(56px, 8vw, 92px); /* Large, impactful size */
+                        font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
                         font-weight: 700;
                         font-style: italic; /* Cinematic italic touch */
-                        letter-spacing: -0.02em;
-                        line-height: 1;
-                        background: linear-gradient(180deg, #F3E7C8 0%, #E6D3A3 100%);
+                        letter-spacing: -0.03em;
+                        line-height: 0.9;
+                        background: linear-gradient(180deg, #F3E7C8 0%, #E6D3A3 50%, #CBB382 100%);
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
-                        filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+                        filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
                         padding: 0;
                     }
