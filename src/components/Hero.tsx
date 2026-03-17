@@ -455,33 +455,75 @@ export function Hero() {
                     .hero-btn-wrapper {
                         position: absolute;
                         left: 50%;
-                        bottom: 15vh;
+                        bottom: 12vh; /* Slightly lower to give breathing room from the massive text */
                         transform: translateX(-50%) translateZ(150px);
                         opacity: 0;
                         pointer-events: auto;
                         z-index: 20;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 16px;
                     }
 
                     .btn-premium-cta {
-                        background: transparent;
-                        backdrop-filter: blur(10px);
-                        -webkit-backdrop-filter: blur(15px);
-                        border: 1px solid rgba(248, 248, 246, 0.4);
-                        color: #F8F8F6;
-                        padding: 18px 40px;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        background: linear-gradient(135deg, rgba(230, 211, 163, 0.1), rgba(203, 179, 130, 0.05));
+                        backdrop-filter: blur(12px);
+                        -webkit-backdrop-filter: blur(12px);
+                        border: 1px solid rgba(230, 211, 163, 0.25);
+                        color: #E6D3A3;
+                        padding: 16px 42px;
                         border-radius: 999px;
-                        font-size: 13px;
-                        font-weight: 500;
-                        letter-spacing: 0.25em;
+                        font-family: var(--font-inter), sans-serif;
+                        font-size: 11px;
+                        font-weight: 600;
+                        letter-spacing: 0.35em;
                         text-transform: uppercase;
+                        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(230, 211, 163, 0.05);
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                        overflow: hidden;
+                        cursor: pointer;
+                    }
+
+                    .btn-premium-cta::before {
+                        content: '';
+                        position: absolute;
+                        top: 0; left: 0; width: 100%; height: 100%;
+                        background: linear-gradient(90deg, transparent, rgba(230, 211, 163, 0.15), transparent);
+                        transform: translateX(-100%);
+                        transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                    }
+
+                    .btn-premium-cta:hover::before {
+                        transform: translateX(100%);
                     }
 
                     .btn-premium-cta:hover {
                         background: rgba(230, 211, 163, 0.15);
-                        border-color: #E6D3A3;
-                        transform: scale(1.05);
-                        letter-spacing: 0.3em;
+                        border-color: rgba(230, 211, 163, 0.5);
+                        color: #FFF;
+                        transform: translateY(-3px) scale(1.02);
+                        box-shadow: 0 10px 40px rgba(230, 211, 163, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                        letter-spacing: 0.4em;
+                    }
+                    
+                    /* Indicator text above or below button to aid scroll */
+                    .scroll-indicator {
+                        font-size: 10px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.2em;
+                        color: rgba(230, 211, 163, 0.6);
+                        opacity: 0.8;
+                        animation: pulse 2s infinite ease-in-out;
+                    }
+                    
+                    @keyframes pulse {
+                        0%, 100% { opacity: 0.4; }
+                        50% { opacity: 0.8; }
                     }
 
                     @media (max-width: 1024px) {
@@ -489,6 +531,9 @@ export function Hero() {
                             font-size: clamp(40px, 8vw, 50px);
                             white-space: normal;
                             max-width: 90vw;
+                        }
+                        .hero-btn-wrapper {
+                            bottom: 15vh;
                         }
                     }
 
@@ -498,13 +543,14 @@ export function Hero() {
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
+                            line-height: 1.1;
                         }
                         .hero-btn-wrapper { 
                             left: 50%;
                             transform: translateX(-50%) translateZ(150px);
-                            bottom: 12vh;
+                            bottom: 10vh;
                         }
-                        .btn-premium-cta { padding: 14px 30px; font-size: 11px; }
+                        .btn-premium-cta { padding: 14px 30px; font-size: 10px; letter-spacing: 0.25em; }
                     }
                 `}</style>
 
@@ -530,8 +576,23 @@ export function Hero() {
                     </div>
 
                     <div className="hero-btn-wrapper">
+                        <span className="scroll-indicator">Inicie a jornada</span>
                         <button className="btn-premium-cta">
                             Descubra a Experiência
+                            <svg 
+                                width="14" 
+                                height="14" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                style={{ transition: 'transform 0.3s' }}
+                                className="cta-icon"
+                            >
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
                         </button>
                     </div>
                 </div>
