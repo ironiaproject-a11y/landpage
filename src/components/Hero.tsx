@@ -11,7 +11,6 @@ if (typeof window !== "undefined") {
 }
 
 export function Hero() {
-    const scrollDriverRef = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const textContainerRef = useRef<HTMLDivElement>(null);
@@ -109,7 +108,7 @@ export function Hero() {
 
     // Master Animation Logic
     useEffect(() => {
-        if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
+        if (!mounted || !imagesReady || !canvasRef.current || !sectionRef.current) return;
 
         const sequence = sequenceRef.current;
         
@@ -153,9 +152,9 @@ export function Hero() {
             // 1. Setup Scroll Scrub for Narrative Exit
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: scrollDriverRef.current,
+                    trigger: sectionRef.current,
                     start: "top top",
-                    end: "bottom bottom",
+                    end: "bottom top",
                     scrub: 0.5,
                     invalidateOnRefresh: true,
                 }
@@ -181,7 +180,6 @@ export function Hero() {
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
                 y: 50,
-                duration: 0.3,
                 ease: "power2.inOut"
             }, 0);
 
@@ -289,12 +287,10 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-        <div ref={scrollDriverRef} style={{ height: "300dvh", position: "relative" }}>
             <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
                 <style>{`
                     .hero {
-                    position: sticky;
-                    top: 0;
+                    position: relative;
                     width: 100vw;
                     height: 100vh;
                     background: #0B0B0B;
@@ -304,7 +300,7 @@ export function Hero() {
                     align-items: center;
                     justify-content: center;
                     overflow: hidden;
-                    z-index: 10;
+                    z-index: 1;
                 }
 
                     .canvas-container {
@@ -515,7 +511,6 @@ export function Hero() {
                     </div>
                 </div>
             </section>
-        </div>
     );
 }
 
