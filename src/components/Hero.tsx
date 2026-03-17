@@ -158,41 +158,55 @@ export function Hero() {
                     if (lenis) lenis.start();
 
                     // 2. SETUP SCROLL SCRUB FOR THE VIDEO
-                    // Created after intro finishes so it doesn't conflict with the auto-play
-                    // This allows the user to control the entire transformation (0 to 144) on scroll
                     const scrubTl = gsap.timeline({
                         scrollTrigger: {
                             trigger: sectionRef.current,
                             start: "top top",
-                            end: "+=500vh", // Extended scroll area significantly for slower, smoother playback
-                            scrub: 1, // Increased scrub smoothing from 0.5 to 1 for more fluid deceleration
+                            end: "+=400vh", // Balanced scroll length
+                            scrub: 1, // Smooth interpolation
                             pin: true, // PIN hero section exactly where it is
                             invalidateOnRefresh: true,
+                            // Ensure animation state is held at the end
+                            onLeave: () => {
+                                gsap.set(sequence, { frame: frameCount - 1 });
+                                render(frameCount - 1);
+                            }
                         }
                     });
 
                     // Allows scroll to scrub all frames of the video
+                    // We use an empty initially to let it start from where intro left off
                     scrubTl.fromTo(sequence, 
                         { frame: 0 }, 
                         {
                             frame: frameCount - 1,
                             onUpdate: () => render(Math.round(sequence.frame)),
-                            ease: "none"
+                            ease: "none",
+                            // This ensures the timeline space is dominated by the video
+                            duration: 10 
                         }, 
                         0
                     );
 
                     // EXIT ANIMATION (Narrative Transition)
+                    // Fades out everything smoothly at the VERY END of the scrub
                     scrubTl.to(".hero-container", {
-                        y: -100,
+                        y: -150,
                         opacity: 0,
-                    }, 0);
+                        duration: 2
+                    }, ">-2"); // Starts near the end of the video sequence
+
+                    scrubTl.to(".canvas-container", {
+                        opacity: 0,
+                        duration: 2
+                    }, "<"); // Fades the video out alongside the text
 
                     scrubTl.to(".hero-btn-wrapper", {
                         opacity: 0,
                         y: 50,
-                        ease: "power2.inOut"
-                    }, 0);
+                        ease: "power2.inOut",
+                        duration: 1
+                    }, "<");
 
                     ScrollTrigger.refresh();
                 }
