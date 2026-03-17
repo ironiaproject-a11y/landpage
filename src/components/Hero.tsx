@@ -108,9 +108,9 @@ export function Hero() {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
         const sequence = sequenceRef.current;
-        const lenis = (window as any).lenis;
-        
-        if (lenis) lenis.stop();
+        // Scroll blocking removed to prevent "stuck" feeling
+        // const lenis = (window as any).lenis;
+        // if (lenis) lenis.stop();
 
         const ctx = gsap.context(() => {
             // --- 3D TILT INTERACTION ---
@@ -192,7 +192,7 @@ export function Hero() {
             // 2. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
-                    if (lenis) lenis.start();
+                    // if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
@@ -220,33 +220,51 @@ export function Hero() {
             }, 0);
 
             // 1.5s - show text "Sua origem"
-            // animation: opacity 0 → 1, translateY 20px → 0
+            // High-end subtitle style
             introTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                { opacity: 0, y: 15, scale: 0.95 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    duration: 1.2, 
+                    ease: "expo.out" 
+                },
                 1.5
             );
 
             // 3.5s - hide "Sua origem"
-            // opacity 1 → 0
             introTl.to(".hero-line-1", {
                 opacity: 0,
-                duration: 0.3,
+                y: -10,
+                duration: 0.5,
                 ease: "power2.in"
             }, 3.5);
 
             // 3.8s - show text "Seu sorriso"
-            // opacity 0 → 1, translateY 20px → 0
+            // Dramatic entrance for the focal point
             introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    filter: "blur(0px)",
+                    duration: 1.5, 
+                    ease: "power4.out" 
+                },
                 3.8
             );
 
             // 4.2s - CTA button fades in
             introTl.fromTo(".hero-btn-wrapper",
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                { opacity: 0, y: 30 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1.2, 
+                    ease: "back.out(1.7)" 
+                },
                 4.2
             );
         });
@@ -375,17 +393,18 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 50%;
+                        top: 42%; /* Slightly above center for subtitle feel */
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(24px, 4vw, 32px);
-                        font-weight: 400;
-                        letter-spacing: 0.04em;
-                        color: #F3E7C8;
-                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+                        font-size: clamp(14px, 1.5vw, 18px);
+                        font-weight: 500;
+                        letter-spacing: 0.5em; /* Elegant wide tracking */
+                        text-transform: uppercase;
+                        color: rgba(243, 231, 200, 0.8);
+                        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
                     }
@@ -402,14 +421,15 @@ export function Hero() {
 
                     .hero-line-2 h2 {
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(48px, 7vw, 64px);
-                        font-weight: 600;
-                        font-style: normal;
-                        letter-spacing: -0.01em;
-                        line-height: 1.1;
-                        color: #E6D3A3 !important;
-                        text-shadow: 0 6px 20px rgba(0,0,0,0.6);
-                        white-space: nowrap;
+                        font-size: clamp(56px, 8vw, 92px); /* Large, impactful size */
+                        font-weight: 700;
+                        font-style: italic; /* Cinematic italic touch */
+                        letter-spacing: -0.02em;
+                        line-height: 1;
+                        background: linear-gradient(180deg, #F3E7C8 0%, #E6D3A3 100%);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
                         margin: 0;
                         padding: 0;
                     }
