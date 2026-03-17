@@ -110,48 +110,11 @@ export function Hero() {
 
     // Master Animation Logic
     useEffect(() => {
-        if (!mounted || !imagesReady || !canvasRef.current || !sectionRef.current) return;
+        if (!mounted || !canvasRef.current || !sectionRef.current) return;
 
         const sequence = sequenceRef.current;
-        
-        // Ensure dimensions are correct and first frame is drawn before starting animations
-        updateDimensions();
-        render(0);
-
         const ctx = gsap.context(() => {
-            // --- 3D TILT INTERACTION ---
-            const handleMouseMove = (e: MouseEvent) => {
-                const { clientX, clientY } = e;
-                const { innerWidth, innerHeight } = window;
-                const xPct = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-                const yPct = (clientY / innerHeight - 0.5) * 2; // -1 to 1
-                
-                mouseRef.current = { x: xPct, y: yPct };
-                
-                // Subtle tilt
-                gsap.to(".canvas-container", {
-                    rotateY: xPct * 4,
-                    rotateX: -yPct * 4,
-                    x: xPct * 15,
-                    y: yPct * 15,
-                    duration: 1.2,
-                    ease: "power2.out",
-                    overwrite: "auto"
-                });
-                
-                // Bloom follows mouse
-                gsap.to(".hero-bloom", {
-                    x: xPct * 50,
-                    y: yPct * 50,
-                    opacity: 0.4 + (Math.abs(xPct) * 0.2),
-                    duration: 1.5,
-                    ease: "power2.out",
-                });
-            };
-
-            window.addEventListener("mousemove", handleMouseMove);
-
-            // 1. DEDICATED PINNING (Initialized immediately for layout stability)
+            // 1. IMMEDIATE PINNING (For Layout Stability)
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "top top",
@@ -161,7 +124,7 @@ export function Hero() {
                 invalidateOnRefresh: true
             });
 
-            // 2. SCRUB TIMELINE (Created immediately, but we'll use it carefully)
+            // 2. SCRUB TIMELINE (Created immediately)
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -171,7 +134,7 @@ export function Hero() {
                     invalidateOnRefresh: true,
                     onLeave: () => {
                         gsap.set(sequence, { frame: frameCount - 1 });
-                        render(frameCount - 1);
+                        if (imagesReady) render(frameCount - 1);
                     }
                 }
             });
@@ -193,40 +156,43 @@ export function Hero() {
             // 3. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
-                    // Enable scrubbed text transitions ONLY AFTER intro is complete to avoid "fighting"
+                    // Enable scrubbed text transitions ONLY AFTER intro is complete
                     setupScrubbedAnimations(scrubTl);
-                    
                     const lenis = (window as any).lenis;
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // Video Intro
-            introTl.fromTo(sequence, 
-                { frame: 0 },
-                {
-                    frame: frameCount - 1,
+            // Video Intro (runs only if imagesReady, but we define it now)
+            if (imagesReady) {
+                introTl.fromTo(sequence, 
+                    { frame: 0 },
+                    {
+                        frame: frameCount - 1,
+                        duration: 6,
+                        ease: "none",
+                        onUpdate: () => render(Math.round(sequence.frame))
+                    }, 
+                    0
+                );
+                
+                introTl.to([".canvas-container", ".hero"], {
+                    opacity: 1,
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                }, 0);
+
+                introTl.to(".canvas-container", {
+                    scale: 1.05,
                     duration: 6,
-                    ease: "none",
-                    onUpdate: () => render(Math.round(sequence.frame))
-                }, 
-                0
-            );
+                    ease: "power1.inOut"
+                }, 0);
+            }
 
-            introTl.to([".canvas-container", ".hero"], {
-                opacity: 1,
-                duration: 1.0,
-                ease: "power2.inOut"
-            }, 0);
+            // --- CINEMATIC TEXT ANIMATIONS (Run regardless of video loading) ---
 
-            introTl.to(".canvas-container", {
-                scale: 1.05,
-                duration: 6,
-                ease: "power1.inOut"
-            }, 0);
-
-            // 0.0s - show text "Sua origem" (Immediate)
+            // 0.0s - show text "Sua origem" (Immediate Presence)
             introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 15, scale: 0.95 },
                 { 
@@ -247,9 +213,9 @@ export function Hero() {
                 ease: "power2.in"
             }, 3.0);
 
-            // 3.3s - show text "Seu sorriso"
+            // 3.3s - show text "Seu sorriso" (Elegant reveal)
             introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
+                { opacity: 0, y: 5, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
                 { 
                     opacity: 1, 
                     y: 0, 
@@ -262,22 +228,9 @@ export function Hero() {
                 3.3
             );
 
-            // 3.8s - CTA button
-            introTl.fromTo(".hero-btn-wrapper",
-                { opacity: 0, y: 30 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 1.5, 
-                    ease: "back.out(1.7)" 
-                },
-                3.8
-            );
-
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
-                // Return elements to neutral state at start of scrub
+                // Neutral state at start of scrub
                 tl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
-                tl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
                 tl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
 
                 tl.fromTo(".hero-line-1", 
@@ -294,18 +247,35 @@ export function Hero() {
                     6.33
                 );
 
-                tl.fromTo(".hero-btn-wrapper",
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 2.0, ease: "back.out(1.7)", immediateRender: false },
-                    7.0
-                );
-
                 // EXIT ANIMATION
                 tl.to(".hero-container", { y: -80, opacity: 0, duration: 2 }, ">-2"); 
                 tl.to(".canvas-container", { opacity: 0, duration: 2 }, "<"); 
-                tl.to(".hero-btn-wrapper", { opacity: 0, y: 50, ease: "power2.inOut", duration: 1 }, "<");
             }
+
+            // Tilt interaction
+            const handleMouseMove = (e: MouseEvent) => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+                const xPct = (clientX / innerWidth - 0.5) * 2;
+                const yPct = (clientY / innerHeight - 0.5) * 2;
+                mouseRef.current = { x: xPct, y: yPct };
+                gsap.to(".canvas-container", { rotateY: xPct * 4, rotateX: -yPct * 4, x: xPct * 15, y: yPct * 15, duration: 1.2, ease: "power2.out", overwrite: "auto" });
+                gsap.to(".hero-bloom", { x: xPct * 50, y: yPct * 50, opacity: 0.4 + (Math.abs(xPct) * 0.2), duration: 1.5, ease: "power2.out" });
+            };
+            window.addEventListener("mousemove", handleMouseMove);
         });
+
+        if (imagesReady) {
+            updateDimensions();
+            render(0);
+        }
+
+        return () => {
+            ctx.revert();
+            const lenis = (window as any).lenis;
+            if (lenis) lenis.start();
+        };
+    }, [mounted, imagesReady]);
 
         // Initial render logic
         if (imagesReady) {
