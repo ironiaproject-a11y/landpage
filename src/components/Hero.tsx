@@ -82,8 +82,9 @@ export function Hero() {
         const finalW = drawW * scaleFactor;
         const finalH = drawH * scaleFactor;
         
-        // Shift video to the right by adding a lateral offset (e.g., 10% of screen width)
-        const lateralShift = w * 0.10; 
+        // Shift video significantly to the right to frame the transformation
+        // directly behind the 'u' in 'Seu sorriso' (approx 22% shift)
+        const lateralShift = w * 0.22; 
         const centerX = ((w - finalW) / 2) + lateralShift;
         const centerY = (h - finalH) / 2;
 
