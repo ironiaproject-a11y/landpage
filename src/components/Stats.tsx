@@ -51,7 +51,7 @@ export function Stats() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 95%",
+            start: "top bottom",
             toggleActions: "play none none reverse"
           }
         }
@@ -116,9 +116,12 @@ export function Stats() {
         .stats-section {
           background: transparent;
           padding: 40px 24px;
-          margin-top: -25vh; /* Increased overlap to reduce gap */
+          margin-top: -18vh; /* Refined overlap for better balance */
           position: relative;
-          z-index: 20; /* Ensure it stays above Hero exit */
+          z-index: 20;
+          opacity: 0; /* Match GSAP start state */
+          transform: translateY(40px); /* Match GSAP start state */
+          will-change: transform, opacity;
         }
 
         .stats-grid {
@@ -218,7 +221,7 @@ export function Stats() {
         @media (max-width: 1023px) {
           .stats-section { 
             padding: 0 16px;
-            margin-top: -18vh; 
+            margin-top: -15vh; 
             z-index: 50; 
             background: transparent;
           }
