@@ -254,6 +254,7 @@ export function Hero() {
 
             // Tilt interaction
             const handleMouseMove = (e: MouseEvent) => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
                 const { clientX, clientY } = e;
                 const { innerWidth, innerHeight } = window;
                 const xPct = (clientX / innerWidth - 0.5) * 2;
@@ -414,7 +415,7 @@ export function Hero() {
                     }
 
                     .hero-line-2 h2 {
-                        font-family: var(--font-bodoni), "Libre Bodoni", serif;
+                        font-family: var(--font-playfair), "Playfair Display", serif;
                         font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
                         font-weight: 700;
                         font-style: italic; /* Cinematic italic touch */
@@ -526,7 +527,7 @@ export function Hero() {
                             transform: translateX(-50%) translateZ(150px);
                             bottom: 10vh;
                         }
-                        .btn-premium-cta { padding: 14px 30px; font-size: 10px; letter-spacing: 0.25em; }
+                        .btn-premium-cta { padding: 14px 30px; font-size: 12px; letter-spacing: 0.20em; }
                     }
                 `}</style>
 

@@ -50,7 +50,7 @@ export function About() {
     }, []);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isMobile) return;
+        if (isMobile || (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
@@ -105,18 +105,21 @@ export function About() {
 
             // Continuous Parallax Effects
             const speedMult = isMobile ? 0.45 : 1;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             // Image Container Parallax
-            gsap.to(".about-image-wrapper", {
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1,
-                },
-                y: -(isMobile ? 20 : 60) * speedMult,
-                ease: "none"
-            });
+            if (!prefersReducedMotion) {
+                gsap.to(".about-image-wrapper", {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1,
+                    },
+                    y: -(isMobile ? 20 : 60) * speedMult,
+                    ease: "none"
+                });
+            }
 
         }, sectionRef);
 
@@ -173,10 +176,10 @@ export function About() {
                         <PremiumReveal direction="bottom" delay={0.4}>
                             <div className="space-y-8 mb-16">
                                 <p className="text-[17px] text-[#F8F8F6]/90 font-medium leading-[1.7] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                    Na Clínica Premium, não apenas tratamos sorrisos; cultivamos a confiança através da harmonia facial.
+                                    Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
-                                <p className="text-[15px] text-[#6B7280] font-normal leading-[1.8] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                    Combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas, criando uma experiência que transcende o tratamento clínico convencional. Cada detalhe, do diagnóstico digital ao acabamento artesanal, é pensado para entregar perfeição.
+                                <p className="text-[15px] text-[#9CA3AF] font-normal leading-[1.8] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                    Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. É uma experiência que transcende o tratamento clínico convencional... Cada detalhe, do diagnóstico digital ao acabamento artesanal, é pensado para entregar perfeição.
                                 </p>
                             </div>
                         </PremiumReveal>
@@ -239,7 +242,7 @@ export function About() {
                             }
 
                             @media (max-width: 768px) {
-                                .btn-premium-cta-inline { padding: 14px 30px; font-size: 10px; letter-spacing: 0.25em; width: 100%; justify-content: center; }
+                                .btn-premium-cta-inline { padding: 14px 30px; font-size: 12px; letter-spacing: 0.25em; width: 100%; justify-content: center; min-height: 48px; }
                             }
                         `}</style>
                         <m.div

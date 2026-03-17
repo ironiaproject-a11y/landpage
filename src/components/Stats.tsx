@@ -208,10 +208,10 @@ export function Stats() {
 
         .stats-label {
           font-family: var(--font-inter), sans-serif;
-          font-size: 11px;
+          font-size: 13px;
           font-weight: 600;
           color: #94A3B8;
-          letter-spacing: 0.22em;
+          letter-spacing: 0.20em;
           text-transform: uppercase;
           display: block;
           max-width: 180px;
