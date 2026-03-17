@@ -81,10 +81,11 @@ export function Hero() {
         const scaleFactor = 1.02; 
         const finalW = drawW * scaleFactor;
         const finalH = drawH * scaleFactor;
-        const centerX = (w - finalW) / 2;
+        
+        // Shift video to the right by adding a lateral offset (e.g., 10% of screen width)
+        const lateralShift = w * 0.10; 
+        const centerX = ((w - finalW) / 2) + lateralShift;
         const centerY = (h - finalH) / 2;
-        // Lateral shift removed to center content (skull/smile) perfectly
-        // const lateralShift = w * 0.25; 
 
         drawParamsRef.current = { 
             drawW: finalW, 
