@@ -164,22 +164,23 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold mb-20 text-[#F8F8F6] leading-[1.1] tracking-[-0.015em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(40px,5vw,84px)] font-medium mb-20 text-[#F8F8F6] leading-[1.05] tracking-[-0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Luxo Odontológico.</span>
+                                <span className="text-[#E6D3A3] font-display italic font-light block mt-4 border-l-2 border-[#E6D3A3]/30 pl-8 ml-2">Luxo Odontológico.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <div className="space-y-8 mb-16">
-                                <p className="text-[17px] text-[#F8F8F6]/90 font-medium leading-[1.7] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <div className="space-y-10 mb-16 max-w-[540px]">
+                                <p className="text-[18px] text-[#F8F8F6]/90 font-medium leading-[1.6] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
-                                <p className="text-[15px] text-[#9CA3AF] font-normal leading-[1.8] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                    Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. É uma experiência que transcende o tratamento clínico convencional... Cada detalhe, do diagnóstico digital ao acabamento artesanal, é pensado para entregar perfeição.
+                                <p className="text-[15px] text-[#9CA3AF] font-normal leading-[1.8] tracking-[0.02em] opacity-80" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                    Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
+                                    <span className="block mt-4 text-[#E6D3A3]/60 italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>
                             </div>
                         </PremiumReveal>

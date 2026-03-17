@@ -393,14 +393,26 @@ export function Hero() {
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(16px, 2vw, 22px);
+                        font-size: clamp(14px, 1.8vw, 18px);
                         font-weight: 500;
-                        letter-spacing: 0.35em; /* Refined tracking for readability */
+                        letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: rgba(243, 231, 200, 0.8);
+                        color: rgba(243, 231, 200, 0.9);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                    }
+
+                    .hero-line-1::before,
+                    .hero-line-1::after {
+                        content: '';
+                        width: 40px;
+                        height: 1px;
+                        background: linear-gradient(to right, transparent, rgba(230, 211, 163, 0.4), transparent);
+                        display: block;
                     }
 
                     .hero-line-2 {
@@ -425,7 +437,32 @@ export function Hero() {
                         -webkit-text-fill-color: transparent;
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
-                        padding: 0;
+                        padding: 0 40px;
+                        position: relative;
+                    }
+
+                    .hero-line-2::before {
+                        content: '[';
+                        position: absolute;
+                        left: -20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        font-family: var(--font-inter), sans-serif;
+                        font-weight: 200;
+                        font-size: 0.8em;
+                        color: rgba(230, 211, 163, 0.3);
+                    }
+
+                    .hero-line-2::after {
+                        content: ']';
+                        position: absolute;
+                        right: -20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        font-family: var(--font-inter), sans-serif;
+                        font-weight: 200;
+                        font-size: 0.8em;
+                        color: rgba(230, 211, 163, 0.3);
                     }
 
                     .hero-btn-wrapper {
@@ -571,13 +608,13 @@ export function Hero() {
                     <div className="hero-text">
                         <div className="hero-line-1">
                             <span className="block">
-                                Sua origem
+                                SUA ORIGEM
                             </span>
                         </div>
 
                         <div className="hero-line-2">
                             <h2 className="block">
-                                Seu sorriso
+                                SEU SORRISO
                             </h2>
                         </div>
                     </div>
