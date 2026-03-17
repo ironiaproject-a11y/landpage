@@ -167,7 +167,7 @@ export function Experience() {
                             viewport={{ once: true }}
                         >
                             <VisualContainer width="100%" height="auto">
-                                <div ref={visualRef} className="aspect-[4/5] relative overflow-hidden rounded-2xl">
+                                <div ref={visualRef} className="aspect-[4/5] relative overflow-hidden rounded-[2rem] border border-white/5 group-hover:border-white/10 transition-all">
                                     <Image
                                         src="/assets/images/elite-digital-protocol-final.png"
                                         alt="Clínica Premium - Protocolo Digital"
@@ -189,7 +189,7 @@ export function Experience() {
                 </div>
 
                 <div ref={ctaRef} className="mt-16 md:mt-32 flex justify-center">
-                    <div className="inline-flex flex-col md:flex-row items-center gap-6 px-10 py-8 rounded-3xl border border-[#F8F8F6]/5 bg-white/2 hover:border-[#F8F8F6]/30 transition-all group cursor-pointer backdrop-blur-sm">
+                    <div className="inline-flex flex-col md:flex-row items-center gap-6 px-10 py-8 rounded-[2rem] border border-[#F8F8F6]/5 bg-white/2 hover:border-[#F8F8F6]/30 transition-all group cursor-pointer backdrop-blur-sm">
                         <span className="text-[#F8F8F6]/60 text-sm font-medium">Pronto para sua própria jornada de elite?</span>
                         <div className="hidden md:block w-[1px] h-6 bg-[#F8F8F6]/10" />
                         <span className="text-[#F8F8F6] text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3">

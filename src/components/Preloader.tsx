@@ -89,10 +89,10 @@ export function Preloader() {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="flex flex-col items-center"
                         >
-                            <span className="font-display text-base font-light text-white tracking-[0.3em] uppercase mb-2">
+                            <span className="font-display text-base font-light text-white tracking-[0.4em] uppercase mb-2">
                                 Clínica
                             </span>
-                            <span className="text-white/20 text-[8px] uppercase tracking-[0.6em] ml-1">
+                            <span className="text-[#E6D3A3]/40 text-[9px] uppercase tracking-[0.6em] ml-1 font-medium">
                                 Excellence in Dentistry
                             </span>
                         </m.div>
@@ -105,12 +105,12 @@ export function Preloader() {
                         />
 
                         {/* Progress Indicator */}
-                        <div className="absolute -bottom-24 w-40 h-[2px] bg-white/5 overflow-hidden rounded-full">
+                        <div className="absolute -bottom-24 w-40 h-[1px] bg-white/10 overflow-hidden rounded-full">
                             <m.div
                                 initial={{ x: "-100%" }}
                                 animate={{ x: "0%" }}
-                                transition={{ duration: 1.8, ease: "easeInOut" }}
-                                className="w-full h-full bg-[#E6D3A3] shadow-[0_0_10px_#E6D3A3]"
+                                transition={{ duration: 1.8, ease: [0.65, 0, 0.35, 1] }}
+                                className="w-full h-full bg-gradient-to-r from-transparent via-[#E6D3A3] to-transparent shadow-[0_0_15px_#E6D3A3]"
                             />
                         </div>
                     </div>

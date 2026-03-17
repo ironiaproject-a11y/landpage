@@ -151,7 +151,7 @@ export function Cursor() {
                     animate={{
                         scale: isHovered ? 2 : isActive ? 0.8 : 1,
                         borderWidth: isHovered ? "1px" : "1.5px",
-                        borderColor: isHovered ? "rgba(203, 213, 225, 0.8)" : "rgba(203, 213, 225, 0.5)",
+                        borderColor: isHovered ? "rgba(230, 211, 163, 0.6)" : "rgba(248, 248, 246, 0.3)",
                     }}
                     transition={{
                         scale: { type: "spring", stiffness: 300, damping: 20 },
@@ -168,7 +168,7 @@ export function Cursor() {
                         }}
                         transition={{ duration: 0.3 }}
                         style={{
-                            background: "radial-gradient(circle, rgba(203, 213, 225, 0.3) 0%, transparent 70%)",
+                            background: "radial-gradient(circle, rgba(230, 211, 163, 0.15) 0%, transparent 70%)",
                             filter: isTextHovered ? "blur(4px)" : "blur(8px)",
                         }}
                     />

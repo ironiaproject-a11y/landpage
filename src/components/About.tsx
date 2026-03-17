@@ -134,7 +134,7 @@ export function About() {
                     >
                         <m.div
                             ref={imageWrapperRef}
-                            className="about-image-wrapper relative rounded-2xl overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10"
+                            className="about-image-wrapper relative rounded-[2rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10"
                             style={!isMobile ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
@@ -183,11 +183,11 @@ export function About() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 w-full mb-16">
                             {highlights.map((item, index) => (
-                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-colors">
-                                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
-                                        <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[#6B7280] group-hover:text-black transition-colors" />
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-all">
+                                    <div className="w-6 h-6 rounded-lg border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
+                                        <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[#94A3B8] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-[#6B7280] font-medium text-[14px] tracking-[0.05em] group-hover:text-[#F8F8F6] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
+                                    <span className="text-[#94A3B8] font-medium text-[14px] tracking-[0.05em] group-hover:text-[#F8F8F6] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
                                 </div>
                             ))}
                         </div>
@@ -249,22 +249,9 @@ export function About() {
                             transition={{ delay: 0.8 }}
                             className="mt-8 w-full md:w-auto"
                         >
-                            <button className="btn-premium-cta-inline">
+                            <button className="btn-premium w-full md:w-auto">
                                 Inicie sua jornada
-                                <svg 
-                                    width="14" 
-                                    height="14" 
-                                    viewBox="0 0 24 24" 
-                                    fill="none" 
-                                    stroke="currentColor" 
-                                    strokeWidth="2" 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                    style={{ transition: 'transform 0.3s' }}
-                                >
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
+                                <ArrowUpRight className="ml-3 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                             </button>
                         </m.div>
                     </div>

@@ -239,7 +239,7 @@ export function Testimonials() {
                                                 </div>
                                                 <div>
                                                     <h4 className="font-semibold text-[#F8F8F6] text-base tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.name}</h4>
-                                                    <p className="text-[10px] text-[#6B7280] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
+                                                    <p className="text-[10px] text-[#94A3B8] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

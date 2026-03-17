@@ -46,7 +46,7 @@ export function WhatsAppButton() {
                         boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)"
                     }}
                     whileTap={{ scale: 0.94 }}
-                    className="w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl text-white/70 border border-white/20 shadow-xl transition-all duration-500 group overflow-hidden relative saturate-[0.8] scale-[0.85]"
+                    className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-2xl text-white/70 border border-white/20 shadow-2xl transition-all duration-500 group overflow-hidden relative saturate-[0.8]"
                 >
                     {/* Subtle Pulsing Edge */}
                     <m.div
@@ -94,13 +94,13 @@ export function WhatsAppButton() {
                                 initial={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
                                 animate={{ opacity: 1, scale: 1, x: 0, y: "-50%" }}
                                 exit={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
-                                className="absolute right-[120%] top-1/2 whitespace-nowrap px-6 py-4 rounded-2xl bg-white text-black text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl pointer-events-none hidden sm:block"
+                                className="absolute right-[120%] top-1/2 whitespace-nowrap px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl text-white/90 text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl border border-white/10 pointer-events-none hidden sm:block"
                             >
                                 <span className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] shadow-[0_0_10px_#25D366] animate-pulse" />
                                     Fale conosco agora
                                 </span>
-                                <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white rotate-45" />
+                                <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-black/60 rotate-45 border-r border-t border-white/10" />
                             </m.div>
                         )}
                     </AnimatePresence>

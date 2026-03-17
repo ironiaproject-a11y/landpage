@@ -139,7 +139,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-[#6B7280] text-[15px] leading-[1.6] font-normal max-w-2xl" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                                    <p className="text-[#94A3B8] text-[15px] leading-[1.6] font-normal max-w-2xl" style={{ fontFamily: 'Inter, sans-serif' }}>
                                                         {faq.answer}
                                                     </p>
                                                 </div>
@@ -165,7 +165,7 @@ export function FAQ() {
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => window.open('https://wa.me/551837433000', '_blank')}
-                            className="btn-luxury-ghost inline-flex items-center gap-4 px-6 md:px-12"
+                            className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-[#E6D3A3]/50"
                         >
                             Falar com um Especialista
                         </m.button>

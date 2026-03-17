@@ -116,18 +116,18 @@ export function Navbar() {
                                             whileHover="hover"
                                         >
                                             {/* Original Text */}
-                                                <m.div
-                                                    variants={{
-                                                        initial: { y: 0 },
-                                                        hover: { y: "-110%" }
-                                                    }}
-                                                    animate={activeSection === link.href ? "hover" : "initial"}
-                                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-[0.1em]"
-                                                    style={{ fontFamily: 'Inter, sans-serif' }}
-                                                >
-                                                    {link.name}
-                                                </m.div>
+                                                    <m.div
+                                                        variants={{
+                                                            initial: { y: 0 },
+                                                            hover: { y: "-110%" }
+                                                        }}
+                                                        animate={activeSection === link.href ? "hover" : "initial"}
+                                                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                                        className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-[0.1em]"
+                                                        style={{ fontFamily: 'Inter, sans-serif' }}
+                                                    >
+                                                        {link.name}
+                                                    </m.div>
 
                                             {/* Hover Text (Champagne) */}
                                                 <m.div
@@ -178,7 +178,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-luxury-primary !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-gold relative overflow-hidden bg-[#E6D3A3] text-black"
+                                    className="btn-premium !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-gold relative overflow-hidden !bg-[#E6D3A3] !text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"

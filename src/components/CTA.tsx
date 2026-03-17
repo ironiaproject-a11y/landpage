@@ -100,7 +100,7 @@ export function CTA() {
                     </PremiumReveal>
 
                     <PremiumReveal type="fade" delay={0.5}>
-                        <p className="text-[#6B7280] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <p className="text-[#94A3B8] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
                             Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-[#E6D3A3] font-display italic font-light">exclusivo</span> pode transformar sua autoestima.
                         </p>
                     </PremiumReveal>
@@ -109,19 +109,17 @@ export function CTA() {
                         <Magnetic strength={0.2} range={100}>
                             <button
                                 onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="btn-luxury-primary group flex items-center justify-center gap-4 py-4 px-8 rounded-full"
+                                className="btn-premium w-full sm:w-auto"
                             >
-                                <span className="relative z-10 flex items-center gap-2">
-                                    Agendar Avaliação
-                                    <ArrowRight strokeWidth={1} className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500 ease-out" />
-                                </span>
+                                Agendar Avaliação
+                                <ArrowRight strokeWidth={1} className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
                             </button>
                         </Magnetic>
 
                         <Magnetic strength={0.2} range={100}>
                             <button
                                 onClick={() => window.open(generateWhatsAppUrl(DEFAULT_MESSAGE), '_blank')}
-                                className="btn-luxury-ghost group flex items-center justify-center gap-4 py-4 px-8 rounded-full"
+                                className="btn-premium bg-white/5 border-white/10 hover:border-[#E6D3A3]/50 w-full sm:w-auto"
                             >
                                 Falar com Concierge
                             </button>

@@ -79,7 +79,7 @@ export function TrustBar() {
                         <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#E6D3A3] mb-2">
                             Qualidade Certificada
                         </span>
-                        <h3 className="text-white/40 font-display text-xl md:text-2xl font-light tracking-wide italic">
+                        <h3 className="text-[#94A3B8] font-display text-xl md:text-2xl font-light tracking-wide italic leading-relaxed">
                             Padrões Internacionais
                         </h3>
                     </m.div>
@@ -102,7 +102,7 @@ export function TrustBar() {
                                     {token.name}
                                 </span>
                                 <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-[#E6D3A3] to-transparent transition-all duration-700 mb-2" />
-                                <span className="text-[9px] uppercase tracking-[0.3em] text-[#6B7280] group-hover:text-[#F8F8F6] transition-colors duration-500">
+                                <span className="text-[9px] uppercase tracking-[0.3em] text-[#94A3B8] group-hover:text-[#F8F8F6] transition-colors duration-500">
                                     {token.detail}
                                 </span>
                             </m.div>

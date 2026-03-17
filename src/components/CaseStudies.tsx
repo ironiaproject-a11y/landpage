@@ -47,10 +47,10 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                 onTouchEnd={() => setIsVideoActive(false)}
             >
                 {/* Labels */}
-                <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-[#F8F8F6]/10 flex items-center justify-center">
+                <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
                     <span className="text-[10px] text-[#F8F8F6] font-bold uppercase tracking-[0.2em]">Antes</span>
                 </div>
-                <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-[#F8F8F6]/10 flex items-center justify-center">
+                <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
                     <span className="text-[10px] text-[#F8F8F6] font-bold uppercase tracking-[0.2em]">Depois</span>
                 </div>
 
@@ -194,7 +194,7 @@ export function CaseStudies() {
                     </h2>
 
                     <PremiumReveal direction="bottom" delay={0.4}>
-                        <p className="text-[16px] text-[#6B7280] font-normal leading-[1.6] max-w-xl" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <p className="text-[16px] text-[#94A3B8] font-normal leading-[1.6] max-w-xl" style={{ fontFamily: 'Inter, sans-serif' }}>
                             Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
                         </p>
                     </PremiumReveal>

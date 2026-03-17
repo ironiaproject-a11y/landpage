@@ -170,7 +170,7 @@ export function MediaCard({
         <div
             ref={cardRef}
             className={clsx(
-                "media-card group relative overflow-hidden bg-black transition-all duration-500",
+                "media-card group relative overflow-hidden bg-black transition-all duration-500 rounded-[2rem] border border-white/5 group-hover:border-white/10",
                 isPlaying && "is-playing",
                 aspectRatio,
                 className

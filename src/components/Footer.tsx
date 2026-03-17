@@ -111,7 +111,7 @@ export function Footer() {
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-[#6B7280] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <p className="text-[#94A3B8] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'Inter, sans-serif' }}>
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -130,7 +130,7 @@ export function Footer() {
                                             href={social.href}
                                             aria-label={social.label}
                                             whileHover={{ y: -4, backgroundColor: "#E6D3A3", color: "black", borderColor: "#E6D3A3" }}
-                                            className="w-10 h-10 rounded-full border border-[#F8F8F6]/10 flex items-center justify-center text-[#6B7280] transition-all bg-[#F8F8F6]/5"
+                                            className="w-10 h-10 rounded-full border border-[#F8F8F6]/10 flex items-center justify-center text-[#94A3B8] transition-all bg-[#F8F8F6]/5"
                                         >
                                             {social.icon}
                                         </m.a>
@@ -149,7 +149,7 @@ export function Footer() {
                                 <li key={index}>
                                     <a
                                         href={link.href}
-                                        className="text-[#6B7280] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[#94A3B8] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {link.name}
@@ -169,7 +169,7 @@ export function Footer() {
                                 <li key={index}>
                                     <a
                                         href="#servicos"
-                                        className="text-[#6B7280] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[#94A3B8] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {service.name}
@@ -200,7 +200,7 @@ export function Footer() {
                                     <Phone strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_PHONE}
                                 </a>
-                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[#6B7280] hover:text-[#E6D3A3] transition-colors">
+                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[#94A3B8] hover:text-[#E6D3A3] transition-colors">
                                     <Mail strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_EMAIL}
                                 </a>

@@ -129,9 +129,9 @@ export function Stats() {
           margin: 0 auto;
           position: relative;
           background: rgba(15, 15, 15, 0.85); /* Dark translucent card */
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border-radius: 32px; /* Card layout */
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border-radius: var(--radius-premium, 32px); /* Card layout */
           padding: 60px 40px; /* Breathing room */
           border: 1px solid rgba(230, 211, 163, 0.15); /* Gold tint border */
           box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
@@ -194,7 +194,7 @@ export function Stats() {
         .stats-suffix {
           font-size: 0.7em;
           margin-left: 2px;
-          color: rgba(248, 248, 246, 0.6);
+          color: #94A3B8;
         }
 
         .stats-number--accent {
@@ -205,10 +205,10 @@ export function Stats() {
 
         .stats-label {
           font-family: var(--font-inter), sans-serif;
-          font-size: 12px;
-          font-weight: 500;
-          color: rgba(248, 248, 246, 0.6);
-          letter-spacing: 0.2em;
+          font-size: 11px;
+          font-weight: 600;
+          color: #94A3B8;
+          letter-spacing: 0.22em;
           text-transform: uppercase;
           display: block;
           max-width: 180px;

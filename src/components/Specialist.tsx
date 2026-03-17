@@ -237,7 +237,7 @@ export function Specialist() {
                                 </Magnetic>
                                 <div>
                                     <h4 className="text-[#F8F8F6] font-bold mb-1 group-hover:text-[#E6D3A3] transition-colors">Formação de Excelência</h4>
-                                    <p className="text-[#6B7280] leading-relaxed text-sm">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
+                                    <p className="text-[#94A3B8] leading-relaxed text-sm">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
                             <div className="credential-item flex items-start gap-6 group">
@@ -248,7 +248,7 @@ export function Specialist() {
                                 </Magnetic>
                                 <div>
                                     <h4 className="text-[#F8F8F6] font-bold mb-1 group-hover:text-[#E6D3A3] transition-colors">Reconhecimento Internacional</h4>
-                                    <p className="text-[#6B7280] leading-relaxed text-sm">Certificação Master em Lentes de Contato 3D por institutos da Alemanha e Suíça.</p>
+                                    <p className="text-[#94A3B8] leading-relaxed text-sm">Certificação Master em Lentes de Contato 3D por institutos da Alemanha e Suíça.</p>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +267,7 @@ export function Specialist() {
                                         </p>
                                         <div className="relative z-10">
                                             <h4 className="text-[#F8F8F6] font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
-                                            <p className="text-[#6B7280] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                                            <p className="text-[#94A3B8] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
                                         </div>
                                     </div>
                                 </LuxuryCard>
@@ -295,7 +295,7 @@ export function Specialist() {
 
                                     <div className="absolute bottom-8 left-8 z-20 op-desc-parallax">
                                         <h4 className="text-white font-display text-xl md:text-2xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[#6B7280] text-[10px] uppercase font-bold tracking-[0.08em]">Especialista em Reabilitação Oral</p>
+                                        <p className="text-[#94A3B8] text-[10px] uppercase font-bold tracking-[0.08em]">Especialista em Reabilitação Oral</p>
                                     </div>
                                 </div>
                             </PremiumReveal>

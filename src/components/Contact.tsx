@@ -49,7 +49,7 @@ export function Contact() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-[#6B7280] text-[16px] font-normal leading-[1.6] mb-12" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <p className="text-[#94A3B8] text-[16px] font-normal leading-[1.6] mb-12" style={{ fontFamily: 'Inter, sans-serif' }}>
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -66,7 +66,7 @@ export function Contact() {
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-[10px] font-bold text-[#6B7280]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
+                                            <h4 className="text-[10px] font-bold text-[#94A3B8]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
                                             <a href={item.href} className="text-[#F8F8F6] hover:text-[#E6D3A3] transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@ export function Contact() {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-bold text-[#6B7280]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
+                                    <label className="text-[10px] font-bold text-[#94A3B8]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
                                     <textarea
                                         name="message"
                                         rows={4}
@@ -180,8 +180,8 @@ export function Contact() {
                     viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                     className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
-                    <div className="glass-panel p-6 md:p-8 rounded-organic-md border border-[#F8F8F6]/10 backdrop-blur-xl shadow-premium-2 text-[#F8F8F6]">
-                        <span className="text-[#6B7280] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
+                    <div className="glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-xl shadow-premium-2 text-[#F8F8F6]">
+                        <span className="text-[#94A3B8] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>
                         <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>

@@ -48,8 +48,8 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 onTouchEnd={() => setIsVideoActive(false)}
             >
                 {/* Media Section */}
-                <div className="relative overflow-hidden rounded-t-2xl p-6">
-                    <div className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.05]">
+                <div className="relative overflow-hidden rounded-t-[2rem] p-6 pb-0">
+                    <div className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.03]">
                         <MediaCard
                             mp4Src={service.video}
                             webmSrc={service.video.replace('.mp4', '.webm')}
@@ -76,12 +76,12 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         {service.title}
                     </h3>
 
-                    <p className="text-[#6B7280] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    <p className="text-[#94A3B8] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'Inter, sans-serif' }}>
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-[#F8F8F6]/10 bg-[#0B0B0B] text-[#F8F8F6] text-[14px] font-semibold tracking-normal transition-all duration-500 group-hover:scale-105 active:scale-95 shadow-md" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/[0.03] text-white text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-[#E6D3A3] group-hover:text-black group-hover:border-[#E6D3A3]" style={{ fontFamily: 'Inter, sans-serif' }}>
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>

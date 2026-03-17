@@ -37,7 +37,7 @@ export function LuxuryCard({
             viewport={{ once: true, margin: "-5%" }}
             transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-                "glass-card-premium rounded-2xl p-px relative group overflow-hidden",
+                "glass-card-premium rounded-[2rem] p-px relative group overflow-hidden bg-white/[0.02] backdrop-blur-3xl border border-white/[0.05]",
                 className
             )}
         >

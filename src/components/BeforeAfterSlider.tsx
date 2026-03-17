@@ -213,7 +213,7 @@ export function BeforeAfterSlider({
         <div className="group relative flex flex-col gap-8">
             <div
                 ref={containerRef}
-                className={`relative aspect-[16/10] w-full overflow-hidden rounded-organic-md border border-white/10 ${isSingleMedia ? "" : "cursor-col-resize"} select-none shadow-2xl`}
+                className={`relative aspect-[16/10] w-full overflow-hidden rounded-[2rem] border border-white/10 ${isSingleMedia ? "" : "cursor-col-resize"} select-none shadow-2xl`}
                 style={{ touchAction: "pan-y" }}
                 onMouseMove={(e) => {
                     handleMove(e);
@@ -275,10 +275,10 @@ export function BeforeAfterSlider({
                                 className="absolute inset-y-0 -left-[1px] w-[2px] bg-gradient-to-b from-transparent via-[#F8F8F6] to-transparent"
                             />
 
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0B0B0B] border border-[#F8F8F6] flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover/handle:scale-110">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0B0B0B]/80 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-premium-2 transition-transform duration-300 group-hover/handle:scale-110">
                                 <div className="flex items-center gap-1 text-[#E6D3A3]">
-                                    <MoveLeft strokeWidth={1.2} className="w-3 h-3" />
-                                    <MoveRight strokeWidth={1.2} className="w-3 h-3" />
+                                    <MoveLeft strokeWidth={1.5} className="w-3.5 h-3.5" />
+                                    <MoveRight strokeWidth={1.5} className="w-3.5 h-3.5" />
                                 </div>
                             </div>
                         </m.div>
@@ -294,7 +294,7 @@ export function BeforeAfterSlider({
                     <Sparkles strokeWidth={1.2} className="w-4 h-4 text-[#F8F8F6]" />
                     <h4 className="font-display text-2xl text-white font-medium">{title}</h4>
                 </div>
-                <p className="text-[var(--color-text-secondary)] font-light leading-relaxed">
+                <p className="text-[#94A3B8] font-light leading-relaxed max-w-xl body-text-refined">
                     {description}
                 </p>
             </div>

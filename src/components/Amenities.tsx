@@ -207,7 +207,7 @@ export function Amenities() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-lg text-white/60 font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
+                            <p className="text-lg text-[#94A3B8] font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
                                 Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
                             </p>
                         </PremiumReveal>
@@ -250,7 +250,7 @@ export function Amenities() {
                                             0{index + 1}
                                         </span>
                                     </div>
-                                    <p className="text-[var(--color-text-secondary)] text-sm md:text-base font-light leading-relaxed max-w-lg opacity-60 group-hover:opacity-100 group-hover:translate-x-4 transition-all duration-500 delay-75 ease-out pl-0 md:pl-0">
+                                    <p className="text-[#94A3B8] text-sm md:text-base font-light leading-relaxed max-w-lg transition-all duration-500 delay-75 ease-out pl-0 md:pl-0">
                                         {item.description}
                                     </p>
                                 </m.div>
