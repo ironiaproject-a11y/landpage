@@ -116,7 +116,7 @@ export function Stats() {
         .stats-section {
           background: transparent;
           padding: 40px 24px;
-          margin-top: -18vh; /* Refined overlap for better balance */
+          margin-top: -15vh; /* Refined overlap for better balance */
           position: relative;
           z-index: 20;
           opacity: 0; /* Match GSAP start state */

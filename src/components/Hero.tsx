@@ -151,122 +151,113 @@ export function Hero() {
 
             window.addEventListener("mousemove", handleMouseMove);
 
+            // 2. SETUP SCROLL SCRUB FOR THE VIDEO (Initialized immediately for layout stability)
+            const scrubTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=400vh", // Balanced scroll length
+                    scrub: 1, // Smooth interpolation
+                    pin: true, // PIN hero section exactly where it is
+                    invalidateOnRefresh: true,
+                    // Ensure animation state is held at the end
+                    onLeave: () => {
+                        gsap.set(sequence, { frame: frameCount - 1 });
+                        render(frameCount - 1);
+                    }
+                }
+            });
+
+            // Allows scroll to scrub all frames of the video
+            scrubTl.fromTo(sequence, 
+                { frame: 0 }, 
+                {
+                    frame: frameCount - 1,
+                    onUpdate: () => {
+                        if (imagesReady) render(Math.round(sequence.frame));
+                    },
+                    ease: "none",
+                    duration: 10,
+                    immediateRender: false
+                }, 
+                0
+            );
+
+            // RESET STATES AT START OF SCRUB
+            scrubTl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
+            scrubTl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
+            scrubTl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
+
+            scrubTl.fromTo(".hero-line-1", 
+                { opacity: 0, y: 15, scale: 0.95 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    duration: 2.0, 
+                    ease: "expo.out",
+                    immediateRender: false
+                },
+                1.5
+            );
+
+            scrubTl.to(".hero-line-1", {
+                opacity: 0,
+                y: -10,
+                duration: 0.83,
+                ease: "power2.in"
+            }, 5.83);
+
+            scrubTl.fromTo(".hero-line-2",
+                { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    filter: "blur(0px)",
+                    duration: 2.5, 
+                    ease: "power4.out",
+                    immediateRender: false
+                },
+                6.33
+            );
+
+            scrubTl.fromTo(".hero-btn-wrapper",
+                { opacity: 0, y: 30 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 2.0, 
+                    ease: "back.out(1.7)",
+                    immediateRender: false
+                },
+                7.0
+            );
+
+            // EXIT ANIMATION (Narrative Transition)
+            scrubTl.to(".hero-container", {
+                y: -80,
+                opacity: 0,
+                duration: 2
+            }, ">-2"); 
+
+            scrubTl.to(".canvas-container", {
+                opacity: 0,
+                duration: 2
+            }, "<"); 
+
+            scrubTl.to(".hero-btn-wrapper", {
+                opacity: 0,
+                y: 50,
+                ease: "power2.inOut",
+                duration: 1
+            }, "<");
+
             // 1. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
                     const lenis = (window as any).lenis;
                     if (lenis) lenis.start();
-
-                    // 2. SETUP SCROLL SCRUB FOR THE VIDEO
-                    const scrubTl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: "+=400vh", // Balanced scroll length
-                            scrub: 1, // Smooth interpolation
-                            pin: true, // PIN hero section exactly where it is
-                            invalidateOnRefresh: true,
-                            // Ensure animation state is held at the end
-                            onLeave: () => {
-                                gsap.set(sequence, { frame: frameCount - 1 });
-                                render(frameCount - 1);
-                            }
-                        }
-                    });
-
-                    // Allows scroll to scrub all frames of the video
-                    // We use an empty initially to let it start from where intro left off
-                    scrubTl.fromTo(sequence, 
-                        { frame: 0 }, 
-                        {
-                            frame: frameCount - 1,
-                            onUpdate: () => render(Math.round(sequence.frame)),
-                            ease: "none",
-                            duration: 10,
-                            immediateRender: false
-                        }, 
-                        0
-                    );
-
-                    // RESET STATES AT START OF SCRUB
-                    // This ensures that when scrolling back to the very top, 
-                    // the elements return to their neutral "skull" phase state.
-                    scrubTl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
-                    scrubTl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
-                    scrubTl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
-
-                    // Replicate the text animation logic from introTl into scrubTl
-                    // Proportions out of 10 duration:
-                    // 1.5s / 6s = 2.5s here
-                    scrubTl.fromTo(".hero-line-1", 
-                        { opacity: 0, y: 15, scale: 0.95 },
-                        { 
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1,
-                            duration: 2.0, 
-                            ease: "expo.out",
-                            immediateRender: false
-                        },
-                        1.5 // Move back to match intro timing proportionally
-                    );
-
-                    // 3.5s / 6s = 5.83s
-                    scrubTl.to(".hero-line-1", {
-                        opacity: 0,
-                        y: -10,
-                        duration: 0.83,
-                        ease: "power2.in"
-                    }, 5.83);
-
-                    // 3.8s / 6s = 6.33s
-                    scrubTl.fromTo(".hero-line-2",
-                        { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
-                        { 
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1, 
-                            filter: "blur(0px)",
-                            duration: 2.5, 
-                            ease: "power4.out",
-                            immediateRender: false
-                        },
-                        6.33
-                    );
-
-                    // 4.2s / 6s = 7.0s
-                    scrubTl.fromTo(".hero-btn-wrapper",
-                        { opacity: 0, y: 30 },
-                        { 
-                            opacity: 1, 
-                            y: 0, 
-                            duration: 2.0, 
-                            ease: "back.out(1.7)",
-                            immediateRender: false
-                        },
-                        7.0
-                    );
-
-                    // EXIT ANIMATION (Narrative Transition)
-                    // Fades out everything smoothly at the VERY END of the scrub
-                    scrubTl.to(".hero-container", {
-                        y: -80,
-                        opacity: 0,
-                        duration: 2
-                    }, ">-2"); // Starts near the end of the video sequence
-
-                    scrubTl.to(".canvas-container", {
-                        opacity: 0,
-                        duration: 2
-                    }, "<"); // Fades the video out alongside the text
-
-                    scrubTl.to(".hero-btn-wrapper", {
-                        opacity: 0,
-                        y: 50,
-                        ease: "power2.inOut",
-                        duration: 1
-                    }, "<");
-
                     ScrollTrigger.refresh();
                 }
             });
