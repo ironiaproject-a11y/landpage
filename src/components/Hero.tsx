@@ -151,16 +151,24 @@ export function Hero() {
 
             window.addEventListener("mousemove", handleMouseMove);
 
-            // 2. SETUP SCROLL SCRUB FOR THE VIDEO (Initialized immediately for layout stability)
+            // 1. DEDICATED PINNING (Initialized immediately for layout stability)
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "top top",
+                end: "+=400vh",
+                pin: true,
+                pinSpacing: true,
+                invalidateOnRefresh: true
+            });
+
+            // 2. SCRUB TIMELINE (Created immediately, but we'll use it carefully)
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=400vh", // Balanced scroll length
-                    scrub: 1, // Smooth interpolation
-                    pin: true, // PIN hero section exactly where it is
+                    end: "+=400vh",
+                    scrub: 1,
                     invalidateOnRefresh: true,
-                    // Ensure animation state is held at the end
                     onLeave: () => {
                         gsap.set(sequence, { frame: frameCount - 1 });
                         render(frameCount - 1);
@@ -168,7 +176,7 @@ export function Hero() {
                 }
             });
 
-            // Allows scroll to scrub all frames of the video
+            // Video Frame Scrubbing
             scrubTl.fromTo(sequence, 
                 { frame: 0 }, 
                 {
@@ -177,94 +185,24 @@ export function Hero() {
                         if (imagesReady) render(Math.round(sequence.frame));
                     },
                     ease: "none",
-                    duration: 10,
-                    immediateRender: false
+                    duration: 10
                 }, 
                 0
             );
 
-            // RESET STATES AT START OF SCRUB
-            scrubTl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
-            scrubTl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
-            scrubTl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
-
-            scrubTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 15, scale: 0.95 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1,
-                    duration: 1.6, // Proportional to 1.0s/6s
-                    ease: "expo.out",
-                    immediateRender: false
-                },
-                0.67 // Proportional to 0.4s/6s
-            );
-
-            scrubTl.to(".hero-line-1", {
-                opacity: 0,
-                y: -10,
-                duration: 0.83,
-                ease: "power2.in"
-            }, 5.83);
-
-            scrubTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1, 
-                    filter: "blur(0px)",
-                    letterSpacing: "-0.03em",
-                    duration: 4.17, // Proportional to 2.5s/6s
-                    ease: "expo.out",
-                    immediateRender: false
-                },
-                6.33
-            );
-
-            scrubTl.fromTo(".hero-btn-wrapper",
-                { opacity: 0, y: 30 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 2.0, 
-                    ease: "back.out(1.7)",
-                    immediateRender: false
-                },
-                7.0
-            );
-
-            // EXIT ANIMATION (Narrative Transition)
-            scrubTl.to(".hero-container", {
-                y: -80,
-                opacity: 0,
-                duration: 2
-            }, ">-2"); 
-
-            scrubTl.to(".canvas-container", {
-                opacity: 0,
-                duration: 2
-            }, "<"); 
-
-            scrubTl.to(".hero-btn-wrapper", {
-                opacity: 0,
-                y: 50,
-                ease: "power2.inOut",
-                duration: 1
-            }, "<");
-
-            // 1. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
+            // 3. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
+                    // Enable scrubbed text transitions ONLY AFTER intro is complete to avoid "fighting"
+                    setupScrubbedAnimations(scrubTl);
+                    
                     const lenis = (window as any).lenis;
                     if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
 
-            // 0.0s - Video starts (animating frames based on time)
-            // Assuming 144 frames at ~24fps = 6 seconds total
+            // Video Intro
             introTl.fromTo(sequence, 
                 { frame: 0 },
                 {
@@ -282,37 +220,34 @@ export function Hero() {
                 ease: "power2.inOut"
             }, 0);
 
-            // 0.6s - Subtle video zoom
             introTl.to(".canvas-container", {
                 scale: 1.05,
                 duration: 6,
                 ease: "power1.inOut"
             }, 0);
 
-            // 0.4s - show text "Sua origem" (Started earlier)
-            // High-end subtitle style
+            // 0.0s - show text "Sua origem" (Immediate)
             introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 15, scale: 0.95 },
                 { 
                     opacity: 1, 
                     y: 0, 
                     scale: 1,
-                    duration: 1.0, 
+                    duration: 1.2, 
                     ease: "expo.out" 
                 },
-                0.4
+                0
             );
 
-            // 3.5s - hide "Sua origem"
+            // 3.0s - hide "Sua origem"
             introTl.to(".hero-line-1", {
                 opacity: 0,
                 y: -10,
-                duration: 0.5,
+                duration: 0.8,
                 ease: "power2.in"
-            }, 3.5);
+            }, 3.0);
 
-            // 3.8s - show text "Seu sorriso"
-            // Dramatic entrance for the focal point
+            // 3.3s - show text "Seu sorriso"
             introTl.fromTo(".hero-line-2",
                 { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
                 { 
@@ -321,23 +256,55 @@ export function Hero() {
                     scale: 1, 
                     filter: "blur(0px)",
                     letterSpacing: "-0.03em",
-                    duration: 2.5, 
+                    duration: 2.7, 
                     ease: "expo.out" 
                 },
-                3.8
+                3.3
             );
 
-            // 4.2s - CTA button fades in
+            // 3.8s - CTA button
             introTl.fromTo(".hero-btn-wrapper",
                 { opacity: 0, y: 30 },
                 { 
                     opacity: 1, 
                     y: 0, 
-                    duration: 1.2, 
+                    duration: 1.5, 
                     ease: "back.out(1.7)" 
                 },
-                4.2
+                3.8
             );
+
+            function setupScrubbedAnimations(tl: gsap.core.Timeline) {
+                // Return elements to neutral state at start of scrub
+                tl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
+                tl.set(".hero-btn-wrapper", { opacity: 0, y: 30 }, 0);
+                tl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
+
+                tl.fromTo(".hero-line-1", 
+                    { opacity: 0, y: 15, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: "expo.out", immediateRender: false },
+                    0.67
+                );
+
+                tl.to(".hero-line-1", { opacity: 0, y: -10, duration: 0.83, ease: "power2.in" }, 5.83);
+
+                tl.fromTo(".hero-line-2",
+                    { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
+                    { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", letterSpacing: "-0.03em", duration: 4.17, ease: "expo.out", immediateRender: false },
+                    6.33
+                );
+
+                tl.fromTo(".hero-btn-wrapper",
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 2.0, ease: "back.out(1.7)", immediateRender: false },
+                    7.0
+                );
+
+                // EXIT ANIMATION
+                tl.to(".hero-container", { y: -80, opacity: 0, duration: 2 }, ">-2"); 
+                tl.to(".canvas-container", { opacity: 0, duration: 2 }, "<"); 
+                tl.to(".hero-btn-wrapper", { opacity: 0, y: 50, ease: "power2.inOut", duration: 1 }, "<");
+            }
         });
 
         // Initial render logic
