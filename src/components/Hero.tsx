@@ -540,7 +540,7 @@ export function Hero() {
 
                     @media (max-width: 768px) {
                         .hero-text {
-                            top: 0;
+                            top: 45%;
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
