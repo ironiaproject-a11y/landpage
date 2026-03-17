@@ -139,14 +139,11 @@ export function Hero() {
                 }
             });
 
-            // Video Frame Scrubbing
-            // We want it to stay at the frame where the intro finished (frameCount - 1).
-            // By going from frameCount - 1 to frameCount - 0.01, it 'scrubs' a tiny invisible amount
-            // giving the ScrollTrigger the duration it needs to drive the text animation scroll.
+            // Video Frame Scrubbing (Reverse order over scroll: 143 -> 0)
             scrubTl.fromTo(sequence, 
                 { frame: frameCount - 1 }, 
                 {
-                    frame: frameCount - 0.01,
+                    frame: 0,
                     onUpdate: () => {
                         if (imagesReady) render(Math.round(sequence.frame));
                     },
