@@ -109,8 +109,12 @@ export function Hero() {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
         const sequence = sequenceRef.current;
-        // Re-enabling scroll lock during cinematic intro for premium feel
         const lenis = (window as any).lenis;
+        
+        // Ensure dimensions are correct before starting animations
+        updateDimensions();
+        render(0);
+
         if (lenis) lenis.stop();
 
         const ctx = gsap.context(() => {
@@ -172,12 +176,6 @@ export function Hero() {
             scrubTl.to(".hero-container", {
                 y: -100,
                 opacity: 0,
-                scrollTrigger: {
-                    trigger: scrollDriverRef.current,
-                    start: "center top",
-                    end: "bottom bottom",
-                    scrub: true
-                }
             });
 
             scrubTl.to(".hero-btn-wrapper", {
@@ -278,6 +276,9 @@ export function Hero() {
 
         return () => {
             ctx.revert();
+            // Safeguard: Always attempt to restart scroll on unmount
+            const currentLenis = (window as any).lenis;
+            if (currentLenis) currentLenis.start();
         };
     }, [mounted, imagesReady]);
 
