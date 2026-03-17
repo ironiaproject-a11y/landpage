@@ -222,8 +222,8 @@ export function Hero() {
             // 1.5s - show text "Sua origem"
             // animation: opacity 0 → 1, translateY 20px → 0
             introTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 20, xPercent: -50 },
-                { opacity: 1, y: 0, xPercent: -50, duration: 0.8, ease: "power2.out" },
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
                 1.5
             );
 
@@ -236,19 +236,19 @@ export function Hero() {
             }, 3.5);
 
             // 3.8s - show text "Seu sorriso"
-            // opacity 0 → 1, translateY 30px → 0
+            // opacity 0 → 1, translateY 20px → 0
             introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 30, xPercent: -50 },
-                { opacity: 1, y: 0, xPercent: -50, duration: 1.0, ease: "power3.out" },
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
                 3.8
             );
 
-            // 5.0s - CTA button fades in
-            introTl.to(".hero-btn-wrapper", {
-                opacity: 1,
-                duration: 1.0,
-                ease: "power2.inOut"
-            }, 5.0);
+            // 4.2s - CTA button fades in
+            introTl.fromTo(".hero-btn-wrapper",
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                4.2
+            );
         });
 
         // Initial render logic
@@ -375,30 +375,34 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 32vh;
+                        top: 50%;
                         left: 50%;
+                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(20px, 3vw, 26px);
+                        font-size: clamp(24px, 4vw, 32px);
                         font-weight: 400;
                         letter-spacing: 0.04em;
                         color: #F3E7C8;
                         text-shadow: 0 6px 20px rgba(0,0,0,0.6);
                         white-space: nowrap;
+                        z-index: 10;
                     }
 
                     .hero-line-2 {
                         position: absolute;
-                        top: 60vh;
+                        top: 50%;
                         left: 50%;
+                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
+                        z-index: 10;
                     }
 
                     .hero-line-2 h2 {
                         font-family: var(--font-bodoni), "Libre Bodoni", serif;
-                        font-size: clamp(44px, 6vw, 56px);
+                        font-size: clamp(48px, 7vw, 64px);
                         font-weight: 600;
                         font-style: normal;
                         letter-spacing: -0.01em;
@@ -412,11 +416,12 @@ export function Hero() {
 
                     .hero-btn-wrapper {
                         position: absolute;
-                        left: 6vw;
-                        bottom: 8vh;
-                        transform: translateZ(150px);
+                        left: 50%;
+                        bottom: 15vh;
+                        transform: translateX(-50%) translateZ(150px);
                         opacity: 0;
                         pointer-events: auto;
+                        z-index: 20;
                     }
 
                     .btn-premium-cta {
