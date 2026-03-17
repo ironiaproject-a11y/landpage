@@ -181,7 +181,7 @@ export function About() {
                             </div>
                         </PremiumReveal>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-16 w-full">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 w-full mb-16">
                             {highlights.map((item, index) => (
                                 <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-colors">
                                     <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
@@ -192,16 +192,81 @@ export function About() {
                             ))}
                         </div>
 
-                        <m.button
+                        <style>{`
+                            .btn-premium-cta-inline {
+                                position: relative;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 12px;
+                                background: linear-gradient(135deg, rgba(230, 211, 163, 0.1), rgba(203, 179, 130, 0.05));
+                                backdrop-filter: blur(12px);
+                                -webkit-backdrop-filter: blur(12px);
+                                border: 1px solid rgba(230, 211, 163, 0.25);
+                                color: #E6D3A3;
+                                padding: 16px 42px;
+                                border-radius: 999px;
+                                font-family: var(--font-inter), sans-serif;
+                                font-size: 11px;
+                                font-weight: 600;
+                                letter-spacing: 0.35em;
+                                text-transform: uppercase;
+                                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(230, 211, 163, 0.05);
+                                transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                                overflow: hidden;
+                                cursor: pointer;
+                            }
+
+                            .btn-premium-cta-inline::before {
+                                content: '';
+                                position: absolute;
+                                top: 0; left: 0; width: 100%; height: 100%;
+                                background: linear-gradient(90deg, transparent, rgba(230, 211, 163, 0.15), transparent);
+                                transform: translateX(-100%);
+                                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                            }
+
+                            .btn-premium-cta-inline:hover::before {
+                                transform: translateX(100%);
+                            }
+
+                            .btn-premium-cta-inline:hover {
+                                background: rgba(230, 211, 163, 0.15);
+                                border-color: rgba(230, 211, 163, 0.5);
+                                color: #FFF;
+                                transform: translateY(-3px) scale(1.02);
+                                box-shadow: 0 10px 40px rgba(230, 211, 163, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                                letter-spacing: 0.4em;
+                            }
+
+                            @media (max-width: 768px) {
+                                .btn-premium-cta-inline { padding: 14px 30px; font-size: 10px; letter-spacing: 0.25em; width: 100%; justify-content: center; }
+                            }
+                        `}</style>
+                        <m.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.8 }}
-                            className="px-10 py-5 bg-[#0B0B0B] text-[#F8F8F6] text-[16px] font-semibold tracking-normal rounded-full transition-all duration-500 border border-[#F8F8F6]/10 hover:scale-105 active:scale-95 shadow-lg"
-                            style={{ fontFamily: 'Inter, sans-serif' }}
+                            className="mt-8 w-full md:w-auto"
                         >
-                            Descubra nossa tecnologia
-                        </m.button>
+                            <button className="btn-premium-cta-inline">
+                                Inicie sua jornada
+                                <svg 
+                                    width="14" 
+                                    height="14" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    strokeWidth="2" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round" 
+                                    style={{ transition: 'transform 0.3s' }}
+                                >
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </m.div>
                     </div>
                 </div>
             </div>
