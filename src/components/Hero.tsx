@@ -250,7 +250,7 @@ export function Hero() {
                     // EXIT ANIMATION (Narrative Transition)
                     // Fades out everything smoothly at the VERY END of the scrub
                     scrubTl.to(".hero-container", {
-                        y: -150,
+                        y: -80,
                         opacity: 0,
                         duration: 2
                     }, ">-2"); // Starts near the end of the video sequence

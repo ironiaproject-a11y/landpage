@@ -43,7 +43,7 @@ export function Stats() {
 
       // 0. Section Entrance Continuity (Hand-off from Hero)
       gsap.fromTo(sectionRef.current,
-        { opacity: 0, y: 100 },
+        { opacity: 0, y: 40 },
         { 
           opacity: 1, 
           y: 0,
@@ -51,7 +51,7 @@ export function Stats() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 90%",
+            start: "top 95%",
             toggleActions: "play none none reverse"
           }
         }
@@ -116,7 +116,7 @@ export function Stats() {
         .stats-section {
           background: transparent;
           padding: 40px 24px;
-          margin-top: -12vh; /* Bring up more */
+          margin-top: -25vh; /* Increased overlap to reduce gap */
           position: relative;
           z-index: 20; /* Ensure it stays above Hero exit */
         }
@@ -218,7 +218,7 @@ export function Stats() {
         @media (max-width: 1023px) {
           .stats-section { 
             padding: 0 16px;
-            margin-top: -10vh; 
+            margin-top: -18vh; 
             z-index: 50; 
             background: transparent;
           }
