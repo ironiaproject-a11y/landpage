@@ -55,7 +55,7 @@ const Contact = nextDynamic(() => import("@/components/Contact").then(mod => mod
 });
 const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
   ssr: false,
-  loading: () => <div className="h-40 bg-[#0B0B0B] -mt-[10vh]" />
+  loading: () => <div className="h-40 bg-[#0B0B0B] -mt-[25vh]" />
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 

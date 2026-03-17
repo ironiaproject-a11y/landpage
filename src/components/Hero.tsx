@@ -118,7 +118,7 @@ export function Hero() {
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: "top top",
-                end: "+=400vh",
+                end: "+=250vh",
                 pin: true,
                 pinSpacing: true,
                 invalidateOnRefresh: true
@@ -128,9 +128,9 @@ export function Hero() {
             const scrubTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=400vh",
-                    scrub: 1,
+                start: "top top",
+                end: "+=250vh",
+                scrub: 1.2,
                     invalidateOnRefresh: true,
                     onLeave: () => {
                         gsap.set(sequence, { frame: frameCount - 1 });

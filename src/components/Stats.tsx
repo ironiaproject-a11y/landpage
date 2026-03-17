@@ -115,10 +115,10 @@ export function Stats() {
       <style>{`
         .stats-section {
           background: transparent;
-          padding: 40px 24px;
-          margin-top: -10vh; /* Premium overlap for better balance */
+          padding: 80px 24px;
+          margin-top: -25vh; /* Premium overlap for better balance */
           position: relative;
-          z-index: 20;
+          z-index: 30;
           opacity: 0; /* Match GSAP start state */
           transform: translateY(40px); /* Match GSAP start state */
           will-change: transform, opacity;
@@ -221,7 +221,7 @@ export function Stats() {
         @media (max-width: 1023px) {
           .stats-section { 
             padding: 0 16px;
-            margin-top: -8vh; 
+            margin-top: -15vh; 
             z-index: 50; 
             background: transparent;
           }
