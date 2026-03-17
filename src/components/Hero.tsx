@@ -199,7 +199,7 @@ export function Hero() {
                     opacity: 1, 
                     y: 0, 
                     scale: 1,
-                    duration: 1.2, 
+                    duration: 0.6, 
                     ease: "expo.out" 
                 },
                 0
@@ -235,8 +235,8 @@ export function Hero() {
 
                 tl.fromTo(".hero-line-1", 
                     { opacity: 0, y: 15, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: "expo.out", immediateRender: false },
-                    0.67
+                    { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "expo.out", immediateRender: false },
+                    0.1
                 );
 
                 tl.to(".hero-line-1", { opacity: 0, y: -10, duration: 0.83, ease: "power2.in" }, 5.83);
@@ -265,19 +265,6 @@ export function Hero() {
             window.addEventListener("mousemove", handleMouseMove);
         });
 
-        if (imagesReady) {
-            updateDimensions();
-            render(0);
-        }
-
-        return () => {
-            ctx.revert();
-            const lenis = (window as any).lenis;
-            if (lenis) lenis.start();
-        };
-    }, [mounted, imagesReady]);
-
-        // Initial render logic
         if (imagesReady) {
             updateDimensions();
             render(0);
@@ -400,7 +387,7 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 42%; /* Slightly above center for subtitle feel */
+                        top: 38%; /* Slightly above center for subtitle feel */
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
@@ -418,7 +405,7 @@ export function Hero() {
 
                     .hero-line-2 {
                         position: absolute;
-                        top: 50%;
+                        top: 46%;
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
