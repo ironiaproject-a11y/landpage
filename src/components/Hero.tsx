@@ -378,19 +378,18 @@ export function Hero() {
 
                     .hero-text {
                         position: absolute;
-                        top: 42%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
+                        inset: 0;
                         z-index: 5;
                         pointer-events: none;
                         width: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 1.5rem; /* Exact optical distance between lines */
+                        height: 100%;
                     }
 
                     .hero-line-1 {
+                        position: absolute;
+                        top: 40%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
@@ -405,6 +404,10 @@ export function Hero() {
                     }
 
                     .hero-line-2 {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         z-index: 10;
@@ -540,11 +543,10 @@ export function Hero() {
 
                     @media (max-width: 768px) {
                         .hero-text {
-                            top: 45%;
-                            gap: 0.5rem; /* Ensure gap exists on mobile */
+                            top: 0;
                         }
                         .hero-line-1 {
-                            margin-bottom: 0.5rem; /* Extra safety margin to prevent overlap */
+                            top: 38%;
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
