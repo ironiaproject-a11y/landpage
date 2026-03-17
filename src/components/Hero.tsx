@@ -149,58 +149,65 @@ export function Hero() {
 
             window.addEventListener("mousemove", handleMouseMove);
 
-            // 1. Setup Scroll Scrub for Narrative Exit
-            const scrubTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 0.5,
-                    invalidateOnRefresh: true,
-                }
-            });
-
-            // Video scrubbing alignment - REMOVED scroll-driven video frames
-            // as per requirement "controlled by VIDEO TIME, not by scroll"
-            /*
-            scrubTl.to(sequence, {
-                frame: frameCount - 1,
-                onUpdate: () => render(Math.round(sequence.frame)),
-                ease: "none"
-            }, 0);
-            */
-
-            // EXIT ANIMATION (Narrative Transition)
-            // Just handling the parallax/fade of the container if needed on scroll
-            scrubTl.to(".hero-container", {
-                y: -100,
-                opacity: 0,
-            });
-
-            scrubTl.to(".hero-btn-wrapper", {
-                opacity: 0,
-                y: 50,
-                ease: "power2.inOut"
-            }, 0);
-
-            // The Exit Sequence that previously caused a blackout has been removed 
-            // to ensure the hero video remains visible throughout the entire scroll.
-
-            // 2. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
+            // 1. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
+                    const lenis = (window as any).lenis;
+                    if (lenis) lenis.start();
+
+                    // 2. SETUP SCROLL SCRUB FOR THE VIDEO
+                    // Created after intro finishes so it doesn't conflict with the auto-play
+                    // This allows the user to control the entire transformation (0 to 144) on scroll
+                    const scrubTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "+=200vh", // Extended scroll area for smooth playback
+                            scrub: 0.5,
+                            pin: true, // PIN hero section exactly where it is
+                            invalidateOnRefresh: true,
+                        }
+                    });
+
+                    // Allows scroll to scrub all frames of the video
+                    scrubTl.fromTo(sequence, 
+                        { frame: 0 }, 
+                        {
+                            frame: frameCount - 1,
+                            onUpdate: () => render(Math.round(sequence.frame)),
+                            ease: "none"
+                        }, 
+                        0
+                    );
+
+                    // EXIT ANIMATION (Narrative Transition)
+                    scrubTl.to(".hero-container", {
+                        y: -100,
+                        opacity: 0,
+                    }, 0);
+
+                    scrubTl.to(".hero-btn-wrapper", {
+                        opacity: 0,
+                        y: 50,
+                        ease: "power2.inOut"
+                    }, 0);
+
                     ScrollTrigger.refresh();
                 }
             });
 
             // 0.0s - Video starts (animating frames based on time)
             // Assuming 144 frames at ~24fps = 6 seconds total
-            introTl.to(sequence, {
-                frame: frameCount - 1,
-                duration: 6,
-                ease: "none",
-                onUpdate: () => render(Math.round(sequence.frame))
-            }, 0);
+            introTl.fromTo(sequence, 
+                { frame: 0 },
+                {
+                    frame: frameCount - 1,
+                    duration: 6,
+                    ease: "none",
+                    onUpdate: () => render(Math.round(sequence.frame))
+                }, 
+                0
+            );
 
             introTl.to([".canvas-container", ".hero"], {
                 opacity: 1,
@@ -273,6 +280,8 @@ export function Hero() {
 
         return () => {
             ctx.revert();
+            const lenis = (window as any).lenis;
+            if (lenis) lenis.start();
         };
     }, [mounted, imagesReady]);
 
