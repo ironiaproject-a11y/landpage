@@ -277,7 +277,6 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            if (lenis) lenis.start();
         };
     }, [mounted, imagesReady]);
 
