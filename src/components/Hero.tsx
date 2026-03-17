@@ -194,11 +194,11 @@ export function Hero() {
                     opacity: 1, 
                     y: 0, 
                     scale: 1,
-                    duration: 2.0, 
+                    duration: 1.6, // Proportional to 1.0s/6s
                     ease: "expo.out",
                     immediateRender: false
                 },
-                1.5
+                0.67 // Proportional to 0.4s/6s
             );
 
             scrubTl.to(".hero-line-1", {
@@ -209,14 +209,15 @@ export function Hero() {
             }, 5.83);
 
             scrubTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
+                { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
                 { 
                     opacity: 1, 
                     y: 0, 
                     scale: 1, 
                     filter: "blur(0px)",
-                    duration: 2.5, 
-                    ease: "power4.out",
+                    letterSpacing: "-0.03em",
+                    duration: 4.17, // Proportional to 2.5s/6s
+                    ease: "expo.out",
                     immediateRender: false
                 },
                 6.33
@@ -288,7 +289,7 @@ export function Hero() {
                 ease: "power1.inOut"
             }, 0);
 
-            // 1.5s - show text "Sua origem"
+            // 0.4s - show text "Sua origem" (Started earlier)
             // High-end subtitle style
             introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 15, scale: 0.95 },
@@ -296,10 +297,10 @@ export function Hero() {
                     opacity: 1, 
                     y: 0, 
                     scale: 1,
-                    duration: 1.2, 
+                    duration: 1.0, 
                     ease: "expo.out" 
                 },
-                1.5
+                0.4
             );
 
             // 3.5s - hide "Sua origem"
@@ -313,14 +314,15 @@ export function Hero() {
             // 3.8s - show text "Seu sorriso"
             // Dramatic entrance for the focal point
             introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
+                { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
                 { 
                     opacity: 1, 
                     y: 0, 
                     scale: 1, 
                     filter: "blur(0px)",
-                    duration: 1.5, 
-                    ease: "power4.out" 
+                    letterSpacing: "-0.03em",
+                    duration: 2.5, 
+                    ease: "expo.out" 
                 },
                 3.8
             );
