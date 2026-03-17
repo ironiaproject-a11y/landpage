@@ -250,6 +250,7 @@ export function Hero() {
                 // EXIT ANIMATION
                 tl.to(".hero-container", { y: -80, opacity: 0, duration: 2 }, ">-2"); 
                 tl.to(".canvas-container", { opacity: 0, duration: 2 }, "<"); 
+                tl.to(".scroll-indicator-wrapper", { opacity: 0, duration: 1 }, 1); // Fade out indicator on scroll
             }
 
             // Tilt interaction
@@ -350,12 +351,10 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        /* Linear gradient targeted for left-side text legibility */
-                        background: linear-gradient(90deg, 
-                            rgba(0,0,0,0.65) 0%, 
-                            rgba(0,0,0,0.3) 40%, 
-                            transparent 80%
-                        );
+                        /* Radial gradient + Bottom Vignette for central text legibility */
+                        background: 
+                            radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%),
+                            linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 30%);
                         z-index: 2;
                         pointer-events: none;
                     }
@@ -388,7 +387,7 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 38%; /* Slightly above center for subtitle feel */
+                        top: 35%; /* Increased white space (was 38%) */
                         left: 50%;
                         transform: translate(-50%, -50%);
                         text-align: center;
@@ -489,15 +488,43 @@ export function Hero() {
                     }
                     
                     /* Indicator text above or below button to aid scroll */
-                    .scroll-indicator {
+                    .scroll-indicator-wrapper {
+                        position: absolute;
+                        bottom: 6vh;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 12px;
+                        z-index: 20;
+                        opacity: 1; /* GSAP will fade it */
+                    }
+
+                    .scroll-indicator-text {
+                        font-family: var(--font-inter), sans-serif;
                         font-size: 10px;
+                        font-weight: 500;
                         text-transform: uppercase;
-                        letter-spacing: 0.2em;
-                        color: rgba(230, 211, 163, 0.6);
-                        opacity: 0.8;
+                        letter-spacing: 0.3em;
+                        color: rgba(230, 211, 163, 0.7);
                         animation: pulse 2s infinite ease-in-out;
                     }
+
+                    .scroll-indicator-line {
+                        width: 1px;
+                        height: 40px;
+                        background: linear-gradient(to bottom, rgba(230, 211, 163, 0.5), transparent);
+                        animation: stretch 2s infinite ease-in-out;
+                        transform-origin: top;
+                    }
                     
+                    @keyframes stretch {
+                        0% { transform: scaleY(0.3); opacity: 0; }
+                        50% { transform: scaleY(1); opacity: 1; }
+                        100% { transform: scaleY(0.3); opacity: 0; }
+                    }
+
                     @keyframes pulse {
                         0%, 100% { opacity: 0.4; }
                         50% { opacity: 0.8; }
@@ -551,6 +578,12 @@ export function Hero() {
                             </h2>
                         </div>
                     </div>
+                </div>
+
+                {/* Call to Scroll Indicator */}
+                <div className="scroll-indicator-wrapper">
+                    <span className="scroll-indicator-text">Role para descobrir</span>
+                    <div className="scroll-indicator-line" />
                 </div>
             </section>
     );
