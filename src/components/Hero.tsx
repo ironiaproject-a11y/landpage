@@ -229,28 +229,28 @@ export function Hero() {
             );
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
-                // Neutral state at start of scrub
-                tl.set(".hero-line-2", { opacity: 0, y: 25, filter: "blur(10px)" }, 0);
-                tl.set(".hero-line-1", { opacity: 0, y: 15, scale: 0.95 }, 0);
+                // At the start of the scroll (T=0), we are at the end of the intro.
+                // Video is Woman (143). "Seu sorriso" is fully visible.
+                tl.set(".hero-line-2", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", letterSpacing: "-0.03em" }, 0);
+                tl.set(".hero-line-1", { opacity: 0, y: -10, scale: 1 }, 0); 
 
+                // T=0.5 -> 3.5: User scrolls down, "Seu sorriso" dissolves (backwards)
+                tl.to(".hero-line-2", 
+                    { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em", duration: 3, ease: "power2.in" },
+                    0.5
+                );
+
+                // T=4.0 -> 7.0: User continues scrolling, video becomes Skull, "Sua origem" materializes
                 tl.fromTo(".hero-line-1", 
-                    { opacity: 0, y: 15, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "expo.out", immediateRender: false },
-                    0.1
+                    { opacity: 0, y: 15, scale: 0.95 },   // starts pushed down slightly
+                    { opacity: 1, y: 0, scale: 1, duration: 3, ease: "expo.out", immediateRender: false },
+                    4.0
                 );
 
-                tl.to(".hero-line-1", { opacity: 0, y: -10, duration: 0.83, ease: "power2.in" }, 5.83);
-
-                tl.fromTo(".hero-line-2",
-                    { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
-                    { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", letterSpacing: "-0.03em", duration: 4.17, ease: "expo.out", immediateRender: false },
-                    6.33
-                );
-
-                // EXIT ANIMATION
-                tl.to(".hero-container", { y: -80, opacity: 0, duration: 2 }, ">-2"); 
-                tl.to(".canvas-container", { opacity: 0, duration: 2 }, "<"); 
-                tl.to(".scroll-indicator-wrapper", { opacity: 0, duration: 1 }, 1); // Fade out indicator on scroll
+                // T=8.0 -> 10.0: The entire Hero section fades out to reveal the next part of the site
+                tl.to(".hero-container", { y: -80, opacity: 0, duration: 2 }, 8.0); 
+                tl.to(".canvas-container", { opacity: 0, duration: 2 }, 8.0); 
+                tl.to(".scroll-indicator-wrapper", { opacity: 0, duration: 1 }, 1.0); // Indicator fades early on
             }
 
             // Tilt interaction
