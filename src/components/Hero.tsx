@@ -38,6 +38,9 @@ export function Hero() {
                     loadedCount++;
                     if (loadedCount === frameCount) {
                         setImagesReady(true);
+                        // Signal preloader to exit
+                        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                        (window as any).__HERO_ASSETS_LOADED__ = true;
                     }
                 };
                 imagesRef.current[i] = img;
@@ -109,13 +112,10 @@ export function Hero() {
         if (!mounted || !imagesReady || !canvasRef.current || !scrollDriverRef.current) return;
 
         const sequence = sequenceRef.current;
-        const lenis = (window as any).lenis;
         
-        // Ensure dimensions are correct before starting animations
+        // Ensure dimensions are correct and first frame is drawn before starting animations
         updateDimensions();
         render(0);
-
-        if (lenis) lenis.stop();
 
         const ctx = gsap.context(() => {
             // --- 3D TILT INTERACTION ---
@@ -191,7 +191,6 @@ export function Hero() {
             // 2. MASTER INTRO TIMELINE (Cinematic Animation Timeline)
             const introTl = gsap.timeline({
                 onComplete: () => {
-                    if (lenis) lenis.start();
                     ScrollTrigger.refresh();
                 }
             });
@@ -276,9 +275,6 @@ export function Hero() {
 
         return () => {
             ctx.revert();
-            // Safeguard: Always attempt to restart scroll on unmount
-            const currentLenis = (window as any).lenis;
-            if (currentLenis) currentLenis.start();
         };
     }, [mounted, imagesReady]);
 
