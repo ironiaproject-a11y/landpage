@@ -156,21 +156,28 @@ export function Hero() {
                 }
             });
 
-            // Video scrubbing alignment
+            // Video scrubbing alignment - REMOVED scroll-driven video frames
+            // as per requirement "controlled by VIDEO TIME, not by scroll"
+            /*
             scrubTl.to(sequence, {
                 frame: frameCount - 1,
                 onUpdate: () => render(Math.round(sequence.frame)),
                 ease: "none"
             }, 0);
+            */
 
             // EXIT ANIMATION (Narrative Transition)
-            // "Seu sorriso" moves slightly upward but stays visible
-            scrubTl.to(".hero-line-2", {
-                y: -20,
-                xPercent: -50,
-                duration: 0.5,
-                ease: "power2.out"
-            }, 0);
+            // Just handling the parallax/fade of the container if needed on scroll
+            scrubTl.to(".hero-container", {
+                y: -100,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: scrollDriverRef.current,
+                    start: "center top",
+                    end: "bottom bottom",
+                    scrub: true
+                }
+            });
 
             scrubTl.to(".hero-btn-wrapper", {
                 opacity: 0,
@@ -190,47 +197,58 @@ export function Hero() {
                 }
             });
 
-            // 0.0s - Video fade-in
+            // 0.0s - Video starts (animating frames based on time)
+            // Assuming 144 frames at ~24fps = 6 seconds total
+            introTl.to(sequence, {
+                frame: frameCount - 1,
+                duration: 6,
+                ease: "none",
+                onUpdate: () => render(Math.round(sequence.frame))
+            }, 0);
+
             introTl.to([".canvas-container", ".hero"], {
                 opacity: 1,
-                duration: 1.5,
+                duration: 1.0,
                 ease: "power2.inOut"
             }, 0);
 
             // 0.6s - Subtle video zoom
             introTl.to(".canvas-container", {
                 scale: 1.05,
-                duration: 4,
-                ease: "power2.out"
-            }, 0.6);
+                duration: 6,
+                ease: "power1.inOut"
+            }, 0);
 
-            // 1.4s - "Sua origem" fades in
+            // 1.5s - show text "Sua origem"
+            // animation: opacity 0 → 1, translateY 20px → 0
             introTl.fromTo(".hero-line-1", 
                 { opacity: 0, y: 20, xPercent: -50 },
-                { opacity: 1, y: 0, xPercent: -50, duration: 1.0, ease: "power2.out" },
-                1.4
+                { opacity: 1, y: 0, xPercent: -50, duration: 0.8, ease: "power2.out" },
+                1.5
             );
 
-            // 3.0s - "Sua origem" fades out slowly
+            // 3.5s - hide "Sua origem"
+            // opacity 1 → 0
             introTl.to(".hero-line-1", {
                 opacity: 0,
-                duration: 0.8,
-                ease: "power2.inOut"
-            }, 3.0);
+                duration: 0.3,
+                ease: "power2.in"
+            }, 3.5);
 
-            // 3.2s - "Seu sorriso" fades in
+            // 3.8s - show text "Seu sorriso"
+            // opacity 0 → 1, translateY 30px → 0
             introTl.fromTo(".hero-line-2",
                 { opacity: 0, y: 30, xPercent: -50 },
-                { opacity: 1, y: 0, xPercent: -50, duration: 1.2, ease: "power3.out" },
-                3.2
+                { opacity: 1, y: 0, xPercent: -50, duration: 1.0, ease: "power3.out" },
+                3.8
             );
 
-            // 4.0s - CTA button fades in
+            // 5.0s - CTA button fades in
             introTl.to(".hero-btn-wrapper", {
                 opacity: 1,
-                duration: 1.2,
+                duration: 1.0,
                 ease: "power2.inOut"
-            }, 4.0);
+            }, 5.0);
         });
 
         // Initial render logic
