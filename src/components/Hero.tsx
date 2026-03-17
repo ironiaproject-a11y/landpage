@@ -378,24 +378,25 @@ export function Hero() {
 
                     .hero-text {
                         position: absolute;
-                        inset: 0;
+                        top: 42%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                         z-index: 5;
                         pointer-events: none;
                         width: 100%;
-                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 1.5rem; /* Exact optical distance between lines */
                     }
 
                     .hero-line-1 {
-                        position: absolute;
-                        top: 35%; /* Increased white space (was 38%) */
-                        left: 50%;
-                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         font-family: var(--font-playfair), "Playfair Display", serif;
-                        font-size: clamp(14px, 1.5vw, 18px);
+                        font-size: clamp(16px, 2vw, 22px);
                         font-weight: 500;
-                        letter-spacing: 0.5em; /* Elegant wide tracking */
+                        letter-spacing: 0.35em; /* Refined tracking for readability */
                         text-transform: uppercase;
                         color: rgba(243, 231, 200, 0.8);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
@@ -404,10 +405,6 @@ export function Hero() {
                     }
 
                     .hero-line-2 {
-                        position: absolute;
-                        top: 46%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
                         z-index: 10;
