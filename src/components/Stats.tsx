@@ -114,11 +114,10 @@ export function Stats() {
     >
       <style>{`
         .stats-section {
-          background: #0F0F0F;
-          padding: 80px 32px;
-          margin-top: -5vh; /* Subtle overlap for hand-off fluidity */
+          background: transparent;
+          padding: 40px 24px;
+          margin-top: -12vh; /* Bring up more */
           position: relative;
-          overflow: hidden;
           z-index: 20; /* Ensure it stays above Hero exit */
         }
 
@@ -129,6 +128,13 @@ export function Stats() {
           max-width: 1200px;
           margin: 0 auto;
           position: relative;
+          background: rgba(15, 15, 15, 0.85); /* Dark translucent card */
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 32px; /* Card layout */
+          padding: 60px 40px; /* Breathing room */
+          border: 1px solid rgba(230, 211, 163, 0.15); /* Gold tint border */
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
         }
 
         .stats-item {
@@ -146,7 +152,7 @@ export function Stats() {
           right: 0;
           top: 50%;
           transform: translateY(-50%);
-          height: 60px;
+          height: 80px;
           width: 1px;
           background: linear-gradient(
             to bottom,
@@ -163,7 +169,7 @@ export function Stats() {
           left: 50%;
           transform: translateX(-50%);
           height: 1px;
-          width: 80px;
+          width: 100px;
           background: linear-gradient(
             to right,
             transparent,
@@ -179,7 +185,7 @@ export function Stats() {
           font-weight: 500;
           line-height: 1;
           letter-spacing: -0.02em;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
           display: block;
           color: #F8F8F6;
           font-variant-numeric: tabular-nums;
@@ -199,41 +205,47 @@ export function Stats() {
 
         .stats-label {
           font-family: var(--font-inter), sans-serif;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 500;
-          color: rgba(248, 248, 246, 0.4);
+          color: rgba(248, 248, 246, 0.6);
           letter-spacing: 0.2em;
           text-transform: uppercase;
           display: block;
-          max-width: 160px;
+          max-width: 180px;
           line-height: 1.5;
         }
 
         @media (max-width: 1023px) {
           .stats-section { 
-            padding-top: 100px !important; 
-            padding-bottom: 80px !important;
-            margin-top: 0 !important; 
-            z-index: 50 !important; 
-            background: #0B0B0B;
+            padding: 0 16px;
+            margin-top: -10vh; 
+            z-index: 50; 
+            background: transparent;
           }
 
           .stats-grid {
             grid-template-columns: 1fr;
-            max-width: 300px;
+            max-width: 380px;
+            padding: 50px 24px;
+            border-radius: 24px;
+            gap: 40px; /* Space between items on mobile */
           }
 
           .stats-item {
-            padding: 40px 0;
+            padding: 0;
           }
 
           .stats-item:first-child { padding-top: 0; }
           .stats-item:last-child { padding-bottom: 0; }
 
           .stats-divider { display: none; }
-          .stats-divider-mobile { display: block; }
+          .stats-divider-mobile { 
+            display: block;
+            bottom: -20px;
+            opacity: 0.5;
+          }
           
-          .stats-number { font-size: 64px; }
+          .stats-number { font-size: 56px; }
         }
       `}</style>
 

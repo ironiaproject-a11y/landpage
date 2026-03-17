@@ -182,10 +182,62 @@ export function Hero() {
                             frame: frameCount - 1,
                             onUpdate: () => render(Math.round(sequence.frame)),
                             ease: "none",
-                            // This ensures the timeline space is dominated by the video
-                            duration: 10 
+                            duration: 10,
+                            immediateRender: false
                         }, 
                         0
+                    );
+
+                    // Replicate the text animation logic from introTl into scrubTl
+                    // Proportions out of 10 duration:
+                    // 1.5s / 6s = 2.5s here
+                    scrubTl.fromTo(".hero-line-1", 
+                        { opacity: 0, y: 15, scale: 0.95 },
+                        { 
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1,
+                            duration: 2.0, 
+                            ease: "expo.out",
+                            immediateRender: false
+                        },
+                        2.5
+                    );
+
+                    // 3.5s / 6s = 5.83s
+                    scrubTl.to(".hero-line-1", {
+                        opacity: 0,
+                        y: -10,
+                        duration: 0.83,
+                        ease: "power2.in"
+                    }, 5.83);
+
+                    // 3.8s / 6s = 6.33s
+                    scrubTl.fromTo(".hero-line-2",
+                        { opacity: 0, y: 25, scale: 1.05, filter: "blur(10px)" },
+                        { 
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1, 
+                            filter: "blur(0px)",
+                            duration: 2.5, 
+                            ease: "power4.out",
+                            immediateRender: false
+                        },
+                        6.33
+                    );
+
+                    // 4.2s / 6s = 7.0s
+                    scrubTl.fromTo(".hero-btn-wrapper",
+                        { opacity: 0, y: 30 },
+                        { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 2.0, 
+                            ease: "back.out(1.7)",
+                            immediateRender: false
+                        },
+                        7.0
                     );
 
                     // EXIT ANIMATION (Narrative Transition)
