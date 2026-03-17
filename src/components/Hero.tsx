@@ -541,6 +541,10 @@ export function Hero() {
                     @media (max-width: 768px) {
                         .hero-text {
                             top: 45%;
+                            gap: 0.5rem; /* Ensure gap exists on mobile */
+                        }
+                        .hero-line-1 {
+                            margin-bottom: 0.5rem; /* Extra safety margin to prevent overlap */
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
