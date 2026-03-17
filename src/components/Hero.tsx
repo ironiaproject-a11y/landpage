@@ -162,8 +162,8 @@ export function Hero() {
                         scrollTrigger: {
                             trigger: sectionRef.current,
                             start: "top top",
-                            end: "+=200vh", // Extended scroll area for smooth playback
-                            scrub: 0.5,
+                            end: "+=500vh", // Extended scroll area significantly for slower, smoother playback
+                            scrub: 1, // Increased scrub smoothing from 0.5 to 1 for more fluid deceleration
                             pin: true, // PIN hero section exactly where it is
                             invalidateOnRefresh: true,
                         }
