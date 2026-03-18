@@ -164,7 +164,7 @@ export function Testimonials() {
         <section
             ref={sectionRef}
             id="depoimentos"
-            className="relative py-16 md:py-32 overflow-hidden bg-[var(--color-premium-white)]"
+            className="relative py-16 md:py-32 overflow-hidden bg-transparent"
         >
             {/* Cremic Atmospheric Lighting */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#E6D3A3]/5 blur-[120px] pointer-events-none" />
@@ -180,7 +180,7 @@ export function Testimonials() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-premium-charcoal)] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             Histórias de<br />
                             <span className="text-[#E6D3A3] font-display italic font-light block mt-2">transformação real.</span>
                         </h2>
@@ -209,13 +209,13 @@ export function Testimonials() {
                                     className="testimonial-card w-[320px] md:w-[450px] shrink-0 h-full"
                                 >
                                     <LuxuryCard
-                                        className="h-full border-black/5 bg-white/40"
+                                        className="h-full border-white/5 bg-white/5"
                                         innerClassName="p-10 md:p-12"
                                         glowColor="rgba(230, 211, 163, 0.05)"
                                     >
                                         <div className="relative z-10 flex flex-col h-full">
                                             <div className="mb-10 relative">
-                                                <Quote strokeWidth={1} className="quote-icon-rotate w-12 h-12 text-black/10" />
+                                                <Quote strokeWidth={1} className="quote-icon-rotate w-12 h-12 text-white/10" />
                                             </div>
 
                                             <div className="flex gap-2 mb-8">
@@ -224,12 +224,12 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[var(--color-premium-charcoal)] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                            <p className="text-[var(--color-text-primary)] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
-                                            <div className="pt-8 border-t border-black/5 flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-black/10 relative">
+                                            <div className="pt-8 border-t border-white/5 flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 relative">
                                                     <Image
                                                         src={testimonial.image}
                                                         alt={testimonial.name}
@@ -238,8 +238,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-semibold text-[var(--color-premium-charcoal)] text-base tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.name}</h4>
-                                                    <p className="text-[10px] text-[var(--color-premium-slate)] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
+                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.name}</h4>
+                                                    <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

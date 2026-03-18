@@ -21,7 +21,7 @@ export function Hero() {
     const mouseRef = useRef({ x: 0, y: 0 });
     
     // Config
-    const frameCount = 144;
+    const frameCount = 145;
     const introFrames = 70; // Half-way roughly for the intro
 
     useEffect(() => {
@@ -351,8 +351,8 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        /* Subtle light gradient for breathable depth */
-                        background: linear-gradient(to bottom, rgba(248, 248, 246, 0.4) 0%, rgba(248, 248, 246, 0.1) 100%);
+                        /* Soft dark gradient for depth without heaviness */
+                        background: linear-gradient(to bottom, rgba(17, 17, 17, 0.4) 0%, rgba(17, 17, 17, 0.2) 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
@@ -395,8 +395,8 @@ export function Hero() {
                         font-weight: 500;
                         letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: var(--color-premium-charcoal);
-                        text-shadow: 0 4px 15px rgba(255,255,255,0.4);
+                        color: rgba(230, 211, 163, 0.8);
+                        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
                         display: flex;

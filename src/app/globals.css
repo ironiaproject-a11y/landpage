@@ -8,12 +8,12 @@
    =================================== */
 
 :root {
-  /* Colors - Luxury Light Palette */
-  --color-premium-white: #F8F8F6; /* Pearl */
+  /* Colors - Soft Luxury Dark Palette */
+  --color-premium-white: #F8F8F6; /* Pearl/Off-white for text */
   --color-premium-gold: #E6D3A3;
-  --color-premium-black: #0B0B0B; /* Used for heavy accents/text */
-  --color-premium-slate: #525252; /* Soft grey for secondary text */
-  --color-premium-charcoal: #111111; /* Clean high-contrast text */
+  --color-premium-dark: #111111; /* Softer background base */
+  --color-premium-slate: #94A3B8; /* Muted silver for secondary text */
+  --color-premium-charcoal: #1A1A1A; /* Slightly lighter for secondary surfaces */
 
   /* Typography Scale - Precision Engineering */
   --font-h1: clamp(40px, 8vw, 84px);
@@ -25,9 +25,9 @@
   --radius-premium: 32px;
   --radius-premium-sm: 16px;
 
-  /* Semantic Mapping - Luxury Light Transition */
-  --color-background: var(--color-premium-white);
-  --color-text-primary: var(--color-premium-charcoal);
+  /* Semantic Mapping - Soft Dark Transition */
+  --color-background: var(--color-premium-dark);
+  --color-text-primary: var(--color-premium-white);
   --color-text-secondary: var(--color-premium-slate);
   --color-accent: var(--color-premium-gold);
 
@@ -45,7 +45,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-premium-white);
+  background-color: var(--color-premium-dark);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -57,7 +57,7 @@ body {
   font-family: var(--font-body);
   overflow-x: hidden;
   position: relative;
-  cursor: auto; /* Reverting cursor for now for better usability in light theme */
+  cursor: none; /* Restoring custom cursor for cinematic feel */
   line-height: 1.7;
   letter-spacing: var(--tracking-body);
   text-rendering: optimizeLegibility;

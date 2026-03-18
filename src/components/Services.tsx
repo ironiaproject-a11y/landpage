@@ -65,23 +65,23 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-black/40 font-display text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
-                        <div className="h-px bg-black/10 flex-grow" />
+                        <span className="text-white/40 font-display text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
+                        <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="text-[var(--color-premium-charcoal)] font-semibold mb-4 transition-colors duration-700" style={{ 
+                    <h3 className="text-[var(--color-text-primary)] font-semibold mb-4 transition-colors duration-700" style={{ 
                         fontFamily: 'Inter, sans-serif',
                         fontSize: 'clamp(18px, 2.2vw, 26px)'
                     }}>
                         {service.title}
                     </h3>
 
-                    <p className="text-[var(--color-premium-slate)] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    <p className="text-[var(--color-text-secondary)] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'Inter, sans-serif' }}>
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-black/10 bg-black/5 text-[var(--color-premium-charcoal)] text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-[#E6D3A3] group-hover:text-white group-hover:border-[#E6D3A3]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-[#E6D3A3] group-hover:text-black group-hover:border-[#E6D3A3]" style={{ fontFamily: 'Inter, sans-serif' }}>
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -290,7 +290,7 @@ export function Services() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 bg-[var(--color-premium-white)] relative overflow-hidden" id="servicos">
+        <section ref={sectionRef} className="py-24 md:py-40 bg-transparent relative overflow-hidden" id="servicos">
             {/* Priority Preload for the first card video */}
             <link rel="preload" href={firstVideo} as="video" type="video/mp4" />
 
@@ -304,7 +304,7 @@ export function Services() {
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-premium-charcoal)] leading-[1.05] tracking-[0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de</span>
                     </PremiumReveal>

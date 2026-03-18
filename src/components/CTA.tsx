@@ -68,16 +68,16 @@ export function CTA() {
     }, [mounted]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 relative overflow-hidden bg-[var(--color-premium-white)]">
+        <section ref={sectionRef} className="py-24 md:py-40 relative overflow-hidden bg-transparent">
             {/* Background Texture */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] brightness-100 contrast-150 mix-blend-multiply pointer-events-none" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 
             {/* Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] aspect-square bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02),transparent_70%)] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] aspect-square bg-[radial-gradient(circle_at_center,rgba(230,211,163,0.05),transparent_70%)] pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <LuxuryCard
-                    className="cta-glass-panel max-w-4xl mx-auto border-black/5 bg-white/40"
+                    className="cta-glass-panel max-w-4xl mx-auto border-white/5 bg-white/5"
                     innerClassName="p-10 md:p-24"
                     glowColor="rgba(230, 211, 163, 0.12)"
                 >
@@ -93,14 +93,14 @@ export function CTA() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <h2 className="font-display text-[clamp(28px,6vw,72px)] font-semibold text-[var(--color-premium-charcoal)] mb-10 leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(28px,6vw,72px)] font-semibold text-[var(--color-text-primary)] mb-10 leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             Seu novo sorriso<br />
                             <span className="text-[#E6D3A3] font-display italic font-light">começa hoje.</span>
                         </h2>
                     </PremiumReveal>
 
                     <PremiumReveal type="fade" delay={0.5}>
-                        <p className="text-[var(--color-premium-slate)] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <p className="text-[var(--color-text-secondary)] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
                             Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-[#E6D3A3] font-display italic font-light">exclusivo</span> pode transformar sua autoestima.
                         </p>
                     </PremiumReveal>
@@ -119,7 +119,7 @@ export function CTA() {
                         <Magnetic strength={0.2} range={100}>
                             <button
                                 onClick={() => window.open(generateWhatsAppUrl(DEFAULT_MESSAGE), '_blank')}
-                                className="btn-premium bg-black/5 border-black/10 hover:border-[#E6D3A3]/50 w-full sm:w-auto !text-[var(--color-premium-charcoal)]"
+                                className="btn-premium bg-white/5 border-white/10 hover:border-[#E6D3A3]/50 w-full sm:w-auto !text-[var(--color-text-primary)]"
                             >
                                 Falar com Concierge
                             </button>

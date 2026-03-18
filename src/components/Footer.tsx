@@ -95,23 +95,23 @@ export function Footer() {
     };
 
     return (
-        <footer ref={sectionRef} className="bg-[var(--color-premium-white)] border-t border-black/5 relative overflow-hidden">
+        <footer ref={sectionRef} className="bg-transparent border-t border-white/5 relative overflow-hidden">
             <div className="container mx-auto px-6 pt-24 pb-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 md:gap-12 mb-20">
                     {/* Brand Section */}
                     <div className="lg:col-span-4 transition-all">
                         <div className="space-y-8">
                             <div className="flex items-center gap-4 group/logo cursor-pointer">
-                                <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center text-[var(--color-premium-charcoal)] border border-black/10 group-hover/logo:border-[#E6D3A3]/50 transition-all duration-700 relative overflow-hidden light-sweep">
-                                    <Sparkles strokeWidth={1} className="w-7 h-7 fill-black/5" />
+                                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-[var(--color-text-primary)] border border-white/10 group-hover/logo:border-[#E6D3A3]/50 transition-all duration-700 relative overflow-hidden light-sweep">
+                                    <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-display font-semibold tracking-[0.15em] text-[var(--color-premium-charcoal)] leading-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                    <h3 className="text-lg font-display font-semibold tracking-[0.15em] text-[var(--color-text-primary)] leading-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                                         Clínica<span className="text-[#E6D3A3] italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-[var(--color-premium-slate)] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <p className="text-[var(--color-text-secondary)] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'Inter, sans-serif' }}>
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -121,7 +121,7 @@ export function Footer() {
                                     fill
                                     className="object-cover opacity-40 group-hover/img:opacity-80 group-hover/img:scale-105 transition-all duration-1000"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-premium-white)] via-transparent to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-premium-dark)] via-transparent to-transparent" />
                             </div>
                             <div className="flex gap-4">
                                 {socialLinks.map((social, index) => (
@@ -130,7 +130,7 @@ export function Footer() {
                                             href={social.href}
                                             aria-label={social.label}
                                             whileHover={{ y: -4, backgroundColor: "#E6D3A3", color: "white", borderColor: "#E6D3A3" }}
-                                            className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center text-[var(--color-premium-slate)] transition-all bg-black/5"
+                                            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[var(--color-text-secondary)] transition-all bg-white/5"
                                         >
                                             {social.icon}
                                         </m.a>
@@ -149,7 +149,7 @@ export function Footer() {
                                 <li key={index}>
                                     <a
                                         href={link.href}
-                                        className="text-[var(--color-premium-slate)] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[var(--color-text-secondary)] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {link.name}
@@ -169,7 +169,7 @@ export function Footer() {
                                 <li key={index}>
                                     <a
                                         href="#servicos"
-                                        className="text-[var(--color-premium-slate)] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[var(--color-text-secondary)] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
                                         {service.name}
@@ -190,17 +190,17 @@ export function Footer() {
                                     <MapPin strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                 </div>
                                 <div className="text-sm">
-                                    <p className="font-bold text-[var(--color-premium-charcoal)] mb-1">Unidade Central</p>
-                                    <p className="text-[var(--color-premium-slate)]">Centro, Pereira Barreto - SP</p>
-                                    <p className="text-[var(--color-premium-slate)]">Brasil</p>
+                                    <p className="font-bold text-[var(--color-text-primary)] mb-1">Unidade Central</p>
+                                    <p className="text-[var(--color-text-secondary)]">Centro, Pereira Barreto - SP</p>
+                                    <p className="text-[var(--color-text-secondary)]">Brasil</p>
                                 </div>
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[#E6D3A3]/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-premium-charcoal)] hover:text-[#E6D3A3] transition-colors">
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-text-primary)] hover:text-[#E6D3A3] transition-colors">
                                     <Phone strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_PHONE}
                                 </a>
-                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-premium-slate)] hover:text-[#E6D3A3] transition-colors">
+                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[#E6D3A3] transition-colors">
                                     <Mail strokeWidth={1} className="w-5 h-5 text-[#E6D3A3]" />
                                     {COMPANY_EMAIL}
                                 </a>
@@ -226,7 +226,7 @@ export function Footer() {
                                             window.location.reload();
                                         }
                                     }}
-                                    className="text-[10px] text-black/40 hover:text-black underline underline-offset-2 transition-colors"
+                                    className="text-[10px] text-white/40 hover:text-white underline underline-offset-2 transition-colors"
                                 >
                                     Atualizar Versão
                                 </button>
@@ -245,7 +245,7 @@ export function Footer() {
                     <Magnetic strength={0.5} range={80}>
                         <button
                             onClick={scrollToTop}
-                            className="w-14 h-14 bg-black/5 text-[var(--color-premium-charcoal)] border border-black/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[#E6D3A3] hover:text-white hover:scale-110 transition-all duration-500"
+                            className="w-14 h-14 bg-white/5 text-[var(--color-text-primary)] border border-white/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[#E6D3A3] hover:text-white hover:scale-110 transition-all duration-500"
                         >
                             <ArrowUp strokeWidth={1} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
                         </button>
