@@ -290,7 +290,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-            <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0B0B0B]">
+            <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0D0D0D]">
                 <style>{`
                     .hero {
                     position: relative;

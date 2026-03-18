@@ -275,7 +275,7 @@ export function BeforeAfterSlider({
                                 className="absolute inset-y-0 -left-[1px] w-[2px] bg-gradient-to-b from-transparent via-[var(--color-text-primary)] to-transparent"
                             />
 
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0B0B0B]/80 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-premium-2 transition-transform duration-300 group-hover/handle:scale-110">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[#0D0D0D]/80 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-premium-2 transition-transform duration-300 group-hover/handle:scale-110">
                                 <div className="flex items-center gap-1 text-[var(--color-accent-gold)]">
                                     <MoveLeft strokeWidth={1.5} className="w-3.5 h-3.5" />
                                     <MoveRight strokeWidth={1.5} className="w-3.5 h-3.5" />

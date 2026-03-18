@@ -7,15 +7,15 @@ import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/c
 
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
   ssr: false, 
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const InstitutionalTrust = nextDynamic(() => import("@/components/InstitutionalTrust").then(mod => mod.InstitutionalTrust), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const TrustBar = nextDynamic(() => import("@/components/TrustBar").then(mod => mod.TrustBar), { 
   ssr: false,
-  loading: () => <div className="h-10 bg-[#0B0B0B]" />
+  loading: () => <div className="h-10 bg-[#0D0D0D]" />
 });
 const Services = nextDynamic(() => import("@/components/Services").then(mod => mod.Services), {
   ssr: false,
@@ -27,15 +27,15 @@ const CaseStudies = nextDynamic(() => import("@/components/CaseStudies").then(mo
 });
 const Specialist = nextDynamic(() => import("@/components/Specialist").then(mod => mod.Specialist), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const Experience = nextDynamic(() => import("@/components/Experience").then(mod => mod.Experience), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const Amenities = nextDynamic(() => import("@/components/Amenities").then(mod => mod.Amenities), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const Testimonials = nextDynamic(() => import("@/components/Testimonials").then(mod => mod.Testimonials), {
   ssr: false,
@@ -43,19 +43,19 @@ const Testimonials = nextDynamic(() => import("@/components/Testimonials").then(
 });
 const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), { 
   ssr: false,
-  loading: () => <div className="h-40 bg-[#0B0B0B]" />
+  loading: () => <div className="h-40 bg-[#0D0D0D]" />
 });
 const CTA = nextDynamic(() => import("@/components/CTA").then(mod => mod.CTA), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const Contact = nextDynamic(() => import("@/components/Contact").then(mod => mod.Contact), { 
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0B0B0B]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
   ssr: false,
-  loading: () => <div className="h-40 bg-[#0B0B0B] -mt-[10vh]" />
+  loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 

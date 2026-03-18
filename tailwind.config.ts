@@ -18,7 +18,7 @@ const config: Config = {
                 "blue-tech": "#3B82F6", // Tech Link
                 "charcoal": "#1A1A1A",
                 "graphite": "#121212",
-                "deep-black": "#0B0B0B",
+                "deep-black": "#0D0D0D",
                 "accent-gold": "rgba(var(--color-accent-gold-rgb), <alpha-value>)",
             },
             boxShadow: {
@@ -27,10 +27,10 @@ const config: Config = {
                 "premium-3": "var(--shadow-premium-3)",
             },
             fontFamily: {
-                headline: "var(--font-headline)",
-                ui: "var(--font-ui)",
-                bodoni: "var(--font-bodoni)",
-                body: "var(--font-ui)",
+                headline: "var(--font-poppins)",
+                ui: "var(--font-poppins)",
+                bodoni: "var(--font-poppins)",
+                body: "var(--font-poppins)",
             },
         },
     },

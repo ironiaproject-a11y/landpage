@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Libre_Bodoni } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -8,24 +8,10 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 import ClientSideExtras from "@/components/ClientSideExtras";
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-ui",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-headline",
-  display: "swap",
-});
-
-const libreBodoni = Libre_Bodoni({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-bodoni",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -40,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${inter.variable} ${playfair.variable} ${libreBodoni.variable}`}>
+    <html lang="pt-br" className={`${poppins.variable}`}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
