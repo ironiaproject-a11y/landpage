@@ -8,12 +8,12 @@
    =================================== */
 
 :root {
-  /* Colors - Premium Luxury Palette */
-  --color-premium-white: #F8F8F6;
+  /* Colors - Luxury Light Palette */
+  --color-premium-white: #F8F8F6; /* Pearl */
   --color-premium-gold: #E6D3A3;
-  --color-premium-black: #0B0B0B;
-  --color-premium-slate: #94A3B8; /* Improved contrast from #6B7280 */
-  --color-premium-charcoal: #1A1A1A; /* Refined charcoal */
+  --color-premium-black: #0B0B0B; /* Used for heavy accents/text */
+  --color-premium-slate: #525252; /* Soft grey for secondary text */
+  --color-premium-charcoal: #111111; /* Clean high-contrast text */
 
   /* Typography Scale - Precision Engineering */
   --font-h1: clamp(40px, 8vw, 84px);
@@ -25,9 +25,9 @@
   --radius-premium: 32px;
   --radius-premium-sm: 16px;
 
-  /* Semantic Mapping */
-  --color-background: var(--color-premium-black);
-  --color-text-primary: var(--color-premium-white);
+  /* Semantic Mapping - Luxury Light Transition */
+  --color-background: var(--color-premium-white);
+  --color-text-primary: var(--color-premium-charcoal);
   --color-text-secondary: var(--color-premium-slate);
   --color-accent: var(--color-premium-gold);
 
@@ -45,7 +45,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000000;
+  background-color: var(--color-premium-white);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -57,7 +57,7 @@ body {
   font-family: var(--font-body);
   overflow-x: hidden;
   position: relative;
-  cursor: none;
+  cursor: auto; /* Reverting cursor for now for better usability in light theme */
   line-height: 1.7;
   letter-spacing: var(--tracking-body);
   text-rendering: optimizeLegibility;
@@ -125,10 +125,10 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(203, 178, 122, 0.03) 100%);
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.35;
+  opacity: 0.8;
 }
 
 @media (max-width: 1024px) {

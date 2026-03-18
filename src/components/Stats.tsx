@@ -131,13 +131,13 @@ export function Stats() {
           max-width: 1200px;
           margin: 0 auto;
           position: relative;
-          background: rgba(15, 15, 15, 0.85); /* Dark translucent card */
+          background: rgba(255, 255, 255, 0.8); /* Light translucent card */
           backdrop-filter: blur(24px);
           -webkit-backdrop-filter: blur(24px);
           border-radius: var(--radius-premium, 32px); /* Card layout */
           padding: 60px 40px; /* Breathing room */
-          border: 1px solid rgba(230, 211, 163, 0.15); /* Gold tint border */
-          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+          border: 1px solid rgba(230, 211, 163, 0.3); /* Defined gold border */
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08); /* Softer shadow for light theme */
         }
 
         .stats-item {
@@ -190,14 +190,14 @@ export function Stats() {
           letter-spacing: -0.02em;
           margin-bottom: 16px;
           display: block;
-          color: #F8F8F6;
+          color: var(--color-premium-charcoal);
           font-variant-numeric: tabular-nums;
         }
 
         .stats-suffix {
           font-size: 0.7em;
           margin-left: 2px;
-          color: #94A3B8;
+          color: var(--color-premium-slate);
         }
 
         .stats-number--accent {
@@ -210,7 +210,7 @@ export function Stats() {
           font-family: var(--font-inter), sans-serif;
           font-size: 13px;
           font-weight: 600;
-          color: #94A3B8;
+          color: var(--color-premium-slate);
           letter-spacing: 0.20em;
           text-transform: uppercase;
           display: block;

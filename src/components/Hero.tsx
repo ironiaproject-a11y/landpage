@@ -337,24 +337,22 @@ export function Hero() {
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        width: 80vw;
-                        height: 80vh;
-                        background: radial-gradient(circle at center, rgba(230, 211, 163, 0.15) 0%, transparent 70%);
+                        width: 100vw;
+                        height: 100vh;
+                        background: radial-gradient(circle at center, rgba(230, 211, 163, 0.08) 0%, transparent 60%);
                         transform: translate(-50%, -50%);
                         z-index: 1;
                         pointer-events: none;
-                        filter: blur(80px);
-                        mix-blend-mode: screen;
+                        filter: blur(120px);
+                        opacity: 0.5;
                     }
 
                     /* Multi-layered sophisticated vignette */
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        /* Radial gradient + Bottom Vignette for central text legibility */
-                        background: 
-                            radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%),
-                            linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 30%);
+                        /* Subtle light gradient for breathable depth */
+                        background: linear-gradient(to bottom, rgba(248, 248, 246, 0.4) 0%, rgba(248, 248, 246, 0.1) 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
@@ -397,8 +395,8 @@ export function Hero() {
                         font-weight: 500;
                         letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: rgba(243, 231, 200, 0.9);
-                        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                        color: var(--color-premium-charcoal);
+                        text-shadow: 0 4px 15px rgba(255,255,255,0.4);
                         white-space: nowrap;
                         z-index: 10;
                         display: flex;
@@ -538,20 +536,20 @@ export function Hero() {
                         opacity: 1; /* GSAP will fade it */
                     }
 
-                    .scroll-indicator-text {
+                     .scroll-indicator-text {
                         font-family: var(--font-inter), sans-serif;
                         font-size: 10px;
                         font-weight: 500;
                         text-transform: uppercase;
                         letter-spacing: 0.3em;
-                        color: rgba(230, 211, 163, 0.7);
+                        color: var(--color-premium-slate);
                         animation: pulse 2s infinite ease-in-out;
                     }
 
                     .scroll-indicator-line {
                         width: 1px;
                         height: 40px;
-                        background: linear-gradient(to bottom, rgba(230, 211, 163, 0.5), transparent);
+                        background: linear-gradient(to bottom, var(--color-premium-gold), transparent);
                         animation: stretch 2s infinite ease-in-out;
                         transform-origin: top;
                     }

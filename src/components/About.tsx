@@ -127,7 +127,7 @@ export function About() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="sobre">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-premium-white)] overflow-hidden" id="sobre">
             <div className="container mx-auto px-6 pb-32 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
                     {/* Image Side */}
@@ -142,7 +142,7 @@ export function About() {
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div ref={revealShadeRef} className="absolute inset-0 bg-neutral-900 z-30" />
+                            <div ref={revealShadeRef} className="absolute inset-0 bg-[#E6D3A3]/20 z-30" />
                             <div className="relative w-full h-[400px] md:h-[600px] lg:h-[750px] overflow-hidden inner-image-content">
                                 <Image
                                     src="/assets/images/elevando-padrao-premium.jpg"
@@ -164,7 +164,7 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(40px,5vw,84px)] font-medium mb-20 text-[#F8F8F6] leading-[1.05] tracking-[-0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(40px,5vw,84px)] font-medium mb-20 text-[var(--color-premium-charcoal)] leading-[1.05] tracking-[-0.02em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
@@ -175,23 +175,23 @@ export function About() {
 
                         <PremiumReveal direction="bottom" delay={0.4}>
                             <div className="space-y-10 mb-16 max-w-[540px]">
-                                <p className="text-[18px] text-[#F8F8F6]/90 font-medium leading-[1.6] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <p className="text-[18px] text-[var(--color-premium-charcoal)] font-medium leading-[1.6] tracking-[0.01em]" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
-                                <p className="text-[15px] text-[#9CA3AF] font-normal leading-[1.8] tracking-[0.02em] opacity-80" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <p className="text-[15px] text-[var(--color-premium-slate)] font-normal leading-[1.8] tracking-[0.02em] opacity-80" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
-                                    <span className="block mt-4 text-[#E6D3A3]/60 italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
+                                    <span className="block mt-4 text-[#E6D3A3] italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>
                             </div>
                         </PremiumReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 w-full mb-16">
                             {highlights.map((item, index) => (
-                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-white/5 hover:border-[#E6D3A3]/20 transition-all">
-                                    <div className="w-6 h-6 rounded-lg border border-white/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
-                                        <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[#94A3B8] group-hover:text-black transition-colors" />
+                                <div key={index} className="about-list-item flex items-center gap-5 group py-2 border-b border-black/5 hover:border-[#E6D3A3]/20 transition-all">
+                                    <div className="w-6 h-6 rounded-lg border border-black/10 flex items-center justify-center group-hover:bg-[#E6D3A3] transition-all">
+                                        <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[var(--color-premium-slate)] group-hover:text-white transition-colors" />
                                     </div>
-                                    <span className="text-[#94A3B8] font-medium text-[14px] tracking-[0.05em] group-hover:text-[#F8F8F6] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
+                                    <span className="text-[var(--color-premium-slate)] font-medium text-[14px] tracking-[0.05em] group-hover:text-[var(--color-premium-charcoal)] transition-all duration-500" style={{ fontFamily: 'Inter, sans-serif' }}>{item}</span>
                                 </div>
                             ))}
                         </div>

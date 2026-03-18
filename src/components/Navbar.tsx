@@ -83,7 +83,7 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[#050505]/85 backdrop-blur-xl" : "pt-12 pb-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[var(--color-premium-white)]/85 backdrop-blur-xl border-b border-black/5" : "pt-12 pb-8 bg-transparent"
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
@@ -97,7 +97,7 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-display text-[16px] font-medium text-[#F8F8F6] tracking-[0.2em] uppercase transition-all duration-700" style={{ fontFamily: '"Playfair Display", serif' }}>
+                            <span className="font-display text-[16px] font-medium text-[var(--color-premium-charcoal)] tracking-[0.2em] uppercase transition-all duration-700" style={{ fontFamily: '"Playfair Display", serif' }}>
                                 Clínica<span className="text-[#E6D3A3] italic font-light">.</span>
                             </span>
                         </a>
@@ -123,7 +123,7 @@ export function Navbar() {
                                                         }}
                                                         animate={activeSection === link.href ? "hover" : "initial"}
                                                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                        className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-[0.1em]"
+                                                        className="text-[11px] font-semibold text-[var(--color-premium-slate)] uppercase tracking-[0.1em]"
                                                         style={{ fontFamily: 'Inter, sans-serif' }}
                                                     >
                                                         {link.name}
@@ -137,7 +137,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-[#E6D3A3] uppercase tracking-[0.1em]"
+                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-[var(--color-premium-gold)] uppercase tracking-[0.1em]"
                                                     style={{ fontFamily: 'Inter, sans-serif' }}
                                                 >
                                                     {link.name}
@@ -216,7 +216,7 @@ export function Navbar() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: "100%" }}
                         transition={{ type: "spring", damping: 30, stiffness: 200, mass: 1 }}
-                        className="fixed inset-0 z-40 bg-[var(--color-deep-black)] flex items-center justify-center md:hidden"
+                        className="fixed inset-0 z-40 bg-[var(--color-background)] flex items-center justify-center md:hidden"
                     >
                         {/* Atmospheric Backgrounds for Mobile Menu */}
                         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -308,14 +308,14 @@ export function Navbar() {
                                     transition={{ delay: 0.8, duration: 1 }}
                                     className="text-center border-t border-white/5 pt-10 sm:pt-12"
                                 >
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[var(--color-text-tertiary)] mb-4">Atendimento VIP</p>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[var(--color-premium-slate)] mb-4">Atendimento VIP</p>
                                     <a
                                         href="tel:+551837433000"
                                         className="text-[#F8F8F6] font-medium text-lg sm:text-xl hover:brightness-125 transition-all block mb-2"
                                     >
                                         +55 (18) 3743-3000
                                     </a>
-                                    <p className="text-[9px] sm:text-[10px] text-white/30 uppercase tracking-[0.2em] mb-8">Pereira Barreto - SP</p>
+                                    <p className="text-[9px] sm:text-[10px] text-black/30 uppercase tracking-[0.2em] mb-8">Pereira Barreto - SP</p>
 
                                     <div className="flex items-center justify-center gap-8 border-t border-white/5 pt-8">
                                         {[
@@ -330,7 +330,7 @@ export function Navbar() {
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 transition={{ delay: 1 + (i * 0.1), duration: 0.5 }}
                                                 whileHover={{ y: -3, color: "#E6D3A3" }}
-                                                className="text-white/40 transition-colors"
+                                                className="text-black/40 transition-colors"
                                                 aria-label={social.name}
                                             >
                                                 <social.icon strokeWidth={1} size={20} />
