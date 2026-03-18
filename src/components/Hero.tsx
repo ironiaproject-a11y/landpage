@@ -296,7 +296,7 @@ export function Hero() {
                     position: relative;
                     width: 100vw;
                     height: 100vh;
-                    background: #0B0B0B;
+                    background: var(--color-bg-dark);
                     margin: 0;
                     padding: 0 !important;
                     display: flex;
@@ -339,7 +339,7 @@ export function Hero() {
                         left: 50%;
                         width: 100vw;
                         height: 100vh;
-                        background: radial-gradient(circle at center, rgba(230, 211, 163, 0.08) 0%, transparent 60%);
+                        background: radial-gradient(circle at center, var(--color-accent-gold-glow) 0%, transparent 60%);
                         transform: translate(-50%, -50%);
                         z-index: 1;
                         pointer-events: none;
@@ -390,12 +390,12 @@ export function Hero() {
                         transform: translate(-50%, -50%);
                         text-align: center;
                         opacity: 0;
-                        font-family: var(--font-playfair), "Playfair Display", serif;
+                        font-family: var(--font-headline);
                         font-size: clamp(14px, 1.8vw, 18px);
                         font-weight: 500;
                         letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: rgba(230, 211, 163, 0.8);
+                        color: var(--color-accent-gold-soft);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
@@ -409,7 +409,7 @@ export function Hero() {
                         content: '';
                         width: 40px;
                         height: 1px;
-                        background: linear-gradient(to right, transparent, rgba(230, 211, 163, 0.4), transparent);
+                        background: linear-gradient(to right, transparent, rgba(var(--color-accent-gold-rgb), 0.4), transparent);
                         display: block;
                     }
 
@@ -424,13 +424,13 @@ export function Hero() {
                     }
 
                     .hero-line-2 h2 {
-                        font-family: var(--font-playfair), "Playfair Display", serif;
+                        font-family: var(--font-headline);
                         font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
                         font-weight: 700;
                         font-style: italic; /* Cinematic italic touch */
                         letter-spacing: -0.03em;
                         line-height: 0.9;
-                        background: linear-gradient(180deg, #F3E7C8 0%, #E6D3A3 50%, #CBB382 100%);
+                        background: linear-gradient(180deg, #F3E7C8 0%, var(--color-accent-gold) 50%, #CBB382 100%);
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
@@ -445,10 +445,10 @@ export function Hero() {
                         left: -20px;
                         top: 50%;
                         transform: translateY(-50%);
-                        font-family: var(--font-inter), sans-serif;
+                        font-family: var(--font-ui);
                         font-weight: 200;
                         font-size: 0.8em;
-                        color: rgba(230, 211, 163, 0.3);
+                        color: rgba(var(--color-accent-gold-rgb), 0.3);
                     }
 
                     .hero-line-2::after {
@@ -457,10 +457,10 @@ export function Hero() {
                         right: -20px;
                         top: 50%;
                         transform: translateY(-50%);
-                        font-family: var(--font-inter), sans-serif;
+                        font-family: var(--font-ui);
                         font-weight: 200;
                         font-size: 0.8em;
-                        color: rgba(230, 211, 163, 0.3);
+                        color: rgba(var(--color-accent-gold-rgb), 0.3);
                     }
 
                     .hero-btn-wrapper {
@@ -482,19 +482,19 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         gap: 12px;
-                        background: linear-gradient(135deg, rgba(230, 211, 163, 0.1), rgba(203, 179, 130, 0.05));
+                        background: linear-gradient(135deg, rgba(var(--color-accent-gold-rgb), 0.1), rgba(var(--color-accent-gold-rgb), 0.05));
                         backdrop-filter: blur(12px);
                         -webkit-backdrop-filter: blur(12px);
-                        border: 1px solid rgba(230, 211, 163, 0.25);
-                        color: #E6D3A3;
+                        border: 1px solid rgba(var(--color-accent-gold-rgb), 0.25);
+                        color: var(--color-accent-gold);
                         padding: 16px 42px;
                         border-radius: 999px;
-                        font-family: var(--font-inter), sans-serif;
+                        font-family: var(--font-ui);
                         font-size: 11px;
                         font-weight: 600;
                         letter-spacing: 0.35em;
                         text-transform: uppercase;
-                        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(230, 211, 163, 0.05);
+                        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(var(--color-accent-gold-rgb), 0.05);
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                         overflow: hidden;
                         cursor: pointer;
@@ -504,7 +504,7 @@ export function Hero() {
                         content: '';
                         position: absolute;
                         top: 0; left: 0; width: 100%; height: 100%;
-                        background: linear-gradient(90deg, transparent, rgba(230, 211, 163, 0.15), transparent);
+                        background: linear-gradient(90deg, transparent, var(--color-accent-gold-glow), transparent);
                         transform: translateX(-100%);
                         transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                     }
@@ -514,11 +514,11 @@ export function Hero() {
                     }
 
                     .btn-premium-cta:hover {
-                        background: rgba(230, 211, 163, 0.15);
-                        border-color: rgba(230, 211, 163, 0.5);
+                        background: rgba(var(--color-accent-gold-rgb), 0.15);
+                        border-color: rgba(var(--color-accent-gold-rgb), 0.5);
                         color: #FFF;
                         transform: translateY(-3px) scale(1.02);
-                        box-shadow: 0 10px 40px rgba(230, 211, 163, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                        box-shadow: 0 10px 40px var(--color-accent-gold-glow), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
                         letter-spacing: 0.4em;
                     }
                     
@@ -537,7 +537,7 @@ export function Hero() {
                     }
 
                      .scroll-indicator-text {
-                        font-family: var(--font-inter), sans-serif;
+                        font-family: var(--font-ui);
                         font-size: 10px;
                         font-weight: 500;
                         text-transform: uppercase;

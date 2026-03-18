@@ -19,6 +19,7 @@ const config: Config = {
                 "charcoal": "#1A1A1A",
                 "graphite": "#121212",
                 "deep-black": "#0B0B0B",
+                "accent-gold": "rgba(var(--color-accent-gold-rgb), <alpha-value>)",
             },
             boxShadow: {
                 "premium-1": "var(--shadow-premium-1)",
@@ -26,10 +27,10 @@ const config: Config = {
                 "premium-3": "var(--shadow-premium-3)",
             },
             fontFamily: {
-                display: "var(--font-display)",
-                playfair: "var(--font-display)",
+                headline: "var(--font-headline)",
+                ui: "var(--font-ui)",
                 bodoni: "var(--font-bodoni)",
-                body: "var(--font-body)",
+                body: "var(--font-ui)",
             },
         },
     },

@@ -34,22 +34,22 @@ export function Contact() {
                     {/* Info Side */}
                     <div className="lg:w-1/3">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
                                 Contato
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(28px,6vw,72px)] font-semibold text-[#F8F8F6] mb-8 leading-[1.05] uppercase tracking-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-headline text-[clamp(28px,6vw,72px)] font-semibold text-[var(--color-text-primary)] mb-8 leading-[1.05] uppercase tracking-tight">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">novo sorriso?</span>
+                                <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">novo sorriso?</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-[#94A3B8] text-[16px] font-normal leading-[1.6] mb-12" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <p className="text-[var(--color-text-secondary)] text-[16px] font-normal leading-[1.6] mb-12" style={{ fontFamily: 'var(--font-ui)' }}>
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -62,12 +62,12 @@ export function Contact() {
                             ].map((item, i) => (
                                 <PremiumReveal key={i} direction="left" delay={0.5 + i * 0.1}>
                                     <div className="flex items-center gap-5 group p-2">
-                                        <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[#F8F8F6] group-hover:bg-[#E6D3A3] group-hover:text-black transition-all duration-500">
+                                        <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[var(--color-text-primary)] group-hover:bg-[var(--color-accent-gold)] group-hover:text-black transition-all duration-500">
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-[10px] font-bold text-[#94A3B8]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
-                                            <a href={item.href} className="text-[#F8F8F6] hover:text-[#E6D3A3] transition-colors text-sm font-medium">{item.value}</a>
+                                            <h4 className="text-[10px] font-bold text-[var(--color-text-secondary)]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
+                                            <a href={item.href} className="text-[var(--color-text-primary)] hover:text-[var(--color-accent-gold)] transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
                                 </PremiumReveal>
@@ -109,7 +109,7 @@ export function Contact() {
                                             type="text"
                                             required
                                             placeholder="Seu nome"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[#F8F8F6]/50 transition-all font-body text-sm"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
                                         />
                                     </div>
                                     <div className="space-y-3">
@@ -119,7 +119,7 @@ export function Contact() {
                                             type="tel"
                                             required
                                             placeholder="(00) 0 0000-0000"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[#F8F8F6]/50 transition-all font-body text-sm"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
                                         />
                                     </div>
                                 </div>
@@ -131,17 +131,17 @@ export function Contact() {
                                         type="email"
                                         required
                                         placeholder="seu@email.com"
-                                        className="w-full bg-[#F8F8F6]/[0.03] border border-[#F8F8F6]/10 rounded-xl px-6 py-5 text-[#F8F8F6] placeholder:text-[#F8F8F6]/10 focus:outline-none focus:border-[#F8F8F6]/50 transition-all font-body text-sm"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
                                     />
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-bold text-[#94A3B8]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
+                                    <label className="text-[10px] font-bold text-[var(--color-text-secondary)]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
                                     <textarea
                                         name="message"
                                         rows={4}
                                         placeholder="Descreva brevemente seu objetivo..."
-                                        className="w-full bg-[#F8F8F6]/[0.03] border border-[#F8F8F6]/10 rounded-xl px-6 py-5 text-[#F8F8F6] placeholder:text-[#F8F8F6]/10 focus:outline-none focus:border-[#F8F8F6]/50 transition-all resize-none font-body text-sm"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all resize-none font-body text-sm"
                                     />
                                 </div>
 
@@ -152,7 +152,7 @@ export function Contact() {
                                     type="submit"
                                     className={clsx(
                                         "w-full py-6 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-500",
-                                        formStatus === "idle" ? "bg-white text-black hover:bg-[#E6D3A3]" : "bg-white/10 text-white/40 cursor-wait"
+                                        formStatus === "idle" ? "bg-white text-black hover:bg-[var(--color-accent-gold)]" : "bg-white/10 text-white/40 cursor-wait"
                                     )}
                                 >
                                     <AnimatePresence mode="wait">
@@ -180,8 +180,8 @@ export function Contact() {
                     viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                     className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
-                    <div className="glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-xl shadow-premium-2 text-[#F8F8F6]">
-                        <span className="text-[#94A3B8] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
+                    <div className="glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-xl shadow-premium-2 text-[var(--color-text-primary)]">
+                        <span className="text-[var(--color-text-secondary)] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>
                         <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>
@@ -192,7 +192,7 @@ export function Contact() {
                             href="https://goo.gl/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#E6D3A3] text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
+                            className="text-[var(--color-accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
                         >
                             Ver no Google Maps <span className="text-lg">→</span>
                         </a>

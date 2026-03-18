@@ -4,36 +4,50 @@
 
 /* ===================================
    DESIGN TOKENS - Premium Luxury Refinement
-   Theme: Charcoal, Gold & Off-White (#0B0B0B / #E6D3A3 / #F8F8F6)
+   Theme: Charcoal, Gold & Off-White (#0B0B0B / #C7A86B / #F5F5F5)
    =================================== */
 
 :root {
-  /* Colors - Soft Luxury Dark Palette */
-  --color-premium-white: #F8F8F6; /* Pearl/Off-white for text */
-  --color-premium-gold: #E6D3A3;
-  --color-premium-dark: #111111; /* Softer background base */
-  --color-premium-slate: #94A3B8; /* Muted silver for secondary text */
-  --color-premium-charcoal: #1A1A1A; /* Slightly lighter for secondary surfaces */
+  /* ── NEW Semantic Color Tokens ────────────────────────── */
+  --color-bg-dark:          #0B0B0B;
+  --color-text-primary:     #F5F5F5;
+  --color-text-secondary:   rgba(255,255,255,0.72);
+  --color-text-tertiary:    rgba(255,255,255,0.48);
+  --color-ui-muted:         #6B7280;
+  --color-bg-light:         #F7F3EE;
+  
+  /* Gold Accent System */
+  --color-accent-gold-rgb:  199, 168, 107;
+  --color-accent-gold:      rgb(var(--color-accent-gold-rgb));
+  --color-accent-gold-soft: rgba(var(--color-accent-gold-rgb), 0.6);
+  --color-accent-gold-glow: rgba(var(--color-accent-gold-rgb), 0.12);
 
-  /* Typography Scale - Precision Engineering */
-  --font-h1: clamp(40px, 8vw, 84px);
-  --font-h2: clamp(32px, 6vw, 64px);
+  /* ── NEW Font Tokens ──────────────────────────────────── */
+  --font-headline: var(--font-headline), "Playfair Display", serif;
+  --font-ui: var(--font-ui), "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* ── Legacy aliases (remapped to new tokens) ──────────── */
+  --color-premium-dark:      var(--color-bg-dark);
+  --color-premium-white:     var(--color-text-primary);
+  --color-premium-gold:      var(--color-accent-gold);
+  --color-premium-slate:     var(--color-ui-muted);
+  --color-premium-charcoal:  #1A1A1A;
+  --color-background:        var(--color-bg-dark);
+  --color-accent:            var(--color-accent-gold);
+
+  /* ── Typography Scale ─────────────────────────────────── */
+  --font-h1: clamp(40px, 6vw, 72px);
+  --font-h2: clamp(24px, 3.5vw, 40px);
   --font-h3: clamp(20px, 3vw, 32px);
   --font-body: 16px;
 
-  /* Spacing & Radius */
+  /* ── Spacing & Radius ─────────────────────────────────── */
   --radius-premium: 32px;
   --radius-premium-sm: 16px;
 
-  /* Semantic Mapping - Soft Dark Transition */
-  --color-background: var(--color-premium-dark);
-  --color-text-primary: var(--color-premium-white);
-  --color-text-secondary: var(--color-premium-slate);
-  --color-accent: var(--color-premium-gold);
-
-  /* Tracking - Brand Identity (PRESTIGE Standards) */
+  /* ── Tracking ─────────────────────────────────────────── */
   --tracking-luxury: 0.4em;
-  --tracking-editorial: -0.015em;
+  --tracking-editorial: -0.02em;
   --tracking-body: 0.01em;
 }
 
@@ -54,12 +68,14 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: var(--font-body);
+  line-height: 1.6;
+  letter-spacing: var(--tracking-body);
   overflow-x: hidden;
   position: relative;
   cursor: none; /* Restoring custom cursor for cinematic feel */
-  line-height: 1.7;
-  letter-spacing: var(--tracking-body);
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
   margin: 0;
@@ -187,24 +203,26 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-playfair), serif;
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
   color: var(--color-text-primary);
 }
 
-h1 {
-  font-size: var(--font-h1);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.0;
-  letter-spacing: var(--tracking-editorial);
+h1,
+.hero-title {
+  font-family: var(--font-headline);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
 }
 
 .text-hero-editorial {
   font-size: var(--font-size-hero);
   line-height: var(--line-height-hero);
   letter-spacing: var(--letter-spacing-hero);
-  font-family: var(--font-editorial);
+  font-family: var(--font-headline);
   font-weight: 500;
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
@@ -217,8 +235,9 @@ h1 {
   font-size: clamp(14px, 3.2vw, 18px);
   line-height: 1.65;
   /* opacity controlled by Framer Motion in Hero */
-  color: var(--color-text-dim);
-  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  font-family: var(--font-ui);
+  font-weight: 400;
   letter-spacing: 0.01em;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
@@ -227,27 +246,29 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.8em;
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: var(--tracking-luxury);
   text-transform: uppercase;
-  color: var(--color-premium-gold);
+  /* Dourado apenas como accent — var(--color-accent-gold-soft) */
+  color: var(--color-accent-gold-soft);
   margin-bottom: 3rem;
 }
 
 h2 {
-  font-size: var(--font-h2);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.1;
+  font-family: var(--font-ui);
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 600;
+  line-height: 1.2;
   letter-spacing: var(--tracking-editorial);
   margin-bottom: 3rem;
 }
 
 h3 {
-  font-size: var(--font-h3);
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-ui);
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -281,24 +302,27 @@ section:not(.hero) {
 
 .btn-premium {
   @apply relative overflow-hidden inline-flex items-center justify-center transition-all duration-700 font-medium uppercase tracking-[0.3em] rounded-full;
-  background: rgba(230, 211, 163, 0.05);
+  background: transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: var(--color-premium-gold);
+  color: var(--color-text-primary);
   padding: 18px 48px;
-  font-family: var(--font-inter), sans-serif;
-  font-size: 11px;
-  border: 1px solid rgba(230, 211, 163, 0.2);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 16px;
+  /* Dourado apenas como borda accent de 1px */
+  border: 1px solid rgba(var(--color-accent-gold-rgb), 0.25);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .btn-premium:hover {
-  background: rgba(230, 211, 163, 0.15);
-  border-color: rgba(230, 211, 163, 0.5);
+  background: rgba(var(--color-accent-gold-rgb), 0.06);
+  border-color: rgba(var(--color-accent-gold-rgb), 0.5);
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(230, 211, 163, 0.1);
+  /* Glow dourado com opacidade ≤ 0.12 */
+  box-shadow: 0 20px 40px var(--color-accent-gold-glow);
   letter-spacing: 0.35em;
-  color: #FFF;
+  color: var(--color-text-primary);
 }
 
 .btn-premium::before {
@@ -621,23 +645,26 @@ section:not(.hero) {
   background: rgba(11, 11, 11, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: #F8F8F6;
+  color: var(--color-text-primary);
   padding: 18px 42px;
-  font-family: var(--font-body);
-  font-size: 13px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(230, 211, 163, 0.15);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 16px;
+  /* Dourado como accent border (1px) */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(var(--color-accent-gold-rgb), 0.15);
   border: none;
 }
 
 @media (min-width: 640px) {
   .btn-luxury-primary {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
 .btn-luxury-primary:hover {
   background: rgba(11, 11, 11, 0.85);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 0 1.5px rgba(230, 211, 163, 0.4);
+  /* Glow dourado ≤ 0.12 opacidade */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 0 1.5px rgba(var(--color-accent-gold-rgb), 0.35);
   transform: translateY(-2px);
   letter-spacing: 0.3em;
 }
@@ -646,7 +673,7 @@ section:not(.hero) {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(230, 211, 163, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-accent-gold-glow), transparent);
   transform: translateX(-100%);
   transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -670,13 +697,15 @@ section:not(.hero) {
 .btn-luxury-ghost {
   @apply relative overflow-hidden transition-all duration-500 font-semibold uppercase tracking-[0.2em] text-[10px] sm:text-xs rounded-full py-4 px-8 backdrop-blur-md;
   background: transparent;
-  border: 1px solid rgba(248, 248, 246, 0.08);
-  color: #F8F8F6;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  color: var(--color-text-primary);
+  font-family: var(--font-ui);
+  font-weight: 500;
 }
 
 .btn-luxury-ghost:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
   box-shadow: var(--shadow-premium-2);
 }
 

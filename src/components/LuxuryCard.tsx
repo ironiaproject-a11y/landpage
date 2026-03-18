@@ -26,7 +26,7 @@ export function LuxuryCard({
     children,
     className = "",
     innerClassName = "",
-    glowColor = "rgba(245, 245, 220, 0.05)",
+    glowColor = "var(--color-accent-gold-glow)",
     interactive = true,
     delay = 0
 }: LuxuryCardProps) {

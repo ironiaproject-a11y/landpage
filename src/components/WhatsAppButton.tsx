@@ -69,7 +69,7 @@ export function WhatsAppButton() {
                     <div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-white/30 transition-colors z-20" />
 
                     {/* Arrow Indicator */}
-                    <div className="absolute top-0 right-0 w-5 h-5 bg-[#E6D3A3] rounded-full flex items-center justify-center text-black border-2 border-[#0B0B0B] z-20 group-hover:scale-110 transition-transform">
+                    <div className="absolute top-0 right-0 w-5 h-5 bg-[var(--color-accent-gold)] rounded-full flex items-center justify-center text-black border-2 border-[#0B0B0B] z-20 group-hover:scale-110 transition-transform">
                         <ArrowUpRight strokeWidth={1} className="w-3 h-3" />
                     </div>
 

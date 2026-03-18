@@ -89,10 +89,10 @@ export function Preloader() {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="flex flex-col items-center"
                         >
-                            <span className="font-display text-base font-light text-white tracking-[0.4em] uppercase mb-2">
+                            <span className="font-headline text-base font-light text-white tracking-[0.4em] uppercase mb-2">
                                 Clínica
                             </span>
-                            <span className="text-[#E6D3A3]/40 text-[9px] uppercase tracking-[0.6em] ml-1 font-medium">
+                            <span className="text-[var(--color-accent-gold-soft)] text-[9px] uppercase tracking-[0.6em] ml-1 font-medium">
                                 Excellence in Dentistry
                             </span>
                         </m.div>
@@ -110,7 +110,7 @@ export function Preloader() {
                                 initial={{ x: "-100%" }}
                                 animate={{ x: "0%" }}
                                 transition={{ duration: 1.8, ease: [0.65, 0, 0.35, 1] }}
-                                className="w-full h-full bg-gradient-to-r from-transparent via-[#E6D3A3] to-transparent shadow-[0_0_15px_#E6D3A3]"
+                                className="w-full h-full bg-gradient-to-r from-transparent via-[var(--color-accent-gold)] to-transparent shadow-[0_0_15px_var(--color-accent-gold-glow)]"
                             />
                         </div>
                     </div>

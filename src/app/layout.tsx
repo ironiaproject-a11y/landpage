@@ -10,14 +10,14 @@ import ClientSideExtras from "@/components/ClientSideExtras";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-ui",
   display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-playfair",
+  variable: "--font-headline",
   display: "swap",
 });
 

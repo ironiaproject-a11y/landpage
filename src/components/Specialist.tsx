@@ -216,22 +216,22 @@ export function Specialist() {
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
                         <PremiumReveal type="fade" direction="top" duration={1}>
-                            <span className="text-[#E6D3A3] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-body">
+                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-ui">
                                 Corpo Clínico
                             </span>
                         </PremiumReveal>
 
                         <PremiumReveal type="mask" direction="bottom">
-                            <h2 className="font-display text-[clamp(28px,5.5vw,48px)] font-medium text-[#F8F8F6] mb-10 leading-[1.1] tracking-[-0.01em] uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                            <h2 className="font-headline text-[clamp(28px,5.5vw,48px)] font-medium text-[var(--color-text-primary)] mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
                                 A ciência por trás do seu<br />
-                                <span className="text-[#E6D3A3] font-display italic font-light">melhor sorriso</span>.
+                                <span className="text-[var(--color-accent-gold)] font-headline italic font-light">melhor sorriso</span>.
                             </h2>
                         </PremiumReveal>
 
                         <div ref={credentialsRef} className="space-y-8 mb-12">
                             <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#F8F8F6] shrink-0 transition-all duration-500 group-hover:bg-[#E6D3A3] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-accent-gold)] group-hover:text-black shadow-level-1">
                                         <Globe strokeWidth={1.2} className="w-6 h-6" />
                                     </div>
                                 </Magnetic>
@@ -242,7 +242,7 @@ export function Specialist() {
                             </div>
                             <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#F8F8F6] shrink-0 transition-all duration-500 group-hover:bg-[#E6D3A3] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-accent-gold)] group-hover:text-black shadow-level-1">
                                         <Medal strokeWidth={1.2} className="w-6 h-6" />
                                     </div>
                                 </Magnetic>
@@ -261,13 +261,13 @@ export function Specialist() {
                                     innerClassName="p-8 md:p-10"
                                 >
                                     <div className="relative">
-                                        <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[#F8F8F6]/10" />
-                                        <p className="font-display text-lg md:text-3xl text-[#E6D3A3] italic leading-[1.6] mb-8 font-light relative z-10" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                        <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-text-primary)]/10" />
+                                        <p className="font-headline text-lg md:text-3xl text-[var(--color-accent-gold)] italic leading-[1.6] mb-8 font-light relative z-10">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">
-                                            <h4 className="text-[#F8F8F6] font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
-                                            <p className="text-[#94A3B8] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                                            <h4 className="text-[var(--color-text-primary)] font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
+                                            <p className="text-[var(--color-ui-muted)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
                                         </div>
                                     </div>
                                 </LuxuryCard>
@@ -289,7 +289,7 @@ export function Specialist() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
                                     <div className="absolute top-8 right-8 glass-panel p-4 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
-                                        <p className="text-[#F8F8F6] font-display text-3xl md:text-4xl font-medium tracking-tight">15</p>
+                                        <p className="text-[var(--color-text-primary)] font-headline text-3xl md:text-4xl font-medium tracking-tight">15</p>
                                         <p className="text-white/40 text-[8px] uppercase font-bold tracking-[0.3em]">Anos de Maestria</p>
                                     </div>
 

@@ -136,7 +136,7 @@ export function Stats() {
           -webkit-backdrop-filter: blur(24px);
           border-radius: var(--radius-premium, 32px); /* Card layout */
           padding: 60px 40px; /* Breathing room */
-          border: 1px solid rgba(230, 211, 163, 0.15); /* Subtle gold border */
+          border: 1px solid var(--color-accent-gold-soft); /* Subtle gold border */
           box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); /* Deeper shadow for dark theme */
         }
 
@@ -160,7 +160,7 @@ export function Stats() {
           background: linear-gradient(
             to bottom,
             transparent,
-            rgba(230, 211, 163, 0.2),
+            var(--color-accent-gold-soft),
             transparent
           );
           display: block;
@@ -176,14 +176,14 @@ export function Stats() {
           background: linear-gradient(
             to right,
             transparent,
-            rgba(230, 211, 163, 0.2),
+            var(--color-accent-gold-soft),
             transparent
           );
           display: none;
         }
 
         .stats-number {
-          font-family: var(--font-playfair), serif;
+          font-family: var(--font-headline), serif;
           font-size: clamp(54px, 7vw, 72px);
           font-weight: 500;
           line-height: 1;
@@ -201,13 +201,13 @@ export function Stats() {
         }
 
         .stats-number--accent {
-          color: var(--color-premium-gold) !important;
+          color: var(--color-accent-gold) !important;
           /* Subtle persistent glow */
-          text-shadow: 0 0 40px rgba(230, 211, 163, 0.1);
+          text-shadow: 0 0 40px var(--color-accent-gold-glow);
         }
 
         .stats-label {
-          font-family: var(--font-inter), sans-serif;
+          font-family: var(--font-ui), sans-serif;
           font-size: 13px;
           font-weight: 600;
           color: var(--color-premium-slate);

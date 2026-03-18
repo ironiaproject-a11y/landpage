@@ -167,22 +167,22 @@ export function Testimonials() {
             className="relative py-16 md:py-32 overflow-hidden bg-transparent"
         >
             {/* Cremic Atmospheric Lighting */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#E6D3A3]/5 blur-[120px] pointer-events-none" />
-            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[#E6D3A3]/5 blur-[100px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[var(--color-accent-gold-glow)] blur-[120px] pointer-events-none" />
+            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[var(--color-accent-gold-soft)] blur-[100px]" />
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                        <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                             Prova Social
                         </span>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase">
                             Histórias de<br />
-                            <span className="text-[#E6D3A3] font-display italic font-light block mt-2">transformação real.</span>
+                            <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -211,7 +211,7 @@ export function Testimonials() {
                                     <LuxuryCard
                                         className="h-full border-white/5 bg-white/5"
                                         innerClassName="p-10 md:p-12"
-                                        glowColor="rgba(230, 211, 163, 0.05)"
+                                        glowColor="var(--color-accent-gold-glow)"
                                     >
                                         <div className="relative z-10 flex flex-col h-full">
                                             <div className="mb-10 relative">
@@ -224,7 +224,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[var(--color-text-primary)] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: '"Playfair Display", serif' }}>
+                                            <p className="text-[var(--color-text-primary)] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: 'var(--font-headline)' }}>
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
@@ -238,8 +238,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.name}</h4>
-                                                    <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>{testimonial.role}</p>
+                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-tight" style={{ fontFamily: 'var(--font-ui)' }}>{testimonial.name}</h4>
+                                                    <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'var(--font-ui)' }}>{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

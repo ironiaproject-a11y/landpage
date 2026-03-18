@@ -76,10 +76,10 @@ export function TrustBar() {
                         transition={{ duration: 1, delay: 0.2 }}
                         className="flex flex-col items-center lg:items-start text-center lg:text-left"
                     >
-                        <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#E6D3A3] mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[var(--color-accent-gold)] mb-2">
                             Qualidade Certificada
                         </span>
-                        <h3 className="text-[#94A3B8] font-display text-xl md:text-2xl font-light tracking-wide italic leading-relaxed">
+                        <h3 className="text-[var(--color-text-secondary)] font-headline text-xl md:text-2xl font-light tracking-wide italic leading-relaxed">
                             Padrões Internacionais
                         </h3>
                     </m.div>
@@ -98,11 +98,11 @@ export function TrustBar() {
                                 viewport={{ once: true }}
                                 className="trust-token flex flex-col items-center lg:items-start group cursor-default"
                             >
-                                <span className="font-display text-2xl md:text-3xl text-white/90 font-light tracking-[0.15em] group-hover:text-white group-hover:drop-shadow-glow transition-all duration-700">
+                                <span className="font-headline text-2xl md:text-3xl text-white/90 font-light tracking-[0.15em] group-hover:text-white group-hover:drop-shadow-glow transition-all duration-700">
                                     {token.name}
                                 </span>
-                                <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-[#E6D3A3] to-transparent transition-all duration-700 mb-2" />
-                                <span className="text-[9px] uppercase tracking-[0.3em] text-[#94A3B8] group-hover:text-[#F8F8F6] transition-colors duration-500">
+                                <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-[var(--color-accent-gold)] to-transparent transition-all duration-700 mb-2" />
+                                <span className="text-[9px] uppercase tracking-[0.3em] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500">
                                     {token.detail}
                                 </span>
                             </m.div>

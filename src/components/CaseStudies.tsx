@@ -48,10 +48,10 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
             >
                 {/* Labels */}
                 <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
-                    <span className="text-[10px] text-[#F8F8F6] font-bold uppercase tracking-[0.2em]">Antes</span>
+                    <span className="text-[10px] text-[var(--color-text-primary)] font-bold uppercase tracking-[0.2em]">Antes</span>
                 </div>
                 <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
-                    <span className="text-[10px] text-[#F8F8F6] font-bold uppercase tracking-[0.2em]">Depois</span>
+                    <span className="text-[10px] text-[var(--color-text-primary)] font-bold uppercase tracking-[0.2em]">Depois</span>
                 </div>
 
                 <MediaCard
@@ -184,17 +184,17 @@ export function CaseStudies() {
                         </span>
                     </PremiumReveal>
 
-                    <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[#F8F8F6] leading-[1.05] tracking-tight mb-8 uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                    <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight mb-8 uppercase">
                         <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                             <span>Resultados que</span>
                         </PremiumReveal>
                         <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                            <span className="text-[#E6D3A3] font-display italic font-light block mt-2">falam por si.</span>
+                            <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">falam por si.</span>
                         </PremiumReveal>
                     </h2>
 
                     <PremiumReveal direction="bottom" delay={0.4}>
-                        <p className="text-[16px] text-[#94A3B8] font-normal leading-[1.6] max-w-xl" style={{ fontFamily: 'Inter, sans-serif' }}>
+                        <p className="text-[16px] text-[var(--color-text-secondary)] font-normal leading-[1.6] max-w-xl" style={{ fontFamily: 'var(--font-ui)' }}>
                             Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
                         </p>
                     </PremiumReveal>

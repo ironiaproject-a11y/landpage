@@ -168,13 +168,13 @@ export function Cursor() {
                         }}
                         transition={{ duration: 0.3 }}
                         style={{
-                            background: "radial-gradient(circle, rgba(230, 211, 163, 0.15) 0%, transparent 70%)",
+                            background: "radial-gradient(circle, var(--color-accent-gold-glow) 0%, transparent 70%)",
                             filter: isTextHovered ? "blur(4px)" : "blur(8px)",
                         }}
                     />
                     {isTextHovered && (
                         <m.div
-                            className="absolute inset-0 border border-[#F8F8F6] opacity-20 rounded-full"
+                            className="absolute inset-0 border border-[var(--color-text-primary)] opacity-20 rounded-full"
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                         />
@@ -184,7 +184,7 @@ export function Cursor() {
 
             {/* Inner Dot - Enhanced with pulse */}
             <m.div
-                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-[#F8F8F6] pointer-events-none z-[10000]"
+                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-[var(--color-text-primary)] pointer-events-none z-[10000]"
                 style={{
                     x: cursorX,
                     y: cursorY,
@@ -209,7 +209,7 @@ export function Cursor() {
                         animate={{ opacity: 0.6, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[#F8F8F6] whitespace-nowrap"
+                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-[8px] font-bold uppercase tracking-[0.4em] text-[var(--color-text-primary)] whitespace-nowrap"
                         style={{
                             x: cursorXSpring,
                             y: cursorYSpring,
