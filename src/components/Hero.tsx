@@ -290,7 +290,7 @@ export function Hero() {
     }, [imagesReady]);
 
     return (
-            <section ref={sectionRef} className="hero relative overflow-hidden bg-[#0D0D0D]">
+            <section ref={sectionRef} className="hero relative overflow-hidden bg-[#000000]">
                 <style>{`
                     .hero {
                     position: relative;
@@ -339,20 +339,19 @@ export function Hero() {
                         left: 50%;
                         width: 100vw;
                         height: 100vh;
-                        background: radial-gradient(circle at center, var(--color-accent-gold-glow) 0%, transparent 60%);
+                        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
                         transform: translate(-50%, -50%);
                         z-index: 1;
                         pointer-events: none;
                         filter: blur(120px);
-                        opacity: 0.5;
+                        opacity: 0.3;
                     }
 
                     /* Multi-layered sophisticated vignette */
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        /* Soft dark gradient for depth without heaviness */
-                        background: linear-gradient(to bottom, rgba(17, 17, 17, 0.4) 0%, rgba(17, 17, 17, 0.2) 100%);
+                        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
@@ -395,7 +394,7 @@ export function Hero() {
                         font-weight: 500;
                         letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: var(--color-accent-gold-soft);
+                        color: rgba(255, 255, 255, 0.6);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
@@ -409,7 +408,7 @@ export function Hero() {
                         content: '';
                         width: 40px;
                         height: 1px;
-                        background: linear-gradient(to right, transparent, rgba(var(--color-accent-gold-rgb), 0.4), transparent);
+                        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
                         display: block;
                     }
 
@@ -427,12 +426,10 @@ export function Hero() {
                         font-family: var(--font-headline);
                         font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
                         font-weight: 700;
-                        font-style: italic; /* Cinematic italic touch */
+                        font-style: italic;
                         letter-spacing: -0.03em;
                         line-height: 0.9;
-                        background: linear-gradient(180deg, #F3E7C8 0%, var(--color-accent-gold) 50%, #CBB382 100%);
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
+                        color: #FFFFFF;
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
                         padding: 0 40px;
@@ -460,7 +457,7 @@ export function Hero() {
                         font-family: var(--font-ui);
                         font-weight: 200;
                         font-size: 0.8em;
-                        color: rgba(var(--color-accent-gold-rgb), 0.3);
+                        color: rgba(255, 255, 255, 0.2);
                     }
 
                     .hero-btn-wrapper {
@@ -482,11 +479,11 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         gap: 12px;
-                        background: linear-gradient(135deg, rgba(var(--color-accent-gold-rgb), 0.1), rgba(var(--color-accent-gold-rgb), 0.05));
+                        background: rgba(255, 255, 255, 0.05);
                         backdrop-filter: blur(12px);
                         -webkit-backdrop-filter: blur(12px);
-                        border: 1px solid rgba(var(--color-accent-gold-rgb), 0.25);
-                        color: var(--color-accent-gold);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        color: #FFFFFF;
                         padding: 16px 42px;
                         border-radius: 999px;
                         font-family: var(--font-ui);
@@ -504,7 +501,7 @@ export function Hero() {
                         content: '';
                         position: absolute;
                         top: 0; left: 0; width: 100%; height: 100%;
-                        background: linear-gradient(90deg, transparent, var(--color-accent-gold-glow), transparent);
+                        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
                         transform: translateX(-100%);
                         transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                     }
@@ -514,11 +511,11 @@ export function Hero() {
                     }
 
                     .btn-premium-cta:hover {
-                        background: rgba(var(--color-accent-gold-rgb), 0.15);
-                        border-color: rgba(var(--color-accent-gold-rgb), 0.5);
-                        color: #FFF;
+                        background: #FFFFFF;
+                        color: #000000;
+                        border-color: #FFFFFF;
                         transform: translateY(-3px) scale(1.02);
-                        box-shadow: 0 10px 40px var(--color-accent-gold-glow), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                        box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
                         letter-spacing: 0.4em;
                     }
                     
@@ -549,7 +546,7 @@ export function Hero() {
                     .scroll-indicator-line {
                         width: 1px;
                         height: 40px;
-                        background: linear-gradient(to bottom, var(--color-premium-gold), transparent);
+                        background: linear-gradient(to bottom, #FFFFFF, transparent);
                         animation: stretch 2s infinite ease-in-out;
                         transform-origin: top;
                     }

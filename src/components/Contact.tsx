@@ -34,17 +34,17 @@ export function Contact() {
                     {/* Info Side */}
                     <div className="lg:w-1/3">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-white/40 font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">
                                 Contato
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,72px)] font-semibold text-[var(--color-text-primary)] mb-8 leading-[1.05] uppercase tracking-tight">
+                        <h2 className="font-headline text-[clamp(28px,6vw,72px)] font-bold text-[var(--color-text-primary)] mb-8 leading-[1.05] uppercase tracking-tight" style={{ fontFamily: 'var(--font-headline)' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">novo sorriso?</span>
+                                <span className="text-white font-headline italic font-light block mt-2">novo sorriso?</span>
                             </PremiumReveal>
                         </h2>
 
@@ -62,12 +62,12 @@ export function Contact() {
                             ].map((item, i) => (
                                 <PremiumReveal key={i} direction="left" delay={0.5 + i * 0.1}>
                                     <div className="flex items-center gap-5 group p-2">
-                                        <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[var(--color-text-primary)] group-hover:bg-[var(--color-accent-gold)] group-hover:text-black transition-all duration-500">
+                                        <div className="w-11 h-11 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[var(--color-text-primary)] group-hover:bg-white group-hover:text-black transition-all duration-500">
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
                                             <h4 className="text-[10px] font-bold text-[var(--color-text-secondary)]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
-                                            <a href={item.href} className="text-[var(--color-text-primary)] hover:text-[var(--color-accent-gold)] transition-colors text-sm font-medium">{item.value}</a>
+                                            <a href={item.href} className="text-[var(--color-text-primary)] hover:text-white transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
                                 </PremiumReveal>
@@ -152,7 +152,7 @@ export function Contact() {
                                     type="submit"
                                     className={clsx(
                                         "w-full py-6 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-500",
-                                        formStatus === "idle" ? "bg-white text-black hover:bg-[var(--color-accent-gold)]" : "bg-white/10 text-white/40 cursor-wait"
+                                        formStatus === "idle" ? "bg-white text-black hover:bg-white/90" : "bg-white/10 text-white/40 cursor-wait"
                                     )}
                                 >
                                     <AnimatePresence mode="wait">
@@ -192,7 +192,7 @@ export function Contact() {
                             href="https://goo.gl/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[var(--color-accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
+                            className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
                         >
                             Ver no Google Maps <span className="text-lg">→</span>
                         </a>

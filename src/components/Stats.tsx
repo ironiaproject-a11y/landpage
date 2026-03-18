@@ -136,8 +136,8 @@ export function Stats() {
           -webkit-backdrop-filter: blur(24px);
           border-radius: var(--radius-premium, 32px); /* Card layout */
           padding: 60px 40px; /* Breathing room */
-          border: 1px solid var(--color-accent-gold-soft); /* Subtle gold border */
-          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); /* Deeper shadow for dark theme */
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
         }
 
         .stats-item {
@@ -160,7 +160,7 @@ export function Stats() {
           background: linear-gradient(
             to bottom,
             transparent,
-            var(--color-accent-gold-soft),
+            rgba(255, 255, 255, 0.1),
             transparent
           );
           display: block;
@@ -176,7 +176,7 @@ export function Stats() {
           background: linear-gradient(
             to right,
             transparent,
-            var(--color-accent-gold-soft),
+            rgba(255, 255, 255, 0.1),
             transparent
           );
           display: none;
@@ -201,9 +201,8 @@ export function Stats() {
         }
 
         .stats-number--accent {
-          color: var(--color-accent-gold) !important;
-          /* Subtle persistent glow */
-          text-shadow: 0 0 40px var(--color-accent-gold-glow);
+          color: #FFFFFF !important;
+          text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
         }
 
         .stats-label {

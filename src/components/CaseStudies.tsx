@@ -184,12 +184,12 @@ export function CaseStudies() {
                         </span>
                     </PremiumReveal>
 
-                    <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight mb-8 uppercase">
+                    <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-tight mb-8 uppercase">
                         <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                             <span>Resultados que</span>
                         </PremiumReveal>
                         <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                            <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">falam por si.</span>
+                            <span className="text-white font-headline italic font-light block mt-2">falam por si.</span>
                         </PremiumReveal>
                     </h2>
 

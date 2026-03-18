@@ -216,22 +216,22 @@ export function Specialist() {
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
                         <PremiumReveal type="fade" direction="top" duration={1}>
-                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.08em] uppercase text-[10px] mb-8 block font-ui">
+                            <span className="text-white/40 font-bold tracking-[0.08em] uppercase text-[10px] mb-8 block font-ui">
                                 Corpo Clínico
                             </span>
                         </PremiumReveal>
 
                         <PremiumReveal type="mask" direction="bottom">
-                            <h2 className="font-headline text-[clamp(28px,5.5vw,48px)] font-medium text-[var(--color-text-primary)] mb-10 leading-[1.1] tracking-[-0.01em] uppercase">
+                            <h2 className="font-headline text-[clamp(28px,5.5vw,48px)] font-bold text-[var(--color-text-primary)] mb-10 leading-[1.1] tracking-[-0.01em] uppercase" style={{ fontFamily: 'var(--font-headline)' }}>
                                 A ciência por trás do seu<br />
-                                <span className="text-[var(--color-accent-gold)] font-headline italic font-light">melhor sorriso</span>.
+                                <span className="text-white font-headline italic font-light">melhor sorriso</span>.
                             </h2>
                         </PremiumReveal>
 
                         <div ref={credentialsRef} className="space-y-8 mb-12">
                             <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-accent-gold)] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-white group-hover:text-black shadow-level-1">
                                         <Globe strokeWidth={1.2} className="w-6 h-6" />
                                     </div>
                                 </Magnetic>
@@ -242,7 +242,7 @@ export function Specialist() {
                             </div>
                             <div className="credential-item flex items-start gap-6 group">
                                 <Magnetic strength={0.3} range={50}>
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-[var(--color-accent-gold)] group-hover:text-black shadow-level-1">
+                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--color-text-primary)] shrink-0 transition-all duration-500 group-hover:bg-white group-hover:text-black shadow-level-1">
                                         <Medal strokeWidth={1.2} className="w-6 h-6" />
                                     </div>
                                 </Magnetic>
@@ -262,7 +262,7 @@ export function Specialist() {
                                 >
                                     <div className="relative">
                                         <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-text-primary)]/10" />
-                                        <p className="font-headline text-lg md:text-3xl text-[var(--color-accent-gold)] italic leading-[1.6] mb-8 font-light relative z-10">
+                                        <p className="font-headline text-lg md:text-3xl text-white italic leading-[1.6] mb-8 font-light relative z-10">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">

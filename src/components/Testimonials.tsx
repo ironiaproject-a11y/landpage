@@ -167,22 +167,23 @@ export function Testimonials() {
             className="relative py-16 md:py-32 overflow-hidden bg-transparent"
         >
             {/* Cremic Atmospheric Lighting */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[var(--color-accent-gold-glow)] blur-[120px] pointer-events-none" />
-            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-[var(--color-accent-gold-soft)] blur-[100px]" />
+\r
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-white/5 blur-[120px] pointer-events-none" />\r
+            <div className="absolute -top-[10%] -right-[10%] w-[30%] h-[30%] bg-white/5 blur-[100px]" />\r
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                        <span className="text-white/60 font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                             Prova Social
                         </span>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase">
+                        <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase">
                             Histórias de<br />
-                            <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">transformação real.</span>
+                            <span className="text-white font-headline italic font-light block mt-2">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -220,7 +221,7 @@ export function Testimonials() {
 
                                             <div className="flex gap-2 mb-8">
                                                 {[...Array(testimonial.rating)].map((_, i) => (
-                                                    <Star key={i} strokeWidth={1} className="star-icon w-3.5 h-3.5 fill-[var(--color-premium-gold)] text-[var(--color-premium-gold)] opacity-80" />
+                                                    <Star key={i} strokeWidth={1} className="star-icon w-3.5 h-3.5 fill-white text-white opacity-80" />
                                                 ))}
                                             </div>
 

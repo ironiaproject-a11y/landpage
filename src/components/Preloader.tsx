@@ -72,7 +72,7 @@ export function Preloader() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 0.15, scale: 1 }}
                         transition={{ duration: 2 }}
-                        className="absolute inset-0 bg-gradient-to-br from-[#F8F8F6]/30 via-transparent to-transparent blur-[120px]"
+                        className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent blur-[120px]"
                     />
 
                     <div className="relative flex flex-col items-center">
@@ -80,7 +80,7 @@ export function Preloader() {
                             initial={{ width: 0 }}
                             animate={{ width: "240px" }}
                             transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1] }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6] to-transparent mb-8"
+                            className="h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent mb-8"
                         />
 
                         <m.div
@@ -92,7 +92,7 @@ export function Preloader() {
                             <span className="font-headline text-base font-light text-white tracking-[0.4em] uppercase mb-2">
                                 Clínica
                             </span>
-                            <span className="text-[var(--color-accent-gold-soft)] text-[9px] uppercase tracking-[0.6em] ml-1 font-medium">
+                            <span className="text-white/60 text-[9px] uppercase tracking-[0.6em] ml-1 font-bold">
                                 Excellence in Dentistry
                             </span>
                         </m.div>
@@ -101,7 +101,7 @@ export function Preloader() {
                             initial={{ width: 0 }}
                             animate={{ width: "240px" }}
                             transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6] to-transparent mt-8"
+                            className="h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent mt-8"
                         />
 
                         {/* Progress Indicator */}
@@ -110,7 +110,7 @@ export function Preloader() {
                                 initial={{ x: "-100%" }}
                                 animate={{ x: "0%" }}
                                 transition={{ duration: 1.8, ease: [0.65, 0, 0.35, 1] }}
-                                className="w-full h-full bg-gradient-to-r from-transparent via-[var(--color-accent-gold)] to-transparent shadow-[0_0_15px_var(--color-accent-gold-glow)]"
+                                className="w-full h-full bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                             />
                         </div>
                     </div>

@@ -83,17 +83,17 @@ export function FAQ() {
                     {/* Header */}
                     <div className="text-center mb-16 md:mb-24">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-white/60 font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">
                                 Esclarecimentos
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
+                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Dúvidas</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">Frequentes.</span>
+                                <span className="text-white font-headline italic font-light block mt-2">Frequentes.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -112,12 +112,12 @@ export function FAQ() {
                                     >
                                         <div className="flex items-start md:items-center gap-4 md:gap-6">
                                             <div className={`w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 border shrink-0 mt-0.5 md:mt-0 ${activeIndex === index
-                                                ? "bg-[var(--color-accent-gold)] border-[var(--color-accent-gold)] text-black shadow-glow-creme"
-                                                : "bg-[var(--color-text-primary)]/5 border-[var(--color-text-primary)]/10 text-[var(--color-accent-gold)]"
+                                                ? "bg-white border-white text-black shadow-none"
+                                                : "bg-white/5 border-white/10 text-white/60"
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-[18px] font-semibold text-[var(--color-text-primary)] tracking-tight group-hover:text-[var(--color-accent-gold)] transition-colors leading-[1.35]" style={{ fontFamily: 'var(--font-ui)' }}>
+                                            <span className="text-[18px] font-bold text-[var(--color-text-primary)] tracking-tight group-hover:text-white transition-colors leading-[1.35]" style={{ fontFamily: 'var(--font-ui)' }}>
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -165,7 +165,7 @@ export function FAQ() {
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => window.open('https://wa.me/551837433000', '_blank')}
-                            className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-[var(--color-accent-gold)]/50"
+                            className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-white/50"
                         >
                             Falar com um Especialista
                         </m.button>

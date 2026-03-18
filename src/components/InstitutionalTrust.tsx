@@ -165,7 +165,7 @@ export function InstitutionalTrust() {
     return (
         <section ref={sectionRef} className="py-20 md:py-40 bg-[var(--color-deep-black)] relative overflow-hidden">
             {/* Background Texture for Depth */}
-            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #F8F8F6 1px, transparent 1px)' }}></div>
+            <div className="trust-bg-dots absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'radial-gradient(circle, #FFFFFF 1px, transparent 1px)' }}></div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24 md:mb-40 gap-12 border-b border-white/5 pb-20">
@@ -176,17 +176,17 @@ export function InstitutionalTrust() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[#F8F8F6] text-[clamp(36px,6vw,72px)] font-semibold leading-[1.1] uppercase tracking-[-0.015em]" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-white text-[clamp(36px,6vw,72px)] font-bold leading-[1.1] uppercase tracking-[-0.015em]" style={{ fontFamily: 'var(--font-headline)' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Rigor e a Sensibilidade.</span>
+                                <span className="text-white font-display italic font-light block mt-2">Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4} className="mt-12 lg:mt-16 max-w-2xl">
-                            <p className="text-[#94A3B8] text-lg lg:text-xl font-light leading-[1.7] tracking-[0.02em]">
+                            <p className="text-white/60 text-lg lg:text-xl font-light leading-[1.7] tracking-[0.02em]">
                                 Nossa metodologia é sustentada por quatro pilares fundamentais que garantem não apenas resultados estéticos, mas a longevidade e saúde do seu investimento.
                             </p>
                         </PremiumReveal>
@@ -194,9 +194,9 @@ export function InstitutionalTrust() {
 
                     <div className="hidden lg:block text-right">
                         <PremiumReveal direction="right" delay={0.4}>
-                            <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#94A3B8] mb-2">Desde 1996</span>
-                            <div className="h-[1px] w-20 bg-[#F8F8F6] ml-auto mb-2"></div>
-                            <span className="block text-sm text-[#94A3B8]">Tradição e Inovação em Pereira Barreto</span>
+                            <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2">Desde 1996</span>
+                            <div className="h-[1px] w-20 bg-white/20 ml-auto mb-2"></div>
+                            <span className="block text-sm text-white/40">Tradição e Inovação em Pereira Barreto</span>
                         </PremiumReveal>
                     </div>
                 </div>
@@ -206,25 +206,25 @@ export function InstitutionalTrust() {
                         <LuxuryCard key={index} delay={0.2 + (index * 0.1)}>
                             {/* Numerical Indicator - Editorial Style */}
                             <div className="flex justify-between items-start mb-6">
-                                <div className="w-12 h-[1px] bg-[#E6D3A3]/20 mt-4 group-hover:w-20 group-hover:bg-[#E6D3A3]/40 transition-all duration-1000 origin-left" />
-                                <span className="font-display font-medium text-8xl text-[#F8F8F6]/[0.02] group-hover:text-[#E6D3A3]/[0.05] transition-all duration-1000 leading-none tracking-tighter -mt-6 -mr-4 select-none">
+                                <div className="w-12 h-[1px] bg-white/10 mt-4 group-hover:w-20 group-hover:bg-white/30 transition-all duration-1000 origin-left" />
+                                <span className="font-display font-medium text-8xl text-white/[0.02] group-hover:text-white/[0.05] transition-all duration-1000 leading-none tracking-tighter -mt-6 -mr-4 select-none">
                                     {card.number}
                                 </span>
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-[#F8F8F6] text-[20px] font-semibold mb-6 transition-transform duration-500 uppercase tracking-[0.05em]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <h3 className="text-white text-[20px] font-bold mb-6 transition-transform duration-500 uppercase tracking-[0.05em]" style={{ fontFamily: 'var(--font-ui)' }}>
                                     {card.title}
                                 </h3>
 
-                                <p className="text-[#94A3B8] text-[15px] font-normal leading-[1.7] tracking-[0.015em] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                <p className="text-white/60 text-[15px] font-normal leading-[1.7] tracking-[0.015em] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'var(--font-ui)' }}>
                                     {card.subtitle}
                                 </p>
                             </div>
 
                             {/* Bottom Detail */}
                             <div className="mt-12 opacity-30 group-hover:opacity-100 transition-all duration-700">
-                                <div className="text-[9px] uppercase tracking-[0.2em] text-[#E6D3A3] font-bold">[ Pilar de Excelência ]</div>
+                                <div className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold">[ Pilar de Excelência ]</div>
                             </div>
                         </LuxuryCard>
                     ))}

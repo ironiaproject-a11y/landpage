@@ -2,38 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Grayscale Treatment */
+img, svg, video, canvas {
+  filter: grayscale(100%) contrast(1.1);
+}
+
 /* ===================================
    DESIGN TOKENS - Premium Luxury Refinement
    Theme: Charcoal, Gold & Off-White (#0B0B0B / #C7A86B / #F5F5F5)
    =================================== */
 
 :root {
-  /* ── NEW Semantic Color Tokens ────────────────────────── */
-  --color-bg-dark:          #0D0D0D;
-  --color-text-primary:     #F5F5F5;
-  --color-text-secondary:   rgba(255,255,255,0.72);
-  --color-text-tertiary:    rgba(255,255,255,0.48);
-  --color-ui-muted:         #6B7280;
-  --color-bg-light:         #F7F3EE;
+  /* ── MONOCHROMATIC Color Tokens ────────────────────────── */
+  --color-bg-dark:          #000000;
+  --color-bg-light:         #FFFFFF;
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   rgba(255,255,255,0.7);
+  --color-text-tertiary:    rgba(255,255,255,0.4);
+  --color-ui-muted:         #333333;
   
-  /* Gold Accent System */
-  --color-accent-gold-rgb:  199, 168, 107;
-  --color-accent-gold:      rgb(var(--color-accent-gold-rgb));
-  --color-accent-gold-soft: rgba(var(--color-accent-gold-rgb), 0.6);
-  --color-accent-gold-glow: rgba(var(--color-accent-gold-rgb), 0.12);
+  /* Neutral Accent System */
+  --color-accent-rgb:       255, 255, 255;
+  --color-accent:           rgb(var(--color-accent-rgb));
+  --color-accent-soft:      rgba(var(--color-accent-rgb), 0.6);
+  --color-accent-glow:      rgba(var(--color-accent-rgb), 0.1);
 
   /* ── NEW Font Tokens ──────────────────────────────────── */
   --font-headline: var(--font-poppins), system-ui, sans-serif;
   --font-ui: var(--font-poppins), system-ui, sans-serif;
 
-  /* ── Legacy aliases (remapped to new tokens) ──────────── */
+  /* ── Legacy aliases (remapped to monochromatic) ───────── */
   --color-premium-dark:      var(--color-bg-dark);
   --color-premium-white:     var(--color-text-primary);
-  --color-premium-gold:      var(--color-accent-gold);
+  --color-premium-gold:      var(--color-accent);
   --color-premium-slate:     var(--color-ui-muted);
-  --color-premium-charcoal:  #1A1A1A;
+  --color-premium-charcoal:  #111111;
   --color-background:        var(--color-bg-dark);
-  --color-accent:            var(--color-accent-gold);
 
   /* ── Typography Scale ─────────────────────────────────── */
   --font-h1: clamp(40px, 6vw, 72px);
@@ -141,10 +145,10 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(203, 178, 122, 0.03) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.02) 100%);
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 @media (max-width: 1024px) {
@@ -212,7 +216,7 @@ h1,
 .hero-title {
   font-family: var(--font-headline);
   font-size: clamp(40px, 6vw, 72px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
@@ -251,15 +255,15 @@ h1,
   font-weight: 600;
   letter-spacing: var(--tracking-luxury);
   text-transform: uppercase;
-  /* Dourado apenas como accent — var(--color-accent-gold-soft) */
-  color: var(--color-accent-gold-soft);
+  color: var(--color-text-primary);
+  opacity: 0.6;
   margin-bottom: 3rem;
 }
 
 h2 {
   font-family: var(--font-ui);
   font-size: clamp(24px, 3.5vw, 40px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: var(--tracking-editorial);
   margin-bottom: 3rem;
@@ -268,13 +272,13 @@ h2 {
 h3 {
   font-family: var(--font-ui);
   font-size: clamp(20px, 3vw, 32px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
 }
 
 ::selection {
-  background: var(--color-gold-bh);
-  color: var(--color-deep-black);
+  background: #FFFFFF;
+  color: #000000;
 }
 
 /* ===================================
@@ -310,19 +314,17 @@ section:not(.hero) {
   font-family: var(--font-ui);
   font-weight: 500;
   font-size: 16px;
-  /* Dourado apenas como borda accent de 1px */
-  border: 1px solid rgba(var(--color-accent-gold-rgb), 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .btn-premium:hover {
-  background: rgba(var(--color-accent-gold-rgb), 0.06);
-  border-color: rgba(var(--color-accent-gold-rgb), 0.5);
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #FFFFFF;
   transform: translateY(-4px);
-  /* Glow dourado com opacidade ≤ 0.12 */
-  box-shadow: 0 20px 40px var(--color-accent-gold-glow);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
   letter-spacing: 0.35em;
-  color: var(--color-text-primary);
 }
 
 .btn-premium::before {
@@ -662,9 +664,9 @@ section:not(.hero) {
 }
 
 .btn-luxury-primary:hover {
-  background: rgba(11, 11, 11, 0.85);
-  /* Glow dourado ≤ 0.12 opacidade */
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 0 1.5px rgba(var(--color-accent-gold-rgb), 0.35);
+  background: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
   letter-spacing: 0.3em;
 }
@@ -673,7 +675,7 @@ section:not(.hero) {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, var(--color-accent-gold-glow), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }

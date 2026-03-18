@@ -106,8 +106,8 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-headline font-semibold tracking-[0.15em] text-[var(--color-text-primary)] leading-tight uppercase">
-                                        Clínica<span className="text-[var(--color-accent-gold)] italic font-light">.</span>
+                                    <h3 className="text-lg font-headline font-bold tracking-[0.15em] text-[var(--color-text-primary)] leading-tight uppercase">
+                                        Clínica<span className="text-white italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
@@ -129,7 +129,7 @@ export function Footer() {
                                         <m.a
                                             href={social.href}
                                             aria-label={social.label}
-                                            whileHover={{ y: -4, backgroundColor: "var(--color-accent-gold)", color: "white", borderColor: "var(--color-accent-gold)" }}
+                                            whileHover={{ y: -4, backgroundColor: "white", color: "black", borderColor: "white" }}
                                             className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[var(--color-text-secondary)] transition-all bg-white/5"
                                         >
                                             {social.icon}
@@ -142,16 +142,16 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-gold)]/60 mb-8">Navegação</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
                                     <a
                                         href={link.href}
-                                        className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-gold)] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[var(--color-text-secondary)] hover:text-white transition-all text-sm font-medium flex items-center group"
                                     >
-                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[var(--color-accent-gold)] transition-all mr-0 group-hover:mr-2"></span>
+                                        <span className="w-0 group-hover:w-3 h-[1px] bg-white transition-all mr-0 group-hover:mr-2"></span>
                                         {link.name}
                                     </a>
                                 </li>
@@ -162,16 +162,16 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-gold)]/60 mb-8">Especialidades</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
                                 <li key={index}>
                                     <a
                                         href="#servicos"
-                                        className="text-[var(--color-text-secondary)] hover:text-[#E6D3A3] transition-all text-sm font-medium flex items-center group"
+                                        className="text-[var(--color-text-secondary)] hover:text-white transition-all text-sm font-medium flex items-center group"
                                     >
-                                        <span className="w-0 group-hover:w-3 h-[1px] bg-[#E6D3A3] transition-all mr-0 group-hover:mr-2"></span>
+                                        <span className="w-0 group-hover:w-3 h-[1px] bg-white transition-all mr-0 group-hover:mr-2"></span>
                                         {service.name}
                                     </a>
                                 </li>
@@ -182,12 +182,12 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-gold)]/60 mb-8">Onde Estamos</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
-                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[var(--color-accent-gold)]/30 transition-colors">
-                                    <MapPin strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />
+                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-white/30 transition-colors">
+                                    <MapPin strokeWidth={1} className="w-5 h-5 text-white/60" />
                                 </div>
                                 <div className="text-sm">
                                     <p className="font-bold text-[var(--color-text-primary)] mb-1">Unidade Central</p>
@@ -195,13 +195,13 @@ export function Footer() {
                                     <p className="text-[var(--color-text-secondary)]">Brasil</p>
                                 </div>
                             </div>
-                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-[var(--color-accent-gold)]/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-accent-gold)] transition-colors">
-                                    <Phone strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />
+                            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-white/30 transition-colors">
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-text-primary)] hover:text-white transition-colors">
+                                    <Phone strokeWidth={1} className="w-5 h-5 text-white/60" />
                                     {COMPANY_PHONE}
                                 </a>
-                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent-gold)] transition-colors">
-                                    <Mail strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />
+                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-white transition-colors">
+                                    <Mail strokeWidth={1} className="w-5 h-5 text-white/60" />
                                     {COMPANY_EMAIL}
                                 </a>
                             </div>
@@ -245,7 +245,7 @@ export function Footer() {
                     <Magnetic strength={0.5} range={80}>
                         <button
                             onClick={scrollToTop}
-                            className="w-14 h-14 bg-white/5 text-[var(--color-text-primary)] border border-white/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-[var(--color-accent-gold)] hover:text-white hover:scale-110 transition-all duration-500"
+                            className="w-14 h-14 bg-white/5 text-[var(--color-text-primary)] border border-white/10 rounded-full flex items-center justify-center shadow-premium-2 group hover:bg-white hover:text-black hover:scale-110 transition-all duration-500"
                         >
                             <ArrowUp strokeWidth={1} className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
                         </button>

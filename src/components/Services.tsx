@@ -81,7 +81,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-[var(--color-accent-gold)] group-hover:text-black group-hover:border-[var(--color-accent-gold)]" style={{ fontFamily: 'var(--font-ui)' }}>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white" style={{ fontFamily: 'var(--font-ui)' }}>
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -304,12 +304,12 @@ export function Services() {
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-semibold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
+                <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de</span>
                     </PremiumReveal>
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <span className="text-[var(--color-accent-gold)] font-headline italic font-light block mt-2">extrema precisão.</span>
+                        <span className="text-white font-headline italic font-light block mt-2">extrema precisão.</span>
                     </PremiumReveal>
                 </h2>
             </div>

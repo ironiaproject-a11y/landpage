@@ -21,32 +21,32 @@ export function Amenities() {
 
     const items = [
         {
-            icon: <Car strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <Car strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Valet Privativo",
             description: "Segurança e conforto desde a sua chegada com serviço de manobrista exclusivo."
         },
         {
-            icon: <Coffee strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <Coffee strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Premium Lounge",
             description: "Ambiente sofisticado com menu de cafés selecionados e Wi-Fi de alta velocidade."
         },
         {
-            icon: <Heart strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <Heart strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Sedação Consciente",
             description: "Tratamentos absolutamente indolores e tranquilos para pacientes com fobia."
         },
         {
-            icon: <ShieldCheck strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <ShieldCheck strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Padrão Hospitalar",
             description: "Protocolos rigorosos de biossegurança e esterilização de nível cirúrgico."
         },
         {
-            icon: <Sparkles strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <Sparkles strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Concierge Dedicado",
             description: "Um assistente pessoal para cuidar de toda a sua jornada e necessidades burocráticas."
         },
         {
-            icon: <Clock strokeWidth={1} className="w-5 h-5 text-[var(--color-accent-gold)]" />,
+            icon: <Clock strokeWidth={1} className="w-5 h-5 text-white/60" />,
             title: "Pontualidade VIP",
             description: "Respeitamos seu tempo com rigor britânico e atendimento personalizado sem esperas."
         }
@@ -192,17 +192,17 @@ export function Amenities() {
                     {/* Left Column: Context & Sticky Image */}
                     <div className="lg:w-5/12 sticky top-32">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[var(--color-accent-gold)] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="text-white/40 font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                                 Hospitality
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-medium text-white leading-[1.05] mb-12 uppercase tracking-hero">
+                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-bold text-white leading-[1.05] mb-12 uppercase tracking-hero" style={{ fontFamily: 'var(--font-headline)' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Experiência</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-gradient-silver italic font-light block mt-2">Cinco Estrelas.</span>
+                                <span className="text-white font-display italic font-light block mt-2">Cinco Estrelas.</span>
                             </PremiumReveal>
                         </h2>
 
@@ -243,7 +243,7 @@ export function Amenities() {
                                     className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
-                                        <h3 className="text-2xl md:text-3xl font-headline text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
+                                        <h3 className="text-2xl md:text-3xl font-bold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out" style={{ fontFamily: 'var(--font-headline)' }}>
                                             {item.title}
                                         </h3>
                                         <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-[0.2em] group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">

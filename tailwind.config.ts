@@ -11,15 +11,15 @@ const config: Config = {
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
-                // Mapping User's Design System (Elite Titanium Refinement)
-                white: "#FAF9F7", // Warm White (Primary)
-                "gray-body": "#D6D6D6", // Light Gray (Body)
-                "silver-main": "#CBD5E1", // Metallic Silver (Accent)
-                "blue-tech": "#3B82F6", // Tech Link
-                "charcoal": "#1A1A1A",
-                "graphite": "#121212",
-                "deep-black": "#0D0D0D",
-                "accent-gold": "rgba(var(--color-accent-gold-rgb), <alpha-value>)",
+                // Monochromatic Design System
+                white: "#FFFFFF",
+                black: "#000000",
+                "gray-body": "#A1A1A1",
+                "silver-main": "#E5E5E5",
+                "charcoal": "#111111",
+                "graphite": "#080808",
+                "deep-black": "#000000",
+                "accent": "var(--color-accent)",
             },
             boxShadow: {
                 "premium-1": "var(--shadow-premium-1)",

@@ -98,7 +98,7 @@ export function Navbar() {
                             className="relative z-50 flex items-center gap-2"
                         >
                             <span className="font-headline text-[16px] font-medium text-[var(--color-text-primary)] tracking-[0.2em] uppercase transition-all duration-700">
-                                Clínica<span className="text-[var(--color-accent-gold)] italic font-light">.</span>
+                                Clínica<span className="text-white italic font-light">.</span>
                             </span>
                         </a>
                     </Magnetic>
@@ -136,7 +136,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-[var(--color-premium-gold)] uppercase tracking-[0.1em] font-ui"
+                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-white uppercase tracking-[0.1em] font-ui"
                                                 >
                                                     {link.name}
                                                 </m.div>
@@ -149,7 +149,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute bottom-1 left-2 right-2 h-[1.5px] bg-[var(--color-accent-gold-soft)] origin-left"
+                                                    className="absolute bottom-1 left-2 right-2 h-[1.5px] bg-white/40 origin-left"
                                                 />
                                         </m.a>
 
@@ -176,7 +176,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-premium !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-gold relative overflow-hidden !bg-[var(--color-accent-gold)] !text-black"
+                                    className="btn-premium !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"
@@ -261,11 +261,11 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-headline text-3xl sm:text-4xl text-white group-hover:text-[var(--color-accent-gold)] transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
+                                            <span className="font-headline text-3xl sm:text-4xl text-white group-hover:text-white transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div
-                                                className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--color-accent-gold)] origin-center"
+                                                className="absolute -bottom-1 left-0 right-0 h-px bg-white origin-center"
                                                 initial={{ scaleX: 0 }}
                                                 whileHover={{ scaleX: 1 }}
                                             />

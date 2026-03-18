@@ -113,24 +113,24 @@ export function Experience() {
 
     return (
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-black overflow-hidden" id="experiencia">
-            <div ref={textureRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#F8F8F6]/10 to-transparent" />
+            <div ref={textureRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center">
                     {/* Left Side */}
                     <div className="lg:w-1/2">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-[#E6D3A3] font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="text-white/60 font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
                                 A Jornada do Paciente
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-semibold text-[#F8F8F6] leading-[1.05] mb-12 md:mb-16 tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>
+                        <h2 className="font-display text-[clamp(36px,6vw,72px)] font-bold text-white leading-[1.05] mb-12 md:mb-16 tracking-tight uppercase" style={{ fontFamily: 'var(--font-headline)' }}>
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>O Protocolo de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-[#E6D3A3] font-display italic font-light block mt-2">Transformação.</span>
+                                <span className="text-white font-display italic font-light block mt-2">Transformação.</span>
                             </PremiumReveal>
                         </h2>
 
@@ -141,14 +141,14 @@ export function Experience() {
                                 <m.div key={index} className="experience-step-item flex gap-6 md:gap-8 group relative z-10">
                                     <div className="flex flex-col items-center pt-1">
                                         <Magnetic strength={0.3} range={60}>
-                                            <div className="w-12 h-12 rounded-full border border-[#E6D3A3]/10 flex items-center justify-center group-hover:border-[#E6D3A3]/30 transition-all duration-500 bg-[#0A0A0A] backdrop-blur-sm shadow-premium-1">
-                                                <span className="text-[#E6D3A3] font-display text-sm font-bold tracking-widest">{step.number}</span>
+                                            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all duration-500 bg-[#0A0A0A] backdrop-blur-sm shadow-premium-1">
+                                                <span className="text-white font-display text-sm font-bold tracking-widest">{step.number}</span>
                                             </div>
                                         </Magnetic>
                                     </div>
                                     <div className="pb-8">
-                                        <h3 className="text-[22px] font-semibold text-[#F8F8F6] transition-colors mb-2 md:mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>{step.title}</h3>
-                                        <p className="text-[#6B7280] text-[16px] font-normal leading-[1.6] max-w-md transition-opacity" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        <h3 className="text-[22px] font-bold text-white transition-colors mb-2 md:mb-3" style={{ fontFamily: 'var(--font-ui)' }}>{step.title}</h3>
+                                        <p className="text-white/60 text-[16px] font-normal leading-[1.6] max-w-md transition-opacity" style={{ fontFamily: 'var(--font-ui)' }}>
                                             {step.description}
                                         </p>
                                     </div>
@@ -177,8 +177,8 @@ export function Experience() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                                     <div className="absolute bottom-12 left-12 right-12 z-20 experience-image-content">
                                         <div className="experience-content-parallax">
-                                            <p className="text-[#F8F8F6] font-display text-3xl font-bold mb-2 uppercase tracking-tight">Exclusividade</p>
-                                            <p className="text-[#6B7280] text-sm font-light tracking-wide max-w-xs leading-relaxed">Planejamento personalizado e alta tecnologia para cada sorriso de elite.</p>
+                                            <p className="text-white font-display text-3xl font-bold mb-2 uppercase tracking-tight">Exclusividade</p>
+                                            <p className="text-white/60 text-sm font-light tracking-wide max-w-xs leading-relaxed">Planejamento personalizado e alta tecnologia para cada sorriso de elite.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -189,10 +189,10 @@ export function Experience() {
                 </div>
 
                 <div ref={ctaRef} className="mt-16 md:mt-32 flex justify-center">
-                    <div className="inline-flex flex-col md:flex-row items-center gap-6 px-10 py-8 rounded-[2rem] border border-[#F8F8F6]/5 bg-white/2 hover:border-[#F8F8F6]/30 transition-all group cursor-pointer backdrop-blur-sm">
-                        <span className="text-[#F8F8F6]/60 text-sm font-medium">Pronto para sua própria jornada de elite?</span>
-                        <div className="hidden md:block w-[1px] h-6 bg-[#F8F8F6]/10" />
-                        <span className="text-[#F8F8F6] text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3">
+                    <div className="inline-flex flex-col md:flex-row items-center gap-6 px-10 py-8 rounded-[2rem] border border-white/5 bg-white/2 hover:border-white/30 transition-all group cursor-pointer backdrop-blur-sm">
+                        <span className="text-white/60 text-sm font-medium">Pronto para sua própria jornada de elite?</span>
+                        <div className="hidden md:block w-[1px] h-6 bg-white/10" />
+                        <span className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3">
                             Falar com um Especialista
                             <ArrowRight strokeWidth={1} className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                         </span>
