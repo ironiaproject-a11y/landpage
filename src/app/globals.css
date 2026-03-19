@@ -49,18 +49,42 @@ img, svg, video, canvas {
   --color-background:        var(--color-bg-dark);
 
 
-  /* ── TYPOGRAPHY TOKENS (Premium Refined) ──────────────────────────────── */
-  /* Headline: Poppins Bold (sophisticated, premium) */
+  /* ── TYPOGRAPHY TOKENS (Premium System — Poppins-based) ──────────────────────────────── */
+  /* Headline: Poppins (bold, cinematic, premium) */
   /* UI: Inter (clean, modern, accessible) */
   --font-headline: "Poppins", system-ui, sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* ── Typography Scale ─────────────────────────────────── */
-  /* Reference: Poppins — ExtraBold H1 / SemiBold H2 / Light subtitles */
-  --font-h1: clamp(44px, 6.5vw, 80px);
-  --font-h2: clamp(28px, 4vw, 52px);
-  --font-h3: clamp(20px, 3vw, 34px);
-  --font-body: 16px;
+  /* ── TYPOGRAPHIC SCALE (Premium Hierarchy) ─────────────────────────────── */
+  /* H1 (Hero): Bold, cinematic, dominant */
+  --font-h1: clamp(64px, 7vw, 110px);
+  --font-h1-weight: 600;
+  --font-h1-line-height: 0.95;
+  --font-h1-tracking: -2px;
+
+  /* H2 (Section titles): Strong presence, editorial */
+  --font-h2: clamp(32px, 4vw, 56px);
+  --font-h2-weight: 600;
+  --font-h2-line-height: 1.05;
+  --font-h2-tracking: -0.5px;
+
+  /* H3 (Subsections): Medium weight, clear hierarchy */
+  --font-h3: clamp(20px, 3vw, 28px);
+  --font-h3-weight: 600;
+  --font-h3-line-height: 1.2;
+  --font-h3-tracking: 0;
+
+  /* Body text: Clean, readable, light weight */
+  --font-body: 18px;
+  --font-body-weight: 400;
+  --font-body-line-height: 1.7;
+  --font-body-tracking: 0;
+
+  /* Small text / labels: Compact, uppercase optional */
+  --font-small: 14px;
+  --font-small-weight: 500;
+  --font-small-line-height: 1.4;
+  --font-small-tracking: 0.5px;
 
   /* ── Spacing & Radius ─────────────────────────────────── */
   --radius-premium: 32px;
@@ -91,10 +115,10 @@ body {
   background: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-ui);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: 0.01em;
+  font-weight: var(--font-body-weight);
+  font-size: var(--font-body);
+  line-height: var(--font-body-line-height);
+  letter-spacing: var(--font-body-tracking);
   overflow-x: hidden;
   position: relative;
   cursor: none; /* Restoring custom cursor for cinematic feel */
@@ -231,40 +255,40 @@ h6 {
 }
 
 /* ── H1 / Hero Title ──────
-   Poppins Bold/SemiBold | font-weight 700 | clamp(56px, 8vw, 96px)
-   line-height 0.95–1.0 | letter-spacing -0.01em | Refined, Premium
+   Poppins SemiBold | font-weight 600 | clamp(64px, 7vw, 110px)
+   line-height 0.95 | letter-spacing -2px | Bold, Cinematic, Dominant
    ─────────────────────────────────────────────────────────── */
 h1,
 .hero-title {
   font-family: var(--font-headline);
-  font-size: clamp(56px, 8vw, 96px);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.01em;
+  font-size: var(--font-h1);
+  font-weight: var(--font-h1-weight);
+  line-height: var(--font-h1-line-height);
+  letter-spacing: var(--font-h1-tracking);
   color: var(--color-text-primary);
 }
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
   font-family: var(--font-headline);
-  font-size: clamp(56px, 8vw, 96px);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.01em;
+  font-size: var(--font-h1);
+  font-weight: var(--font-h1-weight);
+  line-height: var(--font-h1-line-height);
+  letter-spacing: var(--font-h1-tracking);
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
     0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* ── Subtitle / Subheadline — Light (300), airy ─────────── */
+/* ── Subtitle / Subheadline — Light, Airy ─────────────── */
 .text-subheadline-editorial {
-  font-family: var(--font-ui);
-  font-size: clamp(15px, 2.5vw, 19px);
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 0.015em;
-  color: var(--color-text-secondary);
+  font-family: var(--font-headline);
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.70);
   max-width: 58ch;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
@@ -284,24 +308,26 @@ h1,
   margin-bottom: 3rem;
 }
 
-/* ── H2 — Inter SemiBold —────────────────────────────────── */
+/* ── H2 — Poppins SemiBold ────────────────────────────────── */
+/* Section titles: strong presence, editorial feel */
 h2 {
-  font-family: var(--font-ui);
-  font-size: clamp(24px, 3.5vw, 40px);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-family: var(--font-headline);
+  font-size: var(--font-h2);
+  font-weight: var(--font-h2-weight);
+  line-height: var(--font-h2-line-height);
+  letter-spacing: var(--font-h2-tracking);
   margin-bottom: 3rem;
   color: var(--color-text-primary);
 }
 
-/* ── H3 — Inter SemiBold ──────────────────────────────────── */
+/* ── H3 — Poppins SemiBold ──────────────────────────────────── */
+/* Subsections: medium weight, clear hierarchy */
 h3 {
-  font-family: var(--font-ui);
-  font-size: clamp(20px, 2.8vw, 32px);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-family: var(--font-headline);
+  font-size: var(--font-h3);
+  font-weight: var(--font-h3-weight);
+  line-height: var(--font-h3-line-height);
+  letter-spacing: var(--font-h3-tracking);
   color: var(--color-text-primary);
 }
 

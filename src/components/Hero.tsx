@@ -351,14 +351,14 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+                        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.50) 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
 
                     @media (max-width: 768px) {
                         .hero-overlay {
-                            background: rgba(0,0,0,0.55);
+                            background: rgba(0,0,0,0.60);
                         }
                     }
 
@@ -395,10 +395,10 @@ export function Hero() {
 
                     .hero-line-1 h1 {
                         font-family: var(--font-headline);
-                        font-size: clamp(56px, 8vw, 96px);
-                        font-weight: 700;
-                        line-height: 0.98;
-                        letter-spacing: -0.01em;
+                        font-size: var(--font-h1);
+                        font-weight: var(--font-h1-weight);
+                        line-height: var(--font-h1-line-height);
+                        letter-spacing: var(--font-h1-tracking);
                         color: var(--color-text-primary);
                         margin: 0;
                         padding: 0;
@@ -423,11 +423,11 @@ export function Hero() {
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(18px, 3vw, 28px);
-                        font-weight: 400;
-                        line-height: 1.3;
-                        letter-spacing: 0.01em;
-                        color: var(--color-text-secondary);
+                        font-size: clamp(18px, 2.5vw, 26px);
+                        font-weight: 300;
+                        line-height: 1.4;
+                        letter-spacing: 0;
+                        color: rgba(255,255,255,0.70);
                         margin: 0;
                         padding: 0;
                         text-shadow: 0 4px 12px rgba(0,0,0,0.5);
@@ -561,7 +561,7 @@ export function Hero() {
                             max-width: 90vw;
                         }
                         .hero-line-1 h1 {
-                            font-size: clamp(42px, 9vw, 72px);
+                            font-size: clamp(48px, 9vw, 80px);
                         }
                         .hero-line-2 {
                             top: 45%;
@@ -571,7 +571,7 @@ export function Hero() {
                             max-width: 90vw;
                         }
                         .hero-line-2 h2 {
-                            font-size: clamp(16px, 2.5vw, 24px);
+                            font-size: clamp(16px, 2.5vw, 22px);
                         }
                         .hero-btn-wrapper {
                             left: 50%;
