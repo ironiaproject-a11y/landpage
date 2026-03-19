@@ -384,10 +384,10 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 40%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        text-align: center;
+                        top: 25%;
+                        left: 5%;
+                        transform: translateY(-50%);
+                        text-align: left;
                         opacity: 0;
                         font-family: var(--font-headline);
                         font-size: clamp(14px, 1.8vw, 18px);
@@ -401,6 +401,7 @@ export function Hero() {
                         display: flex;
                         align-items: center;
                         gap: 20px;
+                        max-width: 32vw;
                     }
 
                     .hero-line-1::before,
@@ -415,11 +416,12 @@ export function Hero() {
                     .hero-line-2 {
                         position: absolute;
                         top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        text-align: center;
+                        left: 5%;
+                        transform: translateY(-50%);
+                        text-align: left;
                         opacity: 0;
                         z-index: 10;
+                        max-width: 32vw;
                     }
 
                     .hero-line-2 h2 {
@@ -432,32 +434,22 @@ export function Hero() {
                         color: #FFFFFF;
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
-                        padding: 0 40px;
+                        padding: 0;
                         position: relative;
                     }
 
                     .hero-line-2::before {
-                        content: '[';
+                        content: '';
                         position: absolute;
-                        left: -20px;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        font-family: var(--font-ui);
-                        font-weight: 200;
-                        font-size: 0.8em;
-                        color: rgba(var(--color-accent-gold-rgb), 0.3);
+                        left: -28px;
+                        top: 0;
+                        width: 3px;
+                        height: 100%;
+                        background: linear-gradient(180deg, rgba(var(--color-accent-gold-rgb), 0.6) 0%, rgba(var(--color-accent-gold-rgb), 0.1) 100%);
                     }
 
                     .hero-line-2::after {
-                        content: ']';
-                        position: absolute;
-                        right: -20px;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        font-family: var(--font-ui);
-                        font-weight: 200;
-                        font-size: 0.8em;
-                        color: rgba(255, 255, 255, 0.2);
+                        display: none;
                     }
 
                     .hero-btn-wrapper {
@@ -578,13 +570,26 @@ export function Hero() {
                             top: 0;
                         }
                         .hero-line-1 {
-                            top: 38%;
+                            top: 35%;
+                            left: 50%;
+                            transform: translateX(-50%) translateY(-50%);
+                            text-align: center;
+                            max-width: 90vw;
+                        }
+                        .hero-line-2 {
+                            left: 50%;
+                            transform: translateX(-50%) translateY(-50%);
+                            text-align: center;
+                            max-width: 90vw;
+                        }
+                        .hero-line-2::before {
+                            display: none;
                         }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
                             line-height: 1.1;
                         }
-                        .hero-btn-wrapper { 
+                        .hero-btn-wrapper {
                             left: 50%;
                             transform: translateX(-50%) translateZ(150px);
                             bottom: 10vh;
