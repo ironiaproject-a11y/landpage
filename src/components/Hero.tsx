@@ -415,9 +415,9 @@ export function Hero() {
                     .hero-line-2 {
                         position: absolute;
                         top: 50%;
-                        right: 8%;
-                        transform: translateY(-50%);
-                        text-align: right;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        text-align: center;
                         opacity: 0;
                         z-index: 10;
                     }
@@ -437,11 +437,27 @@ export function Hero() {
                     }
 
                     .hero-line-2::before {
-                        display: none;
+                        content: '[';
+                        position: absolute;
+                        left: -20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        font-family: var(--font-ui);
+                        font-weight: 200;
+                        font-size: 0.8em;
+                        color: rgba(var(--color-accent-gold-rgb), 0.3);
                     }
 
                     .hero-line-2::after {
-                        display: none;
+                        content: ']';
+                        position: absolute;
+                        right: -20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        font-family: var(--font-ui);
+                        font-weight: 200;
+                        font-size: 0.8em;
+                        color: rgba(255, 255, 255, 0.2);
                     }
 
                     .hero-btn-wrapper {
@@ -564,17 +580,11 @@ export function Hero() {
                         .hero-line-1 {
                             top: 38%;
                         }
-                        .hero-line-2 {
-                            left: 50%;
-                            right: auto;
-                            transform: translateX(-50%) translateY(-50%);
-                            text-align: center;
-                        }
                         .hero-line-2 h2 {
                             font-size: clamp(36px, 10vw, 46px);
                             line-height: 1.1;
                         }
-                        .hero-btn-wrapper {
+                        .hero-btn-wrapper { 
                             left: 50%;
                             transform: translateX(-50%) translateZ(150px);
                             bottom: 10vh;
