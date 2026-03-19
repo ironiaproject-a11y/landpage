@@ -13,36 +13,50 @@ img, svg, video, canvas {
    =================================== */
 
 :root {
-  /* ── MONOCHROMATIC Color Tokens ────────────────────────── */
+  /* ── MONOCHROMATIC Color Tokens ─────────────────────────── */
+  /* Reference: Behance dental — strict B&W, zero chromatic accent */
   --color-bg-dark:          #000000;
+  --color-bg-off-black:     #0A0A0A;   /* cards elevated over dark bg */
   --color-bg-light:         #FFFFFF;
+  --color-bg-off-white:     #F5F5F5;   /* soft alt-section bg */
   --color-text-primary:     #FFFFFF;
-  --color-text-secondary:   rgba(255,255,255,0.7);
-  --color-text-tertiary:    rgba(255,255,255,0.4);
+  --color-text-secondary:   rgba(255,255,255,0.65);
+  --color-text-tertiary:    rgba(255,255,255,0.35);
   --color-ui-muted:         #333333;
-  
+
+  /* On-light-background variants (for white-bg sections) */
+  --color-text-on-light:          #0B0B0B;
+  --color-text-secondary-on-light: rgba(0,0,0,0.55);
+
   /* Neutral Accent System */
   --color-accent-rgb:       255, 255, 255;
   --color-accent:           rgb(var(--color-accent-rgb));
   --color-accent-soft:      rgba(var(--color-accent-rgb), 0.6);
-  --color-accent-glow:      rgba(var(--color-accent-rgb), 0.1);
+  --color-accent-glow:      rgba(var(--color-accent-rgb), 0.08);
 
-  /* ── NEW Font Tokens ──────────────────────────────────── */
-  --font-headline: var(--font-poppins), system-ui, sans-serif;
-  --font-ui: var(--font-poppins), system-ui, sans-serif;
+  /* Surface & Border Tokens */
+  --color-surface-elevated: rgba(255,255,255,0.04); /* glassmorphism cards */
+  --color-border-subtle:    rgba(255,255,255,0.08); /* dividers, card edges */
+  --color-border-hover:     rgba(255,255,255,0.20); /* interactive borders */
 
-  /* ── Legacy aliases (remapped to monochromatic) ───────── */
+  /* ── Legacy aliases (fully neutralized → monochromatic) ────── */
   --color-premium-dark:      var(--color-bg-dark);
   --color-premium-white:     var(--color-text-primary);
-  --color-premium-gold:      var(--color-accent);
+  --color-premium-gold:      var(--color-accent);  /* remapped → white */
   --color-premium-slate:     var(--color-ui-muted);
   --color-premium-charcoal:  #111111;
   --color-background:        var(--color-bg-dark);
 
+
+  /* ── Font Tokens ──────────────────────────────────────── */
+  --font-headline: var(--font-poppins), system-ui, sans-serif;
+  --font-ui: var(--font-poppins), system-ui, sans-serif;
+
   /* ── Typography Scale ─────────────────────────────────── */
-  --font-h1: clamp(40px, 6vw, 72px);
-  --font-h2: clamp(24px, 3.5vw, 40px);
-  --font-h3: clamp(20px, 3vw, 32px);
+  /* Reference: Poppins — ExtraBold H1 / SemiBold H2 / Light subtitles */
+  --font-h1: clamp(44px, 6.5vw, 80px);
+  --font-h2: clamp(28px, 4vw, 52px);
+  --font-h3: clamp(20px, 3vw, 34px);
   --font-body: 16px;
 
   /* ── Spacing & Radius ─────────────────────────────────── */
@@ -51,7 +65,8 @@ img, svg, video, canvas {
 
   /* ── Tracking ─────────────────────────────────────────── */
   --tracking-luxury: 0.4em;
-  --tracking-editorial: -0.02em;
+  --tracking-editorial: -0.03em;   /* tighter — matches reference hero */
+  --tracking-h2: -0.02em;          /* section titles */
   --tracking-body: 0.01em;
 }
 
@@ -212,40 +227,46 @@ h6 {
   color: var(--color-text-primary);
 }
 
+/* ── H1 / Hero Title — ExtraBold, very tight tracking ──────
+   Mirrors reference: "Because your smile deserves the Best"
+   Poppins 800 | clamp(44→80px) | line-height 1.05 | tracking -0.03em
+   ─────────────────────────────────────────────────────────── */
 h1,
 .hero-title {
   font-family: var(--font-headline);
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: var(--font-h1);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-editorial);
   color: var(--color-text-primary);
 }
 
+/* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
-  font-size: var(--font-size-hero);
-  line-height: var(--line-height-hero);
-  letter-spacing: var(--letter-spacing-hero);
   font-family: var(--font-headline);
-  font-weight: 500;
+  font-size: var(--font-h1);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-editorial);
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
     0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
+/* ── Subtitle / Subheadline — Light (300), airy ─────────── */
 .text-subheadline-editorial {
-  @apply text-base font-light max-w-[60ch];
-  font-size: clamp(14px, 3.2vw, 18px);
-  line-height: 1.65;
-  /* opacity controlled by Framer Motion in Hero */
-  color: var(--color-text-secondary);
   font-family: var(--font-ui);
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-size: clamp(15px, 2.5vw, 19px);
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.015em;
+  color: var(--color-text-secondary);
+  max-width: 58ch;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
+/* ── Overline / Editorial Label — SemiBold caps, wide ───── */
 .editorial-label {
   display: inline-flex;
   align-items: center;
@@ -260,20 +281,24 @@ h1,
   margin-bottom: 3rem;
 }
 
+/* ── H2 — SemiBold, editorial tracking ─────────────────── */
+/* Reference: "Why patients trust us?" / "Diagnostic" */
 h2 {
-  font-family: var(--font-ui);
-  font-size: clamp(24px, 3.5vw, 40px);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: var(--tracking-editorial);
+  font-family: var(--font-headline);
+  font-size: var(--font-h2);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: var(--tracking-h2);
   margin-bottom: 3rem;
 }
 
+/* ── H3 — Medium (500) ──────────────────────────────────── */
 h3 {
-  font-family: var(--font-ui);
-  font-size: clamp(20px, 3vw, 32px);
-  font-weight: 700;
-  line-height: 1.25;
+  font-family: var(--font-headline);
+  font-size: var(--font-h3);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 ::selection {

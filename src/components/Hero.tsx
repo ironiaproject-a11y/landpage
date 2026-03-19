@@ -425,7 +425,7 @@ export function Hero() {
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
                         font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
-                        font-weight: 700;
+                        font-weight: 800; /* ExtraBold — matches reference dental clinic style */
                         font-style: italic;
                         letter-spacing: -0.03em;
                         line-height: 0.9;

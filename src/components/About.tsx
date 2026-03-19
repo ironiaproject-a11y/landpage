@@ -202,19 +202,19 @@ export function About() {
                                 display: inline-flex;
                                 align-items: center;
                                 gap: 12px;
-                                background: linear-gradient(135deg, rgba(230, 211, 163, 0.1), rgba(203, 179, 130, 0.05));
+                                background: rgba(255, 255, 255, 0.05);
                                 backdrop-filter: blur(12px);
                                 -webkit-backdrop-filter: blur(12px);
-                                border: 1px solid rgba(230, 211, 163, 0.25);
-                                color: #E6D3A3;
+                                border: 1px solid rgba(255, 255, 255, 0.18);
+                                color: rgba(255, 255, 255, 0.9);
                                 padding: 16px 42px;
                                 border-radius: 999px;
-                                font-family: var(--font-inter), sans-serif;
+                                font-family: var(--font-ui), sans-serif;
                                 font-size: 11px;
                                 font-weight: 600;
                                 letter-spacing: 0.35em;
                                 text-transform: uppercase;
-                                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(230, 211, 163, 0.05);
+                                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
                                 transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                                 overflow: hidden;
                                 cursor: pointer;
@@ -224,7 +224,7 @@ export function About() {
                                 content: '';
                                 position: absolute;
                                 top: 0; left: 0; width: 100%; height: 100%;
-                                background: linear-gradient(90deg, transparent, rgba(230, 211, 163, 0.15), transparent);
+                                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
                                 transform: translateX(-100%);
                                 transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                             }
@@ -234,11 +234,11 @@ export function About() {
                             }
 
                             .btn-premium-cta-inline:hover {
-                                background: rgba(230, 211, 163, 0.15);
-                                border-color: rgba(230, 211, 163, 0.5);
-                                color: #FFF;
+                                background: rgba(255, 255, 255, 0.10);
+                                border-color: rgba(255, 255, 255, 0.40);
+                                color: #FFFFFF;
                                 transform: translateY(-3px) scale(1.02);
-                                box-shadow: 0 10px 40px rgba(230, 211, 163, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                                box-shadow: 0 10px 40px rgba(255, 255, 255, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
                                 letter-spacing: 0.4em;
                             }
 
