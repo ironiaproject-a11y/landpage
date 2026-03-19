@@ -97,7 +97,7 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-headline text-[16px] font-medium text-[var(--color-text-primary)] tracking-[0.2em] uppercase transition-all duration-700">
+                            <span className="font-headline text-[16px] font-semibold text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
                                 Clínica<span className="text-white italic font-light">.</span>
                             </span>
                         </a>
@@ -123,7 +123,7 @@ export function Navbar() {
                                                         }}
                                                         animate={activeSection === link.href ? "hover" : "initial"}
                                                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                        className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.1em] font-ui"
+                                                        className="text-[var(--font-small)] font-semibold text-[var(--color-text-secondary)] uppercase tracking-[var(--font-small-tracking)]"
                                                     >
                                                         {link.name}
                                                     </m.div>
@@ -136,7 +136,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute inset-0 py-2 px-4 text-[11px] font-semibold text-white uppercase tracking-[0.1em] font-ui"
+                                                    className="absolute inset-0 py-2 px-4 text-[var(--font-small)] font-semibold text-white uppercase tracking-[var(--font-small-tracking)]"
                                                 >
                                                     {link.name}
                                                 </m.div>
@@ -176,7 +176,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-premium !py-3 !px-8 text-[10px] tracking-[0.3em] font-bold shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
+                                    className="btn-premium !py-3 !px-8 text-[var(--font-small)] tracking-[var(--font-small-tracking)] font-bold shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"
@@ -261,7 +261,7 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-headline text-3xl sm:text-4xl text-white group-hover:text-white transition-colors tracking-[0.2em] font-medium uppercase" data-text={link.name}>
+                                            <span className="font-headline text-2xl sm:text-3xl text-white group-hover:text-white transition-colors tracking-[var(--font-h3-tracking)] font-semibold uppercase" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div
@@ -290,7 +290,7 @@ export function Navbar() {
                                     <a
                                         href="#contato"
                                         onClick={() => setIsMobileOpen(false)}
-                                        className="btn-luxury-primary flex items-center justify-center !py-4 sm:!py-6 w-full text-[10px] sm:text-xs tracking-[0.3em]"
+                                        className="btn-luxury-primary flex items-center justify-center !py-4 sm:!py-6 w-full text-[var(--font-small)] sm:text-sm tracking-[var(--font-small-tracking)]"
                                     >
                                         Agendar Consulta
                                     </a>
@@ -306,14 +306,14 @@ export function Navbar() {
                                     transition={{ delay: 0.8, duration: 1 }}
                                     className="text-center border-t border-white/5 pt-10 sm:pt-12"
                                 >
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[var(--color-text-secondary)] mb-4">Atendimento VIP</p>
+                                    <p className="text-[var(--font-small)] uppercase tracking-[var(--font-small-tracking)] text-[var(--color-text-secondary)] mb-4">Atendimento VIP</p>
                                     <a
                                         href="tel:+551837433000"
                                         className="text-[#F8F8F6] font-medium text-lg sm:text-xl hover:brightness-125 transition-all block mb-2"
                                     >
                                         +55 (18) 3743-3000
                                     </a>
-                                    <p className="text-[9px] sm:text-[10px] text-white/30 uppercase tracking-[0.2em] mb-8">Pereira Barreto - SP</p>
+                                    <p className="text-[var(--font-small)] text-white/30 uppercase tracking-[var(--font-small-tracking)] mb-8">Pereira Barreto - SP</p>
 
                                     <div className="flex items-center justify-center gap-8 border-t border-white/5 pt-8">
                                         {[

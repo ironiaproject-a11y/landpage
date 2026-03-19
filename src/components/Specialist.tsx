@@ -216,13 +216,13 @@ export function Specialist() {
                     {/* Left: Academic & Authority */}
                     <div className="lg:w-1/2 order-2 lg:order-1">
                         <PremiumReveal type="fade" direction="top" duration={1}>
-                            <span className="text-white/40 font-bold tracking-[0.08em] uppercase text-[10px] mb-8 block font-ui">
+                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-8 block">
                                 Corpo Clínico
                             </span>
                         </PremiumReveal>
 
                         <PremiumReveal type="mask" direction="bottom">
-                            <h2 className="font-headline text-[clamp(28px,5.5vw,48px)] font-bold text-[var(--color-text-primary)] mb-10 leading-[1.1] tracking-[-0.01em] uppercase" style={{ fontFamily: 'var(--font-headline)' }}>
+                            <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] mb-10 leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                                 A ciência por trás do seu<br />
                                 <span className="text-white font-headline italic font-light">melhor sorriso</span>.
                             </h2>
@@ -262,12 +262,12 @@ export function Specialist() {
                                 >
                                     <div className="relative">
                                         <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-text-primary)]/10" />
-                                        <p className="font-headline text-lg md:text-3xl text-white italic leading-[1.6] mb-8 font-light relative z-10">
+                                        <p className="font-headline text-[var(--font-h3)] text-white italic leading-[var(--font-h3-line-height)] mb-12 font-light relative z-10">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">
-                                            <h4 className="text-[var(--color-text-primary)] font-bold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
-                                            <p className="text-[var(--color-ui-muted)] text-[10px] uppercase font-bold tracking-[0.2em]">Diretor Clínico • CRO 00.000</p>
+                                            <h4 className="text-[var(--color-text-primary)] font-semibold text-lg tracking-tight">Dr. Ricardo Alessandro</h4>
+                                            <p className="text-[var(--color-ui-muted)] text-[var(--font-small)] uppercase font-semibold tracking-[var(--font-small-tracking)]">Diretor Clínico • CRO 00.000</p>
                                         </div>
                                     </div>
                                 </LuxuryCard>

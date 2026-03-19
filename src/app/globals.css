@@ -50,41 +50,40 @@ img, svg, video, canvas {
 
 
   /* ── TYPOGRAPHY TOKENS (Premium System — Poppins-based) ──────────────────────────────── */
-  /* Headline: Poppins (bold, cinematic, premium) */
-  /* UI: Inter (clean, modern, accessible) */
+  /* Headline & UI: Both use Poppins for consistent, high-end look */
   --font-headline: "Poppins", system-ui, sans-serif;
-  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-ui:       "Poppins", system-ui, sans-serif;
 
-  /* ── TYPOGRAPHIC SCALE (Premium Hierarchy) ─────────────────────────────── */
+  /* ── TYPOGRAPHIC SCALE (Behance-inspired Premium Hierarchy) ─────────────────────────────── */
   /* H1 (Hero): Bold, cinematic, dominant */
-  --font-h1: clamp(64px, 7vw, 110px);
-  --font-h1-weight: 600;
-  --font-h1-line-height: 0.95;
-  --font-h1-tracking: -2px;
+  --font-h1:              clamp(64px, 7vw, 110px);
+  --font-h1-weight:       600;
+  --font-h1-line-height:  0.95;
+  --font-h1-tracking:     -0.03em; /* cinematic tighter tracking */
 
   /* H2 (Section titles): Strong presence, editorial */
-  --font-h2: clamp(32px, 4vw, 56px);
-  --font-h2-weight: 600;
-  --font-h2-line-height: 1.05;
-  --font-h2-tracking: -0.5px;
+  --font-h2:              clamp(32px, 4vw, 56px);
+  --font-h2-weight:       600;
+  --font-h2-line-height:  1.05;
+  --font-h2-tracking:     -0.01em;
 
   /* H3 (Subsections): Medium weight, clear hierarchy */
-  --font-h3: clamp(20px, 3vw, 28px);
-  --font-h3-weight: 600;
-  --font-h3-line-height: 1.2;
-  --font-h3-tracking: 0;
+  --font-h3:              clamp(20px, 3vw, 28px);
+  --font-h3-weight:       600;
+  --font-h3-line-height:  1.2;
+  --font-h3-tracking:     0;
 
-  /* Body text: Clean, readable, light weight */
-  --font-body: 18px;
-  --font-body-weight: 400;
-  --font-body-line-height: 1.7;
-  --font-body-tracking: 0;
+  /* Body text: Clean, readable, light/regular weight */
+  --font-body:              17px;
+  --font-body-weight:       300;
+  --font-body-line-height:  1.7;
+  --font-body-tracking:     0.01em;
 
-  /* Small text / labels: Compact, uppercase optional */
-  --font-small: 14px;
-  --font-small-weight: 500;
+  /* Small text / labels: Compact, uppercase */
+  --font-small:             12px;
+  --font-small-weight:      600;
   --font-small-line-height: 1.4;
-  --font-small-tracking: 0.5px;
+  --font-small-tracking:    0.2em;
 
   /* ── Spacing & Radius ─────────────────────────────────── */
   --radius-premium: 32px;
@@ -141,6 +140,7 @@ select {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
+  font-family: var(--font-ui);
 }
 
 /* Fallback for touch devices where custom cursor might be problematic */

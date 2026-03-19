@@ -69,14 +69,11 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="text-[var(--color-text-primary)] font-semibold mb-4 transition-colors duration-700" style={{ 
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: 'clamp(18px, 2.2vw, 26px)'
-                    }}>
+                    <h3 className="text-[var(--color-text-primary)] font-semibold mb-4 transition-colors duration-700 text-[var(--font-h3)] leading-[var(--font-h3-line-height)] tracking-[var(--font-h3-tracking)]">
                         {service.title}
                     </h3>
 
-                    <p className="text-[var(--color-text-secondary)] leading-[1.6] text-[16px] mb-8 md:mb-12 font-normal" style={{ fontFamily: 'var(--font-ui)' }}>
+                    <p className="text-[var(--color-text-secondary)] leading-[var(--font-body-line-height)] text-[var(--font-body)] mb-8 md:mb-12 font-[var(--font-body-weight)]">
                         {service.description}
                     </p>
 
@@ -304,7 +301,7 @@ export function Services() {
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
+                <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de</span>
                     </PremiumReveal>

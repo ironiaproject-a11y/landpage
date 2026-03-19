@@ -34,12 +34,12 @@ export function Contact() {
                     {/* Info Side */}
                     <div className="lg:w-1/3">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/40 font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-6 block">
                                 Contato
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,72px)] font-bold text-[var(--color-text-primary)] mb-8 leading-[1.05] uppercase tracking-tight" style={{ fontFamily: 'var(--font-headline)' }}>
+                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] mb-8 leading-[var(--font-h2-line-height)] uppercase tracking-[var(--font-h2-tracking)]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
@@ -49,7 +49,7 @@ export function Contact() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-[var(--color-text-secondary)] text-[16px] font-normal leading-[1.6] mb-12" style={{ fontFamily: 'var(--font-ui)' }}>
+                            <p className="text-[var(--color-text-secondary)] text-[var(--font-body)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] mb-12">
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -66,7 +66,7 @@ export function Contact() {
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-[10px] font-bold text-[var(--color-text-secondary)]/30 uppercase tracking-[0.2em] mb-1">{item.title}</h4>
+                                            <h4 className="text-[var(--font-small)] font-semibold text-[var(--color-text-secondary)]/30 uppercase tracking-[var(--font-small-tracking)] mb-1">{item.title}</h4>
                                             <a href={item.href} className="text-[var(--color-text-primary)] hover:text-white transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
@@ -181,7 +181,7 @@ export function Contact() {
                     className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
                     <div className="glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-xl shadow-premium-2 text-[var(--color-text-primary)]">
-                        <span className="text-[var(--color-text-secondary)] font-semibold tracking-[0.3em] uppercase text-[9px] mb-3 block opacity-80">
+                        <span className="text-[var(--color-text-secondary)] font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>
                         <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>

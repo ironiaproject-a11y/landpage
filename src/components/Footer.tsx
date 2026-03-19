@@ -106,12 +106,12 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-headline font-bold tracking-[0.15em] text-[var(--color-text-primary)] leading-tight uppercase">
+                                    <h3 className="text-lg font-headline font-semibold tracking-[0.1em] text-[var(--color-text-primary)] leading-tight uppercase">
                                         Clínica<span className="text-white italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-[var(--color-text-secondary)] leading-[1.6] max-w-sm font-normal text-sm transition-opacity duration-700" style={{ fontFamily: 'var(--font-ui)' }}>
+                            <p className="text-[var(--color-text-secondary)] leading-[var(--font-body-line-height)] max-w-sm font-[var(--font-body-weight)] text-sm transition-opacity duration-700">
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -142,7 +142,7 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Navegação</h4>
+                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
@@ -162,7 +162,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Especialidades</h4>
+                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
@@ -182,7 +182,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/40 mb-8">Onde Estamos</h4>
+                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
@@ -213,7 +213,7 @@ export function Footer() {
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex flex-col items-center md:items-start gap-1">
-                            <p className="text-[var(--color-text-tertiary)] text-xs">
+                            <p className="text-[var(--color-text-tertiary)] text-[var(--font-small)] font-normal leading-relaxed">
                                 © {currentYear} Clínica Odontologia. Todos os direitos reservados.
                             </p>
                             <div className="flex items-center gap-2">

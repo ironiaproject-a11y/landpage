@@ -86,21 +86,21 @@ export function CTA() {
                     <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] glow-blob opacity-20" />
 
                     <PremiumReveal type="fade" direction="top" delay={0.2}>
-                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10 mb-12">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] border border-white/10 mb-12">
                             <Calendar strokeWidth={1} className="w-3.5 h-3.5" />
                             Agenda Aberta 2026
                         </div>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <h2 className="font-headline text-[clamp(28px,6vw,72px)] font-bold text-[var(--color-text-primary)] mb-10 leading-[1.05] tracking-tight uppercase">
+                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] mb-10 leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                             Seu novo sorriso<br />
                             <span className="text-white font-headline italic font-light">começa hoje.</span>
                         </h2>
                     </PremiumReveal>
 
                     <PremiumReveal type="fade" delay={0.5}>
-                        <p className="text-[var(--color-text-secondary)] text-[18px] font-normal leading-[1.6] max-w-2xl mx-auto mb-16" style={{ fontFamily: 'var(--font-ui)' }}>
+                        <p className="text-[var(--color-text-secondary)] text-[var(--font-body)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] max-w-2xl mx-auto mb-16">
                             Agende uma avaliação detalhada e descubra como nosso protocolo <span className="text-white font-headline italic font-light">exclusivo</span> pode transformar sua autoestima.
                         </p>
                     </PremiumReveal>

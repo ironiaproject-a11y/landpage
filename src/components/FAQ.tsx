@@ -83,12 +83,12 @@ export function FAQ() {
                     {/* Header */}
                     <div className="text-center mb-16 md:mb-24">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/60 font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">
+                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-6 block">
                                 Esclarecimentos
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-[0.02em] uppercase">
+                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Dúvidas</span>
                             </PremiumReveal>
@@ -117,7 +117,7 @@ export function FAQ() {
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-[18px] font-bold text-[var(--color-text-primary)] tracking-tight group-hover:text-white transition-colors leading-[1.35]" style={{ fontFamily: 'var(--font-ui)' }}>
+                                            <span className="text-[var(--font-h3)] font-semibold text-[var(--color-text-primary)] tracking-[var(--font-h3-tracking)] group-hover:text-white transition-colors leading-[var(--font-h3-line-height)]">
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -139,7 +139,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-[var(--color-text-secondary)] text-[15px] leading-[1.6] font-normal max-w-2xl" style={{ fontFamily: 'var(--font-ui)' }}>
+                                                    <p className="text-[var(--color-text-secondary)] text-[var(--font-body)] leading-[var(--font-body-line-height)] font-[var(--font-body-weight)] max-w-2xl">
                                                         {faq.answer}
                                                     </p>
                                                 </div>

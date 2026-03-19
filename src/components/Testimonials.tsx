@@ -175,13 +175,13 @@ export function Testimonials() {
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-white/60 font-semibold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                        <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-8 block">
                             Prova Social
                         </span>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-tight uppercase">
+                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                             Histórias de<br />
                             <span className="text-white font-headline italic font-light block mt-2">transformação real.</span>
                         </h2>
@@ -225,7 +225,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[var(--color-text-primary)] text-[20px] italic leading-[1.4] mb-12 flex-grow font-normal" style={{ fontFamily: 'var(--font-headline)' }}>
+                                            <p className="text-[var(--color-text-primary)] text-[var(--font-h3)] italic leading-[var(--font-h3-line-height)] mb-12 flex-grow font-light">
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
@@ -239,8 +239,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-tight" style={{ fontFamily: 'var(--font-ui)' }}>{testimonial.name}</h4>
-                                                    <p className="text-[10px] text-[var(--color-text-secondary)] uppercase tracking-[0.08em] font-bold" style={{ fontFamily: 'var(--font-ui)' }}>{testimonial.role}</p>
+                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-[var(--font-h3-tracking)]">{testimonial.name}</h4>
+                                                    <p className="text-[var(--font-small)] text-[var(--color-text-secondary)] uppercase tracking-[var(--font-small-tracking)] font-semibold">{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

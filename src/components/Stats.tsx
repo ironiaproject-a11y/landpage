@@ -184,14 +184,15 @@ export function Stats() {
 
         .stats-number {
           font-family: var(--font-headline), serif;
-          font-size: clamp(54px, 7vw, 72px);
-          font-weight: 500;
+          font-size: var(--font-h2);
+          font-weight: 600;
           line-height: 1;
           letter-spacing: -0.02em;
           margin-bottom: 16px;
           display: block;
           color: var(--color-text-primary);
           font-variant-numeric: tabular-nums;
+          text-transform: uppercase;
         }
 
         .stats-suffix {
@@ -207,14 +208,14 @@ export function Stats() {
 
         .stats-label {
           font-family: var(--font-ui), sans-serif;
-          font-size: 13px;
+          font-size: var(--font-small);
           font-weight: 600;
-          color: var(--color-premium-slate);
-          letter-spacing: 0.20em;
+          color: var(--color-text-secondary);
+          letter-spacing: var(--font-small-tracking);
           text-transform: uppercase;
           display: block;
-          max-width: 180px;
-          line-height: 1.5;
+          max-width: 220px;
+          line-height: 1.4;
         }
 
         @media (max-width: 1023px) {

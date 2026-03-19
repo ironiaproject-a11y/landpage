@@ -164,7 +164,7 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(40px,5vw,84px)] font-bold mb-20 text-[var(--color-text-primary)] leading-[1.05] tracking-[-0.02em] uppercase">
+                        <h2 className="font-headline text-[var(--font-h2)] font-semibold mb-12 text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o Conceito de</span>
                             </PremiumReveal>
@@ -174,11 +174,11 @@ export function About() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <div className="space-y-10 mb-16 max-w-[540px]">
-                                <p className="text-[18px] text-[var(--color-text-primary)] font-medium leading-[1.6] tracking-[0.01em]" style={{ fontFamily: 'var(--font-ui)' }}>
+                            <div className="space-y-10 mb-16 max-w-[650px]">
+                                <p className="text-[var(--font-body)] text-[var(--color-text-primary)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] tracking-[var(--font-body-tracking)]">
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
-                                <p className="text-[15px] text-[var(--color-text-secondary)] font-normal leading-[1.8] tracking-[0.02em] opacity-80" style={{ fontFamily: 'var(--font-ui)' }}>
+                                <p className="text-[15px] text-[var(--color-text-secondary)] font-light leading-[1.8] tracking-[0.02em] opacity-80">
                                     Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
                                     <span className="block mt-4 text-white italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>
@@ -191,7 +191,7 @@ export function About() {
                                     <div className="w-6 h-6 rounded-lg border border-white/10 flex items-center justify-center group-hover:bg-white transition-all">
                                         <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[var(--color-text-secondary)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-[var(--color-text-secondary)] font-medium text-[14px] tracking-[0.05em] group-hover:text-[var(--color-text-primary)] transition-all duration-500" style={{ fontFamily: 'var(--font-ui)' }}>{item}</span>
+                                    <span className="text-[var(--color-text-secondary)] font-medium text-[var(--font-small)] tracking-[var(--font-small-tracking)] group-hover:text-[var(--color-text-primary)] transition-all duration-500 uppercase">{item}</span>
                                 </div>
                             ))}
                         </div>

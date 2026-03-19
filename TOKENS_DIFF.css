@@ -1,0 +1,109 @@
+/* ===================================
+   DESIGN TOKENS - DIFF
+   Substituted color & typography tokens
+   =================================== */
+
+/* --- COLOR TOKENS (Updated) --- */
+
+:root {
+  /* BEFORE */
+  /* --color-bg-dark:          #000000; */
+  /* --color-text-primary:     #FFFFFF; */
+  /* --color-text-secondary:   rgba(255,255,255,0.65); */
+  /* --color-accent-gold:      (não existia); */
+
+  /* AFTER */
+  --color-bg-dark:          #0B0B0B;           ✨ Dark charcoal (premium)
+  --color-text-primary:     #F5F5F5;           ✨ Off-white (less harsh)
+  --color-text-secondary:   rgba(255,255,255,0.72);  ✨ Increased from 0.65
+  --color-text-tertiary:    rgba(255,255,255,0.48);  ✨ Increased from 0.35
+  --color-ui-muted:         #6B7280;           ✨ Changed from #333333
+  --color-bg-light:         #F7F3EE;           ✨ Warm off-white
+  --color-accent-gold:      #C7A86B;           ✨ NEW: Premium gold accent
+  --color-accent-gold-rgb:  199, 168, 107;    ✨ NEW: For rgba() use
+}
+
+/* --- TYPOGRAPHY TOKENS (Updated) --- */
+
+:root {
+  /* BEFORE */
+  /* --font-headline: var(--font-poppins), system-ui, sans-serif; */
+  /* --font-ui: var(--font-poppins), system-ui, sans-serif; */
+
+  /* AFTER */
+  --font-headline: "Playfair Display", serif;   ✨ Elegant serif (headlines)
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;  ✨ Clean, modern (UI/body)
+}
+
+/* ===================================
+   ELEMENT APPLICATIONS (Mandatory Mapping)
+   =================================== */
+
+/* H1 / .hero-title */
+BEFORE:  font-family: var(--font-headline); font-weight: 800; font-size: var(--font-h1);
+AFTER:   font-family: var(--font-headline); font-weight: 600; font-size: clamp(40px, 6vw, 72px); line-height: 1.15; letter-spacing: -0.02em;
+         color: var(--color-text-primary);
+
+/* H2 */
+BEFORE:  font-family: var(--font-headline); font-weight: 600; font-size: var(--font-h2);
+AFTER:   font-family: var(--font-ui); font-weight: 600; font-size: clamp(24px, 3.5vw, 40px); line-height: 1.2;
+         letter-spacing: -0.02em; color: var(--color-text-primary);
+
+/* H3 */
+BEFORE:  font-family: var(--font-headline); font-weight: 500; font-size: var(--font-h3);
+AFTER:   font-family: var(--font-ui); font-weight: 600; font-size: clamp(20px, 2.8vw, 32px); line-height: 1.2;
+         letter-spacing: -0.01em; color: var(--color-text-primary);
+
+/* Body / p */
+BEFORE:  font-family: var(--font-ui); font-weight: 400; font-size: var(--font-body); line-height: 1.6;
+AFTER:   font-family: var(--font-ui); font-weight: 400; font-size: 16px; line-height: 1.4; letter-spacing: 0.01em;
+         color: var(--color-text-primary);
+
+/* Buttons (.btn-premium, .btn-luxury-primary) */
+BEFORE:  font-family: var(--font-ui); font-weight: 500; font-size: 16px;
+AFTER:   font-family: var(--font-ui); font-weight: 500; font-size: 16px;  (unchanged structure, COLOR UPDATED)
+
+/* .hero-line-1 (Subtitle) */
+BEFORE:  font-family: var(--font-headline); font-size: clamp(14px, 1.8vw, 18px); font-weight: 500;
+         color: rgba(255, 255, 255, 0.5);
+AFTER:   font-family: var(--font-ui); font-size: clamp(12px, 1.6vw, 16px); font-weight: 500;
+         color: var(--color-text-secondary);
+
+/* .hero-line-2 h2 (Hero Main Title) */
+BEFORE:  font-family: var(--font-headline); font-weight: 800; font-style: italic; letter-spacing: -0.03em; line-height: 0.85;
+         color: #FFFFFF;
+AFTER:   font-family: var(--font-headline); font-weight: 700; font-style: normal; letter-spacing: -0.02em; line-height: 0.9;
+         color: var(--color-text-primary);
+
+/* .text-hero-editorial */
+BEFORE:  font-family: var(--font-headline); font-weight: 800; letter-spacing: var(--tracking-editorial);
+AFTER:   font-family: var(--font-headline); font-weight: 600; letter-spacing: -0.02em;
+         color: var(--color-text-primary);
+
+/* .text-subheadline-editorial */
+BEFORE:  font-family: var(--font-ui); font-weight: 300; color: var(--color-text-secondary);
+AFTER:   font-family: var(--font-ui); font-weight: 400; color: var(--color-text-secondary);
+
+/* .editorial-label */
+BEFORE:  font-family: var(--font-ui); font-weight: 600; color: var(--color-text-primary); opacity: 0.6;
+AFTER:   font-family: var(--font-ui); font-weight: 600; color: var(--color-text-tertiary); opacity: 0.8;
+         letter-spacing: 0.4em;
+
+/* .btn-luxury-primary (Gold accent border) */
+BEFORE:  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(var(--color-accent-gold-rgb), 0.15);
+AFTER:   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(199, 168, 107, 0.12);
+         (Gold accent controlled: ≤ 0.12 opacidade, 1px border only)
+
+/* ===================================
+   SUMMARY: NO STRUCTURAL CHANGES
+   =================================== */
+
+✅ No HTML modifications
+✅ No CSS layout changes (grid, flex, gaps, paddings)
+✅ No z-index or functional attribute changes
+✅ No JavaScript modifications
+✅ No images or video changes
+✅ No animation timing changes
+✅ Class names and selectors PRESERVED
+
+Result: Pure color & typography token substitution for "premium, modern, emotional" aesthetic.

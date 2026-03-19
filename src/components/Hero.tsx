@@ -402,6 +402,7 @@ export function Hero() {
                         color: var(--color-text-primary);
                         margin: 0;
                         padding: 0;
+                        text-transform: uppercase;
                         filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
                     }
 
@@ -423,13 +424,14 @@ export function Hero() {
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(18px, 2.5vw, 26px);
+                        font-size: clamp(20px, 4vw, 32px);
                         font-weight: 300;
-                        line-height: 1.4;
-                        letter-spacing: 0;
-                        color: rgba(255,255,255,0.70);
+                        line-height: 1.2;
+                        letter-spacing: 0.05em;
+                        color: rgba(255,255,255,0.80);
                         margin: 0;
                         padding: 0;
+                        text-transform: uppercase;
                         text-shadow: 0 4px 12px rgba(0,0,0,0.5);
                     }
 
@@ -468,9 +470,9 @@ export function Hero() {
                         padding: 16px 42px;
                         border-radius: 999px;
                         font-family: var(--font-ui);
-                        font-size: 11px;
+                        font-size: 14px;
                         font-weight: 600;
-                        letter-spacing: 0.35em;
+                        letter-spacing: 0.25em;
                         text-transform: uppercase;
                         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(var(--color-accent-gold-rgb), 0.05);
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -591,9 +593,9 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text">
                         <div className="hero-line-1">
-                            <span className="block">
+                            <h1 className="block">
                                 SUA ORIGEM
-                            </span>
+                            </h1>
                         </div>
 
                         <div className="hero-line-2">

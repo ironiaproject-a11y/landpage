@@ -89,10 +89,10 @@ export function Preloader() {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="flex flex-col items-center"
                         >
-                            <span className="font-headline text-base font-light text-white tracking-[0.4em] uppercase mb-2">
+                            <span className="font-headline text-lg font-light text-white tracking-[var(--font-h3-tracking)] uppercase mb-2">
                                 Clínica
                             </span>
-                            <span className="text-white/60 text-[9px] uppercase tracking-[0.6em] ml-1 font-bold">
+                            <span className="text-white/40 text-[var(--font-small)] uppercase tracking-[var(--font-small-tracking)] ml-1 font-semibold">
                                 Excellence in Dentistry
                             </span>
                         </m.div>
