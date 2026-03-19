@@ -389,12 +389,12 @@ export function Hero() {
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
-                        font-family: var(--font-headline);
-                        font-size: clamp(14px, 1.8vw, 18px);
+                        font-family: var(--font-ui);
+                        font-size: clamp(12px, 1.6vw, 16px);
                         font-weight: 500;
-                        letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
+                        letter-spacing: 0.5em;
                         text-transform: uppercase;
-                        color: rgba(255, 255, 255, 0.5);
+                        color: var(--color-text-secondary);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
@@ -426,12 +426,12 @@ export function Hero() {
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(72px, 11vw, 120px); /* Increased for stronger presence on left */
-                        font-weight: 800; /* ExtraBold — matches reference dental clinic style */
-                        font-style: italic;
-                        letter-spacing: -0.03em;
-                        line-height: 0.85;
-                        color: #FFFFFF;
+                        font-size: clamp(72px, 11vw, 120px);
+                        font-weight: 700;
+                        font-style: normal;
+                        letter-spacing: -0.02em;
+                        line-height: 0.9;
+                        color: var(--color-text-primary);
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
                         padding: 0;
