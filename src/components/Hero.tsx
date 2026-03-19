@@ -384,7 +384,7 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 25%;
+                        top: 32%;
                         left: 5%;
                         transform: translateY(-50%);
                         text-align: left;
@@ -394,43 +394,43 @@ export function Hero() {
                         font-weight: 500;
                         letter-spacing: 0.6em; /* Ultra-wide tracking for gallery feel */
                         text-transform: uppercase;
-                        color: rgba(255, 255, 255, 0.6);
+                        color: rgba(255, 255, 255, 0.5);
                         text-shadow: 0 4px 15px rgba(0,0,0,0.4);
                         white-space: nowrap;
                         z-index: 10;
                         display: flex;
                         align-items: center;
                         gap: 20px;
-                        max-width: 32vw;
+                        max-width: 30vw;
                     }
 
                     .hero-line-1::before,
                     .hero-line-1::after {
                         content: '';
-                        width: 40px;
+                        width: 25px;
                         height: 1px;
-                        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
-                        display: block;
+                        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                        display: none;
                     }
 
                     .hero-line-2 {
                         position: absolute;
-                        top: 50%;
+                        top: 56%;
                         left: 5%;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
                         z-index: 10;
-                        max-width: 32vw;
+                        max-width: 30vw;
                     }
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(64px, 10vw, 110px); /* Massive, impactful size */
+                        font-size: clamp(72px, 11vw, 120px); /* Increased for stronger presence on left */
                         font-weight: 800; /* ExtraBold — matches reference dental clinic style */
                         font-style: italic;
                         letter-spacing: -0.03em;
-                        line-height: 0.9;
+                        line-height: 0.85;
                         color: #FFFFFF;
                         filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
                         margin: 0;
@@ -441,11 +441,12 @@ export function Hero() {
                     .hero-line-2::before {
                         content: '';
                         position: absolute;
-                        left: -28px;
-                        top: 0;
-                        width: 3px;
-                        height: 100%;
-                        background: linear-gradient(180deg, rgba(var(--color-accent-gold-rgb), 0.6) 0%, rgba(var(--color-accent-gold-rgb), 0.1) 100%);
+                        left: -32px;
+                        top: 8%;
+                        width: 4px;
+                        height: 85%;
+                        background: linear-gradient(180deg, rgba(var(--color-accent-gold-rgb), 0.7) 0%, rgba(var(--color-accent-gold-rgb), 0.15) 100%);
+                        border-radius: 2px;
                     }
 
                     .hero-line-2::after {
@@ -556,9 +557,9 @@ export function Hero() {
 
                     @media (max-width: 1024px) {
                         .hero-line-2 h2 {
-                            font-size: clamp(40px, 8vw, 50px);
+                            font-size: clamp(52px, 9vw, 72px);
                             white-space: normal;
-                            max-width: 90vw;
+                            max-width: 32vw;
                         }
                         .hero-btn-wrapper {
                             bottom: 15vh;
@@ -570,24 +571,25 @@ export function Hero() {
                             top: 0;
                         }
                         .hero-line-1 {
-                            top: 35%;
+                            top: 32%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
-                            max-width: 90vw;
+                            max-width: 85vw;
                         }
                         .hero-line-2 {
+                            top: 56%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
-                            max-width: 90vw;
+                            max-width: 85vw;
                         }
                         .hero-line-2::before {
                             display: none;
                         }
                         .hero-line-2 h2 {
-                            font-size: clamp(36px, 10vw, 46px);
-                            line-height: 1.1;
+                            font-size: clamp(40px, 10vw, 60px);
+                            line-height: 1;
                         }
                         .hero-btn-wrapper {
                             left: 50%;
