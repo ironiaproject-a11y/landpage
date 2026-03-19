@@ -49,10 +49,10 @@ img, svg, video, canvas {
   --color-background:        var(--color-bg-dark);
 
 
-  /* ── TYPOGRAPHY TOKENS (Refactored) ──────────────────────────────── */
-  /* Headline: Heavy Sans-serif (bold, impactful) */
-  /* UI: Clean sans-serif (modern) */
-  --font-headline: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* ── TYPOGRAPHY TOKENS (Premium Refined) ──────────────────────────────── */
+  /* Headline: Poppins Bold (sophisticated, premium) */
+  /* UI: Inter (clean, modern, accessible) */
+  --font-headline: "Poppins", system-ui, sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* ── Typography Scale ─────────────────────────────────── */
@@ -231,26 +231,26 @@ h6 {
 }
 
 /* ── H1 / Hero Title ──────
-   Helvetica Neue Bold | font-weight 800 | clamp(48px, 8vw, 96px)
-   line-height 0.95 | letter-spacing -0.03em | Impactful, Heavy
+   Poppins Bold/SemiBold | font-weight 700 | clamp(56px, 8vw, 96px)
+   line-height 0.95–1.0 | letter-spacing -0.01em | Refined, Premium
    ─────────────────────────────────────────────────────────── */
 h1,
 .hero-title {
   font-family: var(--font-headline);
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
 }
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
   font-family: var(--font-headline);
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),

@@ -351,14 +351,14 @@ export function Hero() {
                     .hero-overlay {
                         position: absolute;
                         inset: 0;
-                        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
+                        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
                         z-index: 2;
                         pointer-events: none;
                     }
 
                     @media (max-width: 768px) {
                         .hero-overlay {
-                            background: rgba(0,0,0,0.45);
+                            background: rgba(0,0,0,0.55);
                         }
                     }
 
@@ -384,69 +384,57 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 26%;
+                        top: 30%;
                         left: 5%;
+                        max-width: 550px;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
-                        font-family: var(--font-headline);
-                        font-size: clamp(13px, 1.5vw, 18px);
-                        font-weight: 700;
-                        letter-spacing: 0.3em;
-                        text-transform: uppercase;
-                        color: var(--color-text-secondary);
-                        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-                        white-space: nowrap;
                         z-index: 10;
-                        display: flex;
-                        align-items: center;
-                        gap: 20px;
-                        max-width: 40vw;
+                    }
+
+                    .hero-line-1 h1 {
+                        font-family: var(--font-headline);
+                        font-size: clamp(56px, 8vw, 96px);
+                        font-weight: 700;
+                        line-height: 0.98;
+                        letter-spacing: -0.01em;
+                        color: var(--color-text-primary);
+                        margin: 0;
+                        padding: 0;
+                        filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
                     }
 
                     .hero-line-1::before,
                     .hero-line-1::after {
-                        content: '';
-                        width: 25px;
-                        height: 1px;
-                        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
                         display: none;
                     }
 
                     .hero-line-2 {
                         position: absolute;
-                        top: 58%;
+                        top: 45%;
                         left: 5%;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
                         z-index: 10;
-                        max-width: 32vw;
+                        max-width: 550px;
                     }
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(72px, 12vw, 130px);
-                        font-weight: 800;
-                        font-style: normal;
-                        letter-spacing: -0.03em;
-                        line-height: 0.92;
-                        color: var(--color-text-primary);
-                        filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
+                        font-size: clamp(18px, 3vw, 28px);
+                        font-weight: 400;
+                        line-height: 1.3;
+                        letter-spacing: 0.01em;
+                        color: var(--color-text-secondary);
                         margin: 0;
                         padding: 0;
-                        position: relative;
+                        text-shadow: 0 4px 12px rgba(0,0,0,0.5);
                     }
 
                     .hero-line-2::before {
-                        content: '';
-                        position: absolute;
-                        left: -32px;
-                        top: 8%;
-                        width: 4px;
-                        height: 85%;
-                        background: linear-gradient(180deg, rgba(var(--color-accent-gold-rgb), 0.7) 0%, rgba(var(--color-accent-gold-rgb), 0.15) 100%);
-                        border-radius: 2px;
+                        display: none;
                     }
 
                     .hero-line-2::after {
@@ -556,11 +544,6 @@ export function Hero() {
                     }
 
                     @media (max-width: 1024px) {
-                        .hero-line-2 h2 {
-                            font-size: clamp(56px, 9vw, 88px);
-                            white-space: normal;
-                            max-width: 38vw;
-                        }
                         .hero-btn-wrapper {
                             bottom: 15vh;
                         }
@@ -571,25 +554,24 @@ export function Hero() {
                             top: 0;
                         }
                         .hero-line-1 {
-                            top: 26%;
+                            top: 30%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
                             max-width: 90vw;
                         }
+                        .hero-line-1 h1 {
+                            font-size: clamp(42px, 9vw, 72px);
+                        }
                         .hero-line-2 {
-                            top: 58%;
+                            top: 45%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
-                            max-width: 95vw;
-                        }
-                        .hero-line-2::before {
-                            display: none;
+                            max-width: 90vw;
                         }
                         .hero-line-2 h2 {
-                            font-size: clamp(42px, 10vw, 64px);
-                            line-height: 0.98;
+                            font-size: clamp(16px, 2.5vw, 24px);
                         }
                         .hero-btn-wrapper {
                             left: 50%;
