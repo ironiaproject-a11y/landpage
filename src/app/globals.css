@@ -14,45 +14,45 @@ img, svg, video, canvas {
 
 :root {
   /* ── PREMIUM COLOR TOKENS (Refactored) ─────────────────────────── */
-  /* Palette: Charcoal (#0B0B0B) + Gold (#C7A86B) + Off-White (#F5F5F5) */
-  --color-bg-dark:          #0B0B0B;
-  --color-bg-off-black:     #0B0B0B;   /* unified dark background */
-  --color-bg-light:         #F7F3EE;   /* off-white alternative */
-  --color-bg-off-white:     #F5F5F5;   /* premium light gray */
-  --color-text-primary:     #F5F5F5;
-  --color-text-secondary:   rgba(255,255,255,0.72);
-  --color-text-tertiary:    rgba(255,255,255,0.48);
-  --color-ui-muted:         #6B7280;
+  /* Palette: Pure Black + Pure White + Gold (bold, high contrast) */
+  --color-bg-dark:          #000000;
+  --color-bg-off-black:     #000000;   /* pure black */
+  --color-bg-light:         #FFFFFF;   /* pure white for sections */
+  --color-bg-off-white:     #FFFFFF;   /* pure white */
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   rgba(255,255,255,0.80);
+  --color-text-tertiary:    rgba(255,255,255,0.60);
+  --color-ui-muted:         #666666;
 
   /* On-light-background variants */
-  --color-text-on-light:          #0B0B0B;
-  --color-text-secondary-on-light: rgba(0,0,0,0.55);
+  --color-text-on-light:          #000000;
+  --color-text-secondary-on-light: rgba(0,0,0,0.70);
 
   /* Premium Gold Accent System */
   --color-accent-gold:      #C7A86B;
   --color-accent-gold-rgb:  199, 168, 107;
-  --color-accent:           rgba(199, 168, 107, 0.6);  /* Gold accent (max opac. 0.6) */
+  --color-accent:           rgba(199, 168, 107, 0.6);  /* Gold accent */
   --color-accent-soft:      rgba(199, 168, 107, 0.3);
   --color-accent-glow:      rgba(199, 168, 107, 0.08);
 
   /* Surface & Border Tokens */
-  --color-surface-elevated: rgba(245,245,245,0.04); /* glassmorphism cards */
-  --color-border-subtle:    rgba(245,245,245,0.08); /* dividers, card edges */
-  --color-border-hover:     rgba(245,245,245,0.15); /* interactive borders */
+  --color-surface-elevated: rgba(255,255,255,0.06); /* glassmorphism cards */
+  --color-border-subtle:    rgba(255,255,255,0.10); /* dividers, card edges */
+  --color-border-hover:     rgba(255,255,255,0.20); /* interactive borders */
 
   /* ── Legacy aliases (mapped to new tokens) ────── */
   --color-premium-dark:      var(--color-bg-dark);
   --color-premium-white:     var(--color-text-primary);
   --color-premium-gold:      var(--color-accent-gold);  /* Gold accent */
   --color-premium-slate:     var(--color-ui-muted);
-  --color-premium-charcoal:  #0B0B0B;
+  --color-premium-charcoal:  #000000;
   --color-background:        var(--color-bg-dark);
 
 
   /* ── TYPOGRAPHY TOKENS (Refactored) ──────────────────────────────── */
-  /* Headline: Playfair Display (serif, elegant) */
-  /* UI: Inter (clean, modern, accessible) */
-  --font-headline: "Playfair Display", serif;
+  /* Headline: Heavy Sans-serif (bold, impactful) */
+  /* UI: Clean sans-serif (modern) */
+  --font-headline: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* ── Typography Scale ─────────────────────────────────── */
@@ -231,26 +231,26 @@ h6 {
 }
 
 /* ── H1 / Hero Title ──────
-   Playfair Display | font-weight 600 | clamp(40px, 6vw, 72px)
-   line-height 1.15 | letter-spacing -0.02em
+   Helvetica Neue Bold | font-weight 800 | clamp(48px, 8vw, 96px)
+   line-height 0.95 | letter-spacing -0.03em | Impactful, Heavy
    ─────────────────────────────────────────────────────────── */
 h1,
 .hero-title {
   font-family: var(--font-headline);
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   color: var(--color-text-primary);
 }
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
   font-family: var(--font-headline);
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),

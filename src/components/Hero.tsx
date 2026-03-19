@@ -384,24 +384,24 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 32%;
+                        top: 26%;
                         left: 5%;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
-                        font-family: var(--font-ui);
-                        font-size: clamp(12px, 1.6vw, 16px);
-                        font-weight: 500;
-                        letter-spacing: 0.5em;
+                        font-family: var(--font-headline);
+                        font-size: clamp(13px, 1.5vw, 18px);
+                        font-weight: 700;
+                        letter-spacing: 0.3em;
                         text-transform: uppercase;
                         color: var(--color-text-secondary);
-                        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
                         white-space: nowrap;
                         z-index: 10;
                         display: flex;
                         align-items: center;
                         gap: 20px;
-                        max-width: 30vw;
+                        max-width: 40vw;
                     }
 
                     .hero-line-1::before,
@@ -415,24 +415,24 @@ export function Hero() {
 
                     .hero-line-2 {
                         position: absolute;
-                        top: 56%;
+                        top: 58%;
                         left: 5%;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
                         z-index: 10;
-                        max-width: 30vw;
+                        max-width: 32vw;
                     }
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(72px, 11vw, 120px);
-                        font-weight: 700;
+                        font-size: clamp(72px, 12vw, 130px);
+                        font-weight: 800;
                         font-style: normal;
-                        letter-spacing: -0.02em;
-                        line-height: 0.9;
+                        letter-spacing: -0.03em;
+                        line-height: 0.92;
                         color: var(--color-text-primary);
-                        filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6));
+                        filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
                         margin: 0;
                         padding: 0;
                         position: relative;
@@ -557,9 +557,9 @@ export function Hero() {
 
                     @media (max-width: 1024px) {
                         .hero-line-2 h2 {
-                            font-size: clamp(52px, 9vw, 72px);
+                            font-size: clamp(56px, 9vw, 88px);
                             white-space: normal;
-                            max-width: 32vw;
+                            max-width: 38vw;
                         }
                         .hero-btn-wrapper {
                             bottom: 15vh;
@@ -571,25 +571,25 @@ export function Hero() {
                             top: 0;
                         }
                         .hero-line-1 {
-                            top: 32%;
+                            top: 26%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
-                            max-width: 85vw;
+                            max-width: 90vw;
                         }
                         .hero-line-2 {
-                            top: 56%;
+                            top: 58%;
                             left: 50%;
                             transform: translateX(-50%) translateY(-50%);
                             text-align: center;
-                            max-width: 85vw;
+                            max-width: 95vw;
                         }
                         .hero-line-2::before {
                             display: none;
                         }
                         .hero-line-2 h2 {
-                            font-size: clamp(40px, 10vw, 60px);
-                            line-height: 1;
+                            font-size: clamp(42px, 10vw, 64px);
+                            line-height: 0.98;
                         }
                         .hero-btn-wrapper {
                             left: 50%;
