@@ -193,7 +193,7 @@ export function Hero() {
             // --- CINEMATIC TEXT ANIMATIONS (Run regardless of video loading) ---
 
             // Initial state: hidden
-            tl.set([".hero-line-intro", ".hero-line-main"], { opacity: 0 });
+            gsap.set([".hero-line-intro", ".hero-line-main"], { opacity: 0 });
 
             // Line 1: Sua origem
             introTl.fromTo(".hero-line-intro", 
