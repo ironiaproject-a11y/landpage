@@ -192,26 +192,44 @@ export function Hero() {
 
             // --- CINEMATIC TEXT ANIMATIONS (Run regardless of video loading) ---
 
-            // 0.5s - show massive text 
-            introTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 30, filter: "blur(10px)" },
+            // Initial state: hidden
+            tl.set([".hero-line-intro", ".hero-line-main"], { opacity: 0 });
+
+            // Line 1: Sua origem
+            introTl.fromTo(".hero-line-intro", 
+                { opacity: 0, y: 40, filter: "blur(10px)" },
+                { 
+                    opacity: 0.8, 
+                    y: 0, 
+                    filter: "blur(0px)",
+                    duration: 1.5, 
+                    ease: "power2.out" 
+                },
+                0.8
+            );
+
+            // Line 2: Seu sorriso
+            introTl.fromTo(".hero-line-main", 
+                { opacity: 0, y: 80, filter: "blur(15px)", scale: 0.95 },
                 { 
                     opacity: 1, 
                     y: 0, 
                     filter: "blur(0px)",
-                    duration: 2.5, 
+                    scale: 1,
+                    duration: 1.8, 
                     ease: "expo.out" 
                 },
-                0.5
+                1.1
             );
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
                 // At the start of the scroll (T=0)
-                tl.set(".hero-line-1", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-line-intro", { opacity: 0.8, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-line-main", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
                 
                 // T=0.5 -> 3.5: User scrolls down, title fades out backwards
-                tl.to(".hero-line-1", 
-                    { opacity: 0, y: -20, filter: "blur(10px)", duration: 3, ease: "power2.in" },
+                tl.to([".hero-line-intro", ".hero-line-main"], 
+                    { opacity: 0, y: -40, filter: "blur(10px)", duration: 3, ease: "power2.in", stagger: 0.1 },
                     0.5
                 );
 
@@ -350,23 +368,36 @@ export function Hero() {
                         height: 100%;
                     }
 
+                    .hero-line-intro {
+                        font-family: 'Source Serif 4', serif;
+                        font-size: clamp(28px, 3vw, 40px);
+                        font-weight: 400;
+                        color: #FFFFFF;
+                        opacity: 0; /* Animated */
+                        letter-spacing: -0.01em;
+                        margin-bottom: 0.5rem;
+                        display: block;
+                    }
+
+                    .hero-line-main {
+                        font-family: 'Source Serif 4', serif;
+                        font-size: clamp(64px, 9vw, 110px);
+                        font-weight: 500;
+                        color: #FFFFFF;
+                        line-height: 1.05;
+                        letter-spacing: -0.02em;
+                        opacity: 0; /* Animated */
+                        display: block;
+                    }
+
                     .hero-line-1 {
                         position: absolute;
                         top: 50%;
-                        left: 5%;
-                        max-width: 1000px;
+                        left: 8%; /* Increased for more breathing room */
+                        max-width: fit-content;
                         transform: translateY(-50%);
                         text-align: left;
-                        opacity: 0;
                         z-index: 10;
-                    }
-
-                    .hero-line-1 h1 {
-                        color: #FFFFFF;
-                        margin: 0;
-                        padding: 0;
-                        text-transform: none;
-                        text-shadow: 0 4px 20px rgba(0,0,0,0.6);
                     }
 
                     .hero-btn-wrapper {
@@ -501,10 +532,8 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text">
                         <div className="hero-line-1">
-                            <h1 className="text-level-1">
-                                Sua origem,<br />
-                                seu sorriso
-                            </h1>
+                            <span className="hero-line-intro">Sua origem</span>
+                            <h1 className="hero-line-main">Seu sorriso</h1>
                         </div>
                     </div>
                 </div>
