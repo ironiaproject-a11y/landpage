@@ -34,22 +34,22 @@ export function Contact() {
                     {/* Info Side */}
                     <div className="lg:w-1/3">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-caption-marker mb-10 block">
+                            <span className="text-level-4 uppercase mb-10 block">
                                 Contato
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 mb-12 uppercase">
+                        <h2 className="text-level-2 mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white text-serif-accent block mt-4">novo sorriso?</span>
+                                <span className="text-white text-level-3 italic block mt-4">novo sorriso?</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-body-refined mb-12">
+                            <p className="text-level-3 mb-12">
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -66,8 +66,8 @@ export function Contact() {
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-caption-marker mb-2 opacity-40">{item.title}</h4>
-                                            <a href={item.href} className="text-[var(--color-text-primary)] hover:text-white transition-colors text-sm font-medium">{item.value}</a>
+                                            <h4 className="text-level-4 uppercase mb-2"> {item.title} </h4>
+                                            <a href={item.href} className="text-white hover:text-white transition-colors text-level-3 font-medium"> {item.value} </a>
                                         </div>
                                     </div>
                                 </PremiumReveal>
@@ -103,45 +103,45 @@ export function Contact() {
                             >
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                     <div className="space-y-3">
-                                        <label className="text-caption-marker opacity-40 ml-1 block">Nome</label>
+                                        <label className="text-level-4 uppercase ml-1 block">Nome</label>
                                         <input
                                             name="name"
                                             type="text"
                                             required
                                             placeholder="Seu nome"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-level-3"
                                         />
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-caption-marker opacity-40 ml-1 block">WhatsApp</label>
+                                        <label className="text-level-4 uppercase ml-1 block">WhatsApp</label>
                                         <input
                                             name="phone"
                                             type="tel"
                                             required
                                             placeholder="(00) 0 0000-0000"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-level-3"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-caption-marker opacity-40 ml-1 block">Email</label>
+                                    <label className="text-level-4 uppercase ml-1 block">Email</label>
                                     <input
                                         name="email"
                                         type="email"
                                         required
                                         placeholder="seu@email.com"
-                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-level-3"
                                     />
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-caption-marker opacity-40 ml-1 block">Como podemos ajudar?</label>
+                                    <label className="text-level-4 uppercase ml-1 block">Como podemos ajudar?</label>
                                     <textarea
                                         name="message"
                                         rows={4}
                                         placeholder="Descreva brevemente seu objetivo..."
-                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all resize-none text-body-refined"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all resize-none text-level-3"
                                     />
                                 </div>
 
@@ -156,7 +156,7 @@ export function Contact() {
                                     )}
                                 >
                                     <AnimatePresence mode="wait">
-                                        <m.span key={formStatus} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                                        <m.span key={formStatus} className="text-level-4 font-bold uppercase" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                                             {formStatus === "idle" && "Solicitar Agendamento de Luxo"}
                                             {formStatus === "sending" && "Enviando Requisição..."}
                                             {formStatus === "sent" && "Solicitação Confirmada"}
@@ -185,14 +185,14 @@ export function Contact() {
                             Localização Privilegiada
                         </span>
                         <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>
-                        <p className="text-[10px] md:text-xs text-[var(--color-text-secondary)] leading-relaxed mb-5 opacity-90">
+                        <p className="text-level-4 text-[var(--color-text-secondary)] leading-relaxed mb-5 opacity-90">
                             Ambiente exclusivo com estacionamento privativo e manobrista para sua total comodidade.
                         </p>
                         <a
                             href="https://goo.gl/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
+                            className="text-white/60 text-level-4 font-bold uppercase flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
                         >
                             Ver no Google Maps <span className="text-lg">→</span>
                         </a>

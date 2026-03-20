@@ -48,10 +48,10 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
             >
                 {/* Labels */}
                 <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
-                    <span className="text-[10px] text-[var(--color-text-primary)] font-bold uppercase tracking-[0.2em]">Antes</span>
+                    <span className="text-level-4 uppercase">Antes</span>
                 </div>
                 <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
-                    <span className="text-[10px] text-[var(--color-text-primary)] font-bold uppercase tracking-[0.2em]">Depois</span>
+                    <span className="text-level-4 uppercase">Depois</span>
                 </div>
 
                 <MediaCard
@@ -179,19 +179,19 @@ export function CaseStudies() {
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-3xl mb-16 md:mb-32">
                     <PremiumReveal direction="bottom" delay={0.1}>
-                        <span className="text-caption-marker mb-10 block">
+                        <span className="text-level-4 uppercase mb-10 block">
                             Casos Clínicos
                         </span>
                     </PremiumReveal>
 
-                    <h2 className="text-h2 mb-12 uppercase max-w-[500px]">
+                    <h2 className="text-level-2 mb-12 uppercase max-w-[500px]">
                         <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                             <span>Resultados que <br /> falam por si.</span>
                         </PremiumReveal>
                     </h2>
 
                     <PremiumReveal direction="bottom" delay={0.4}>
-                        <p className="text-body-refined max-w-xl text-white/70">
+                        <p className="text-level-3 max-w-xl">
                             Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
                         </p>
                     </PremiumReveal>

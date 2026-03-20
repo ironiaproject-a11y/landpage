@@ -83,17 +83,17 @@ export function FAQ() {
                     {/* Header */}
                     <div className="text-left mb-16 md:mb-32">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-caption-marker mb-10 block">
+                            <span className="text-level-4 uppercase mb-10 block">
                                 Dúvidas Frequentes
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 uppercase">
+                        <h2 className="text-level-2 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Alguma outra</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white text-serif-accent block mt-4">dúvida?</span>
+                                <span className="text-white text-level-3 italic block mt-4">dúvida?</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -117,7 +117,7 @@ export function FAQ() {
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-xl md:text-2xl font-serif font-medium text-[var(--color-text-primary)] tracking-editorial group-hover:text-white transition-colors leading-tight">
+                                            <span className="text-level-3 font-semibold text-white transition-colors leading-tight">
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -139,7 +139,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-body-refined text-white/70 max-w-2xl">
+                                                    <p className="text-level-3">
                                                         {faq.answer}
                                                     </p>
                                                 </div>
@@ -158,14 +158,14 @@ export function FAQ() {
                         viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         className="text-center"
                     >
-                        <p className="text-caption-marker mb-8">
+                        <p className="text-level-4 uppercase mb-8">
                             Ainda tem alguma dúvida específica?
                         </p>
                         <m.button
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => window.open('https://wa.me/551837433000', '_blank')}
-                            className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-white/50"
+                            className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-white/50 text-level-4 uppercase"
                         >
                             Falar com um Especialista
                         </m.button>

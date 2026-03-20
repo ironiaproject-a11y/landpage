@@ -192,22 +192,22 @@ export function Amenities() {
                     {/* Left Column: Context & Sticky Image */}
                     <div className="lg:w-5/12 sticky top-32">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/40 font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">
+                            <span className="text-level-4 uppercase mb-8 block">
                                 Hospitality
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 font-bold text-white leading-[1.05] mb-12 uppercase">
+                        <h2 className="text-level-2 mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Experiência</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-display italic font-light block mt-2">Cinco Estrelas.</span>
+                                <span className="text-white text-level-3 italic block mt-2">Cinco Estrelas.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-body-refined text-[#94A3B8] mb-12 max-w-md">
+                            <p className="text-level-3 mb-12 max-w-md">
                                 Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
                             </p>
                         </PremiumReveal>
@@ -223,8 +223,8 @@ export function Amenities() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
                                 <div className="absolute bottom-8 left-8 z-20">
-                                    <div className="text-[10px] uppercase tracking-[0.3em] text-[#6B7280] mb-2">Ambiente</div>
-                                    <div className="text-2xl font-display text-white">Lounge Private</div>
+                                    <div className="text-level-4 uppercase mb-2">Ambiente</div>
+                                    <div className="text-level-2">Lounge Private</div>
                                 </div>
                             </div>
                         </PremiumReveal>
@@ -243,14 +243,14 @@ export function Amenities() {
                                     className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
-                                        <h3 className="text-h3 font-bold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
+                                        <h3 className="text-level-3 font-semibold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
                                             {item.title}
                                         </h3>
-                                        <span className="text-[var(--font-small)] font-bold text-[#6B7280] uppercase tracking-[var(--font-small-tracking)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">
+                                        <span className="text-level-4 uppercase group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">
                                             0{index + 1}
                                         </span>
                                     </div>
-                                    <p className="text-body-refined text-[#94A3B8] max-w-lg transition-all duration-500 delay-75 ease-out pl-0 md:pl-0">
+                                    <p className="text-level-3">
                                         {item.description}
                                     </p>
                                 </m.div>

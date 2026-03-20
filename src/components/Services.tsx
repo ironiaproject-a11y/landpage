@@ -65,20 +65,20 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="p-10 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-white/40 font-ui text-[9px] font-bold tracking-[0.4em] uppercase">Pilar {service.tag}</span>
+                        <span className="text-level-4 text-white/40 uppercase">Pilar {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="text-h3 text-white transition-colors duration-700 uppercase">
+                    <h3 className="text-level-2 text-white transition-colors duration-700 uppercase">
                         {service.title}
                     </h3>
 
-                    <p className="text-[var(--color-text-secondary)] leading-[var(--font-body-line-height)] text-[var(--font-body)] mb-8 md:mb-12 font-[var(--font-body-weight)]">
+                    <p className="text-level-3 mb-8 md:mb-12">
                         {service.description}
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-[12px] font-semibold tracking-[0.1em] uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white" style={{ fontFamily: 'var(--font-ui)' }}>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-level-4 uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white">
                             <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
@@ -296,12 +296,12 @@ export function Services() {
 
             <div className="max-w-4xl mb-16 md:mb-32 px-6 md:px-0">
                 <PremiumReveal direction="bottom" delay={0.1}>
-                    <span className="editorial-label">
+                    <span className="text-level-4 uppercase">
                         Tratamentos de Elite
                     </span>
                 </PremiumReveal>
 
-                <h2 className="text-h2 text-white max-w-[700px] uppercase">
+                <h2 className="text-level-2 text-white max-w-[700px] uppercase">
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                         <span>Soluções clínicas de <br /> Extrema Precisão.</span>
                     </PremiumReveal>

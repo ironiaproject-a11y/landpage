@@ -106,12 +106,12 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-h3 font-bold tracking-[-1px] text-white leading-tight uppercase">
+                                    <h3 className="text-level-2 font-bold text-white uppercase">
                                         Clínica<span className="text-white italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-body-refined text-[var(--color-text-secondary)]">
+                            <p className="text-level-3">
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">
@@ -142,14 +142,14 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-caption-marker opacity-40 mb-8">Navegação</h4>
+                            <h4 className="text-level-4 uppercase mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
                                     <a
                                         href={link.href}
-                                        className="text-[var(--color-text-secondary)] hover:text-white transition-all text-sm font-medium flex items-center group"
+                                        className="text-level-3 hover:text-white transition-all font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-white transition-all mr-0 group-hover:mr-2"></span>
                                         {link.name}
@@ -162,14 +162,14 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-caption-marker opacity-40 mb-8">Especialidades</h4>
+                            <h4 className="text-level-4 uppercase mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
                                 <li key={index}>
                                     <a
                                         href="#servicos"
-                                        className="text-[var(--color-text-secondary)] hover:text-white transition-all text-sm font-medium flex items-center group"
+                                        className="text-level-3 hover:text-white transition-all font-medium flex items-center group"
                                     >
                                         <span className="w-0 group-hover:w-3 h-[1px] bg-white transition-all mr-0 group-hover:mr-2"></span>
                                         {service.name}
@@ -182,25 +182,25 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-caption-marker opacity-40 mb-8">Onde Estamos</h4>
+                            <h4 className="text-level-4 uppercase mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
                                 <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-white/30 transition-colors">
                                     <MapPin strokeWidth={1} className="w-5 h-5 text-white/60" />
                                 </div>
-                                <div className="text-sm">
-                                    <p className="font-bold text-[var(--color-text-primary)] mb-1">Unidade Central</p>
-                                    <p className="text-[var(--color-text-secondary)]">Centro, Pereira Barreto - SP</p>
-                                    <p className="text-[var(--color-text-secondary)]">Brasil</p>
+                                <div className="text-level-3">
+                                    <p className="font-bold text-white mb-1">Unidade Central</p>
+                                    <p>Centro, Pereira Barreto - SP</p>
+                                    <p>Brasil</p>
                                 </div>
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-white/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-bold text-[var(--color-text-primary)] hover:text-white transition-colors">
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-level-3 font-bold text-white hover:text-white transition-colors">
                                     <Phone strokeWidth={1} className="w-5 h-5 text-white/60" />
                                     {COMPANY_PHONE}
                                 </a>
-                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-white transition-colors">
+                                <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-level-3 font-medium hover:text-white transition-colors">
                                     <Mail strokeWidth={1} className="w-5 h-5 text-white/60" />
                                     {COMPANY_EMAIL}
                                 </a>
@@ -213,11 +213,11 @@ export function Footer() {
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex flex-col items-center md:items-start gap-1">
-                            <p className="text-[var(--color-text-tertiary)] text-[var(--font-small)] font-normal leading-relaxed">
+                            <p className="text-level-4">
                                 © {currentYear} Clínica Odontologia. Todos os direitos reservados.
                             </p>
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-[#F8F8F6]/20 font-mono tracking-tighter uppercase">Build: 53e99ac5</span>
+                                <span className="text-level-4 text-[#F8F8F6]/20 font-mono uppercase">Build: 53e99ac5</span>
                                 <button
                                     onClick={() => {
                                         if (typeof window !== 'undefined') {
@@ -226,17 +226,17 @@ export function Footer() {
                                             window.location.reload();
                                         }
                                     }}
-                                    className="text-[10px] text-white/40 hover:text-white underline underline-offset-2 transition-colors"
+                                    className="text-level-4 text-white/40 hover:text-white underline underline-offset-2 transition-colors"
                                 >
                                     Atualizar Versão
                                 </button>
                             </div>
                         </div>
                         <div className="flex gap-6">
-                            <a href="#" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-silver-bh)] transition-colors text-xs font-medium">
+                            <a href="#" className="text-level-4 hover:text-[var(--color-silver-bh)] transition-colors font-medium">
                                 Políticas
                             </a>
-                            <a href="#" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-silver-bh)] transition-colors text-xs font-medium">
+                            <a href="#" className="text-level-4 hover:text-[var(--color-silver-bh)] transition-colors font-medium">
                                 Termos
                             </a>
                         </div>

@@ -362,11 +362,6 @@ export function Hero() {
                     }
 
                     .hero-line-1 h1 {
-                        font-family: var(--font-sans);
-                        font-size: clamp(60px, 11vw, 150px);
-                        font-weight: 800;
-                        line-height: 0.85;
-                        letter-spacing: -0.05em;
                         color: #FFFFFF;
                         margin: 0;
                         padding: 0;
@@ -448,8 +443,7 @@ export function Hero() {
                     }
 
                      .scroll-indicator-text {
-                        @apply text-caption-marker;
-                        color: var(--color-premium-slate);
+                        color: rgba(255, 255, 255, 0.5);
                         animation: pulse 2s infinite ease-in-out;
                     }
 
@@ -489,9 +483,6 @@ export function Hero() {
                             width: calc(100vw - 40px);
                             text-align: left;
                         }
-                        .hero-line-1 h1 {
-                            font-size: clamp(48px, 14vw, 80px);
-                        }
                         .hero-btn-wrapper {
                             left: 50%;
                             transform: translateX(-50%) translateZ(150px);
@@ -510,7 +501,7 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text">
                         <div className="hero-line-1">
-                            <h1>
+                            <h1 className="text-level-1">
                                 Sua origem,<br />
                                 seu sorriso
                             </h1>
@@ -520,7 +511,7 @@ export function Hero() {
 
                 {/* Call to Scroll Indicator */}
                 <div className="scroll-indicator-wrapper">
-                    <span className="scroll-indicator-text">Role para descobrir</span>
+                    <span className="scroll-indicator-text text-level-4 uppercase">Role para descobrir</span>
                     <div className="scroll-indicator-line" />
                 </div>
             </section>

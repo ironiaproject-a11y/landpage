@@ -120,17 +120,17 @@ export function Experience() {
                     {/* Left Side */}
                     <div className="lg:w-1/2">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-caption-marker mb-10 block">
+                            <span className="text-level-4 uppercase mb-10 block">
                                 A Jornada do Paciente
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 mb-12 uppercase">
+                        <h2 className="text-level-2 mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>O Protocolo de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white text-serif-accent block mt-4">Transformação.</span>
+                                <span className="text-white text-level-3 italic block mt-4">Transformação.</span>
                             </PremiumReveal>
                         </h2>
 
@@ -142,13 +142,13 @@ export function Experience() {
                                     <div className="flex flex-col items-center pt-1">
                                         <Magnetic strength={0.3} range={60}>
                                             <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all duration-500 bg-[#0A0A0A] backdrop-blur-sm shadow-premium-1">
-                                                <span className="text-white font-display text-sm font-bold tracking-widest">{step.number}</span>
+                                                <span className="text-level-4 font-bold uppercase">{step.number}</span>
                                             </div>
                                         </Magnetic>
                                     </div>
                                     <div className="pb-8">
-                                        <h3 className="font-serif text-2xl font-medium text-white mb-2">{step.title}</h3>
-                                        <p className="text-white/60 text-body-refined max-w-md">
+                                        <h3 className="text-level-3 font-semibold text-white mb-2">{step.title}</h3>
+                                        <p className="text-level-3 max-w-md">
                                             {step.description}
                                         </p>
                                     </div>
@@ -177,8 +177,8 @@ export function Experience() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                                     <div className="absolute bottom-12 left-12 right-12 z-20 experience-image-content">
                                         <div className="experience-content-parallax">
-                                            <p className="text-white font-display text-3xl font-bold mb-2 uppercase tracking-tight">Exclusividade</p>
-                                            <p className="text-white/60 text-sm font-light tracking-wide max-w-xs leading-relaxed">Planejamento personalizado e alta tecnologia para cada sorriso de elite.</p>
+                                            <p className="text-level-2 mb-2 uppercase tracking-tight">Exclusividade</p>
+                                            <p className="text-level-3 max-w-xs">Planejamento personalizado e alta tecnologia para cada sorriso de elite.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -190,9 +190,9 @@ export function Experience() {
 
                 <div ref={ctaRef} className="mt-16 md:mt-32 flex justify-center">
                     <div className="inline-flex flex-col md:flex-row items-center gap-6 px-10 py-8 rounded-[2rem] border border-white/5 bg-white/2 hover:border-white/30 transition-all group cursor-pointer backdrop-blur-sm">
-                        <span className="text-white/60 text-sm font-medium">Pronto para sua própria jornada de elite?</span>
+                        <span className="text-level-3">Pronto para sua própria jornada de elite?</span>
                         <div className="hidden md:block w-[1px] h-6 bg-white/10" />
-                        <span className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3">
+                        <span className="text-level-4 uppercase flex items-center gap-3">
                             Falar com um Especialista
                             <ArrowRight strokeWidth={1} className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                         </span>

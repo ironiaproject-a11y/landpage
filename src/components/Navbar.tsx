@@ -97,7 +97,7 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-headline text-[16px] font-semibold text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
+                            <span className="font-headline text-level-4 font-semibold text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
                                 Clínica<span className="text-white italic font-light">.</span>
                             </span>
                         </a>
@@ -123,7 +123,7 @@ export function Navbar() {
                                                         }}
                                                         animate={activeSection === link.href ? "hover" : "initial"}
                                                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                        className="text-caption-marker opacity-80"
+                                                        className="text-level-4 opacity-80"
                                                     >
                                                         {link.name}
                                                     </m.div>
@@ -136,7 +136,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute inset-0 py-2 px-4 text-caption-marker text-white"
+                                                    className="absolute inset-0 py-2 px-4 text-level-4 text-white"
                                                 >
                                                     {link.name}
                                                 </m.div>
@@ -176,7 +176,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-premium !py-3 !px-8 text-caption-marker shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
+                                    className="btn-premium !py-3 !px-8 text-level-4 shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"

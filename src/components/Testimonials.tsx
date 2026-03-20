@@ -175,15 +175,15 @@ export function Testimonials() {
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-caption-marker mb-8 block text-center">
+                        <span className="text-level-4 uppercase mb-8 block text-center">
                             Prova Social
                         </span>
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
+                        <h2 className="text-level-2 uppercase">
                             Histórias de<br />
-                            <span className="text-white text-serif-accent block mt-4">transformação real.</span>
+                            <span className="text-white text-level-3 block mt-4 italic">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -225,7 +225,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[var(--color-text-primary)] text-2xl italic leading-relaxed mb-12 flex-grow font-serif font-light">
+                                            <p className="text-level-3 italic mb-12 flex-grow">
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
@@ -239,8 +239,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-semibold text-[var(--color-text-primary)] text-base tracking-[var(--font-h3-tracking)]">{testimonial.name}</h4>
-                                                    <p className="text-[var(--font-small)] text-[var(--color-text-secondary)] uppercase tracking-[var(--font-small-tracking)] font-semibold">{testimonial.role}</p>
+                                                    <h4 className="font-semibold text-white text-level-3">{testimonial.name}</h4>
+                                                    <p className="text-level-4 uppercase font-semibold">{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

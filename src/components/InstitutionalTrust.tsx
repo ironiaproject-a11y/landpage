@@ -171,19 +171,19 @@ export function InstitutionalTrust() {
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-24 md:mb-40 gap-12 border-b border-white/5 pb-20">
                     <div className="max-w-4xl">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="editorial-label">
+                            <span className="text-level-4 uppercase mb-8 block">
                                 Fundamentos do Cuidado
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 uppercase max-w-[800px]">
+                        <h2 className="text-level-2 uppercase max-w-[800px]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o <br /> Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4} className="mt-12 lg:mt-16 max-w-2xl">
-                            <p className="text-body-refined text-white/70">
+                            <p className="text-level-3">
                                 Nossa metodologia é sustentada por quatro pilares fundamentais que garantem não apenas resultados estéticos, mas a longevidade e saúde do seu investimento.
                             </p>
                         </PremiumReveal>
@@ -191,9 +191,9 @@ export function InstitutionalTrust() {
 
                     <div className="hidden lg:block text-right">
                         <PremiumReveal direction="right" delay={0.4}>
-                            <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2">Desde 1996</span>
+                            <span className="block text-level-4 uppercase opacity-40 mb-2">Desde 1996</span>
                             <div className="h-[1px] w-20 bg-white/20 ml-auto mb-2"></div>
-                            <span className="block text-sm text-white/40">Tradição e Inovação em Pereira Barreto</span>
+                            <span className="block text-level-4 opacity-40">Tradição e Inovação em Pereira Barreto</span>
                         </PremiumReveal>
                     </div>
                 </div>
@@ -210,18 +210,18 @@ export function InstitutionalTrust() {
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-h3 mb-6 transition-transform duration-500 uppercase">
+                                <h3 className="text-level-3 font-semibold mb-6 transition-transform duration-500 uppercase">
                                     {card.title}
                                 </h3>
 
-                                <p className="text-body-refined text-white/60 transition-colors duration-500 max-w-[90%]">
+                                <p className="text-level-3 !opacity-60 transition-colors duration-500 max-w-[90%]">
                                     {card.subtitle}
                                 </p>
                             </div>
 
                             {/* Bottom Detail */}
                             <div className="mt-12 opacity-30 group-hover:opacity-100 transition-all duration-700">
-                                <div className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold">[ Pilar de Excelência ]</div>
+                                <div className="text-level-4 uppercase">[ Pilar de Excelência ]</div>
                             </div>
                         </LuxuryCard>
                     ))}

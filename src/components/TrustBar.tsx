@@ -76,7 +76,7 @@ export function TrustBar() {
                         transition={{ duration: 1, delay: 0.2 }}
                         className="flex flex-col items-center lg:items-start text-center lg:text-left"
                     >
-                        <span className="text-white/60 font-bold tracking-[0.5em] uppercase text-[10px] mb-2">
+                        <span className="text-white/60 font-bold uppercase text-level-4 mb-2">
                             Qualidade Certificada
                         </span>
                         <h3 className="text-[var(--color-text-secondary)] font-headline text-xl md:text-2xl font-bold tracking-wide italic leading-relaxed" style={{ fontFamily: 'var(--font-headline)' }}>
@@ -102,7 +102,7 @@ export function TrustBar() {
                                     {token.name}
                                 </span>
                                 <div className="h-[1px] w-0 group-hover:w-full bg-white/20 transition-all duration-700 mb-2" />
-                                <span className="text-[9px] uppercase tracking-[0.3em] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500">
+                                <span className="text-level-4 uppercase text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500">
                                     {token.detail}
                                 </span>
                             </m.div>
