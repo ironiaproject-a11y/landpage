@@ -28,12 +28,12 @@ img, svg, video, canvas {
   --color-text-on-light:          #000000;
   --color-text-secondary-on-light: rgba(0,0,0,0.70);
 
-  /* Premium Gold Accent System */
-  --color-accent-gold:      #C7A86B;
-  --color-accent-gold-rgb:  199, 168, 107;
-  --color-accent:           rgba(199, 168, 107, 0.6);  /* Gold accent */
-  --color-accent-soft:      rgba(199, 168, 107, 0.3);
-  --color-accent-glow:      rgba(199, 168, 107, 0.08);
+  /* Premium Accent System */
+  --color-accent-gold:      #FFFFFF;
+  --color-accent-gold-rgb:  255, 255, 255;
+  --color-accent:           rgba(255, 255, 255, 0.6);  /* White accent */
+  --color-accent-soft:      rgba(255, 255, 255, 0.3);
+  --color-accent-glow:      rgba(255, 255, 255, 0.08);
 
   /* Surface & Border Tokens */
   --color-surface-elevated: rgba(255,255,255,0.06); /* glassmorphism cards */
@@ -59,15 +59,15 @@ img, svg, video, canvas {
   --font-body:     var(--font-sans);
 
   /* TYPOGRAPHIC SCALE (Updated) */
-  --font-h1:              clamp(42px, 6vw, 72px);
-  --font-h1-weight:       500;
-  --font-h1-line-height:  1.1;
-  --font-h1-tracking:     -0.02em;
+  --font-h1:              clamp(48px, 8vw, 96px);
+  --font-h1-weight:       700;
+  --font-h1-line-height:  0.95;
+  --font-h1-tracking:     -0.05em;
 
-  --font-h2:              clamp(32px, 4vw, 48px);
-  --font-h2-weight:       500;
-  --font-h2-line-height:  1.1;
-  --font-h2-tracking:     -0.015em;
+  --font-h2:              clamp(36px, 5vw, 64px);
+  --font-h2-weight:       700;
+  --font-h2-line-height:  1.0;
+  --font-h2-tracking:     -0.04em;
 
   --font-h3:              28px;
   --font-h3-weight:       500;
@@ -251,29 +251,29 @@ h6 {
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
   color: #FFFFFF;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* ── HEADLINES ────── */
 h1 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--font-h1);
   font-weight: var(--font-h1-weight);
   line-height: var(--font-h1-line-height);
-  letter-spacing: -0.04em; /* Tighter for editorial impact */
+  letter-spacing: var(--font-h1-tracking);
 }
 
 h2 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--font-h2);
   font-weight: var(--font-h2-weight);
-  line-height: var(--font-h1-line-height);
-  letter-spacing: -0.03em;
+  line-height: var(--font-h2-line-height);
+  letter-spacing: var(--font-h2-tracking);
   margin-bottom: 3rem;
 }
 
 h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--font-h3);
   font-weight: var(--font-h3-weight);
   line-height: 1.2;
@@ -282,45 +282,47 @@ h3 {
 
 /* ── EDITORIAL UTILITIES ── */
 .text-display-editorial {
-  font-family: var(--font-serif);
-  font-size: clamp(64px, 12vw, 130px);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: clamp(64px, 12vw, 150px);
+  font-weight: 800;
   line-height: 0.9;
   letter-spacing: -0.05em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .text-caption-marker {
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--color-accent-gold);
+  color: #FFFFFF;
 }
 
 .text-serif-accent {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: 300;
   opacity: 0.9;
 }
 
 .drop-cap::first-letter {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
+  font-weight: 700;
   font-size: 4.5em;
   float: left;
   line-height: 0.8;
   margin-right: 0.1em;
   margin-top: 0.1em;
-  color: var(--color-accent-gold);
+  color: #FFFFFF;
 }
 
 /* EMPHASIS (hero phrases) */
 .emphasis {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-style: italic;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   opacity: 0.95;
 }
 
@@ -350,11 +352,11 @@ button, .btn, nav, a {
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
-  font-family: var(--font-serif);
-  font-size: var(--font-h1);
-  font-weight: var(--font-h1-weight);
-  line-height: var(--font-h1-line-height);
-  letter-spacing: var(--font-h1-tracking);
+  font-family: var(--font-sans);
+  font-size: clamp(60px, 10vw, 140px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
     0 10px 40px rgba(0, 0, 0, 0.6);
@@ -362,11 +364,11 @@ button, .btn, nav, a {
 
 /* ── Subtitle / Subheadline — Light, Airy ─────────────── */
 .text-subheadline-editorial {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: clamp(18px, 2.5vw, 26px);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.4;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   color: rgba(255,255,255,0.70);
   max-width: 58ch;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
@@ -746,7 +748,6 @@ section:not(.hero) {
   background: linear-gradient(180deg, var(--color-silver-bh), var(--color-silver-light));
 }
 
-/* Super-Luxury Button System - Premium */
 .btn-luxury-primary {
   @apply relative overflow-hidden flex items-center justify-center transition-all duration-700 font-medium uppercase tracking-[0.25em] rounded-full;
   background: rgba(15, 15, 15, 0.6);
@@ -757,8 +758,8 @@ section:not(.hero) {
   font-family: var(--font-ui);
   font-weight: 500;
   font-size: 16px;
-  /* Gold accent border (1px, max opac 0.12) */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(199, 168, 107, 0.12);
+  /* Premium border without gold */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
   border: none;
 }
 

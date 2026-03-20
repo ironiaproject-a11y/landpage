@@ -192,59 +192,27 @@ export function Hero() {
 
             // --- CINEMATIC TEXT ANIMATIONS (Run regardless of video loading) ---
 
-            // 0.0s - show text "Sua origem" (Immediate Presence)
+            // 0.5s - show massive text 
             introTl.fromTo(".hero-line-1", 
-                { opacity: 0, y: 15, scale: 0.95 },
+                { opacity: 0, y: 30, filter: "blur(10px)" },
                 { 
                     opacity: 1, 
                     y: 0, 
-                    scale: 1,
-                    duration: 0.6, 
-                    ease: "expo.out" 
-                },
-                0
-            );
-
-            // 3.0s - hide "Sua origem"
-            introTl.to(".hero-line-1", {
-                opacity: 0,
-                y: -10,
-                duration: 0.8,
-                ease: "power2.in"
-            }, 3.0);
-
-            // 3.3s - show text "Seu sorriso" (Elegant reveal)
-            introTl.fromTo(".hero-line-2",
-                { opacity: 0, y: 5, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em" },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1, 
                     filter: "blur(0px)",
-                    letterSpacing: "-0.03em",
-                    duration: 2.7, 
+                    duration: 2.5, 
                     ease: "expo.out" 
                 },
-                3.3
+                0.5
             );
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
-                // At the start of the scroll (T=0), we are at the end of the intro.
-                // Video is Woman (143). "Seu sorriso" is fully visible.
-                tl.set(".hero-line-2", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", letterSpacing: "-0.03em" }, 0);
-                tl.set(".hero-line-1", { opacity: 0, y: -10, scale: 1 }, 0); 
-
-                // T=0.5 -> 3.5: User scrolls down, "Seu sorriso" dissolves (backwards)
-                tl.to(".hero-line-2", 
-                    { opacity: 0, y: 10, scale: 1.02, filter: "blur(10px)", letterSpacing: "0.1em", duration: 3, ease: "power2.in" },
+                // At the start of the scroll (T=0)
+                tl.set(".hero-line-1", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
+                
+                // T=0.5 -> 3.5: User scrolls down, title fades out backwards
+                tl.to(".hero-line-1", 
+                    { opacity: 0, y: -20, filter: "blur(10px)", duration: 3, ease: "power2.in" },
                     0.5
-                );
-
-                // T=4.0 -> 7.0: User continues scrolling, video becomes Skull, "Sua origem" materializes
-                tl.fromTo(".hero-line-1", 
-                    { opacity: 0, y: 15, scale: 0.95 },   // starts pushed down slightly
-                    { opacity: 1, y: 0, scale: 1, duration: 3, ease: "expo.out", immediateRender: false },
-                    4.0
                 );
 
                 // T=8.0 -> 10.0: The entire Hero section fades out to reveal the next part of the site
@@ -384,9 +352,9 @@ export function Hero() {
 
                     .hero-line-1 {
                         position: absolute;
-                        top: 30%;
+                        top: 50%;
                         left: 5%;
-                        max-width: 700px; /* strict max-width */
+                        max-width: 1000px;
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
@@ -394,53 +362,16 @@ export function Hero() {
                     }
 
                     .hero-line-1 h1 {
-                        font-family: var(--font-serif);
-                        font-size: var(--font-h1);
-                        font-weight: 500;
-                        line-height: 1.0;
+                        font-family: var(--font-sans);
+                        font-size: clamp(60px, 11vw, 150px);
+                        font-weight: 800;
+                        line-height: 0.85;
                         letter-spacing: -0.05em;
                         color: #FFFFFF;
                         margin: 0;
                         padding: 0;
-                        text-transform: uppercase;
-                        filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
-                    }
-
-                    .hero-line-1::before,
-                    .hero-line-1::after {
-                        display: none;
-                    }
-
-                    .hero-line-2 {
-                        position: absolute;
-                        top: 45%;
-                        left: 5%;
-                        transform: translateY(-50%);
-                        text-align: left;
-                        opacity: 0;
-                        z-index: 10;
-                        max-width: 700px; /* match h1 block */
-                    }
-
-                    .hero-line-2 h2 {
-                        font-family: var(--font-serif);
-                        font-size: var(--font-h1); 
-                        font-weight: 500;
-                        line-height: 1.0;
-                        letter-spacing: -0.05em;
-                        color: #FFFFFF;
-                        margin: 0;
-                        padding: 0;
-                        text-transform: uppercase;
-                        text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-                    }
-
-                    .hero-line-2::before {
-                        display: none;
-                    }
-
-                    .hero-line-2::after {
-                        display: none;
+                        text-transform: none;
+                        text-shadow: 0 4px 20px rgba(0,0,0,0.6);
                     }
 
                     .hero-btn-wrapper {
@@ -474,7 +405,7 @@ export function Hero() {
                         font-weight: 600;
                         letter-spacing: 0.25em;
                         text-transform: uppercase;
-                        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(var(--color-accent-gold-rgb), 0.05);
+                        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
                         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                         overflow: hidden;
                         cursor: pointer;
@@ -552,24 +483,14 @@ export function Hero() {
                             top: 0;
                         }
                         .hero-line-1 {
-                            top: 30%;
-                            left: 50%;
-                            transform: translateX(-50%) translateY(-50%);
-                            text-align: center;
-                            max-width: 90vw;
+                            top: 40%;
+                            left: 20px;
+                            transform: translateY(-50%);
+                            width: calc(100vw - 40px);
+                            text-align: left;
                         }
                         .hero-line-1 h1 {
-                            font-size: clamp(48px, 9vw, 80px);
-                        }
-                        .hero-line-2 {
-                            top: 45%;
-                            left: 50%;
-                            transform: translateX(-50%) translateY(-50%);
-                            text-align: center;
-                            max-width: 90vw;
-                        }
-                        .hero-line-2 h2 {
-                            font-size: clamp(16px, 2.5vw, 22px);
+                            font-size: clamp(48px, 14vw, 80px);
                         }
                         .hero-btn-wrapper {
                             left: 50%;
@@ -589,16 +510,10 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text">
                         <div className="hero-line-1">
-                            <span className="text-caption-marker mb-6 block opacity-60">Manifesto Dental</span>
-                            <h1 className="block">
-                                SUA <span className="text-serif-accent font-light italic">ORIGEM</span>
+                            <h1>
+                                Sua origem,<br />
+                                seu sorriso
                             </h1>
-                        </div>
-
-                        <div className="hero-line-2">
-                            <h2 className="block">
-                                SEU <span className="text-serif-accent font-light italic">SORRISO</span>
-                            </h2>
                         </div>
                     </div>
                 </div>
