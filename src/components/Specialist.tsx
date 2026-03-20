@@ -237,7 +237,7 @@ export function Specialist() {
                                 </Magnetic>
                                 <div>
                                     <h4 className="text-[#F8F8F6] font-bold mb-1 group-hover:text-white transition-colors">Formação de Excelência</h4>
-                                    <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
+                                    <p className="text-body-refined text-[var(--color-text-secondary)]">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
                             <div className="credential-item flex items-start gap-6 group">
@@ -248,7 +248,7 @@ export function Specialist() {
                                 </Magnetic>
                                 <div>
                                     <h4 className="text-[#F8F8F6] font-bold mb-1 group-hover:text-white transition-colors">Reconhecimento Internacional</h4>
-                                    <p className="text-[var(--color-text-secondary)] leading-relaxed text-sm">Certificação Master em Lentes de Contato 3D por institutos da Alemanha e Suíça.</p>
+                                    <p className="text-body-refined text-[var(--color-text-secondary)]">Certificação Master em Lentes de Contato 3D por institutos da Alemanha e Suíça.</p>
                                 </div>
                             </div>
                         </div>

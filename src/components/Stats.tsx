@@ -184,11 +184,11 @@ export function Stats() {
 
         .stats-number {
           font-family: var(--font-headline), serif;
-          font-size: var(--font-h2);
-          font-weight: 600;
-          line-height: 1;
-          letter-spacing: -0.02em;
-          margin-bottom: 16px;
+          font-size: var(--font-h1); /* Standardized for editorial dominance */
+          font-weight: var(--font-h1-weight);
+          line-height: var(--font-h1-line-height);
+          letter-spacing: var(--font-h1-tracking);
+          margin-bottom: 24px;
           display: block;
           color: var(--color-text-primary);
           font-variant-numeric: tabular-nums;
@@ -208,10 +208,11 @@ export function Stats() {
 
         .stats-label {
           font-family: var(--font-ui), sans-serif;
-          font-size: var(--font-small);
+          font-size: 13px;
           font-weight: 600;
-          color: var(--color-text-secondary);
-          letter-spacing: var(--font-small-tracking);
+          color: var(--color-text-primary);
+          opacity: 0.7;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
           display: block;
           max-width: 220px;
@@ -248,7 +249,7 @@ export function Stats() {
             opacity: 0.5;
           }
           
-          .stats-number { font-size: 56px; }
+          .stats-number { font-size: clamp(48px, 10vw, 64px); }
         }
       `}</style>
 

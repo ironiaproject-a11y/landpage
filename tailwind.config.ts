@@ -32,6 +32,12 @@ const config: Config = {
                 body: ["var(--font-poppins)", "sans-serif"],
                 sans: ["var(--font-poppins)", "sans-serif"],
             },
+            fontSize: {
+                h1: ["var(--font-h1)", { lineHeight: "0.9", letterSpacing: "-2px", fontWeight: "700" }],
+                h2: ["var(--font-h2)", { lineHeight: "1.0", letterSpacing: "var(--font-h2-tracking)", fontWeight: "700" }],
+                h3: ["var(--font-h3)", { lineHeight: "1.2", letterSpacing: "var(--font-h3-tracking)", fontWeight: "600" }],
+                "body-refined": ["var(--font-body)", { lineHeight: "1.8", letterSpacing: "0.01em", fontWeight: "300" }],
+            },
         },
     },
     plugins: [],

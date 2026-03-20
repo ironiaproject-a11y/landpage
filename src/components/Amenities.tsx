@@ -197,7 +197,7 @@ export function Amenities() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[clamp(28px,6vw,84px)] font-bold text-white leading-[1.05] mb-12 uppercase tracking-hero" style={{ fontFamily: 'var(--font-headline)' }}>
+                        <h2 className="text-h2 font-bold text-white leading-[1.05] mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Experiência</span>
                             </PremiumReveal>
@@ -207,7 +207,7 @@ export function Amenities() {
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-lg text-[#94A3B8] font-medium leading-[1.6] mb-12 max-w-md body-text-refined">
+                            <p className="text-body-refined text-[#94A3B8] mb-12 max-w-md">
                                 Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
                             </p>
                         </PremiumReveal>
@@ -243,14 +243,14 @@ export function Amenities() {
                                     className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
-                                        <h3 className="text-2xl md:text-3xl font-bold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out" style={{ fontFamily: 'var(--font-headline)' }}>
+                                        <h3 className="text-h3 font-bold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
                                             {item.title}
                                         </h3>
-                                        <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-[0.2em] group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">
+                                        <span className="text-[var(--font-small)] font-bold text-[#6B7280] uppercase tracking-[var(--font-small-tracking)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">
                                             0{index + 1}
                                         </span>
                                     </div>
-                                    <p className="text-[#94A3B8] text-sm md:text-base font-light leading-relaxed max-w-lg transition-all duration-500 delay-75 ease-out pl-0 md:pl-0">
+                                    <p className="text-body-refined text-[#94A3B8] max-w-lg transition-all duration-500 delay-75 ease-out pl-0 md:pl-0">
                                         {item.description}
                                     </p>
                                 </m.div>

@@ -291,10 +291,9 @@ export function BeforeAfterSlider({
 
             <div className="flex flex-col gap-4 px-2">
                 <div className="flex items-center gap-3">
-                    <Sparkles strokeWidth={1.2} className="w-4 h-4 text-[var(--color-text-primary)]" />
-                    <h4 className="font-headline text-2xl text-white font-medium">{title}</h4>
+                    <h4 className="text-h3 uppercase">{title}</h4>
                 </div>
-                <p className="text-[#94A3B8] font-light leading-relaxed max-w-xl body-text-refined">
+                <p className="text-body-refined text-white/60 max-w-xl">
                     {description}
                 </p>
             </div>

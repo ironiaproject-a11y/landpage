@@ -386,7 +386,7 @@ export function Hero() {
                         position: absolute;
                         top: 30%;
                         left: 5%;
-                        max-width: 550px;
+                        max-width: 700px; /* strict max-width */
                         transform: translateY(-50%);
                         text-align: left;
                         opacity: 0;
@@ -404,6 +404,7 @@ export function Hero() {
                         padding: 0;
                         text-transform: uppercase;
                         filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
+                        word-spacing: -2px;
                     }
 
                     .hero-line-1::before,
@@ -419,16 +420,16 @@ export function Hero() {
                         text-align: left;
                         opacity: 0;
                         z-index: 10;
-                        max-width: 550px;
+                        max-width: 700px; /* match h1 block */
                     }
 
                     .hero-line-2 h2 {
                         font-family: var(--font-headline);
-                        font-size: clamp(20px, 4vw, 32px);
-                        font-weight: 300;
-                        line-height: 1.2;
-                        letter-spacing: 0.05em;
-                        color: rgba(255,255,255,0.80);
+                        font-size: var(--font-h1); /* Hero headlines are ALL massive in this style */
+                        font-weight: var(--font-h1-weight);
+                        line-height: var(--font-h1-line-height);
+                        letter-spacing: var(--font-h1-tracking);
+                        color: var(--color-text-primary);
                         margin: 0;
                         padding: 0;
                         text-transform: uppercase;
@@ -594,13 +595,15 @@ export function Hero() {
                     <div className="hero-text">
                         <div className="hero-line-1">
                             <h1 className="block">
-                                SUA ORIGEM
+                                SUA ORIGEM <br />
+                                SUA ESSÊNCIA
                             </h1>
                         </div>
 
                         <div className="hero-line-2">
                             <h2 className="block">
-                                SEU SORRISO
+                                SEU SORRISO <br />
+                                NOSSA ARTE
                             </h2>
                         </div>
                     </div>

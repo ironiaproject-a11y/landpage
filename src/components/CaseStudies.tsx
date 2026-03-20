@@ -184,17 +184,14 @@ export function CaseStudies() {
                         </span>
                     </PremiumReveal>
 
-                    <h2 className="font-headline text-[clamp(36px,6vw,72px)] font-bold text-[var(--color-text-primary)] leading-[1.05] tracking-tight mb-8 uppercase">
+                    <h2 className="text-h2 mb-12 uppercase max-w-[500px]">
                         <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                            <span>Resultados que</span>
-                        </PremiumReveal>
-                        <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                            <span className="text-white font-headline italic font-light block mt-2">falam por si.</span>
+                            <span>Resultados que <br /> falam por si.</span>
                         </PremiumReveal>
                     </h2>
 
                     <PremiumReveal direction="bottom" delay={0.4}>
-                        <p className="text-[16px] text-[var(--color-text-secondary)] font-normal leading-[1.6] max-w-xl" style={{ fontFamily: 'var(--font-ui)' }}>
+                        <p className="text-body-refined max-w-xl text-white/70">
                             Explore a transformação real de nossos pacientes e veja como a precisão clínica encontra a estética absoluta.
                         </p>
                     </PremiumReveal>

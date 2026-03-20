@@ -176,17 +176,14 @@ export function InstitutionalTrust() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-display text-white text-[clamp(36px,6vw,72px)] font-bold leading-[1.1] uppercase tracking-[-0.015em]" style={{ fontFamily: 'var(--font-headline)' }}>
+                        <h2 className="text-h2 uppercase max-w-[800px]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                                <span>A harmonia entre o</span>
-                            </PremiumReveal>
-                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-display italic font-light block mt-2">Rigor e a Sensibilidade.</span>
+                                <span>A harmonia entre o <br /> Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4} className="mt-12 lg:mt-16 max-w-2xl">
-                            <p className="text-white/60 text-lg lg:text-xl font-light leading-[1.7] tracking-[0.02em]">
+                            <p className="text-body-refined text-white/70">
                                 Nossa metodologia é sustentada por quatro pilares fundamentais que garantem não apenas resultados estéticos, mas a longevidade e saúde do seu investimento.
                             </p>
                         </PremiumReveal>
@@ -213,11 +210,11 @@ export function InstitutionalTrust() {
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-white text-[20px] font-bold mb-6 transition-transform duration-500 uppercase tracking-[0.05em]" style={{ fontFamily: 'var(--font-ui)' }}>
+                                <h3 className="text-h3 mb-6 transition-transform duration-500 uppercase">
                                     {card.title}
                                 </h3>
 
-                                <p className="text-white/60 text-[15px] font-normal leading-[1.7] tracking-[0.015em] transition-colors duration-500 max-w-[90%]" style={{ fontFamily: 'var(--font-ui)' }}>
+                                <p className="text-body-refined text-white/60 transition-colors duration-500 max-w-[90%]">
                                     {card.subtitle}
                                 </p>
                             </div>

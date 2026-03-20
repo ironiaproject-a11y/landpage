@@ -69,7 +69,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="text-[var(--color-text-primary)] font-semibold mb-4 transition-colors duration-700 text-[var(--font-h3)] leading-[var(--font-h3-line-height)] tracking-[var(--font-h3-tracking)]">
+                    <h3 className="text-h3 text-white transition-colors duration-700 uppercase">
                         {service.title}
                     </h3>
 
@@ -301,12 +301,9 @@ export function Services() {
                     </span>
                 </PremiumReveal>
 
-                <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
+                <h2 className="text-h2 text-white max-w-[700px] uppercase">
                     <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                        <span>Soluções clínicas de</span>
-                    </PremiumReveal>
-                    <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <span className="text-white font-headline italic font-light block mt-2">extrema precisão.</span>
+                        <span>Soluções clínicas de <br /> Extrema Precisão.</span>
                     </PremiumReveal>
                 </h2>
             </div>

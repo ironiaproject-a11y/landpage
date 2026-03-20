@@ -106,12 +106,12 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-lg font-headline font-semibold tracking-[0.1em] text-[var(--color-text-primary)] leading-tight uppercase">
+                                    <h3 className="text-h3 font-bold tracking-[-1px] text-white leading-tight uppercase">
                                         Clínica<span className="text-white italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
-                            <p className="text-[var(--color-text-secondary)] leading-[var(--font-body-line-height)] max-w-sm font-[var(--font-body-weight)] text-sm transition-opacity duration-700">
+                            <p className="text-body-refined text-[var(--color-text-secondary)]">
                                 Unindo alta performance tecnológica ao cuidado humano absoluto para resultados de excelência.
                             </p>
                             <div className="relative w-full max-w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/5 mb-6 group/img">

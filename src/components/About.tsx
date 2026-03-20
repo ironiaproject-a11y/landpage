@@ -164,21 +164,21 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[var(--font-h2)] font-semibold mb-12 text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
+                        <h2 className="text-h2 mb-12 text-white max-w-[700px] uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                                <span>Redefinindo o Conceito de</span>
+                                <span>Redefinindo o <br /> Conceito de Luxo</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-headline italic font-light block mt-4 border-l-2 border-white/30 pl-8 ml-2">Luxo Odontológico.</span>
+                                <span className="text-white font-headline italic font-light block mt-4 border-l-2 border-white/30 pl-8 ml-2">Odontológico Master.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <div className="space-y-10 mb-16 max-w-[650px]">
-                                <p className="text-[var(--font-body)] text-[var(--color-text-primary)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] tracking-[var(--font-body-tracking)]">
+                            <div className="space-y-10 mb-16 max-w-[600px]">
+                                <p className="text-body-refined text-white/80">
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
-                                <p className="text-[15px] text-[var(--color-text-secondary)] font-light leading-[1.8] tracking-[0.02em] opacity-80">
+                                <p className="text-body-refined text-white/70">
                                     Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
                                     <span className="block mt-4 text-white italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>

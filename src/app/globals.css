@@ -57,26 +57,26 @@ img, svg, video, canvas {
   /* ── TYPOGRAPHIC SCALE (Behance-inspired Premium Hierarchy) ─────────────────────────────── */
   /* H1 (Hero): Bold, cinematic, dominant */
   --font-h1:              clamp(64px, 7vw, 110px);
-  --font-h1-weight:       600;
-  --font-h1-line-height:  0.95;
-  --font-h1-tracking:     -0.03em; /* cinematic tighter tracking */
+  --font-h1-weight:       700;
+  --font-h1-line-height:  0.90;
+  --font-h1-tracking:     -2px; /* strict pixel-based tracking for editorial feel */
 
   /* H2 (Section titles): Strong presence, editorial */
   --font-h2:              clamp(32px, 4vw, 56px);
-  --font-h2-weight:       600;
-  --font-h2-line-height:  1.05;
-  --font-h2-tracking:     -0.01em;
+  --font-h2-weight:       700;
+  --font-h2-line-height:  1.0;
+  --font-h2-tracking:     -2px;
 
   /* H3 (Subsections): Medium weight, clear hierarchy */
   --font-h3:              clamp(20px, 3vw, 28px);
   --font-h3-weight:       600;
   --font-h3-line-height:  1.2;
-  --font-h3-tracking:     0;
+  --font-h3-tracking:     -0.01em;
 
   /* Body text: Clean, readable, light/regular weight */
   --font-body:              17px;
   --font-body-weight:       300;
-  --font-body-line-height:  1.7;
+  --font-body-line-height:  1.8;
   --font-body-tracking:     0.01em;
 
   /* Small text / labels: Compact, uppercase */
@@ -91,8 +91,8 @@ img, svg, video, canvas {
 
   /* ── Tracking ─────────────────────────────────────────── */
   --tracking-luxury: 0.4em;
-  --tracking-editorial: -0.03em;   /* tighter — matches reference hero */
-  --tracking-h2: -0.02em;          /* section titles */
+  --tracking-editorial: -2px;   /* strict tracking */
+  --tracking-h2: -2px;          /* section titles */
   --tracking-body: 0.01em;
 }
 

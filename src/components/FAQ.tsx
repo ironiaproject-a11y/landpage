@@ -81,19 +81,16 @@ export function FAQ() {
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-4xl mx-auto">
                     {/* Header */}
-                    <div className="text-center mb-16 md:mb-24">
-                        <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-6 block">
+                    <div className="text-left mb-16 md:mb-32">
+                        <PremiumReveal direction="left" delay={0.1}>
+                            <span className="editorial-label">
                                 Esclarecimentos
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
+                        <h2 className="text-h2 uppercase max-w-[500px]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                                <span>Dúvidas</span>
-                            </PremiumReveal>
-                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-headline italic font-light block mt-2">Frequentes.</span>
+                                <span>Dúvidas <br /> Frequentes.</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -139,7 +136,7 @@ export function FAQ() {
                                                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 <div className="px-5 md:px-10 pb-7 md:pb-12 pl-[52px] md:pl-[88px]">
-                                                    <p className="text-[var(--color-text-secondary)] text-[var(--font-body)] leading-[var(--font-body-line-height)] font-[var(--font-body-weight)] max-w-2xl">
+                                                    <p className="text-body-refined text-white/70 max-w-2xl">
                                                         {faq.answer}
                                                     </p>
                                                 </div>
