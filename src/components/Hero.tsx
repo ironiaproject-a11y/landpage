@@ -197,12 +197,12 @@ export function Hero() {
 
             // Line 1: Sua origem
             introTl.fromTo(".hero-line-intro", 
-                { opacity: 0, y: 40, filter: "blur(10px)" },
+                { opacity: 0, y: 30, filter: "blur(4px)" },
                 { 
-                    opacity: 0.8, 
+                    opacity: 0.6, 
                     y: 0, 
                     filter: "blur(0px)",
-                    duration: 1.5, 
+                    duration: 1.2, 
                     ease: "power2.out" 
                 },
                 0.8
@@ -210,13 +210,13 @@ export function Hero() {
 
             // Line 2: Seu sorriso
             introTl.fromTo(".hero-line-main", 
-                { opacity: 0, y: 80, filter: "blur(15px)", scale: 0.95 },
+                { opacity: 0, y: 60, filter: "blur(12px)", scale: 0.9 },
                 { 
                     opacity: 1, 
                     y: 0, 
                     filter: "blur(0px)",
                     scale: 1,
-                    duration: 1.8, 
+                    duration: 2, 
                     ease: "expo.out" 
                 },
                 1.1
@@ -224,7 +224,7 @@ export function Hero() {
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
                 // At the start of the scroll (T=0)
-                tl.set(".hero-line-intro", { opacity: 0.8, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-line-intro", { opacity: 0.6, y: 0, filter: "blur(0px)" }, 0);
                 tl.set(".hero-line-main", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
                 
                 // T=0.5 -> 3.5: User scrolls down, title fades out backwards
@@ -370,22 +370,22 @@ export function Hero() {
 
                     .hero-line-intro {
                         font-family: 'Source Serif 4', serif;
-                        font-size: clamp(28px, 3vw, 40px);
-                        font-weight: 400;
+                        font-size: clamp(24px, 2.5vw, 32px);
+                        font-weight: 300;
                         color: #FFFFFF;
                         opacity: 0; /* Animated */
-                        letter-spacing: -0.01em;
-                        margin-bottom: 0.5rem;
+                        letter-spacing: 0.05em;
+                        margin-bottom: 2.5rem;
                         display: block;
                     }
 
                     .hero-line-main {
                         font-family: 'Source Serif 4', serif;
-                        font-size: clamp(64px, 9vw, 110px);
+                        font-size: clamp(72px, 10vw, 120px);
                         font-weight: 500;
                         color: #FFFFFF;
-                        line-height: 1.05;
-                        letter-spacing: -0.02em;
+                        line-height: 1.0;
+                        letter-spacing: -0.03em;
                         opacity: 0; /* Animated */
                         display: block;
                     }
