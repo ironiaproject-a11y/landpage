@@ -196,39 +196,39 @@ export function Hero() {
             gsap.set([".hero-line-intro", ".hero-line-main"], { opacity: 0 });
 
             // Line 1: Sua origem
-            introTl.fromTo(".hero-line-intro", 
-                { opacity: 0, y: 30, filter: "blur(4px)" },
+            introTl.fromTo(".hero-pre", 
+                { opacity: 0, y: 40, filter: "blur(4px)" },
                 { 
-                    opacity: 0.6, 
+                    opacity: 0.7, 
                     y: 0, 
                     filter: "blur(0px)",
-                    duration: 1.2, 
+                    duration: 1, 
                     ease: "power2.out" 
                 },
                 0.8
             );
 
             // Line 2: Seu sorriso
-            introTl.fromTo(".hero-line-main", 
-                { opacity: 0, y: 60, filter: "blur(12px)", scale: 0.9 },
+            introTl.fromTo(".hero-title", 
+                { opacity: 0, y: 80, filter: "blur(12px)", scale: 0.95 },
                 { 
                     opacity: 1, 
                     y: 0, 
                     filter: "blur(0px)",
                     scale: 1,
-                    duration: 2, 
+                    duration: 1.2, 
                     ease: "expo.out" 
                 },
-                1.1
+                1.1 // Starts 0.3s after .hero-pre (0.8 + 0.3)
             );
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
                 // At the start of the scroll (T=0)
-                tl.set(".hero-line-intro", { opacity: 0.6, y: 0, filter: "blur(0px)" }, 0);
-                tl.set(".hero-line-main", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-pre", { opacity: 0.7, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-title", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
                 
                 // T=0.5 -> 3.5: User scrolls down, title fades out backwards
-                tl.to([".hero-line-intro", ".hero-line-main"], 
+                tl.to([".hero-pre", ".hero-title"], 
                     { opacity: 0, y: -40, filter: "blur(10px)", duration: 3, ease: "power2.in", stagger: 0.1 },
                     0.5
                 );
@@ -366,39 +366,38 @@ export function Hero() {
                         pointer-events: none;
                         width: 100%;
                         height: 100%;
+                        display: flex;
+                        align-items: center;
+                        padding: 0 8vw;
                     }
 
-                    .hero-line-intro {
-                        font-family: 'Source Serif 4', serif;
-                        font-size: clamp(24px, 2.5vw, 32px);
-                        font-weight: 300;
-                        color: #FFFFFF;
-                        opacity: 0; /* Animated */
-                        letter-spacing: 0.05em;
-                        margin-bottom: 2.5rem;
-                        display: block;
-                    }
-
-                    .hero-line-main {
-                        font-family: 'Source Serif 4', serif;
-                        font-size: clamp(72px, 10vw, 120px);
-                        font-weight: 500;
-                        color: #FFFFFF;
-                        line-height: 1.0;
-                        letter-spacing: -0.03em;
-                        opacity: 0; /* Animated */
-                        display: block;
-                    }
-
-                    .hero-line-1 {
-                        position: absolute;
-                        top: 50%;
-                        left: 8%; /* Increased for more breathing room */
-                        max-width: fit-content;
-                        transform: translateY(-50%);
-                        text-align: left;
+                    .hero-content {
+                        max-width: 900px;
                         z-index: 10;
                     }
+
+                    .hero-pre {
+                        font-family: 'Source Serif 4', serif;
+                        font-size: clamp(20px, 2.5vw, 32px);
+                        font-weight: 400;
+                        color: rgba(255, 255, 255, 0.7);
+                        opacity: 0; /* Animated */
+                        letter-spacing: normal;
+                        margin-bottom: 40px;
+                        display: block;
+                    }
+
+                    .hero-title {
+                        font-family: 'Source Serif 4', serif;
+                        font-size: clamp(80px, 12vw, 140px);
+                        font-weight: 400;
+                        color: #FFFFFF;
+                        line-height: 1.05;
+                        letter-spacing: -0.02em;
+                        opacity: 0; /* Animated */
+                        display: block;
+                    }
+
 
                     .hero-btn-wrapper {
                         position: absolute;
@@ -531,9 +530,9 @@ export function Hero() {
 
                 <div className="hero-container">
                     <div className="hero-text">
-                        <div className="hero-line-1">
-                            <span className="hero-line-intro">Sua origem</span>
-                            <h1 className="hero-line-main">Seu sorriso</h1>
+                        <div className="hero-content">
+                            <span className="hero-pre">Sua origem</span>
+                            <h1 className="hero-title">Seu sorriso</h1>
                         </div>
                     </div>
                 </div>
