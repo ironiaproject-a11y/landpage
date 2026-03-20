@@ -86,7 +86,7 @@ export function CTA() {
                     <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] glow-blob opacity-20" />
 
                     <PremiumReveal type="fade" direction="top" delay={0.2}>
-                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] border border-white/10 mb-12">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-caption-marker border border-white/10 mb-12">
                             <Calendar strokeWidth={1} className="w-3.5 h-3.5" />
                             Agenda Aberta 2026
                         </div>

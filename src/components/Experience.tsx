@@ -120,17 +120,17 @@ export function Experience() {
                     {/* Left Side */}
                     <div className="lg:w-1/2">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-8 block">
+                            <span className="text-caption-marker mb-10 block">
                                 A Jornada do Paciente
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-white leading-[var(--font-h2-line-height)] mb-12 md:mb-16 tracking-[var(--font-h2-tracking)] uppercase">
+                        <h2 className="text-h2 mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>O Protocolo de</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-headline italic font-light block mt-2">Transformação.</span>
+                                <span className="text-white text-serif-accent block mt-4">Transformação.</span>
                             </PremiumReveal>
                         </h2>
 
@@ -147,8 +147,8 @@ export function Experience() {
                                         </Magnetic>
                                     </div>
                                     <div className="pb-8">
-                                        <h3 className="text-[var(--font-h3)] font-semibold text-white transition-colors mb-2 md:mb-3 leading-[var(--font-h3-line-height)] tracking-[var(--font-h3-tracking)]">{step.title}</h3>
-                                        <p className="text-white/60 text-[var(--font-body)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] max-w-md transition-opacity">
+                                        <h3 className="font-serif text-2xl font-medium text-white mb-2">{step.title}</h3>
+                                        <p className="text-white/60 text-body-refined max-w-md">
                                             {step.description}
                                         </p>
                                     </div>

@@ -175,7 +175,7 @@ export function Testimonials() {
                 {/* Header Evolution */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
                     <PremiumReveal type="fade" direction="top" duration={1}>
-                        <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-8 block">
+                        <span className="text-caption-marker mb-8 block text-center">
                             Prova Social
                         </span>
                     </PremiumReveal>
@@ -183,7 +183,7 @@ export function Testimonials() {
                     <PremiumReveal type="mask" direction="bottom">
                         <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
                             Histórias de<br />
-                            <span className="text-white font-headline italic font-light block mt-2">transformação real.</span>
+                            <span className="text-white text-serif-accent block mt-4">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -225,7 +225,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-[var(--color-text-primary)] text-[var(--font-h3)] italic leading-[var(--font-h3-line-height)] mb-12 flex-grow font-light">
+                                            <p className="text-[var(--color-text-primary)] text-2xl italic leading-relaxed mb-12 flex-grow font-serif font-light">
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 

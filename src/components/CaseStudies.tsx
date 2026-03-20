@@ -179,7 +179,7 @@ export function CaseStudies() {
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-3xl mb-16 md:mb-32">
                     <PremiumReveal direction="bottom" delay={0.1}>
-                        <span className="editorial-label">
+                        <span className="text-caption-marker mb-10 block">
                             Casos Clínicos
                         </span>
                     </PremiumReveal>

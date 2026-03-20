@@ -394,17 +394,16 @@ export function Hero() {
                     }
 
                     .hero-line-1 h1 {
-                        font-family: var(--font-headline);
+                        font-family: var(--font-serif);
                         font-size: var(--font-h1);
-                        font-weight: var(--font-h1-weight);
-                        line-height: var(--font-h1-line-height);
-                        letter-spacing: var(--font-h1-tracking);
-                        color: var(--color-text-primary);
+                        font-weight: 500;
+                        line-height: 1.0;
+                        letter-spacing: -0.05em;
+                        color: #FFFFFF;
                         margin: 0;
                         padding: 0;
                         text-transform: uppercase;
                         filter: drop-shadow(0 12px 30px rgba(0,0,0,0.7));
-                        word-spacing: -2px;
                     }
 
                     .hero-line-1::before,
@@ -424,12 +423,12 @@ export function Hero() {
                     }
 
                     .hero-line-2 h2 {
-                        font-family: var(--font-headline);
-                        font-size: var(--font-h1); /* Hero headlines are ALL massive in this style */
-                        font-weight: var(--font-h1-weight);
-                        line-height: var(--font-h1-line-height);
-                        letter-spacing: var(--font-h1-tracking);
-                        color: var(--color-text-primary);
+                        font-family: var(--font-serif);
+                        font-size: var(--font-h1); 
+                        font-weight: 500;
+                        line-height: 1.0;
+                        letter-spacing: -0.05em;
+                        color: #FFFFFF;
                         margin: 0;
                         padding: 0;
                         text-transform: uppercase;
@@ -470,7 +469,7 @@ export function Hero() {
                         color: #FFFFFF;
                         padding: 16px 42px;
                         border-radius: 999px;
-                        font-family: var(--font-ui);
+                        font-family: var(--font-sans);
                         font-size: 14px;
                         font-weight: 600;
                         letter-spacing: 0.25em;
@@ -518,11 +517,7 @@ export function Hero() {
                     }
 
                      .scroll-indicator-text {
-                        font-family: var(--font-ui);
-                        font-size: 10px;
-                        font-weight: 500;
-                        text-transform: uppercase;
-                        letter-spacing: 0.3em;
+                        @apply text-caption-marker;
                         color: var(--color-premium-slate);
                         animation: pulse 2s infinite ease-in-out;
                     }
@@ -594,16 +589,15 @@ export function Hero() {
                 <div className="hero-container">
                     <div className="hero-text">
                         <div className="hero-line-1">
+                            <span className="text-caption-marker mb-6 block opacity-60">Manifesto Dental</span>
                             <h1 className="block">
-                                SUA ORIGEM <br />
-                                SUA ESSÊNCIA
+                                SUA <span className="text-serif-accent font-light italic">ORIGEM</span>
                             </h1>
                         </div>
 
                         <div className="hero-line-2">
                             <h2 className="block">
-                                SEU SORRISO <br />
-                                NOSSA ARTE
+                                SEU <span className="text-serif-accent font-light italic">SORRISO</span>
                             </h2>
                         </div>
                     </div>

@@ -123,7 +123,7 @@ export function Navbar() {
                                                         }}
                                                         animate={activeSection === link.href ? "hover" : "initial"}
                                                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                        className="text-[var(--font-small)] font-semibold text-[var(--color-text-secondary)] uppercase tracking-[var(--font-small-tracking)]"
+                                                        className="text-caption-marker opacity-80"
                                                     >
                                                         {link.name}
                                                     </m.div>
@@ -136,7 +136,7 @@ export function Navbar() {
                                                     }}
                                                     animate={activeSection === link.href ? "hover" : "initial"}
                                                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                                    className="absolute inset-0 py-2 px-4 text-[var(--font-small)] font-semibold text-white uppercase tracking-[var(--font-small-tracking)]"
+                                                    className="absolute inset-0 py-2 px-4 text-caption-marker text-white"
                                                 >
                                                     {link.name}
                                                 </m.div>
@@ -176,7 +176,7 @@ export function Navbar() {
                                         ease: "easeInOut"
                                     }}
                                     onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="btn-premium !py-3 !px-8 text-[var(--font-small)] tracking-[var(--font-small-tracking)] font-bold shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
+                                    className="btn-premium !py-3 !px-8 text-caption-marker shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
                                 >
                                     <m.div
                                         className="absolute inset-0 bg-white/20 translate-x-[-100%]"

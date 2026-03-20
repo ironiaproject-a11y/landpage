@@ -49,56 +49,54 @@ img, svg, video, canvas {
   --color-background:        var(--color-bg-dark);
 
 
-  /* ── TYPOGRAPHY TOKENS (Premium System — Poppins-based) ──────────────────────────────── */
-  /* Headline & UI: Both use Poppins for consistent, high-end look */
-  --font-headline: "Poppins", system-ui, sans-serif;
-  --font-ui:       "Poppins", system-ui, sans-serif;
+  /* ── TYPOGRAPHY TOKENS (Premium System — Source Serif 4 & Inter) ───────────────────────── */
+  --font-serif: 'Source Serif 4', serif;
+  --font-sans: 'Inter', sans-serif;
 
-  /* ── TYPOGRAPHIC SCALE (Behance-inspired Premium Hierarchy) ─────────────────────────────── */
-  /* H1 (Hero): Bold, cinematic, dominant */
-  --font-h1:              clamp(64px, 7vw, 110px);
-  --font-h1-weight:       700;
-  --font-h1-line-height:  0.90;
-  --font-h1-tracking:     -2px; /* strict pixel-based tracking for editorial feel */
+  /* Legacy aliases (mapped to new system) */
+  --font-headline: var(--font-serif);
+  --font-ui:       var(--font-sans);
+  --font-body:     var(--font-sans);
 
-  /* H2 (Section titles): Strong presence, editorial */
-  --font-h2:              clamp(32px, 4vw, 56px);
-  --font-h2-weight:       700;
-  --font-h2-line-height:  1.0;
-  --font-h2-tracking:     -2px;
+  /* TYPOGRAPHIC SCALE (Updated) */
+  --font-h1:              clamp(42px, 6vw, 72px);
+  --font-h1-weight:       500;
+  --font-h1-line-height:  1.1;
+  --font-h1-tracking:     -0.02em;
 
-  /* H3 (Subsections): Medium weight, clear hierarchy */
-  --font-h3:              clamp(20px, 3vw, 28px);
-  --font-h3-weight:       600;
+  --font-h2:              clamp(32px, 4vw, 48px);
+  --font-h2-weight:       500;
+  --font-h2-line-height:  1.1;
+  --font-h2-tracking:     -0.015em;
+
+  --font-h3:              28px;
+  --font-h3-weight:       500;
   --font-h3-line-height:  1.2;
   --font-h3-tracking:     -0.01em;
 
-  /* Body text: Clean, readable, light/regular weight */
-  --font-body:              17px;
-  --font-body-weight:       300;
-  --font-body-line-height:  1.8;
-  --font-body-tracking:     0.01em;
-
-  /* Small text / labels: Compact, uppercase */
-  --font-small:             12px;
-  --font-small-weight:      600;
-  --font-small-line-height: 1.4;
-  --font-small-tracking:    0.2em;
+  /* Body text scale handled by p selector */
+  --font-small:             13px;
+  --font-small-weight:      400;
+  --font-small-tracking:    0.04em;
 
   /* ── Spacing & Radius ─────────────────────────────────── */
   --radius-premium: 32px;
   --radius-premium-sm: 16px;
 
   /* ── Tracking ─────────────────────────────────────────── */
-  --tracking-luxury: 0.4em;
-  --tracking-editorial: -2px;   /* strict tracking */
-  --tracking-h2: -2px;          /* section titles */
+  --tracking-luxury: 0.04em;
+  --tracking-editorial: -0.015em;
   --tracking-body: 0.01em;
 }
 
 /* ===================================
-   BASE STYLES
+   BASE STYLES & TYPOGRAPHY RESET
    =================================== */
+
+/* RESET PREVIOUS TYPOGRAPHY */
+body, h1, h2, h3, h4, h5, h6, p, span, button, input, textarea, select, a {
+  font-family: var(--font-sans);
+}
 
 html {
   scroll-behavior: smooth;
@@ -113,14 +111,13 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-ui);
-  font-weight: var(--font-body-weight);
-  font-size: var(--font-body);
-  line-height: var(--font-body-line-height);
-  letter-spacing: var(--font-body-tracking);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
   overflow-x: hidden;
   position: relative;
-  cursor: none; /* Restoring custom cursor for cinematic feel */
+  cursor: none; 
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
   margin: 0;
@@ -129,7 +126,7 @@ body {
   will-change: transform;
 }
 
-/* Ensure interactive elements also hide cursor */
+/* Ensure interactive elements use correct UI font */
 a,
 button,
 [role="button"],
@@ -140,7 +137,9 @@ select {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 /* Fallback for touch devices where custom cursor might be problematic */
@@ -251,31 +250,111 @@ h5,
 h6 {
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
+  font-family: var(--font-serif);
 }
 
-/* ── H1 / Hero Title ──────
-   Poppins SemiBold | font-weight 600 | clamp(64px, 7vw, 110px)
-   line-height 0.95 | letter-spacing -2px | Bold, Cinematic, Dominant
-   ─────────────────────────────────────────────────────────── */
-h1,
-.hero-title {
-  font-family: var(--font-headline);
+/* ── HEADLINES ────── */
+h1 {
+  font-family: var(--font-serif);
   font-size: var(--font-h1);
   font-weight: var(--font-h1-weight);
   line-height: var(--font-h1-line-height);
-  letter-spacing: var(--font-h1-tracking);
-  color: var(--color-text-primary);
+  letter-spacing: -0.04em; /* Tighter for editorial impact */
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: var(--font-h2);
+  font-weight: var(--font-h2-weight);
+  line-height: var(--font-h1-line-height);
+  letter-spacing: -0.03em;
+  margin-bottom: 3rem;
+}
+
+h3 {
+  font-family: var(--font-serif);
+  font-size: var(--font-h3);
+  font-weight: var(--font-h3-weight);
+  line-height: 1.2;
+  letter-spacing: var(--font-h3-tracking);
+}
+
+/* ── EDITORIAL UTILITIES ── */
+.text-display-editorial {
+  font-family: var(--font-serif);
+  font-size: clamp(64px, 12vw, 130px);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.text-caption-marker {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--color-accent-gold);
+}
+
+.text-serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-size: 4.5em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.1em;
+  margin-top: 0.1em;
+  color: var(--color-accent-gold);
+}
+
+/* EMPHASIS (hero phrases) */
+.emphasis {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.01em;
+  opacity: 0.95;
+}
+
+/* BODY TEXT */
+p {
+  font-family: var(--font-sans);
+  font-size: 17px; /* Bumped for readability */
+  line-height: 1.8; /* Increased for airy editorial feel */
+  color: rgba(255,255,255,0.75);
+}
+
+/* BUTTONS & UI */
+button, .btn, nav, a {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+}
+
+/* MICROCOPY */
+.small, label, .editorial-label, input::placeholder {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.55);
 }
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
 .text-hero-editorial {
-  font-family: var(--font-headline);
+  font-family: var(--font-serif);
   font-size: var(--font-h1);
   font-weight: var(--font-h1-weight);
   line-height: var(--font-h1-line-height);
   letter-spacing: var(--font-h1-tracking);
-  /* Dual-layer shadow: sharp definition + soft volume */
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
     0 10px 40px rgba(0, 0, 0, 0.6);
@@ -283,7 +362,7 @@ h1,
 
 /* ── Subtitle / Subheadline — Light, Airy ─────────────── */
 .text-subheadline-editorial {
-  font-family: var(--font-headline);
+  font-family: var(--font-serif);
   font-size: clamp(18px, 2.5vw, 26px);
   font-weight: 300;
   line-height: 1.4;
@@ -293,42 +372,13 @@ h1,
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Overline / Editorial Label — Inter SemiBold, caps ───────── */
+/* ── Overline / Editorial Label ───────── */
 .editorial-label {
   display: inline-flex;
   align-items: center;
   gap: 0.8em;
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  opacity: 0.8;
   margin-bottom: 3rem;
-}
-
-/* ── H2 — Poppins SemiBold ────────────────────────────────── */
-/* Section titles: strong presence, editorial feel */
-h2 {
-  font-family: var(--font-headline);
-  font-size: var(--font-h2);
-  font-weight: var(--font-h2-weight);
-  line-height: var(--font-h2-line-height);
-  letter-spacing: var(--font-h2-tracking);
-  margin-bottom: 3rem;
-  color: var(--color-text-primary);
-}
-
-/* ── H3 — Poppins SemiBold ──────────────────────────────────── */
-/* Subsections: medium weight, clear hierarchy */
-h3 {
-  font-family: var(--font-headline);
-  font-size: var(--font-h3);
-  font-weight: var(--font-h3-weight);
-  line-height: var(--font-h3-line-height);
-  letter-spacing: var(--font-h3-tracking);
-  color: var(--color-text-primary);
 }
 
 ::selection {

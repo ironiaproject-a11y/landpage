@@ -159,7 +159,7 @@ export function About() {
                     {/* Content Side */}
                     <div className="w-full lg:w-1/2 flex flex-col items-start">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="editorial-label">
+                            <span className="text-caption-marker mb-10 block">
                                 Excelência Master
                             </span>
                         </PremiumReveal>
@@ -169,18 +169,18 @@ export function About() {
                                 <span>Redefinindo o <br /> Conceito de Luxo</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-headline italic font-light block mt-4 border-l-2 border-white/30 pl-8 ml-2">Odontológico Master.</span>
+                                <span className="text-white text-serif-accent block mt-6 border-l border-white/20 pl-8 ml-2 text-xl md:text-2xl">Odontológico Master.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
                             <div className="space-y-10 mb-16 max-w-[600px]">
-                                <p className="text-body-refined text-white/80">
+                                <p className="text-body-refined text-white/90 drop-cap">
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
                                 <p className="text-body-refined text-white/70">
                                     Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
-                                    <span className="block mt-4 text-white italic font-light">Uma experiência que transcende o tratamento clínico convencional.</span>
+                                    <span className="block mt-6 text-white text-serif-accent text-lg md:text-xl">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>
                             </div>
                         </PremiumReveal>
@@ -191,7 +191,7 @@ export function About() {
                                     <div className="w-6 h-6 rounded-lg border border-white/10 flex items-center justify-center group-hover:bg-white transition-all">
                                         <ArrowUpRight strokeWidth={1} className="w-3 h-3 text-[var(--color-text-secondary)] group-hover:text-black transition-colors" />
                                     </div>
-                                    <span className="text-[var(--color-text-secondary)] font-medium text-[var(--font-small)] tracking-[var(--font-small-tracking)] group-hover:text-[var(--color-text-primary)] transition-all duration-500 uppercase">{item}</span>
+                                    <span className="text-caption-marker opacity-80 group-hover:text-[var(--color-text-primary)] transition-all duration-500">{item}</span>
                                 </div>
                             ))}
                         </div>
@@ -209,7 +209,7 @@ export function About() {
                                 color: rgba(255, 255, 255, 0.9);
                                 padding: 16px 42px;
                                 border-radius: 999px;
-                                font-family: var(--font-ui), sans-serif;
+                                font-family: var(--font-sans), sans-serif;
                                 font-size: 11px;
                                 font-weight: 600;
                                 letter-spacing: 0.35em;

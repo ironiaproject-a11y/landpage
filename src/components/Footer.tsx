@@ -142,7 +142,7 @@ export function Footer() {
 
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Navegação</h4>
+                            <h4 className="text-caption-marker opacity-40 mb-8">Navegação</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {quickLinks.map((link, index) => (
@@ -162,7 +162,7 @@ export function Footer() {
                     {/* Services */}
                     <div className="lg:col-span-2">
                         <PremiumReveal type="fade" direction="bottom" delay={0.2}>
-                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Especialidades</h4>
+                            <h4 className="text-caption-marker opacity-40 mb-8">Especialidades</h4>
                         </PremiumReveal>
                         <ul className="space-y-4 footer-reveal-item">
                             {services.map((service, index) => (
@@ -182,7 +182,7 @@ export function Footer() {
                     {/* Contact Info */}
                     <div className="lg:col-span-4">
                         <PremiumReveal type="fade" direction="bottom" delay={0.3}>
-                            <h4 className="text-[var(--font-small)] font-semibold uppercase tracking-[var(--font-small-tracking)] text-white/40 mb-8">Onde Estamos</h4>
+                            <h4 className="text-caption-marker opacity-40 mb-8">Onde Estamos</h4>
                         </PremiumReveal>
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">

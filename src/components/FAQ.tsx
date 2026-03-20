@@ -82,15 +82,18 @@ export function FAQ() {
                 <div className="max-w-4xl mx-auto">
                     {/* Header */}
                     <div className="text-left mb-16 md:mb-32">
-                        <PremiumReveal direction="left" delay={0.1}>
-                            <span className="editorial-label">
-                                Esclarecimentos
+                        <PremiumReveal direction="bottom" delay={0.1}>
+                            <span className="text-caption-marker mb-10 block">
+                                Dúvidas Frequentes
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-h2 uppercase max-w-[500px]">
+                        <h2 className="text-h2 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                                <span>Dúvidas <br /> Frequentes.</span>
+                                <span>Alguma outra</span>
+                            </PremiumReveal>
+                            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                                <span className="text-white text-serif-accent block mt-4">dúvida?</span>
                             </PremiumReveal>
                         </h2>
                     </div>
@@ -114,7 +117,7 @@ export function FAQ() {
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-[var(--font-h3)] font-semibold text-[var(--color-text-primary)] tracking-[var(--font-h3-tracking)] group-hover:text-white transition-colors leading-[var(--font-h3-line-height)]">
+                                            <span className="text-xl md:text-2xl font-serif font-medium text-[var(--color-text-primary)] tracking-editorial group-hover:text-white transition-colors leading-tight">
                                                 {faq.question}
                                             </span>
                                         </div>
@@ -155,7 +158,7 @@ export function FAQ() {
                         viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.3 }}
                         className="text-center"
                     >
-                        <p className="text-[var(--color-text-tertiary)] text-xs uppercase tracking-[0.2em] mb-8">
+                        <p className="text-caption-marker mb-8">
                             Ainda tem alguma dúvida específica?
                         </p>
                         <m.button

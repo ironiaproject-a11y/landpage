@@ -244,13 +244,13 @@ export function BeforeAfterSlider({
 
                             {/* Before Label */}
                             <div className="absolute top-6 left-6 px-4 py-2 rounded-full glass-panel border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Antes</span>
+                                <span className="text-caption-marker !text-white/60">Antes</span>
                             </div>
                         </div>
 
                         {/* After Label */}
                         <div className="absolute top-6 right-6 px-4 py-2 rounded-full glass-panel border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-primary)]">Depois</span>
+                            <span className="text-caption-marker">Depois</span>
                         </div>
 
                         {/* Slider Handle */}

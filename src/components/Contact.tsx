@@ -34,22 +34,22 @@ export function Contact() {
                     {/* Info Side */}
                     <div className="lg:w-1/3">
                         <PremiumReveal direction="bottom" delay={0.1}>
-                            <span className="text-white/40 font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-6 block">
+                            <span className="text-caption-marker mb-10 block">
                                 Contato
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="font-headline text-[var(--font-h2)] font-semibold text-[var(--color-text-primary)] mb-8 leading-[var(--font-h2-line-height)] uppercase tracking-[var(--font-h2-tracking)]">
+                        <h2 className="text-h2 mb-12 uppercase">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white font-headline italic font-light block mt-2">novo sorriso?</span>
+                                <span className="text-white text-serif-accent block mt-4">novo sorriso?</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-[var(--color-text-secondary)] text-[var(--font-body)] font-[var(--font-body-weight)] leading-[var(--font-body-line-height)] mb-12">
+                            <p className="text-body-refined mb-12">
                                 Nossa equipe de concierges está pronta para atender você e esclarecer todas as suas dúvidas sobre nossos tratamentos.
                             </p>
                         </PremiumReveal>
@@ -66,7 +66,7 @@ export function Contact() {
                                             <item.icon strokeWidth={1} className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-[var(--font-small)] font-semibold text-[var(--color-text-secondary)]/30 uppercase tracking-[var(--font-small-tracking)] mb-1">{item.title}</h4>
+                                            <h4 className="text-caption-marker mb-2 opacity-40">{item.title}</h4>
                                             <a href={item.href} className="text-[var(--color-text-primary)] hover:text-white transition-colors text-sm font-medium">{item.value}</a>
                                         </div>
                                     </div>
@@ -103,45 +103,45 @@ export function Contact() {
                             >
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Nome</label>
+                                        <label className="text-caption-marker opacity-40 ml-1 block">Nome</label>
                                         <input
                                             name="name"
                                             type="text"
                                             required
                                             placeholder="Seu nome"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
                                         />
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">WhatsApp</label>
+                                        <label className="text-caption-marker opacity-40 ml-1 block">WhatsApp</label>
                                         <input
                                             name="phone"
                                             type="tel"
                                             required
                                             placeholder="(00) 0 0000-0000"
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white placeholder:text-white/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-1 block">Email</label>
+                                    <label className="text-caption-marker opacity-40 ml-1 block">Email</label>
                                     <input
                                         name="email"
                                         type="email"
                                         required
                                         placeholder="seu@email.com"
-                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all font-body text-sm"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all text-body-refined"
                                     />
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-secondary)]/30 uppercase tracking-[0.3em] ml-1 block">Como podemos ajudar?</label>
+                                    <label className="text-caption-marker opacity-40 ml-1 block">Como podemos ajudar?</label>
                                     <textarea
                                         name="message"
                                         rows={4}
                                         placeholder="Descreva brevemente seu objetivo..."
-                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all resize-none font-body text-sm"
+                                        className="w-full bg-[var(--color-text-primary)]/[0.03] border border-[var(--color-text-primary)]/10 rounded-xl px-6 py-5 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-primary)]/10 focus:outline-none focus:border-[var(--color-text-primary)]/50 transition-all resize-none text-body-refined"
                                     />
                                 </div>
 
@@ -151,7 +151,7 @@ export function Contact() {
                                     disabled={formStatus !== "idle"}
                                     type="submit"
                                     className={clsx(
-                                        "w-full py-6 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-500",
+                                        "w-full py-6 rounded-full font-bold text-caption-marker transition-all duration-500",
                                         formStatus === "idle" ? "bg-white text-black hover:bg-white/90" : "bg-white/10 text-white/40 cursor-wait"
                                     )}
                                 >
@@ -228,7 +228,7 @@ export function Contact() {
                     />
 
                     <div className="absolute bottom-6 right-6 opacity-0 group-hover/map:opacity-100 transition-opacity duration-500 pointer-events-none z-30">
-                        <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[9px] font-bold uppercase tracking-widest text-white shadow-premium-1">
+                        <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-caption-marker tracking-widest text-white shadow-premium-1">
                             Mapa Interativo
                         </div>
                     </div>
