@@ -92,17 +92,17 @@ export function Hero() {
                 .heroCopy {
                     position: relative;
                     z-index: 2;
-                    width: min(380px, 84vw); /* Based on max-w-[380px] */
+                    width: min(380px, 84vw);
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
                 }
 
                 .heroPre {
-                    margin: 0 0 16px 0; /* Updated mb-4 */
+                    margin: 0 0 16px 0;
                     font-family: 'Source Serif 4', serif;
-                    font-size: 22px; /* Based on text-[22px] */
-                    font-weight: 500; /* Based on font-medium */
-                    color: #E5E5E5; /* Based on text-[#E5E5E5] */
+                    font-size: 22px;
+                    font-weight: 500;
+                    color: #E5E5E5;
                     letter-spacing: normal;
                     opacity: 0;
                     transform: translateY(18px);
@@ -113,10 +113,10 @@ export function Hero() {
                 .heroTitle {
                     margin: 0;
                     font-family: 'Source Serif 4', serif;
-                    font-size: 56px; /* Based on text-[56px] */
-                    line-height: 1.02; /* Based on leading-[1.02] */
-                    letter-spacing: -0.03em; /* Based on tracking-[-0.03em] */
-                    font-weight: 700; /* Based on font-bold */
+                    font-size: 56px;
+                    line-height: 1.02;
+                    letter-spacing: -0.03em;
+                    font-weight: 700;
                     color: #fff;
                     text-shadow: 
                         0 0 10px rgba(255,255,255,0.05),
@@ -127,6 +127,40 @@ export function Hero() {
                     animation-delay: 0.78s;
                 }
 
+                /* EXPERIENCE CARD */
+                .heroCard {
+                    margin-top: 80px; /* mt-20 */
+                    background: rgba(17, 17, 17, 0.8);
+                    backdrop-filter: blur(12px);
+                    border-radius: 24px; /* rounded-3xl */
+                    padding: 24px 32px;
+                    width: fit-content;
+                    opacity: 0;
+                    transform: translateY(30px);
+                    animation: fadeUp 1s ease forwards;
+                    animation-delay: 1.1s;
+                }
+
+                .heroCardNum {
+                    color: #fff;
+                    font-size: 48px;
+                    line-height: 1;
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                }
+
+                .heroCardPlus {
+                    font-size: 32px;
+                }
+
+                .heroCardLabel {
+                    color: #A3A3A3;
+                    font-size: 13px;
+                    font-weight: 300;
+                    letter-spacing: 0.08em;
+                    margin-top: 4px;
+                }
+
                 @media (max-width: 768px) {
                     .heroCopy {
                         width: min(340px, 88vw);
@@ -134,6 +168,10 @@ export function Hero() {
                     }
                     .heroTitle {
                         font-size: clamp(48px, 12vw, 56px);
+                    }
+                    .heroCard {
+                        margin-top: 40px;
+                        padding: 20px 24px;
                     }
                 }
 
@@ -167,6 +205,15 @@ export function Hero() {
             <div className="heroCopy">
                 <p className="heroPre">Sua origem</p>
                 <h1 className="heroTitle">Seu sorriso</h1>
+
+                <div className="heroCard">
+                    <div className="heroCardNum">
+                        20<span className="heroCardPlus">+</span>
+                    </div>
+                    <div className="heroCardLabel">
+                        ANOS DE EXPERIÊNCIA
+                    </div>
+                </div>
             </div>
         </section>
     );
