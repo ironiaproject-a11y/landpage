@@ -103,7 +103,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: 0% center;
+                    object-position: 25% center;
                     filter: grayscale(100%) brightness(0.7) contrast(1.4);
                     z-index: 0;
                     pointer-events: none;
