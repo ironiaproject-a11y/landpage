@@ -22,6 +22,9 @@ export function Hero() {
         const pre = preRef.current;
         const title = titleRef.current;
 
+        // Pause immediately — GSAP will control currentTime
+        video.pause();
+
         const ctx = gsap.context(() => {
             let scrollTriggerCreated = false;
 
@@ -146,7 +149,8 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: center;
-                    filter: brightness(0.6) contrast(1.05) grayscale(100%);
+                    /* Brightness ajustado para garantir visibilidade */
+                    filter: brightness(0.85) contrast(1.05);
                     z-index: 1;
                     display: block;
                     opacity: 1 !important;
@@ -198,9 +202,12 @@ export function Hero() {
             <video 
                 ref={videoRef}
                 muted 
-                playsInline 
+                playsInline
+                autoPlay
+                loop={false}
                 className="heroVideo"
                 preload="auto"
+                poster="/hero-video.webp"
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
