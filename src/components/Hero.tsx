@@ -44,13 +44,22 @@ export function Hero() {
 
             // Cinematic Intro Timeline
             const introTl = gsap.timeline({
-                onComplete: () => {
-                    // Signal preloader to exit
+                onStart: () => {
+                    // Signal preloader to start exiting immediately as intro begins
                     window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
                     (window as any).__HERO_ASSETS_LOADED__ = true;
+                },
+                onComplete: () => {
                     ScrollTrigger.refresh();
                 }
             });
+
+            // Video and Overlay Fade-in
+            introTl.fromTo([".hero-video", ".hero-overlay"],
+                { opacity: 0 },
+                { opacity: 1, duration: 2, ease: "power2.inOut" },
+                0
+            );
 
             // Line 1: Sua origem
             introTl.fromTo(".hero-pre", 
@@ -117,6 +126,7 @@ export function Hero() {
                     filter: brightness(0.5) contrast(1.1);
                     z-index: 0;
                     pointer-events: none;
+                    opacity: 0; /* Animated by GSAP */
                 }
 
                 /* DARK OVERLAY */
@@ -126,6 +136,7 @@ export function Hero() {
                     background: rgba(0,0,0,0.5);
                     z-index: 1;
                     pointer-events: none;
+                    opacity: 0; /* Animated by GSAP */
                 }
 
                 /* TEXT CONTAINER */
