@@ -23,61 +23,64 @@ export function Hero() {
         const title = titleRef.current;
 
         const ctx = gsap.context(() => {
-            // master timeline
-            const tl = gsap.timeline({
-                // Ensure ScrollTrigger only starts AFTER the intro
-                onComplete: () => {
-                   initScroll();
-                }
-            });
+            const initIntro = () => {
+                const duration = video.duration || 5; // Fallback to 5s if unknown
+                const transitionEnd = duration * 0.8; // Target 80% of video for intro
 
-            // Initial states
-            gsap.set(pre, { opacity: 0, y: 20 });
-            gsap.set(title, { opacity: 0, y: 40 });
-            gsap.set(video, { currentTime: 0 });
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        // After intro, we init scroll scrubbing
+                        initScroll();
+                    }
+                });
 
-            // 1. Tagline Entrance
-            tl.to(pre, {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                ease: "power3.out"
-            }, "+=0.3");
+                // Initial states
+                gsap.set(pre, { opacity: 0, y: 20 });
+                gsap.set(title, { opacity: 0, y: 40 });
+                gsap.set(video, { currentTime: 0 });
 
-            // 2. Video Playing (Transition Skull -> Smile)
-            // We'll animate it to a significant portion of its duration
-            tl.to(video, {
-                currentTime: 2.8, // Increased for a more complete transition
-                duration: 4.5,    // Slower, more cinematic pace
-                ease: "power1.inOut"
-            }, "-=0.8");
+                // 1. Tagline Entrance
+                tl.to(pre, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.5,
+                    ease: "power3.out"
+                }, "+=0.3");
 
-            // 3. "Swept" (Varredura) Tagline Exit
-            // Trigger this only when the video is deep into the transition
-            tl.to(pre, {
-                "--mask-p": "100%",
-                duration: 1.8,
-                ease: "power2.inOut"
-            }, "-=3.0"); // Overlap with video playing
+                // 2. Video Playing (Full Transition)
+                // We use video.duration to go all the way
+                tl.to(video, {
+                    currentTime: transitionEnd,
+                    duration: 5, // Slower, stable duration
+                    ease: "none" // Linear for better sync
+                }, "-=1.0");
 
-            tl.to(pre, {
-                opacity: 0,
-                duration: 0.6
-            }, "-=1.2");
+                // 3. "Swept" Tagline Exit
+                // Triggered later in the video playback
+                tl.to(pre, {
+                    "--mask-p": "100%",
+                    duration: 1.5,
+                    ease: "power2.inOut"
+                }, "-=2.5");
 
-            // 4. Main Title Entrance (AFTER tagline is gone and woman is clear)
-            tl.to(title, {
-                opacity: 1,
-                y: 0,
-                duration: 1.8,
-                ease: "expo.out"
-            }, "-=0.4");
+                tl.to(pre, {
+                    opacity: 0,
+                    duration: 0.5
+                }, "-=1.2");
 
-            // Scroll Scrubbing Function
+                // 4. Main Title Entrance (Woman is fully visible)
+                tl.to(title, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.8,
+                    ease: "expo.out"
+                }, "-=0.2");
+            };
+
             const initScroll = () => {
                 if (!video.duration) return;
                 
-                // Allow user to scrub the ENTIRE video duration
+                // Scrubbing the entire video
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
@@ -93,9 +96,22 @@ export function Hero() {
                 });
             };
 
-            // Loading assets
-            video.load();
+            // Ensure video metadata is loaded before starting the timeline
+            if (video.readyState >= 1) {
+                initIntro();
+            } else {
+                video.onloadedmetadata = initIntro;
+            }
+
+            // Fallback if metadata takes too long
+            const timer = setTimeout(() => {
+                if (!video.duration) initIntro();
+            }, 2000);
+
+            // Preloader sync
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+            
+            return () => clearTimeout(timer);
         });
 
         return () => ctx.revert();
