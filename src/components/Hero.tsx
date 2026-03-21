@@ -79,35 +79,38 @@ export function Hero() {
                 .heroCopy {
                     position: relative;
                     z-index: 2;
-                    width: min(420px, 84vw);
+                    width: min(600px, 90vw); /* Increased width for 5rem text */
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
                 }
 
+                /* O Pré-título Elegante */
                 .heroPre {
-                    margin: 0 0 1rem 0; /* Updated margin-bottom: 1rem */
-                    font-family: 'Cinzel', serif;
-                    font-weight: 400;
-                    letter-spacing: 0.5em; /* Luxo extremo */
+                    display: block;
+                    margin: 0 0 1rem 0;
+                    font-family: 'Cormorant Garamond', serif;
+                    font-style: italic;
+                    letter-spacing: 0.4em;
+                    text-transform: uppercase;
                     color: rgba(255, 255, 255, 0.8);
-                    font-size: 0.9rem;
+                    font-size: 1rem;
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
                     animation-delay: 0.5s;
                 }
 
+                /* O Título de Impacto */
                 .heroTitle {
                     margin: 0;
-                    font-family: 'Montserrat', sans-serif;
-                    font-weight: 900;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 900; /* Extra Bold */
                     font-style: normal;
                     text-transform: uppercase;
-                    color: #FFFFFF;
-                    font-size: clamp(3rem, 8vw, 6rem); /* Responsividade */
+                    font-size: 5rem;
                     line-height: 0.9;
-                    letter-spacing: -0.02em;
-                    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
+                    color: #ffffff;
+                    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
                     opacity: 0;
                     transform: translateY(42px);
                     animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
@@ -120,7 +123,7 @@ export function Hero() {
                         margin-left: 6vw;
                     }
                     .heroTitle {
-                        font-size: clamp(2.5rem, 10vw, 4rem);
+                        font-size: clamp(3rem, 12vw, 4.5rem);
                     }
                 }
 
@@ -133,7 +136,7 @@ export function Hero() {
 
                 @keyframes fadeUpTitle {
                     to {
-                        opacity: 1; /* Pure white for Montserrat 900 */
+                        opacity: 1;
                         transform: translateY(0);
                     }
                 }
@@ -150,7 +153,7 @@ export function Hero() {
             </video>
 
             <div className="heroCopy">
-                <p className="heroPre">Sua origem</p>
+                <span className="heroPre">Sua origem</span>
                 <h1 className="heroTitle">Seu sorriso</h1>
             </div>
         </section>
