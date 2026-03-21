@@ -85,12 +85,12 @@ export function Hero() {
                 }
 
                 .heroPre {
-                    margin: 0 0 16px 0;
-                    font-family: 'Cormorant Garamond', serif;
-                    text-transform: uppercase;
-                    letter-spacing: 0.3em;
-                    font-size: 1.1rem;
-                    color: #c5c5b5; /* Tom champanhe */
+                    margin: 0 0 1rem 0; /* Updated margin-bottom: 1rem */
+                    font-family: 'Cinzel', serif;
+                    font-weight: 400;
+                    letter-spacing: 0.5em; /* Luxo extremo */
+                    color: rgba(255, 255, 255, 0.8);
+                    font-size: 0.9rem;
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
@@ -99,13 +99,14 @@ export function Hero() {
 
                 .heroTitle {
                     margin: 0;
-                    font-family: 'Inter', sans-serif;
+                    font-family: 'Montserrat', sans-serif;
                     font-weight: 900;
                     font-style: normal;
-                    font-size: 4.5rem;
-                    line-height: 1;
-                    color: #ffffff;
-                    /* Camada de segurança para leitura no vídeo */
+                    text-transform: uppercase;
+                    color: #FFFFFF;
+                    font-size: clamp(3rem, 8vw, 6rem); /* Responsividade */
+                    line-height: 0.9;
+                    letter-spacing: -0.02em;
                     filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
                     opacity: 0;
                     transform: translateY(42px);
@@ -119,7 +120,7 @@ export function Hero() {
                         margin-left: 6vw;
                     }
                     .heroTitle {
-                        font-size: clamp(3rem, 10vw, 4.5rem);
+                        font-size: clamp(2.5rem, 10vw, 4rem);
                     }
                 }
 
@@ -132,7 +133,7 @@ export function Hero() {
 
                 @keyframes fadeUpTitle {
                     to {
-                        opacity: 0.95; /* Slightly less transparent for modern feel */
+                        opacity: 1; /* Pure white for Montserrat 900 */
                         transform: translateY(0);
                     }
                 }
