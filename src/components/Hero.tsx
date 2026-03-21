@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,83 +10,63 @@ if (typeof window !== "undefined") {
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [imagesReady, setImagesReady] = useState(false);
-    
-    // Configuration for the image sequence
-    // The user mentioned a folder "aqui" which likely refers to "para_vc" (for you)
-    const frameCount = 192; 
-    const currentFrame = (index: number) => 
-        `/para_vc/frame_${index.toString().padStart(3, '0')}_delay-0.041s.png`;
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const overlayRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!canvasRef.current || !sectionRef.current) return;
+        if (!sectionRef.current || !videoRef.current || !overlayRef.current) return;
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
+        const video = videoRef.current;
         const section = sectionRef.current;
-
-        // Set high-quality canvas dimensions
-        canvas.width = 1920;
-        canvas.height = 1080;
-
-        const images: HTMLImageElement[] = [];
-        const airbnb = { frame: 0 };
-
-        // Preload images
-        let loadedCount = 0;
-        for (let i = 0; i < frameCount; i++) {
-            const img = new Image();
-            img.src = currentFrame(i);
-            img.onload = () => {
-                loadedCount++;
-                if (loadedCount === frameCount) {
-                    setImagesReady(true);
-                    render();
-                }
-            };
-            images.push(img);
-        }
-
-        const render = () => {
-            if (context && images[airbnb.frame]) {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(images[airbnb.frame], 0, 0, canvas.width, canvas.height);
-            }
-        };
+        const overlay = overlayRef.current;
 
         const ctx = gsap.context(() => {
-            // Scroll Animation for Canvas
-            gsap.to(airbnb, {
-                frame: frameCount - 1,
-                snap: "frame",
-                ease: "none",
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top top",
-                    end: "+=300vh",
-                    scrub: 1.2,
-                    pin: true,
-                    anticipatePin: 1,
-                    onUpdate: render,
-                },
-            });
+            // GSAP Scroll Scrubbing for the "Entire Video" (Video Inteiro)
+            const initScroll = () => {
+                if (!video.duration) return;
+                
+                gsap.to(video, {
+                    currentTime: video.duration,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top top",
+                        end: "+=300vh",
+                        scrub: 1.2,
+                        pin: true,
+                        anticipatePin: 1,
+                        invalidateOnRefresh: true,
+                    }
+                });
+            };
+
+            // Ensure video metadata is loaded for scrubbing
+            video.load();
+            if (video.readyState >= 1) {
+                initScroll();
+            } else {
+                video.onloadedmetadata = initScroll;
+            }
 
             // Cinematic Entrance
             const introTl = gsap.timeline({
                 onStart: () => {
+                    // Signal preloader to start exiting
                     window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                },
+                onComplete: () => {
+                    ScrollTrigger.refresh();
                 }
             });
 
-            // Fade in Canvas and Overlay
-            introTl.fromTo([".hero-canvas", ".hero-overlay"],
-                { opacity: 0 },
-                { opacity: 1, duration: 2, ease: "power2.inOut" },
-                0
-            );
+            // Fade in video and overlay
+            introTl.to([video, overlay], {
+                opacity: 1,
+                duration: 1.5,
+                ease: "power2.inOut"
+            }, 0);
 
-            // Cascade text animations from Step 160 Design
+            // Cascade text (Design Step 160)
             introTl.fromTo(".hero-pre", 
                 { opacity: 0, y: 100 },
                 { opacity: 0.6, y: 0, duration: 1, ease: "power2.out" },
@@ -117,19 +97,16 @@ export function Hero() {
                     padding-left: 6vw;
                 }
 
-                .canvas-container {
+                .hero-video {
                     position: absolute;
                     inset: 0;
                     width: 100%;
                     height: 100%;
-                    z-index: 0;
-                }
-
-                .hero-canvas {
-                    width: 100%;
-                    height: 100%;
                     object-fit: cover;
-                    opacity: 0;
+                    filter: brightness(0.6) contrast(1.1);
+                    z-index: 0;
+                    pointer-events: none;
+                    opacity: 0; /* Handled by GSAP */
                 }
 
                 .hero-overlay {
@@ -137,7 +114,8 @@ export function Hero() {
                     inset: 0;
                     background: rgba(0,0,0,0.6);
                     z-index: 1;
-                    opacity: 0;
+                    pointer-events: none;
+                    opacity: 0; /* Handled by GSAP */
                 }
 
                 .hero-content {
@@ -170,10 +148,17 @@ export function Hero() {
                 }
             `}</style>
 
-            <div className="canvas-container">
-                <canvas ref={canvasRef} className="hero-canvas" />
-                <div className="hero-overlay"></div>
-            </div>
+            <video 
+                ref={videoRef}
+                muted 
+                playsInline 
+                className="hero-video"
+                preload="auto"
+            >
+                <source src="/Aqui.mp4" type="video/mp4" />
+            </video>
+
+            <div ref={overlayRef} className="hero-overlay"></div>
 
             <div className="hero-content">
                 <p className="hero-pre">Sua origem</p>
