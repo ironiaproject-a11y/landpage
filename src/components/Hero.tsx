@@ -71,7 +71,6 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    /* Using background-center approach from snippet */
                     object-position: center; 
                     filter: brightness(0.45) contrast(1.05) grayscale(100%);
                     z-index: 0;
@@ -80,18 +79,18 @@ export function Hero() {
                 .heroCopy {
                     position: relative;
                     z-index: 2;
-                    width: min(420px, 84vw); /* Based on max-w-[420px] */
+                    width: min(420px, 84vw);
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
                 }
 
                 .heroPre {
-                    margin: 0 0 20px 0; /* Updated mb-5 */
-                    font-family: 'Source Serif 4', serif;
-                    font-size: 22px; 
-                    font-weight: 500;
-                    color: #E5E5E5;
-                    letter-spacing: normal;
+                    margin: 0 0 16px 0;
+                    font-family: 'Cormorant Garamond', serif;
+                    text-transform: uppercase;
+                    letter-spacing: 0.3em;
+                    font-size: 1.1rem;
+                    color: #c5c5b5; /* Tom champanhe */
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
@@ -100,17 +99,14 @@ export function Hero() {
 
                 .heroTitle {
                     margin: 0;
-                    font-family: 'Source Serif 4', serif;
-                    font-size: 56px;
-                    line-height: 1.02; 
-                    letter-spacing: -0.035em; /* Updated tracking-[-0.035em] */
-                    font-weight: 700; 
-                    color: #fff;
-                    /* Updated drop-shadow from snippet */
-                    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.6));
-                    text-shadow: 
-                        0 0 10px rgba(255,255,255,0.05),
-                        0 0 40px rgba(255,255,255,0.04);
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 900;
+                    font-style: normal;
+                    font-size: 4.5rem;
+                    line-height: 1;
+                    color: #ffffff;
+                    /* Camada de segurança para leitura no vídeo */
+                    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
                     opacity: 0;
                     transform: translateY(42px);
                     animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
@@ -123,7 +119,7 @@ export function Hero() {
                         margin-left: 6vw;
                     }
                     .heroTitle {
-                        font-size: clamp(48px, 12vw, 56px);
+                        font-size: clamp(3rem, 10vw, 4.5rem);
                     }
                 }
 
@@ -136,7 +132,7 @@ export function Hero() {
 
                 @keyframes fadeUpTitle {
                     to {
-                        opacity: 0.9;
+                        opacity: 0.95; /* Slightly less transparent for modern feel */
                         transform: translateY(0);
                     }
                 }
@@ -151,8 +147,6 @@ export function Hero() {
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
-
-            {/* Note: heroShade gradient removed to match snippet minimalist direction */}
 
             <div className="heroCopy">
                 <p className="heroPre">Sua origem</p>
