@@ -79,38 +79,39 @@ export function Hero() {
                 .heroCopy {
                     position: relative;
                     z-index: 2;
-                    width: min(600px, 90vw); /* Increased width for 5rem text */
+                    width: min(600px, 90vw);
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
                 }
 
-                /* O Pré-título Elegante */
+                /* Para o "SUA ORIGEM" */
                 .heroPre {
                     display: block;
                     margin: 0 0 1rem 0;
-                    font-family: 'Cormorant Garamond', serif;
-                    font-style: italic;
-                    letter-spacing: 0.4em;
+                    font-family: 'Playfair Display', serif;
+                    font-style: italic; /* Delicado e clássico */
+                    letter-spacing: 0.3em;
                     text-transform: uppercase;
-                    color: rgba(255, 255, 255, 0.8);
                     font-size: 1rem;
+                    color: rgba(255, 255, 255, 0.7);
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
                     animation-delay: 0.5s;
                 }
 
-                /* O Título de Impacto */
+                /* Para o "SEU SORRISO" */
                 .heroTitle {
                     margin: 0;
                     font-family: 'Inter', sans-serif;
-                    font-weight: 900; /* Extra Bold */
-                    font-style: normal;
+                    font-weight: 900; /* Extra Pesada */
+                    font-style: normal; /* Autoridade */
                     text-transform: uppercase;
-                    font-size: 5rem;
-                    line-height: 0.9;
                     color: #ffffff;
-                    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
+                    font-size: 5rem;
+                    line-height: 1;
+                    /* Sombra profunda para contraste "invisível" */
+                    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
                     opacity: 0;
                     transform: translateY(42px);
                     animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
