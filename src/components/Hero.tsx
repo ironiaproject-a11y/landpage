@@ -19,7 +19,7 @@ export function Hero() {
         const section = sectionRef.current;
 
         const ctx = gsap.context(() => {
-            // Cinematic Scroll Scrubbing
+            // GSAP Scroll Scrubbing for the "Entire Video" (Cinematic Experience)
             const initScroll = () => {
                 if (!video.duration) return;
                 
@@ -45,7 +45,7 @@ export function Hero() {
                 video.onloadedmetadata = initScroll;
             }
 
-            // preloader integration
+            // preloader interaction
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         });
 
@@ -72,7 +72,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    /* Manter preto e branco e ajustes de brilho/contraste para o look premium */
+                    /* Applying grayscale filter for premium B&W cinematic look */
                     filter: grayscale(100%) brightness(0.5) contrast(1.05);
                     z-index: 0;
                 }
@@ -90,14 +90,13 @@ export function Hero() {
                     position: relative;
                     z-index: 2;
                     margin-left: 6vw;
-                    max-width: 1200px;
                 }
 
                 /* OVERLAY LOCAL (FOCO NO TEXTO) */
                 .hero-content::before {
                     content: "";
                     position: absolute;
-                    inset: -100px -100px -100px -100px;
+                    inset: -60px -60px -60px -60px;
                     background: radial-gradient(
                         circle at left center,
                         rgba(0,0,0,0.85) 0%,
@@ -118,7 +117,7 @@ export function Hero() {
                     opacity: 0;
                     transform: translateY(30px);
                     animation: intro 1s ease forwards;
-                    animation-delay: 0.5s; /* Ajuste para o preloader */
+                    animation-delay: 0.4s; /* Sync with preloader exit */
                 }
 
                 /* TEXTO PRINCIPAL */
