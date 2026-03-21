@@ -1,23 +1,101 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 export function Hero() {
-    useEffect(() => {
-        // Signal preloader that hero logic is mounted and ready
-        // We do this immediately to prevent hang, but video will load in background
-        const signalLoaded = () => {
-            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-            (window as any).__HERO_ASSETS_LOADED__ = true;
-        };
+    const sectionRef = useRef<HTMLElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
-        // Delay slightly to allow initial animation frames
-        const timer = setTimeout(signalLoaded, 100);
-        return () => clearTimeout(timer);
+    useEffect(() => {
+        if (!sectionRef.current || !videoRef.current) return;
+
+        const video = videoRef.current;
+        const section = sectionRef.current;
+
+        const ctx = gsap.context(() => {
+            // Function to initialize scroll trigger once video metadata is ready
+            const initScroll = () => {
+                gsap.to(video, {
+                    currentTime: video.duration || 5,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top top",
+                        end: "+=300vh",
+                        scrub: 1.5,
+                        pin: true,
+                        anticipatePin: 1,
+                        invalidateOnRefresh: true
+                    }
+                });
+            };
+
+            if (video.readyState >= 1) {
+                initScroll();
+            } else {
+                video.onloadedmetadata = initScroll;
+            }
+
+            // Cinematic Intro Timeline
+            const introTl = gsap.timeline({
+                onComplete: () => {
+                    // Signal preloader to exit
+                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                    (window as any).__HERO_ASSETS_LOADED__ = true;
+                    ScrollTrigger.refresh();
+                }
+            });
+
+            // Line 1: Sua origem
+            introTl.fromTo(".hero-pre", 
+                { opacity: 0, y: 40, filter: "blur(4px)" },
+                { 
+                    opacity: 0.6, 
+                    y: 0, 
+                    filter: "blur(0px)",
+                    duration: 1.2, 
+                    ease: "power2.out" 
+                },
+                0.5
+            );
+
+            // Line 2: Seu sorriso
+            introTl.fromTo(".hero-title", 
+                { opacity: 0, y: 100, filter: "blur(12px)", scale: 0.9 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    filter: "blur(0px)",
+                    scale: 1,
+                    duration: 1.5, 
+                    ease: "expo.out" 
+                },
+                0.8
+            );
+        });
+
+        // Failsafe for preloader
+        const failsafe = setTimeout(() => {
+            if (!(window as any).__HERO_ASSETS_LOADED__) {
+                window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+                (window as any).__HERO_ASSETS_LOADED__ = true;
+            }
+        }, 4000);
+
+        return () => {
+            ctx.revert();
+            clearTimeout(failsafe);
+        };
     }, []);
 
     return (
-        <section className="hero">
+        <section ref={sectionRef} className="hero">
             <style>{`
                 .hero {
                     position: relative;
@@ -36,7 +114,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    filter: brightness(0.6) contrast(1.1);
+                    filter: brightness(0.5) contrast(1.1);
                     z-index: 0;
                     pointer-events: none;
                 }
@@ -45,7 +123,7 @@ export function Hero() {
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: rgba(0,0,0,0.6);
+                    background: rgba(0,0,0,0.5);
                     z-index: 1;
                     pointer-events: none;
                 }
@@ -76,34 +154,6 @@ export function Hero() {
                     color: #FFFFFF;
                 }
 
-                /* ANIMATION */
-                .hero-pre {
-                    opacity: 0;
-                    transform: translateY(40px);
-                    animation: fadeUp 1s ease forwards;
-                }
-
-                .hero-title {
-                    opacity: 0;
-                    transform: translateY(100px) scale(0.9);
-                    animation: fadeUpBig 1.2s ease forwards;
-                    animation-delay: 0.3s;
-                }
-
-                @keyframes fadeUp {
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                @keyframes fadeUpBig {
-                    to {
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
-                }
-
                 @media (max-width: 768px) {
                     .hero {
                         padding-left: 20px;
@@ -112,15 +162,13 @@ export function Hero() {
             `}</style>
 
             <video 
-                autoPlay 
+                ref={videoRef}
                 muted 
-                loop 
                 playsInline 
                 className="hero-video"
                 preload="auto"
             >
-                <source src="/hero-background.mp4" type="video/mp4" />
-                <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
+                <source src="/hero-slit.mp4" type="video/mp4" />
             </video>
 
             <div className="hero-overlay"></div>
