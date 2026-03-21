@@ -85,20 +85,6 @@ export function Hero() {
                     transform: translateY(-4vh);
                 }
 
-                .heroLabel {
-                    font-family: Inter, sans-serif;
-                    font-size: 13px;
-                    font-weight: 500;
-                    color: #A3A3A3;
-                    letter-spacing: 0.12em;
-                    margin-bottom: 12px; /* mb-3 */
-                    text-transform: uppercase;
-                    opacity: 0;
-                    transform: translateY(10px);
-                    animation: fadeUp 0.8s ease forwards;
-                    animation-delay: 0.4s;
-                }
-
                 .heroPre {
                     margin: 0 0 20px 0; /* Updated mb-5 */
                     font-family: 'Source Serif 4', serif;
@@ -109,7 +95,7 @@ export function Hero() {
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
-                    animation-delay: 0.6s;
+                    animation-delay: 0.5s;
                 }
 
                 .heroTitle {
@@ -128,7 +114,7 @@ export function Hero() {
                     opacity: 0;
                     transform: translateY(42px);
                     animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
-                    animation-delay: 0.85s;
+                    animation-delay: 0.75s;
                 }
 
                 @media (max-width: 768px) {
@@ -169,7 +155,6 @@ export function Hero() {
             {/* Note: heroShade gradient removed to match snippet minimalist direction */}
 
             <div className="heroCopy">
-                <p className="heroLabel">CLÍNICA.</p>
                 <p className="heroPre">Sua origem</p>
                 <h1 className="heroTitle">Seu sorriso</h1>
             </div>
