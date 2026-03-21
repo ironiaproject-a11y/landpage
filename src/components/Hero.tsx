@@ -284,10 +284,10 @@ export function Hero() {
                     height: 100vh;
                     background: var(--color-bg-dark);
                     margin: 0;
-                    padding: 0 !important;
+                    padding: 0 10vw !important;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-start;
                     overflow: hidden;
                     z-index: 1;
                 }
@@ -372,8 +372,11 @@ export function Hero() {
                     }
 
                     .hero-content {
-                        max-width: 900px;
+                        width: 100%;
                         z-index: 10;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
                     }
 
                     .hero-pre {
@@ -396,6 +399,7 @@ export function Hero() {
                         letter-spacing: -0.03em;
                         opacity: 0; /* Animated */
                         display: block;
+                        max-width: 100%;
                     }
 
 
