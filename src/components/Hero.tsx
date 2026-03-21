@@ -103,7 +103,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    filter: grayscale(100%) brightness(0.6) contrast(1.1);
+                    filter: grayscale(100%) brightness(0.7) contrast(1.4);
                     z-index: 0;
                     pointer-events: none;
                     opacity: 0; /* Handled by GSAP */
@@ -112,7 +112,7 @@ export function Hero() {
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: rgba(0,0,0,0.6);
+                    background: rgba(0,0,0,0.4);
                     z-index: 1;
                     pointer-events: none;
                     opacity: 0; /* Handled by GSAP */
