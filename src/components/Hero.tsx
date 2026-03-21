@@ -57,7 +57,7 @@ export function Hero() {
             <style>{`
                 .hero {
                     position: relative;
-                    height: 100vh;
+                    min-height: 100svh;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -65,88 +65,103 @@ export function Hero() {
                     width: 100%;
                 }
 
-                /* VIDEO CONTROL (DO NOT CHANGE POSITION) */
-                .hero-video {
+                .heroVideo {
                     position: absolute;
                     inset: 0;
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                    /* Manted 15% left alignment as previously approved */
                     object-position: 15% center;
-                    /* B&W Cinematic Filter */
-                    filter: grayscale(100%) brightness(0.5) contrast(1.05);
+                    filter: brightness(0.45) contrast(1.05) grayscale(100%);
                     z-index: 0;
                 }
 
-                /* LOCAL CONTRAST (LEFT SIDE FOCUS) */
-                .hero-overlay {
+                .heroShade {
                     position: absolute;
                     inset: 0;
+                    z-index: 1;
                     background: linear-gradient(
                         to right,
-                        rgba(0,0,0,0.75) 0%,
-                        rgba(0,0,0,0.5) 40%,
-                        rgba(0,0,0,0) 100%
+                        rgba(0, 0, 0, 0.82) 0%,
+                        rgba(0, 0, 0, 0.72) 32%,
+                        rgba(0, 0, 0, 0.35) 62%,
+                        rgba(0, 0, 0, 0) 100%
                     );
-                    z-index: 1;
                 }
 
-                /* CONTAINER (POSITIONING CRITICAL - ABOVE CENTER) */
-                .hero-content {
+                .heroCopy {
                     position: relative;
                     z-index: 2;
-                    max-width: 420px;
-                    margin-left: 8vw;
-                    transform: translateY(-5vh);
+                    width: min(460px, 84vw);
+                    margin-left: clamp(24px, 8vw, 96px);
+                    transform: translateY(-4vh);
+                    padding-top: 8vh;
                 }
 
-                /* TYPOGRAPHY HIERARCHY (REFINED) */
-                .hero-pre {
+                .heroPre {
+                    margin: 0 0 24px 0;
                     font-family: 'Source Serif 4', serif;
                     font-size: clamp(16px, 1.5vw, 22px);
-                    color: rgba(255,255,255,0.55);
-                    margin-bottom: 28px;
+                    font-weight: 400;
+                    color: rgba(255, 255, 255, 0.58);
+                    letter-spacing: -0.01em;
                     opacity: 0;
-                    transform: translateY(20px);
-                    animation: fadeSoft 1s ease forwards;
-                    animation-delay: 0.5s;
+                    transform: translateY(18px);
+                    animation: fadeUp 0.9s ease forwards;
+                    animation-delay: 0.5s; /* Sync with preloader */
                 }
 
-                .hero-title {
+                .heroTitle {
+                    margin: 0;
                     font-family: 'Source Serif 4', serif;
                     font-size: clamp(56px, 7vw, 90px);
-                    line-height: 1.1;
-                    letter-spacing: -0.025em;
-                    color: #FFFFFF;
-                    text-shadow: 0 0 25px rgba(255,255,255,0.08);
+                    line-height: 0.98;
+                    letter-spacing: -0.03em;
+                    font-weight: 400;
+                    color: #fff;
+                    text-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
                     opacity: 0;
-                    transform: translateY(60px) scale(0.95);
-                    animation: fadeStrong 1.2s cubic-bezier(.22,.9,.32,1) forwards;
-                    animation-delay: 0.8s;
+                    transform: translateY(42px);
+                    animation: fadeUp 1.05s cubic-bezier(.22,.9,.32,1) forwards;
+                    animation-delay: 0.78s;
                 }
 
-                /* ANIMATION (SUBTLE + REFINED) */
-                @keyframes fadeSoft {
+                .heroHint {
+                    margin: 24px 0 0 0;
+                    font-family: Inter, sans-serif;
+                    font-size: 13px;
+                    letter-spacing: 0.04em;
+                    color: rgba(255, 255, 255, 0.45);
+                    text-transform: uppercase;
+                    opacity: 0;
+                    transform: translateY(12px);
+                    animation: fadeUp 0.9s ease forwards;
+                    animation-delay: 1.05s;
+                }
+
+                @media (max-width: 768px) {
+                    .heroCopy {
+                        width: min(360px, 88vw);
+                        margin-left: 6vw;
+                        transform: translateY(-2vh);
+                        padding-top: 10vh;
+                    }
+
+                    .heroTitle {
+                        font-size: clamp(44px, 12vw, 64px);
+                    }
+
+                    .heroPre {
+                        margin-bottom: 18px;
+                    }
+                }
+
+                @keyframes fadeUp {
                     to {
                         opacity: 1;
                         transform: translateY(0);
                     }
-                }
-
-                @keyframes fadeStrong {
-                    to {
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .hero-content { 
-                        margin-left: 20px; 
-                        max-width: 80%;
-                        transform: translateY(-2vh); 
-                    }
-                    .hero-title { font-size: clamp(48px, 10vw, 64px); }
                 }
             `}</style>
 
@@ -154,17 +169,18 @@ export function Hero() {
                 ref={videoRef}
                 muted 
                 playsInline 
-                className="hero-video"
+                className="heroVideo"
                 preload="auto"
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
 
-            <div className="hero-overlay"></div>
+            <div className="heroShade" />
 
-            <div className="hero-content">
-                <p className="hero-pre">Sua origem</p>
-                <h1 className="hero-title">Seu sorriso</h1>
+            <div className="heroCopy">
+                <p className="heroPre">Sua origem</p>
+                <h1 className="heroTitle">Seu sorriso</h1>
+                <p className="heroHint">Role para descobrir</p>
             </div>
         </section>
     );
