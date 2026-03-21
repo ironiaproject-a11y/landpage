@@ -72,6 +72,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                    object-position: 15% center;
                     /* Applying grayscale filter for premium B&W cinematic look */
                     filter: grayscale(100%) brightness(0.5) contrast(1.05);
                     z-index: 0;
