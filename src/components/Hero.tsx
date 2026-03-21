@@ -11,17 +11,15 @@ if (typeof window !== "undefined") {
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const overlayRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!sectionRef.current || !videoRef.current || !overlayRef.current) return;
+        if (!sectionRef.current || !videoRef.current) return;
 
         const video = videoRef.current;
         const section = sectionRef.current;
-        const overlay = overlayRef.current;
 
         const ctx = gsap.context(() => {
-            // GSAP Scroll Scrubbing for the "Entire Video" (Video Inteiro)
+            // Scroll Scrubbing Logic (keeping the cinematic scroll experience)
             const initScroll = () => {
                 if (!video.duration) return;
                 
@@ -40,7 +38,6 @@ export function Hero() {
                 });
             };
 
-            // Ensure video metadata is loaded for scrubbing
             video.load();
             if (video.readyState >= 1) {
                 initScroll();
@@ -48,36 +45,8 @@ export function Hero() {
                 video.onloadedmetadata = initScroll;
             }
 
-            // Cinematic Entrance
-            const introTl = gsap.timeline({
-                onStart: () => {
-                    // Signal preloader to start exiting
-                    window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-                },
-                onComplete: () => {
-                    ScrollTrigger.refresh();
-                }
-            });
-
-            // Fade in video and overlay
-            introTl.to([video, overlay], {
-                opacity: 1,
-                duration: 1.5,
-                ease: "power2.inOut"
-            }, 0);
-
-            // Cascade text (Design Step 160)
-            introTl.fromTo(".hero-pre", 
-                { opacity: 0, y: 100 },
-                { opacity: 0.6, y: 0, duration: 1, ease: "power2.out" },
-                0.4
-            );
-
-            introTl.fromTo(".hero-title", 
-                { opacity: 0, y: 100, scale: 0.9 },
-                { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" },
-                0.7
-            );
+            // Pulse assets-loaded event for Preloader synchronization
+            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         });
 
         return () => ctx.revert();
@@ -89,63 +58,89 @@ export function Hero() {
                 .hero {
                     position: relative;
                     height: 100vh;
-                    width: 100%;
-                    overflow: hidden;
-                    background: #000;
                     display: flex;
                     align-items: center;
-                    padding-left: 6vw;
+                    overflow: hidden;
+                    background: #000;
+                    width: 100%;
                 }
 
+                /* VIDEO */
                 .hero-video {
                     position: absolute;
                     inset: 0;
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: 25% center;
-                    filter: grayscale(100%) brightness(0.7) contrast(1.4);
+                    object-position: right center; /* foco no lado direito */
+                    filter: grayscale(100%) brightness(0.55) contrast(1.1);
                     z-index: 0;
-                    pointer-events: none;
-                    opacity: 0; /* Handled by GSAP */
                 }
 
+                /* OVERLAY INTELIGENTE (ESQUERDA MAIS ESCURA) */
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: rgba(0,0,0,0.4);
+                    background: linear-gradient(
+                        to right,
+                        rgba(0,0,0,0.8) 0%,
+                        rgba(0,0,0,0.6) 40%,
+                        rgba(0,0,0,0.2) 70%,
+                        rgba(0,0,0,0) 100%
+                    );
                     z-index: 1;
-                    pointer-events: none;
-                    opacity: 0; /* Handled by GSAP */
                 }
 
+                /* TEXTO */
                 .hero-content {
                     position: relative;
                     z-index: 2;
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
+                    margin-left: 6vw;
+                    max-width: 800px; /* Increased slightly for better fit */
                 }
 
+                /* FRASE MENOR */
                 .hero-pre {
                     font-family: 'Source Serif 4', serif;
                     font-size: clamp(18px, 2vw, 28px);
-                    color: #FFFFFF;
+                    color: rgba(255,255,255,0.65);
                     margin-bottom: 60px;
+                    opacity: 0;
+                    transform: translateY(30px);
+                    animation: fadeUp 1s ease forwards;
+                    animation-delay: 0.5s; /* Slight delay for preloader exit */
                 }
 
+                /* FRASE PRINCIPAL */
                 .hero-title {
                     font-family: 'Source Serif 4', serif;
-                    font-size: clamp(90px, 13vw, 160px);
-                    color: #FFFFFF;
+                    font-size: clamp(72px, 10vw, 140px);
                     line-height: 1.05;
                     letter-spacing: -0.03em;
-                    max-width: 100%;
+                    color: #fff;
+                    opacity: 0;
+                    transform: translateY(80px) scale(0.95);
+                    animation: fadeUpBig 1.2s ease forwards;
+                    animation-delay: 0.8s;
+                }
+
+                @keyframes fadeUp {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes fadeUpBig {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
                 }
 
                 @media (max-width: 768px) {
-                    .hero { padding-left: 20px; }
+                    .hero-content { margin-left: 20px; }
+                    .hero-title { font-size: clamp(50px, 12vw, 80px); }
                 }
             `}</style>
 
@@ -159,7 +154,7 @@ export function Hero() {
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
 
-            <div ref={overlayRef} className="hero-overlay"></div>
+            <div className="hero-overlay"></div>
 
             <div className="hero-content">
                 <p className="hero-pre">Sua origem</p>
