@@ -25,9 +25,9 @@ export function Hero() {
         const ctx = gsap.context(() => {
             let scrollTriggerCreated = false;
 
-            // Force reset states
+            // Force reset states — video opacity is managed by CSS only
             gsap.set([pre, title], { opacity: 0, y: 30 });
-            gsap.set(video, { currentTime: 0, opacity: 1, visibility: "visible" });
+            gsap.set(video, { currentTime: 0 });
 
             const startAnimations = () => {
                 // Prime video for seeking
@@ -49,7 +49,6 @@ export function Hero() {
                 tl.to(video, {
                     currentTime: 3.2,
                     duration: 2.5,
-                    opacity: 1,
                     ease: "power2.inOut"
                 }, "-=0.2");
 
@@ -87,7 +86,6 @@ export function Hero() {
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
-                    overwrite: true,
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
@@ -147,10 +145,12 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center; 
-                    filter: brightness(0.45) contrast(1.05) grayscale(100%);
-                    z-index: 1; /* Ensured it's above the black background */
+                    object-position: center;
+                    filter: brightness(0.6) contrast(1.05) grayscale(100%);
+                    z-index: 1;
                     display: block;
+                    opacity: 1 !important;
+                    visibility: visible !important;
                 }
 
                 .heroCopy {
