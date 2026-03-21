@@ -97,6 +97,21 @@ export function Hero() {
                     transform: translateY(-4vh);
                 }
 
+                /* NEW CLINICA LABEL */
+                .heroLabel {
+                    font-family: Inter, sans-serif;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #A3A3A3;
+                    letter-spacing: 0.12em;
+                    margin-bottom: 12px;
+                    text-transform: uppercase;
+                    opacity: 0;
+                    transform: translateY(10px);
+                    animation: fadeUp 0.8s ease forwards;
+                    animation-delay: 0.4s;
+                }
+
                 .heroPre {
                     margin: 0 0 16px 0;
                     font-family: 'Source Serif 4', serif;
@@ -107,7 +122,7 @@ export function Hero() {
                     opacity: 0;
                     transform: translateY(18px);
                     animation: fadeUp 0.9s ease forwards;
-                    animation-delay: 0.5s;
+                    animation-delay: 0.6s;
                 }
 
                 .heroTitle {
@@ -124,41 +139,7 @@ export function Hero() {
                     opacity: 0;
                     transform: translateY(42px);
                     animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
-                    animation-delay: 0.78s;
-                }
-
-                /* EXPERIENCE CARD */
-                .heroCard {
-                    margin-top: 80px; /* mt-20 */
-                    background: rgba(17, 17, 17, 0.8);
-                    backdrop-filter: blur(12px);
-                    border-radius: 24px; /* rounded-3xl */
-                    padding: 24px 32px;
-                    width: fit-content;
-                    opacity: 0;
-                    transform: translateY(30px);
-                    animation: fadeUp 1s ease forwards;
-                    animation-delay: 1.1s;
-                }
-
-                .heroCardNum {
-                    color: #fff;
-                    font-size: 48px;
-                    line-height: 1;
-                    font-weight: 700;
-                    letter-spacing: -0.02em;
-                }
-
-                .heroCardPlus {
-                    font-size: 32px;
-                }
-
-                .heroCardLabel {
-                    color: #A3A3A3;
-                    font-size: 13px;
-                    font-weight: 300;
-                    letter-spacing: 0.08em;
-                    margin-top: 4px;
+                    animation-delay: 0.85s;
                 }
 
                 @media (max-width: 768px) {
@@ -168,10 +149,6 @@ export function Hero() {
                     }
                     .heroTitle {
                         font-size: clamp(48px, 12vw, 56px);
-                    }
-                    .heroCard {
-                        margin-top: 40px;
-                        padding: 20px 24px;
                     }
                 }
 
@@ -203,17 +180,9 @@ export function Hero() {
             <div className="heroShade" />
 
             <div className="heroCopy">
+                <p className="heroLabel">CLÍNICA.</p>
                 <p className="heroPre">Sua origem</p>
                 <h1 className="heroTitle">Seu sorriso</h1>
-
-                <div className="heroCard">
-                    <div className="heroCardNum">
-                        20<span className="heroCardPlus">+</span>
-                    </div>
-                    <div className="heroCardLabel">
-                        ANOS DE EXPERIÊNCIA
-                    </div>
-                </div>
             </div>
         </section>
     );
