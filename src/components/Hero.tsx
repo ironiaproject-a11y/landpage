@@ -103,7 +103,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    filter: brightness(0.6) contrast(1.1);
+                    filter: grayscale(100%) brightness(0.6) contrast(1.1);
                     z-index: 0;
                     pointer-events: none;
                     opacity: 0; /* Handled by GSAP */
