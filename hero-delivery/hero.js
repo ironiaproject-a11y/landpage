@@ -10,7 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Registra o ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
+    let scrollTriggerCreated = false;
+
     const initScroll = () => {
+        if (scrollTriggerCreated) return;
+
         if (prefersReduced) {
             video.currentTime = 0;
             return;
@@ -21,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
             video.addEventListener("loadedmetadata", initScroll, { once: true });
             return;
         }
+
+        scrollTriggerCreated = true;
+
+        // Prime video for seeking
+        video.play().then(() => video.pause()).catch(() => {});
+        gsap.set(video, { opacity: 1, visibility: "visible" });
 
         gsap.to(video, {
             currentTime: video.duration,
@@ -38,9 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Inicialização robusta
-    if (video.readyState >= 2) {
+    if (video.readyState >= 1) {
         initScroll();
     } else {
-        video.addEventListener("loadeddata", initScroll, { once: true });
+        video.addEventListener("loadedmetadata", initScroll, { once: true });
     }
 });

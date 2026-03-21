@@ -23,11 +23,16 @@ export function Hero() {
         const title = titleRef.current;
 
         const ctx = gsap.context(() => {
+            let scrollTriggerCreated = false;
+
             // Force reset states
             gsap.set([pre, title], { opacity: 0, y: 30 });
-            gsap.set(video, { currentTime: 0, opacity: 1 });
+            gsap.set(video, { currentTime: 0, opacity: 1, visibility: "visible" });
 
             const startAnimations = () => {
+                // Prime video for seeking
+                video.play().then(() => video.pause()).catch(() => {});
+
                 const tl = gsap.timeline({
                     onComplete: () => initScroll()
                 });
@@ -44,6 +49,7 @@ export function Hero() {
                 tl.to(video, {
                     currentTime: 3.2,
                     duration: 2.5,
+                    opacity: 1,
                     ease: "power2.inOut"
                 }, "-=0.2");
 
@@ -69,12 +75,15 @@ export function Hero() {
             };
 
             const initScroll = () => {
+                if (scrollTriggerCreated) return;
+
                 // Ensure duration is valid before creating ScrollTrigger
                 if (!video.duration || isNaN(video.duration)) {
                     video.addEventListener("loadedmetadata", initScroll, { once: true });
                     return;
                 }
                 
+                scrollTriggerCreated = true;
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
@@ -83,7 +92,7 @@ export function Hero() {
                         trigger: section,
                         start: "top top",
                         end: "+=300vh",
-                        scrub: 1, // Slightly more responsive than 1.2
+                        scrub: 1,
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
@@ -92,25 +101,26 @@ export function Hero() {
             };
 
             // Improved metadata and readyState handling
-            if (video.readyState >= 2) {
+            if (video.readyState >= 1) {
                 startAnimations();
             } else {
-                video.addEventListener("loadeddata", startAnimations, { once: true });
+                video.addEventListener("loadedmetadata", startAnimations, { once: true });
             }
 
             // Fallback to avoid black screen/stuck state
             const fallback = setTimeout(() => {
-                if (gsap.getProperty(pre, "opacity") === 0) {
+                const preOpacity = gsap.getProperty(pre, "opacity");
+                if (preOpacity === 0) {
                     startAnimations();
                 }
-            }, 3500);
+            }, 3000);
 
             // Preloader interaction
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
                 clearTimeout(fallback);
-                video.removeEventListener("loadeddata", startAnimations);
+                video.removeEventListener("loadedmetadata", startAnimations);
                 video.removeEventListener("loadedmetadata", initScroll);
             };
         });
