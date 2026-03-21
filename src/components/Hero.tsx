@@ -36,49 +36,54 @@ export function Hero() {
                 tl.to(pre, {
                     opacity: 1,
                     y: 0,
-                    duration: 1.2,
-                    ease: "power2.out"
-                }, "+=0.4");
+                    duration: 0.8,
+                    ease: "power3.out"
+                }, "+=0.3");
 
                 // Video Intro (Simulated play via currentTime)
                 tl.to(video, {
-                    currentTime: 2.8,
-                    duration: 4.5,
-                    ease: "none"
+                    currentTime: 3.2,
+                    duration: 2.5,
+                    ease: "power2.inOut"
                 }, "-=0.2");
 
                 // Tagline "Swept" Exit
                 tl.to(pre, {
                     "--mask-p": "100%",
-                    duration: 1.5,
-                    ease: "power1.inOut"
-                }, "-=3.0");
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                }, "-=1.8");
 
                 tl.to(pre, {
                     opacity: 0,
-                    duration: 0.5
-                }, "-=1.5");
+                    duration: 0.3
+                }, "-=0.8");
 
                 // Title Reveal
                 tl.to(title, {
                     opacity: 1,
                     y: 0,
-                    duration: 1.5,
+                    duration: 1.2,
                     ease: "expo.out"
-                }, "-=0.8");
+                }, "-=0.5");
             };
 
             const initScroll = () => {
-                if (!video.duration) return;
+                // Ensure duration is valid before creating ScrollTrigger
+                if (!video.duration || isNaN(video.duration)) {
+                    video.addEventListener("loadedmetadata", initScroll, { once: true });
+                    return;
+                }
                 
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
+                    overwrite: true,
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
                         end: "+=300vh",
-                        scrub: 1.2,
+                        scrub: 1, // Slightly more responsive than 1.2
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
@@ -86,11 +91,11 @@ export function Hero() {
                 });
             };
 
-            // Better metadata handling
-            if (video.readyState >= 1) {
+            // Improved metadata and readyState handling
+            if (video.readyState >= 2) {
                 startAnimations();
             } else {
-                video.onloadedmetadata = startAnimations;
+                video.addEventListener("loadeddata", startAnimations, { once: true });
             }
 
             // Fallback to avoid black screen/stuck state
@@ -98,12 +103,16 @@ export function Hero() {
                 if (gsap.getProperty(pre, "opacity") === 0) {
                     startAnimations();
                 }
-            }, 3000);
+            }, 3500);
 
             // Preloader interaction
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
-            return () => clearTimeout(fallback);
+            return () => {
+                clearTimeout(fallback);
+                video.removeEventListener("loadeddata", startAnimations);
+                video.removeEventListener("loadedmetadata", initScroll);
+            };
         });
 
         return () => ctx.revert();
@@ -181,7 +190,7 @@ export function Hero() {
                 muted 
                 playsInline 
                 className="heroVideo"
-                preload="metadata" /* Changed to metadata for quicker initial check */
+                preload="auto"
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
