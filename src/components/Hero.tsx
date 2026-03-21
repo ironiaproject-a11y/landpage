@@ -45,7 +45,7 @@ export function Hero() {
                 video.onloadedmetadata = initScroll;
             }
 
-            // preloader integration
+            // preloader interaction
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         });
 
@@ -65,7 +65,7 @@ export function Hero() {
                     width: 100%;
                 }
 
-                /* VIDEO */
+                /* VIDEO CONTROL (DO NOT CHANGE POSITION) */
                 .hero-video {
                     position: absolute;
                     inset: 0;
@@ -73,12 +73,12 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: 15% center;
-                    /* Applying grayscale filter for premium B&W cinematic look */
+                    /* B&W Cinematic Filter */
                     filter: grayscale(100%) brightness(0.5) contrast(1.05);
                     z-index: 0;
                 }
 
-                /* OVERLAY GLOBAL (REFRESHED GRADIENT) */
+                /* LOCAL CONTRAST (LEFT SIDE FOCUS) */
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
@@ -91,48 +91,49 @@ export function Hero() {
                     z-index: 1;
                 }
 
-                /* CONTAINER (CONTROLLED LATERAL POSITIONING) */
+                /* CONTAINER (POSITIONING CRITICAL - ABOVE CENTER) */
                 .hero-content {
                     position: relative;
                     z-index: 2;
-                    margin-left: 8vw;
                     max-width: 420px;
+                    margin-left: 8vw;
+                    transform: translateY(-5vh);
                 }
 
-                /* TEXTO SECUNDÁRIO (CLOSER HIERARCHY) */
+                /* TYPOGRAPHY HIERARCHY (REFINED) */
                 .hero-pre {
                     font-family: 'Source Serif 4', serif;
-                    font-size: 18px;
-                    color: rgba(255,255,255,0.6);
-                    margin-bottom: 20px;
+                    font-size: clamp(16px, 1.5vw, 22px);
+                    color: rgba(255,255,255,0.55);
+                    margin-bottom: 28px;
                     opacity: 0;
-                    transform: translateY(30px);
-                    animation: intro 1s ease forwards;
+                    transform: translateY(20px);
+                    animation: fadeSoft 1s ease forwards;
                     animation-delay: 0.5s;
                 }
 
-                /* TEXTO PRINCIPAL (CLOSER HIERARCHY) */
                 .hero-title {
                     font-family: 'Source Serif 4', serif;
-                    font-size: clamp(48px, 6vw, 72px);
+                    font-size: clamp(56px, 7vw, 90px);
                     line-height: 1.1;
-                    letter-spacing: -0.02em;
-                    color: #fff;
+                    letter-spacing: -0.025em;
+                    color: #FFFFFF;
+                    text-shadow: 0 0 25px rgba(255,255,255,0.08);
                     opacity: 0;
-                    transform: translateY(50px) scale(0.98); /* Less movement for subtler look */
-                    animation: reveal 1.2s ease forwards;
+                    transform: translateY(60px) scale(0.95);
+                    animation: fadeStrong 1.2s cubic-bezier(.22,.9,.32,1) forwards;
                     animation-delay: 0.8s;
                 }
 
-                /* ANIMAÇÕES */
-                @keyframes intro {
+                /* ANIMATION (SUBTLE + REFINED) */
+                @keyframes fadeSoft {
                     to {
                         opacity: 1;
                         transform: translateY(0);
                     }
                 }
 
-                @keyframes reveal {
+                @keyframes fadeStrong {
                     to {
                         opacity: 1;
                         transform: translateY(0) scale(1);
@@ -140,8 +141,12 @@ export function Hero() {
                 }
 
                 @media (max-width: 768px) {
-                    .hero-content { margin-left: 20px; max-width: 80%; }
-                    .hero-title { font-size: clamp(38px, 10vw, 48px); }
+                    .hero-content { 
+                        margin-left: 20px; 
+                        max-width: 80%;
+                        transform: translateY(-2vh); 
+                    }
+                    .hero-title { font-size: clamp(48px, 10vw, 64px); }
                 }
             `}</style>
 
