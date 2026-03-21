@@ -1,8 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 export function Hero() {
+    useEffect(() => {
+        // Signal preloader that hero logic is mounted and ready
+        // We do this immediately to prevent hang, but video will load in background
+        const signalLoaded = () => {
+            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+            (window as any).__HERO_ASSETS_LOADED__ = true;
+        };
+
+        // Delay slightly to allow initial animation frames
+        const timer = setTimeout(signalLoaded, 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <section className="hero">
             <style>{`
@@ -25,6 +38,7 @@ export function Hero() {
                     object-fit: cover;
                     filter: brightness(0.6) contrast(1.1);
                     z-index: 0;
+                    pointer-events: none;
                 }
 
                 /* DARK OVERLAY */
@@ -33,6 +47,7 @@ export function Hero() {
                     inset: 0;
                     background: rgba(0,0,0,0.6);
                     z-index: 1;
+                    pointer-events: none;
                 }
 
                 /* TEXT CONTAINER */
@@ -96,8 +111,16 @@ export function Hero() {
                 }
             `}</style>
 
-            <video autoPlay muted loop playsInline className="hero-video">
-                <source src="/video.mp4" type="video/mp4" />
+            <video 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                className="hero-video"
+                preload="auto"
+            >
+                <source src="/hero-background.mp4" type="video/mp4" />
+                <source src="/luxury-hero/mp4_1080_variantA.mp4" type="video/mp4" />
             </video>
 
             <div className="hero-overlay"></div>
