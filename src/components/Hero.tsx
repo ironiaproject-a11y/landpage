@@ -71,40 +71,27 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: 15% center;
+                    /* Using background-center approach from snippet */
+                    object-position: center; 
                     filter: brightness(0.45) contrast(1.05) grayscale(100%);
                     z-index: 0;
-                }
-
-                .heroShade {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 1;
-                    background: linear-gradient(
-                        to right,
-                        rgba(0, 0, 0, 0.82) 0%,
-                        rgba(0, 0, 0, 0.72) 32%,
-                        rgba(0, 0, 0, 0.35) 62%,
-                        rgba(0, 0, 0, 0) 100%
-                    );
                 }
 
                 .heroCopy {
                     position: relative;
                     z-index: 2;
-                    width: min(380px, 84vw);
+                    width: min(420px, 84vw); /* Based on max-w-[420px] */
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
                 }
 
-                /* NEW CLINICA LABEL */
                 .heroLabel {
                     font-family: Inter, sans-serif;
                     font-size: 13px;
                     font-weight: 500;
                     color: #A3A3A3;
                     letter-spacing: 0.12em;
-                    margin-bottom: 12px;
+                    margin-bottom: 12px; /* mb-3 */
                     text-transform: uppercase;
                     opacity: 0;
                     transform: translateY(10px);
@@ -113,9 +100,9 @@ export function Hero() {
                 }
 
                 .heroPre {
-                    margin: 0 0 16px 0;
+                    margin: 0 0 20px 0; /* Updated mb-5 */
                     font-family: 'Source Serif 4', serif;
-                    font-size: 22px;
+                    font-size: 22px; 
                     font-weight: 500;
                     color: #E5E5E5;
                     letter-spacing: normal;
@@ -129,10 +116,12 @@ export function Hero() {
                     margin: 0;
                     font-family: 'Source Serif 4', serif;
                     font-size: 56px;
-                    line-height: 1.02;
-                    letter-spacing: -0.03em;
-                    font-weight: 700;
+                    line-height: 1.02; 
+                    letter-spacing: -0.035em; /* Updated tracking-[-0.035em] */
+                    font-weight: 700; 
                     color: #fff;
+                    /* Updated drop-shadow from snippet */
+                    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.6));
                     text-shadow: 
                         0 0 10px rgba(255,255,255,0.05),
                         0 0 40px rgba(255,255,255,0.04);
@@ -177,7 +166,7 @@ export function Hero() {
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
 
-            <div className="heroShade" />
+            {/* Note: heroShade gradient removed to match snippet minimalist direction */}
 
             <div className="heroCopy">
                 <p className="heroLabel">CLÍNICA.</p>
