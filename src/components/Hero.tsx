@@ -23,61 +23,61 @@ export function Hero() {
         const title = titleRef.current;
 
         const ctx = gsap.context(() => {
-            // Master Timeline for the Intro
-            const intro = gsap.timeline({
+            // master timeline
+            const tl = gsap.timeline({
+                // Ensure ScrollTrigger only starts AFTER the intro
                 onComplete: () => {
-                    // Initialize ScrollTrigger after intro
-                    initScroll();
+                   initScroll();
                 }
             });
 
-            // Set initial states
+            // Initial states
             gsap.set(pre, { opacity: 0, y: 20 });
             gsap.set(title, { opacity: 0, y: 40 });
             gsap.set(video, { currentTime: 0 });
 
-            // 1. Initial Fade In of Tagline
-            intro.to(pre, {
-                opacity: 1,
-                y: 0,
-                duration: 1.2,
-                ease: "power2.out"
-            }, "+=0.5");
-
-            // 2. Play Video transition (Skull to Smile)
-            // We animate currentTime because it's easier to sync with GSAP
-            intro.to(video, {
-                currentTime: 1.8, // Assuming 1.8s is the transition point
-                duration: 2.5,
-                ease: "none"
-            }, "-=0.3");
-
-            // 3. "Swept" (Varredura) effect for the tagline
-            // Using a mask-image gradient sweep
-            intro.to(pre, {
-                "--mask-p": "100%",
-                duration: 1.2,
-                ease: "power2.inOut"
-            }, "-=1.5");
-
-            intro.to(pre, {
-                opacity: 0,
-                duration: 0.4
-            }, "-=0.2");
-
-            // 4. "Inverse" Reveal of the Main Title
-            intro.to(title, {
+            // 1. Tagline Entrance
+            tl.to(pre, {
                 opacity: 1,
                 y: 0,
                 duration: 1.5,
+                ease: "power3.out"
+            }, "+=0.3");
+
+            // 2. Video Playing (Transition Skull -> Smile)
+            // We'll animate it to a significant portion of its duration
+            tl.to(video, {
+                currentTime: 2.8, // Increased for a more complete transition
+                duration: 4.5,    // Slower, more cinematic pace
+                ease: "power1.inOut"
+            }, "-=0.8");
+
+            // 3. "Swept" (Varredura) Tagline Exit
+            // Trigger this only when the video is deep into the transition
+            tl.to(pre, {
+                "--mask-p": "100%",
+                duration: 1.8,
+                ease: "power2.inOut"
+            }, "-=3.0"); // Overlap with video playing
+
+            tl.to(pre, {
+                opacity: 0,
+                duration: 0.6
+            }, "-=1.2");
+
+            // 4. Main Title Entrance (AFTER tagline is gone and woman is clear)
+            tl.to(title, {
+                opacity: 1,
+                y: 0,
+                duration: 1.8,
                 ease: "expo.out"
-            }, "-=0.5");
+            }, "-=0.4");
 
             // Scroll Scrubbing Function
             const initScroll = () => {
                 if (!video.duration) return;
                 
-                // We create a ScrollTrigger that takes over the video
+                // Allow user to scrub the ENTIRE video duration
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
@@ -93,8 +93,8 @@ export function Hero() {
                 });
             };
 
+            // Loading assets
             video.load();
-            // Preloader sync
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         });
 
@@ -133,7 +133,6 @@ export function Hero() {
                     transform: translateY(-4vh);
                 }
 
-                /* Para o "SUA ORIGEM" */
                 .heroPre {
                     display: block;
                     margin: 0 0 1rem 0;
@@ -141,7 +140,7 @@ export function Hero() {
                     font-style: italic;
                     letter-spacing: 0.3em;
                     text-transform: uppercase;
-                    font-size: 1rem;
+                    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
                     color: rgba(255, 255, 255, 0.7);
                     
                     /* Efeito de Varredura (Mask) */
@@ -150,7 +149,6 @@ export function Hero() {
                     -webkit-mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
                 }
 
-                /* Para o "SEU SORRISO" */
                 .heroTitle {
                     margin: 0;
                     font-family: 'Inter', sans-serif;
@@ -158,7 +156,7 @@ export function Hero() {
                     font-style: normal;
                     text-transform: uppercase;
                     color: #ffffff;
-                    font-size: 5rem;
+                    font-size: clamp(3rem, 10vw, 5.5rem);
                     line-height: 1;
                     filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
                 }
@@ -167,9 +165,6 @@ export function Hero() {
                     .heroCopy {
                         width: min(340px, 88vw);
                         margin-left: 6vw;
-                    }
-                    .heroTitle {
-                        font-size: clamp(3rem, 12vw, 4.5rem);
                     }
                 }
             `}</style>
