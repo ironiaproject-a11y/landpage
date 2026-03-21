@@ -72,7 +72,7 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: right center; /* foco no lado direito */
+                    object-position: 25% center; /* Ajuste manual para alinhar atrás do texto */
                     filter: grayscale(100%) brightness(0.55) contrast(1.1);
                     z-index: 0;
                 }
