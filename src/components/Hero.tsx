@@ -199,7 +199,7 @@ export function Hero() {
             introTl.fromTo(".hero-pre", 
                 { opacity: 0, y: 40, filter: "blur(4px)" },
                 { 
-                    opacity: 0.7, 
+                    opacity: 0.6, 
                     y: 0, 
                     filter: "blur(0px)",
                     duration: 1, 
@@ -210,7 +210,7 @@ export function Hero() {
 
             // Line 2: Seu sorriso
             introTl.fromTo(".hero-title", 
-                { opacity: 0, y: 80, filter: "blur(12px)", scale: 0.95 },
+                { opacity: 0, y: 100, filter: "blur(12px)", scale: 0.9 },
                 { 
                     opacity: 1, 
                     y: 0, 
@@ -224,7 +224,7 @@ export function Hero() {
 
             function setupScrubbedAnimations(tl: gsap.core.Timeline) {
                 // At the start of the scroll (T=0)
-                tl.set(".hero-pre", { opacity: 0.7, y: 0, filter: "blur(0px)" }, 0);
+                tl.set(".hero-pre", { opacity: 0.6, y: 0, filter: "blur(0px)" }, 0);
                 tl.set(".hero-title", { opacity: 1, y: 0, filter: "blur(0px)" }, 0);
                 
                 // T=0.5 -> 3.5: User scrolls down, title fades out backwards
@@ -378,22 +378,22 @@ export function Hero() {
 
                     .hero-pre {
                         font-family: 'Source Serif 4', serif;
-                        font-size: clamp(20px, 2.5vw, 32px);
+                        font-size: clamp(18px, 2vw, 28px);
                         font-weight: 400;
                         color: rgba(255, 255, 255, 0.7);
                         opacity: 0; /* Animated */
                         letter-spacing: normal;
-                        margin-bottom: 40px;
+                        margin-bottom: 60px;
                         display: block;
                     }
 
                     .hero-title {
                         font-family: 'Source Serif 4', serif;
-                        font-size: clamp(80px, 12vw, 140px);
+                        font-size: clamp(90px, 13vw, 160px);
                         font-weight: 400;
                         color: #FFFFFF;
                         line-height: 1.05;
-                        letter-spacing: -0.02em;
+                        letter-spacing: -0.03em;
                         opacity: 0; /* Animated */
                         display: block;
                     }
