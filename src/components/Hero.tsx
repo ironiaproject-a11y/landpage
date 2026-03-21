@@ -120,10 +120,12 @@ export function Hero() {
                     letter-spacing: -0.03em;
                     font-weight: 400;
                     color: #fff;
-                    text-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+                    text-shadow: 
+                        0 0 10px rgba(255,255,255,0.05),
+                        0 0 40px rgba(255,255,255,0.04);
                     opacity: 0;
                     transform: translateY(42px);
-                    animation: fadeUp 1.05s cubic-bezier(.22,.9,.32,1) forwards;
+                    animation: fadeUpTitle 1.05s cubic-bezier(.22,.9,.32,1) forwards;
                     animation-delay: 0.78s;
                 }
 
@@ -160,6 +162,13 @@ export function Hero() {
                 @keyframes fadeUp {
                     to {
                         opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes fadeUpTitle {
+                    to {
+                        opacity: 0.9;
                         transform: translateY(0);
                     }
                 }
