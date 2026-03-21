@@ -92,21 +92,7 @@ export function Hero() {
                     margin-left: 6vw;
                 }
 
-                /* OVERLAY LOCAL (FOCO NO TEXTO) */
-                .hero-content::before {
-                    content: "";
-                    position: absolute;
-                    inset: -60px -60px -60px -60px;
-                    background: radial-gradient(
-                        circle at left center,
-                        rgba(0,0,0,0.85) 0%,
-                        rgba(0,0,0,0.6) 40%,
-                        rgba(0,0,0,0.3) 70%,
-                        rgba(0,0,0,0) 100%
-                    );
-                    z-index: -1;
-                    pointer-events: none;
-                }
+
 
                 /* TEXTO SECUNDÁRIO */
                 .hero-pre {
