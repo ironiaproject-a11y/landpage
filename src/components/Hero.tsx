@@ -19,7 +19,7 @@ export function Hero() {
         const section = sectionRef.current;
 
         const ctx = gsap.context(() => {
-            // Scroll Scrubbing Logic (keeping the cinematic scroll experience)
+            // Cinematic Scroll Scrubbing
             const initScroll = () => {
                 if (!video.duration) return;
                 
@@ -45,7 +45,7 @@ export function Hero() {
                 video.onloadedmetadata = initScroll;
             }
 
-            // Pulse assets-loaded event for Preloader synchronization
+            // preloader integration
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
         });
 
@@ -72,66 +72,78 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: 25% center; /* Ajuste manual para alinhar atrás do texto */
-                    filter: grayscale(100%) brightness(0.55) contrast(1.1);
+                    /* Manter preto e branco e ajustes de brilho/contraste para o look premium */
+                    filter: grayscale(100%) brightness(0.5) contrast(1.05);
                     z-index: 0;
                 }
 
-                /* OVERLAY INTELIGENTE (ESQUERDA MAIS ESCURA) */
+                /* OVERLAY GLOBAL SUAVE */
                 .hero-overlay {
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(
-                        to right,
-                        rgba(0,0,0,0.8) 0%,
-                        rgba(0,0,0,0.6) 40%,
-                        rgba(0,0,0,0.2) 70%,
-                        rgba(0,0,0,0) 100%
-                    );
+                    background: rgba(0,0,0,0.5);
                     z-index: 1;
                 }
 
-                /* TEXTO */
+                /* CONTAINER */
                 .hero-content {
                     position: relative;
                     z-index: 2;
                     margin-left: 6vw;
-                    max-width: 800px; /* Increased slightly for better fit */
+                    max-width: 1200px;
                 }
 
-                /* FRASE MENOR */
+                /* OVERLAY LOCAL (FOCO NO TEXTO) */
+                .hero-content::before {
+                    content: "";
+                    position: absolute;
+                    inset: -100px -100px -100px -100px;
+                    background: radial-gradient(
+                        circle at left center,
+                        rgba(0,0,0,0.85) 0%,
+                        rgba(0,0,0,0.6) 40%,
+                        rgba(0,0,0,0.3) 70%,
+                        rgba(0,0,0,0) 100%
+                    );
+                    z-index: -1;
+                    pointer-events: none;
+                }
+
+                /* TEXTO SECUNDÁRIO */
                 .hero-pre {
                     font-family: 'Source Serif 4', serif;
                     font-size: clamp(18px, 2vw, 28px);
                     color: rgba(255,255,255,0.65);
-                    margin-bottom: 60px;
+                    margin-bottom: 70px;
                     opacity: 0;
                     transform: translateY(30px);
-                    animation: fadeUp 1s ease forwards;
-                    animation-delay: 0.5s; /* Slight delay for preloader exit */
+                    animation: intro 1s ease forwards;
+                    animation-delay: 0.5s; /* Ajuste para o preloader */
                 }
 
-                /* FRASE PRINCIPAL */
+                /* TEXTO PRINCIPAL */
                 .hero-title {
                     font-family: 'Source Serif 4', serif;
-                    font-size: clamp(72px, 10vw, 140px);
+                    font-size: clamp(90px, 12vw, 160px);
                     line-height: 1.05;
                     letter-spacing: -0.03em;
                     color: #fff;
                     opacity: 0;
-                    transform: translateY(80px) scale(0.95);
-                    animation: fadeUpBig 1.2s ease forwards;
+                    transform: translateY(100px) scale(0.9);
+                    animation: reveal 1.2s ease forwards;
                     animation-delay: 0.8s;
+                    text-shadow: 0 0 40px rgba(255,255,255,0.1);
                 }
 
-                @keyframes fadeUp {
+                /* ANIMAÇÕES */
+                @keyframes intro {
                     to {
                         opacity: 1;
                         transform: translateY(0);
                     }
                 }
 
-                @keyframes fadeUpBig {
+                @keyframes reveal {
                     to {
                         opacity: 1;
                         transform: translateY(0) scale(1);
@@ -140,7 +152,7 @@ export function Hero() {
 
                 @media (max-width: 768px) {
                     .hero-content { margin-left: 20px; }
-                    .hero-title { font-size: clamp(50px, 12vw, 80px); }
+                    .hero-content::before { inset: -40px; }
                 }
             `}</style>
 
