@@ -22,9 +22,6 @@ export function Hero() {
         const pre = preRef.current;
         const title = titleRef.current;
 
-        // Pause immediately — GSAP will control currentTime
-        video.pause();
-
         const ctx = gsap.context(() => {
             let scrollTriggerCreated = false;
 
@@ -33,9 +30,6 @@ export function Hero() {
             gsap.set(video, { currentTime: 0 });
 
             const startAnimations = () => {
-                // Prime video for seeking
-                video.play().then(() => video.pause()).catch(() => {});
-
                 const tl = gsap.timeline({
                     onComplete: () => initScroll()
                 });
@@ -93,7 +87,7 @@ export function Hero() {
                         trigger: section,
                         start: "top top",
                         end: "+=300vh",
-                        scrub: 1,
+                        scrub: 2,
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
@@ -203,11 +197,8 @@ export function Hero() {
                 ref={videoRef}
                 muted 
                 playsInline
-                autoPlay
-                loop={false}
                 className="heroVideo"
                 preload="auto"
-                poster="/hero-video.webp"
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
