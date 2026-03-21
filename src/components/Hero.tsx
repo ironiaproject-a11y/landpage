@@ -95,11 +95,12 @@ export function Hero() {
                 });
             };
 
-            // Improved metadata and readyState handling
-            if (video.readyState >= 1) {
+            // readyState >= 3 = HAVE_FUTURE_DATA: browser has actual decoded frames
+            // Using 'canplay' event as fallback (fires when browser can render frames)
+            if (video.readyState >= 3) {
                 startAnimations();
             } else {
-                video.addEventListener("loadedmetadata", startAnimations, { once: true });
+                video.addEventListener("canplay", startAnimations, { once: true });
             }
 
             // Fallback to avoid black screen/stuck state
@@ -115,7 +116,7 @@ export function Hero() {
 
             return () => {
                 clearTimeout(fallback);
-                video.removeEventListener("loadedmetadata", startAnimations);
+                video.removeEventListener("canplay", startAnimations);
                 video.removeEventListener("loadedmetadata", initScroll);
             };
         });
