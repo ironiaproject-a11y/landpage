@@ -23,64 +23,54 @@ export function Hero() {
         const title = titleRef.current;
 
         const ctx = gsap.context(() => {
-            const initIntro = () => {
-                const duration = video.duration || 5; // Fallback to 5s if unknown
-                const transitionEnd = duration * 0.8; // Target 80% of video for intro
+            // Force reset states
+            gsap.set([pre, title], { opacity: 0, y: 30 });
+            gsap.set(video, { currentTime: 0, opacity: 1 });
 
+            const startAnimations = () => {
                 const tl = gsap.timeline({
-                    onComplete: () => {
-                        // After intro, we init scroll scrubbing
-                        initScroll();
-                    }
+                    onComplete: () => initScroll()
                 });
 
-                // Initial states
-                gsap.set(pre, { opacity: 0, y: 20 });
-                gsap.set(title, { opacity: 0, y: 40 });
-                gsap.set(video, { currentTime: 0 });
-
-                // 1. Tagline Entrance
+                // Tagline Entrance
                 tl.to(pre, {
                     opacity: 1,
                     y: 0,
-                    duration: 1.5,
-                    ease: "power3.out"
-                }, "+=0.3");
+                    duration: 1.2,
+                    ease: "power2.out"
+                }, "+=0.4");
 
-                // 2. Video Playing (Full Transition)
-                // We use video.duration to go all the way
+                // Video Intro (Simulated play via currentTime)
                 tl.to(video, {
-                    currentTime: transitionEnd,
-                    duration: 5, // Slower, stable duration
-                    ease: "none" // Linear for better sync
-                }, "-=1.0");
+                    currentTime: 2.8,
+                    duration: 4.5,
+                    ease: "none"
+                }, "-=0.2");
 
-                // 3. "Swept" Tagline Exit
-                // Triggered later in the video playback
+                // Tagline "Swept" Exit
                 tl.to(pre, {
                     "--mask-p": "100%",
                     duration: 1.5,
-                    ease: "power2.inOut"
-                }, "-=2.5");
+                    ease: "power1.inOut"
+                }, "-=3.0");
 
                 tl.to(pre, {
                     opacity: 0,
                     duration: 0.5
-                }, "-=1.2");
+                }, "-=1.5");
 
-                // 4. Main Title Entrance (Woman is fully visible)
+                // Title Reveal
                 tl.to(title, {
                     opacity: 1,
                     y: 0,
-                    duration: 1.8,
+                    duration: 1.5,
                     ease: "expo.out"
-                }, "-=0.2");
+                }, "-=0.8");
             };
 
             const initScroll = () => {
                 if (!video.duration) return;
                 
-                // Scrubbing the entire video
                 gsap.to(video, {
                     currentTime: video.duration,
                     ease: "none",
@@ -96,22 +86,24 @@ export function Hero() {
                 });
             };
 
-            // Ensure video metadata is loaded before starting the timeline
+            // Better metadata handling
             if (video.readyState >= 1) {
-                initIntro();
+                startAnimations();
             } else {
-                video.onloadedmetadata = initIntro;
+                video.onloadedmetadata = startAnimations;
             }
 
-            // Fallback if metadata takes too long
-            const timer = setTimeout(() => {
-                if (!video.duration) initIntro();
-            }, 2000);
+            // Fallback to avoid black screen/stuck state
+            const fallback = setTimeout(() => {
+                if (gsap.getProperty(pre, "opacity") === 0) {
+                    startAnimations();
+                }
+            }, 3000);
 
-            // Preloader sync
+            // Preloader interaction
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-            
-            return () => clearTimeout(timer);
+
+            return () => clearTimeout(fallback);
         });
 
         return () => ctx.revert();
@@ -138,12 +130,13 @@ export function Hero() {
                     object-fit: cover;
                     object-position: center; 
                     filter: brightness(0.45) contrast(1.05) grayscale(100%);
-                    z-index: 0;
+                    z-index: 1; /* Ensured it's above the black background */
+                    display: block;
                 }
 
                 .heroCopy {
                     position: relative;
-                    z-index: 2;
+                    z-index: 10; /* Far above the video */
                     width: min(600px, 90vw);
                     margin-left: clamp(24px, 8vw, 96px);
                     transform: translateY(-4vh);
@@ -158,8 +151,6 @@ export function Hero() {
                     text-transform: uppercase;
                     font-size: clamp(0.9rem, 1.5vw, 1.1rem);
                     color: rgba(255, 255, 255, 0.7);
-                    
-                    /* Efeito de Varredura (Mask) */
                     --mask-p: 0%;
                     mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
                     -webkit-mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
@@ -172,7 +163,7 @@ export function Hero() {
                     font-style: normal;
                     text-transform: uppercase;
                     color: #ffffff;
-                    font-size: clamp(3rem, 10vw, 5.5rem);
+                    font-size: clamp(3.2rem, 11vw, 5.5rem);
                     line-height: 1;
                     filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
                 }
@@ -190,7 +181,7 @@ export function Hero() {
                 muted 
                 playsInline 
                 className="heroVideo"
-                preload="auto"
+                preload="metadata" /* Changed to metadata for quicker initial check */
             >
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
