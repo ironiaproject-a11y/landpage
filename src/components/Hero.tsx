@@ -15,7 +15,7 @@ export function Hero() {
 
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameObj = useRef({ index: 0 });
-    const totalFrames = 177; // Premium 177-frame sequence
+    const totalFrames = 145; // Original 145-frame sequence
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -34,13 +34,14 @@ export function Hero() {
             const preloadFrames = () => {
                 for (let i = 0; i < totalFrames; i++) {
                     const img = new Image();
-                    img.src = `/assets/premium-hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
+                    // Original path reconstructed to ensure correct visual identity
+                    img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
                     img.onload = () => {
                         loadedCount++;
                         if (loadedCount === totalFrames) onAssetsReady();
                     };
                     img.onerror = () => {
-                        loadedCount++;
+                        loadedCount++; // Avoid blocking if one frame fails
                         if (loadedCount === totalFrames) onAssetsReady();
                     };
                     framesRef.current[i] = img;
@@ -89,19 +90,19 @@ export function Hero() {
                     }
                 });
 
-                // 1. Frame Scrubbing (Skull to Smile)
+                // 1. Interactive Frame Scrub (0 to 144)
                 tlScroll.to(frameObj.current, {
                     index: totalFrames - 1,
                     ease: "none",
                     onUpdate: () => renderFrame(frameObj.current.index)
                 }, 0);
 
-                // 2. Text Parallax & Sweep
+                // 2. Text Parallax & Fade
                 tlScroll.to(copy, {
                     y: -150,
                     opacity: 0,
                     ease: "power2.inOut"
-                }, 0.5); // Starts exit transition halfway through scroll
+                }, 0.5);
 
                 // 3. Canvas Depth Scale
                 tlScroll.to(canvas, {
@@ -117,18 +118,17 @@ export function Hero() {
                     defaults: { ease: "power3.out" }
                 });
                 
-                // Initial State
-                gsap.set(pre, { opacity: 0, y: 30 });
-                gsap.set(title, { opacity: 0, y: 40 });
+                // Reset states
+                gsap.set([pre, title], { opacity: 0, y: 30 });
                 gsap.set(canvas, { scale: 1.05, opacity: 0 });
 
-                // 1. Fade-in Canvas
+                // 1. Reveal Background Visual
                 tlEntry.to(canvas, { opacity: 1, scale: 1.0, duration: 2 });
 
-                // 2. Reveal "Sua origem" (Cinematic Reveal)
+                // 2. Reveal "Sua origem"
                 tlEntry.to(pre, { opacity: 1, y: 0, duration: 1.8 }, "-=1.5");
                 
-                // 3. Full Premium Sequence (Skull to Smile - 177 Frames)
+                // 3. Full Original Transformation (0 -> 144)
                 tlEntry.to(frameObj.current, { 
                     index: totalFrames - 1, 
                     duration: 4.5, 
@@ -136,7 +136,7 @@ export function Hero() {
                     onUpdate: () => renderFrame(frameObj.current.index)
                 }, "-=1.2");
                 
-                // 4. Elegant fade-out of "Sua origem" & Reveal "Seu sorriso"
+                // 4. Elegant Text Handover
                 tlEntry.to(pre, { opacity: 0, y: -20, duration: 1.5 }, "-=3.0");
                 tlEntry.to(title, { opacity: 1, y: 0, duration: 2.2 }, "-=2.2");
             };
@@ -183,7 +183,6 @@ export function Hero() {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    /* Filtro balanceado para profundidade premium */
                     filter: brightness(0.95) contrast(1.1) saturate(1.1);
                     z-index: 1;
                     will-change: transform, opacity;
