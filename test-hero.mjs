@@ -52,7 +52,9 @@ import fs from 'fs';
             fontSize: window.getComputedStyle(phrase2.querySelector('h2')).fontSize,
             top: p2Rect.top,
             topPercent: (p2Rect.top / (heroRect.height || 1)) * 100
-          } : null
+          } : null,
+          canvasFound: !!document.querySelector('canvas.heroCanvas'),
+          videoFound: !!document.querySelector('video')
         };
       });
 

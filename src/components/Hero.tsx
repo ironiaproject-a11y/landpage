@@ -10,42 +10,81 @@ if (typeof window !== "undefined") {
 
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const preRef = useRef<HTMLParagraphElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
+    
+    const framesRef = useRef<HTMLImageElement[]>([]);
+    const frameObj = useRef({ index: 0 });
+    const totalFrames = 145;
 
     useEffect(() => {
-        if (!sectionRef.current || !videoRef.current || !preRef.current || !titleRef.current) return;
+        if (!sectionRef.current || !canvasRef.current || !preRef.current || !titleRef.current) return;
 
-        const video = videoRef.current;
         const section = sectionRef.current;
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
         const pre = preRef.current;
         const title = titleRef.current;
 
-        const ctx = gsap.context(() => {
-            let scrollTriggerCreated = false;
-            gsap.set([pre, title], { opacity: 0, y: 30 });
+        if (!context) return;
 
-            // ─── SCROLL SCRUB ────────────────────────────────────────────
-            const initScroll = () => {
-                if (scrollTriggerCreated) return;
-                if (!video.duration || isNaN(video.duration)) {
-                    video.addEventListener("loadedmetadata", initScroll, { once: true });
-                    return;
+        const ctx = gsap.context(() => {
+            // ─── FRAME PRELOADING ─────────────────────────────────────────
+            const preloadFrames = () => {
+                for (let i = 0; i < totalFrames; i++) {
+                    const img = new Image();
+                    img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
+                    framesRef.current[i] = img;
                 }
-                scrollTriggerCreated = true;
-                gsap.to(video, {
-                    currentTime: video.duration,
+            };
+
+            const renderFrame = (index: number) => {
+                const img = framesRef.current[Math.floor(index)];
+                if (img && img.complete) {
+                    const { width, height } = canvas;
+                    const imgRatio = img.width / img.height;
+                    const canvasRatio = width / height;
+                    let drawWidth, drawHeight, offsetX, offsetY;
+
+                    if (imgRatio > canvasRatio) {
+                        drawHeight = height;
+                        drawWidth = height * imgRatio;
+                        offsetX = (width - drawWidth) / 2;
+                        offsetY = 0;
+                    } else {
+                        drawWidth = width;
+                        drawHeight = width / imgRatio;
+                        offsetX = 0;
+                        offsetY = (height - drawHeight) / 2;
+                    }
+
+                    context.clearRect(0, 0, width, height);
+                    context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+                }
+            };
+
+            const handleResize = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                renderFrame(frameObj.current.index);
+            };
+
+            // ─── SCROLL ANIMATION ──────────────────────────────────────────
+            const initScroll = () => {
+                gsap.to(frameObj.current, {
+                    index: totalFrames - 1,
                     ease: "none",
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
-                        end: "+=300vh",
-                        scrub: 2,
+                        end: "bottom top",
+                        scrub: 0.5,
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
-                    }
+                    },
+                    onUpdate: () => renderFrame(frameObj.current.index)
                 });
             };
 
@@ -53,64 +92,44 @@ export function Hero() {
             const startAnimations = () => {
                 const tl = gsap.timeline({ onComplete: initScroll });
                 
-                // Reset state
-                gsap.set(pre, { opacity: 0, y: 20, "--mask-p": "0%" });
+                gsap.set(pre, { opacity: 0, y: 20 });
                 gsap.set(title, { opacity: 0, y: 20 });
 
-                // 1. Reveal "Sua origem"
                 tl.to(pre, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "+=0.5");
                 
-                // 2. Start Video Transformation (Skull to Smile)
-                // Assuming the transformation happens between 0s and 3.2s
-                tl.to(video, { currentTime: 3.2, duration: 3, ease: "slow(0.7, 0.7, false)" }, "-=0.5");
+                tl.to(frameObj.current, { 
+                    index: 80, 
+                    duration: 3, 
+                    ease: "power2.inOut",
+                    onUpdate: () => renderFrame(frameObj.current.index)
+                }, "-=0.5");
                 
-                // 3. Subtle mask wipe for "Sua origem" as it transitions
                 tl.to(pre, { opacity: 0, y: -10, duration: 1, ease: "power2.inIn" }, "-=1.5");
                 
-                // 4. Powerful reveal of "Seu sorriso"
                 tl.to(title, { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }, "-=0.8");
             };
 
-            // ─── VIDEO ACTIVATION ─────────────────────────────────────────
-            // Canonical GSAP video scrub pattern:
-            // play() → browser decodes first frame → pause() → reset → GSAP takes over
-            const activateVideo = () => {
-                video.currentTime = 0;
-                const playPromise = video.play();
+            preloadFrames();
+            window.addEventListener("resize", handleResize);
+            handleResize();
 
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        video.pause();
-                        video.currentTime = 0;
-                        startAnimations();
-                    }).catch(() => {
-                        // Autoplay blocked — fall back to canplay event
-                        video.addEventListener("canplay", startAnimations, { once: true });
-                    });
-                } else {
+            const firstFrame = framesRef.current[0];
+            if (firstFrame) {
+                if (firstFrame.complete) {
+                    renderFrame(0);
                     startAnimations();
+                } else {
+                    firstFrame.onload = () => {
+                        renderFrame(0);
+                        startAnimations();
+                    };
                 }
-            };
-
-            // Wait for metadata at minimum before trying to play
-            if (video.readyState >= 1) {
-                activateVideo();
-            } else {
-                video.addEventListener("loadedmetadata", activateVideo, { once: true });
             }
-
-            // Safety fallback
-            const fallback = setTimeout(() => {
-                if (gsap.getProperty(pre, "opacity") === 0) startAnimations();
-            }, 4000);
 
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
-                clearTimeout(fallback);
-                video.removeEventListener("loadedmetadata", activateVideo);
-                video.removeEventListener("canplay", startAnimations);
-                video.removeEventListener("loadedmetadata", initScroll);
+                window.removeEventListener("resize", handleResize);
             };
         });
 
@@ -119,84 +138,68 @@ export function Hero() {
 
     return (
         <section ref={sectionRef} className="hero">
-            <style>{`
+            <style jsx>{`
                 .hero {
                     position: relative;
-                    min-height: 100svh;
+                    width: 100%;
+                    height: 300vh;
+                    background: #000;
+                    overflow: visible;
+                }
+                .heroVisual {
+                    position: sticky;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100vh;
+                    overflow: hidden;
                     display: flex;
                     align-items: center;
-                    overflow: hidden;
-                    background: #000;
-                    width: 100%;
+                    justify-content: center;
                 }
-
-                .heroVideo {
-                    position: absolute;
-                    inset: 0;
+                .heroCanvas {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    object-position: center;
-                    /* Brightness ajustado para garantir visibilidade máxima */
                     filter: brightness(1.1) contrast(1.1);
                     z-index: 1;
-                    display: block;
-                    opacity: 1 !important;
-                    visibility: visible !important;
                 }
-
                 .heroCopy {
-                    position: relative;
-                    z-index: 10; /* Far above the video */
-                    width: min(600px, 90vw);
-                    margin-left: clamp(24px, 8vw, 96px);
-                    transform: translateY(-4vh);
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 10;
+                    text-align: center;
+                    width: 100%;
+                    pointer-events: none;
                 }
-
                 .heroPre {
                     display: block;
-                    margin: 0 0 1rem 0;
                     font-family: 'Playfair Display', serif;
-                    font-style: italic;
-                    letter-spacing: 0.3em;
+                    font-size: clamp(1rem, 2vw, 1.5rem);
                     text-transform: uppercase;
-                    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-                    color: rgba(255, 255, 255, 0.7);
-                    --mask-p: 0%;
-                    mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
-                    -webkit-mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
+                    letter-spacing: 0.4em;
+                    color: rgba(255, 255, 255, 0.6);
+                    margin-bottom: 2rem;
+                    opacity: 0;
                 }
-
                 .heroTitle {
-                    margin: 0;
                     font-family: 'Inter', sans-serif;
-                    font-weight: 900;
-                    font-style: normal;
-                    text-transform: uppercase;
-                    color: #ffffff;
-                    font-size: clamp(3.2rem, 11vw, 5.5rem);
-                    line-height: 1;
-                    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-                }
-
-                @media (max-width: 768px) {
-                    .heroCopy {
-                        width: min(340px, 88vw);
-                        margin-left: 6vw;
-                    }
+                    font-size: clamp(3rem, 12vw, 12rem);
+                    font-weight: 700;
+                    line-height: 0.9;
+                    color: #fff;
+                    margin: 0;
+                    opacity: 0;
+                    white-space: nowrap;
+                    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
                 }
             `}</style>
 
-            <video 
-                ref={videoRef}
-                muted 
-                playsInline
-                className="heroVideo"
-                preload="auto"
-                loop
-            >
-                <source src="/Aqui.mp4" type="video/mp4" />
-            </video>
+            <div className="heroVisual">
+                <canvas ref={canvasRef} className="heroCanvas" />
+            </div>
 
             <div className="heroCopy">
                 <span ref={preRef} className="heroPre">Sua origem</span>
