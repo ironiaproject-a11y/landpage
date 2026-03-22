@@ -15,7 +15,7 @@ export function Hero() {
 
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameObj = useRef({ index: 0 });
-    const totalFrames = 145; // Original 145-frame sequence
+    const totalFrames = 144; // Optimized WebP sequence
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -29,25 +29,6 @@ export function Hero() {
         if (!context || !section || !pre || !title || !copy) return;
 
         const ctx = gsap.context(() => {
-            // ─── FRAME LOADING SYSTEM ──────────────────────────────────────
-            let loadedCount = 0;
-            const preloadFrames = () => {
-                for (let i = 0; i < totalFrames; i++) {
-                    const img = new Image();
-                    // Original path reconstructed to ensure correct visual identity
-                    img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
-                    img.onload = () => {
-                        loadedCount++;
-                        if (loadedCount === totalFrames) onAssetsReady();
-                    };
-                    img.onerror = () => {
-                        loadedCount++; // Avoid blocking if one frame fails
-                        if (loadedCount === totalFrames) onAssetsReady();
-                    };
-                    framesRef.current[i] = img;
-                }
-            };
-
             const renderFrame = (index: number) => {
                 const img = framesRef.current[Math.floor(index)];
                 if (img && (img.complete || img.naturalWidth > 0)) {
@@ -90,60 +71,76 @@ export function Hero() {
                     }
                 });
 
-                // 1. Interactive Frame Scrub (0 to 144)
                 tlScroll.to(frameObj.current, {
                     index: totalFrames - 1,
                     ease: "none",
                     onUpdate: () => renderFrame(frameObj.current.index)
                 }, 0);
 
-                // 2. Text Parallax & Fade
                 tlScroll.to(copy, {
                     y: -150,
                     opacity: 0,
                     ease: "power2.inOut"
                 }, 0.5);
 
-                // 3. Canvas Depth Scale
                 tlScroll.to(canvas, {
                     scale: 1.1,
                     ease: "none"
                 }, 0);
             };
 
-            // ─── ENTRY ANIMATION ──────────────────────────────────────────
+            // ─── PROGRESSIVE LOADING & REVEAL ─────────────────────────────
             const startAnimations = () => {
                 const tlEntry = gsap.timeline({ 
                     onComplete: initScroll,
                     defaults: { ease: "power3.out" }
                 });
                 
-                // Reset states
                 gsap.set([pre, title], { opacity: 0, y: 30 });
                 gsap.set(canvas, { scale: 1.05, opacity: 0 });
 
-                // 1. Reveal Background Visual
-                tlEntry.to(canvas, { opacity: 1, scale: 1.0, duration: 2 });
-
-                // 2. Reveal "Sua origem"
-                tlEntry.to(pre, { opacity: 1, y: 0, duration: 1.8 }, "-=1.5");
+                // 1. Instant Reveal (Base Frame)
+                tlEntry.to(canvas, { opacity: 1, scale: 1.0, duration: 1.5 });
+                tlEntry.to(pre, { opacity: 1, y: 0, duration: 1.2 }, "-=1.0");
                 
-                // 3. Full Original Transformation (0 -> 144)
+                // 2. Transformation Begins (Once buffer starts filling)
                 tlEntry.to(frameObj.current, { 
                     index: totalFrames - 1, 
-                    duration: 4.5, 
+                    duration: 4.0, 
                     ease: "power2.inOut",
                     onUpdate: () => renderFrame(frameObj.current.index)
-                }, "-=1.2");
+                }, "+=0.2");
                 
-                // 4. Elegant Text Handover
-                tlEntry.to(pre, { opacity: 0, y: -20, duration: 1.5 }, "-=3.0");
-                tlEntry.to(title, { opacity: 1, y: 0, duration: 2.2 }, "-=2.2");
+                tlEntry.to(pre, { opacity: 0, y: -20, duration: 1.2 }, "-=2.8");
+                tlEntry.to(title, { opacity: 1, y: 0, duration: 1.8 }, "-=1.8");
             };
 
-            const onAssetsReady = () => {
-                renderFrame(0);
-                startAnimations();
+            const preloadFrames = () => {
+                let criticalCount = 0;
+                const criticalFrames = 15; // Load first batch instantly to avoid "stuck" look
+
+                for (let i = 0; i < totalFrames; i++) {
+                    const img = new Image();
+                    img.src = `/assets/videos/frame_${i.toString().padStart(3, '0')}_delay-0.041s.webp`;
+                    
+                    img.onload = () => {
+                        if (i < criticalFrames) {
+                            criticalCount++;
+                            if (criticalCount === criticalFrames) {
+                                renderFrame(0);
+                                startAnimations();
+                            }
+                        }
+                    };
+                    img.onerror = (e) => {
+                        console.error(`Frame ${i} failed`, e);
+                        if (i < criticalFrames) {
+                            criticalCount++;
+                            if (criticalCount === criticalFrames) startAnimations();
+                        }
+                    };
+                    framesRef.current[i] = img;
+                }
             };
 
             preloadFrames();
