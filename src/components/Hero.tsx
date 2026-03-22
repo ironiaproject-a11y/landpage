@@ -24,61 +24,15 @@ export function Hero() {
 
         const ctx = gsap.context(() => {
             let scrollTriggerCreated = false;
-
-            // Force reset states — video opacity is managed by CSS only
             gsap.set([pre, title], { opacity: 0, y: 30 });
-            gsap.set(video, { currentTime: 0 });
 
-            const startAnimations = () => {
-                const tl = gsap.timeline({
-                    onComplete: () => initScroll()
-                });
-
-                // Tagline Entrance
-                tl.to(pre, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power3.out"
-                }, "+=0.3");
-
-                // Video Intro (Simulated play via currentTime)
-                tl.to(video, {
-                    currentTime: 3.2,
-                    duration: 2.5,
-                    ease: "power2.inOut"
-                }, "-=0.2");
-
-                // Tagline "Swept" Exit
-                tl.to(pre, {
-                    "--mask-p": "100%",
-                    duration: 1.0,
-                    ease: "power2.inOut"
-                }, "-=1.8");
-
-                tl.to(pre, {
-                    opacity: 0,
-                    duration: 0.3
-                }, "-=0.8");
-
-                // Title Reveal
-                tl.to(title, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    ease: "expo.out"
-                }, "-=0.5");
-            };
-
+            // ─── SCROLL SCRUB ────────────────────────────────────────────
             const initScroll = () => {
                 if (scrollTriggerCreated) return;
-
-                // Ensure duration is valid before creating ScrollTrigger
                 if (!video.duration || isNaN(video.duration)) {
                     video.addEventListener("loadedmetadata", initScroll, { once: true });
                     return;
                 }
-                
                 scrollTriggerCreated = true;
                 gsap.to(video, {
                     currentTime: video.duration,
@@ -95,27 +49,54 @@ export function Hero() {
                 });
             };
 
-            // readyState >= 3 = HAVE_FUTURE_DATA: browser has actual decoded frames
-            // Using 'canplay' event as fallback (fires when browser can render frames)
-            if (video.readyState >= 3) {
-                startAnimations();
-            } else {
-                video.addEventListener("canplay", startAnimations, { once: true });
-            }
+            // ─── ENTRY ANIMATION ──────────────────────────────────────────
+            const startAnimations = () => {
+                const tl = gsap.timeline({ onComplete: initScroll });
+                tl.to(pre, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "+=0.3");
+                tl.to(video, { currentTime: 3.2, duration: 2.5, ease: "power2.inOut" }, "-=0.2");
+                tl.to(pre, { "--mask-p": "100%", duration: 1.0, ease: "power2.inOut" }, "-=1.8");
+                tl.to(pre, { opacity: 0, duration: 0.3 }, "-=0.8");
+                tl.to(title, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }, "-=0.5");
+            };
 
-            // Fallback to avoid black screen/stuck state
-            const fallback = setTimeout(() => {
-                const preOpacity = gsap.getProperty(pre, "opacity");
-                if (preOpacity === 0) {
+            // ─── VIDEO ACTIVATION ─────────────────────────────────────────
+            // Canonical GSAP video scrub pattern:
+            // play() → browser decodes first frame → pause() → reset → GSAP takes over
+            const activateVideo = () => {
+                video.currentTime = 0;
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                        startAnimations();
+                    }).catch(() => {
+                        // Autoplay blocked — fall back to canplay event
+                        video.addEventListener("canplay", startAnimations, { once: true });
+                    });
+                } else {
                     startAnimations();
                 }
-            }, 3000);
+            };
 
-            // Preloader interaction
+            // Wait for metadata at minimum before trying to play
+            if (video.readyState >= 1) {
+                activateVideo();
+            } else {
+                video.addEventListener("loadedmetadata", activateVideo, { once: true });
+            }
+
+            // Safety fallback
+            const fallback = setTimeout(() => {
+                if (gsap.getProperty(pre, "opacity") === 0) startAnimations();
+            }, 4000);
+
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
                 clearTimeout(fallback);
+                video.removeEventListener("loadedmetadata", activateVideo);
                 video.removeEventListener("canplay", startAnimations);
                 video.removeEventListener("loadedmetadata", initScroll);
             };
@@ -144,8 +125,8 @@ export function Hero() {
                     height: 100%;
                     object-fit: cover;
                     object-position: center;
-                    /* Brightness ajustado para garantir visibilidade */
-                    filter: brightness(0.85) contrast(1.05);
+                    /* Brightness ajustado para garantir visibilidade máxima */
+                    filter: brightness(1.1) contrast(1.1);
                     z-index: 1;
                     display: block;
                     opacity: 1 !important;
@@ -200,8 +181,9 @@ export function Hero() {
                 playsInline
                 className="heroVideo"
                 preload="auto"
+                loop
             >
-                <source src="/Aqui.mp4" type="video/mp4" />
+                <source src="/hero-background.mp4" type="video/mp4" />
             </video>
 
             <div className="heroCopy">

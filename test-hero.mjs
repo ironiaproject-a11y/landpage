@@ -20,11 +20,12 @@ import fs from 'fs';
     try {
       await page.goto('http://localhost:3000', { waitUntil: 'networkidle', timeout: 60000 });
       
-      // Wait for Hero to be present
-      await page.waitForSelector('.hero', { timeout: 10000 });
+      console.log('Waiting for .hero selector...');
+      await page.waitForSelector('.hero', { timeout: 30000 });
+      console.log('.hero selector found.');
       
-      // Wait a bit for animations
-      await page.waitForTimeout(3000);
+      // Wait longer for animations and preloader (has a 6s safety timer)
+      await page.waitForTimeout(8000);
 
       // Measure the hero section and text
       const heroInfo = await page.evaluate(() => {

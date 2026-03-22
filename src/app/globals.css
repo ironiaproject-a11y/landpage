@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global Grayscale Treatment */
+/* Global Treatment - Removed grayscale to ensure media quality and visibility */
 img, svg, video, canvas {
-  filter: grayscale(100%) contrast(1.1);
+  filter: contrast(1.05);
 }
 
 /* ===================================
