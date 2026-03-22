@@ -4,30 +4,27 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+gsap.registerPlugin(ScrollTrigger);
 
 export function Hero() {
-    const sectionRef = useRef<HTMLElement>(null);
+    const sectionRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const preRef = useRef<HTMLParagraphElement>(null);
+    const preRef = useRef<HTMLSpanElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameObj = useRef({ index: 0 });
-    const totalFrames = 145;
+    const totalFrames = 177; // Premium 177-frame sequence
 
     useEffect(() => {
-        if (!sectionRef.current || !canvasRef.current || !preRef.current || !titleRef.current) return;
-
-        const section = sectionRef.current;
         const canvas = canvasRef.current;
+        if (!canvas) return;
         const context = canvas.getContext("2d");
+        const section = sectionRef.current;
         const pre = preRef.current;
         const title = titleRef.current;
 
-        if (!context) return;
+        if (!context || !section || !pre || !title) return;
 
         const ctx = gsap.context(() => {
             // ─── FRAME LOADING SYSTEM ──────────────────────────────────────
@@ -35,7 +32,8 @@ export function Hero() {
             const preloadFrames = () => {
                 for (let i = 0; i < totalFrames; i++) {
                     const img = new Image();
-                    img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
+                    // Path using the premium 177-frame sequence
+                    img.src = `/assets/premium-hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
                     img.onload = () => {
                         loadedCount++;
                         if (loadedCount === totalFrames) {
@@ -113,32 +111,31 @@ export function Hero() {
                     defaults: { ease: "power3.out" }
                 });
                 
-                // Reset state
-                gsap.set(pre, { opacity: 0, y: 20 });
-                gsap.set(title, { opacity: 0, y: 20 });
+                // Initial State
+                gsap.set(pre, { opacity: 0, y: 30 });
+                gsap.set(title, { opacity: 0, y: 30 });
 
-                // 1. Reveal "Sua origem" (Cinematic Fade)
-                tl.to(pre, { opacity: 1, y: 0, duration: 1.5 }, "+=0.3");
+                // 1. Reveal "Sua origem" (Cinematic Reveal)
+                tl.to(pre, { opacity: 1, y: 0, duration: 1.8 }, "+=0.2");
                 
-                // 2. Full Frame Transformation (Skull to Smile - Complete Index 144)
+                // 2. Full Premium Sequence (Skull to Smile - 177 Frames)
                 tl.to(frameObj.current, { 
                     index: totalFrames - 1, 
-                    duration: 3.5, 
+                    duration: 4.5, 
                     ease: "power2.inOut",
                     onUpdate: () => renderFrame(frameObj.current.index)
-                }, "-=0.8");
+                }, "-=1.0");
                 
-                // 3. Elegant transition for "Sua origem"
-                tl.to(pre, { opacity: 0, y: -15, duration: 1.2, ease: "power2.in" }, "-=2.2");
+                // 3. Elegant fade-out of "Sua origem"
+                tl.to(pre, { opacity: 0, y: -20, duration: 1.5, ease: "power2.in" }, "-=2.8");
                 
-                // 4. Powerful reveal of "Seu sorriso"
-                tl.to(title, { opacity: 1, y: 0, duration: 2, ease: "expo.out" }, "-=1.5");
+                // 4. Hero Title Reveal ("Seu sorriso")
+                tl.to(title, { opacity: 1, y: 0, duration: 2.2, ease: "expo.out" }, "-=1.8");
             };
 
             const onAssetsReady = () => {
                 renderFrame(0);
                 startAnimations();
-                window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
             };
 
             preloadFrames();
@@ -158,76 +155,75 @@ export function Hero() {
             <style jsx>{`
                 .hero {
                     position: relative;
-                    min-height: 100svh;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                    background: #000;
                     width: 100%;
+                    height: 300vh;
+                    background: #000;
+                    overflow: visible;
                 }
 
                 .heroVisual {
-                    position: absolute;
-                    inset: 0;
+                    position: sticky;
+                    top: 0;
+                    left: 0;
                     width: 100%;
-                    height: 100%;
-                    z-index: 1;
+                    height: 100vh;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .heroCanvas {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    /* Refined brightness/contrast balance */
+                    /* Filtro balanceado para profundidade premium */
                     filter: brightness(0.95) contrast(1.1) saturate(1.1);
-                    display: block;
-                    will-change: filter;
+                    z-index: 1;
                 }
 
                 .heroCopy {
-                    position: relative;
+                    position: fixed;
+                    left: 8%;
+                    top: 50%;
+                    transform: translateY(-50%);
                     z-index: 10;
                     width: min(820px, 90vw);
-                    margin-left: 8%;
-                    transform: translateY(-4vh);
                     pointer-events: none;
-                    /* Editorial shadow for readability */
-                    text-shadow: 0 10px 40px rgba(0,0,0,0.4);
                 }
 
                 .heroPre {
                     display: block;
-                    margin: 0 0 1.2rem 0;
                     font-family: 'Playfair Display', serif;
+                    font-size: clamp(14px, 1.2vw, 18px);
+                    font-weight: 400;
                     font-style: italic;
                     letter-spacing: 0.35em;
                     text-transform: uppercase;
-                    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-                    color: rgba(255, 255, 255, 0.75);
-                    opacity: 0;
+                    color: rgba(255, 255, 255, 0.65);
+                    margin-bottom: 1.5rem;
                 }
 
                 .heroTitle {
-                    margin: 0;
-                    font-family: 'Inter', sans-serif;
-                    font-weight: 900;
-                    font-style: normal;
+                    font-family: 'Outfit', sans-serif;
+                    font-size: clamp(45px, 8vw, 110px);
+                    font-weight: 700;
+                    line-height: 0.95;
+                    letter-spacing: -0.01em;
                     text-transform: uppercase;
                     color: #ffffff;
-                    font-size: clamp(3.2rem, 10vw, 6rem);
-                    line-height: 1.05;
-                    letter-spacing: -0.02em;
-                    opacity: 0;
+                    margin: 0;
+                    filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.4));
                 }
 
                 @media (max-width: 768px) {
                     .heroCopy {
-                        width: min(340px, 88vw);
-                        margin-left: 6vw;
-                        transform: translateY(-2vh);
+                        left: 5%;
+                        width: 90%;
+                        text-align: center;
                     }
                     .heroTitle {
-                        font-size: clamp(2.8rem, 12vw, 3.5rem);
+                        letter-spacing: -0.02em;
                     }
                 }
             `}</style>
@@ -243,4 +239,3 @@ export function Hero() {
         </section>
     );
 }
-
