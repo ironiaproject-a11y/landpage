@@ -30,9 +30,9 @@ import fs from 'fs';
       // Measure the hero section and text
       const heroInfo = await page.evaluate(() => {
         const hero = document.querySelector('.hero');
-        const textContainer = document.querySelector('.hero-text');
-        const phrase1 = document.querySelector('.phrase-1');
-        const phrase2 = document.querySelector('.phrase-2');
+        const textContainer = document.querySelector('.heroCopy');
+        const phrase1 = document.querySelector('.heroPre');
+        const phrase2 = document.querySelector('.heroTitle');
         
         if (!hero) return { error: 'Hero section not found in evaluation' };
         
@@ -47,9 +47,9 @@ import fs from 'fs';
             top: textRect.top,
             topPercent: (textRect.top / (heroRect.height || 1)) * 100
           } : 'Text container not found',
-          phrase1: p1Rect ? { fontSize: window.getComputedStyle(phrase1.querySelector('h1')).fontSize } : null,
+          phrase1: p1Rect ? { fontSize: window.getComputedStyle(phrase1).fontSize } : null,
           phrase2: p2Rect ? { 
-            fontSize: window.getComputedStyle(phrase2.querySelector('h2')).fontSize,
+            fontSize: window.getComputedStyle(phrase2).fontSize,
             top: p2Rect.top,
             topPercent: (p2Rect.top / (heroRect.height || 1)) * 100
           } : null,
@@ -57,6 +57,12 @@ import fs from 'fs';
           videoFound: !!document.querySelector('video')
         };
       });
+
+      console.log('Scrolling down...');
+      await page.evaluate(() => window.scrollBy(0, 1000));
+      await page.waitForTimeout(2000);
+      await page.screenshot({ path: 'hero-scroll.png', fullPage: false });
+      console.log('Scroll screenshot saved.');
 
       console.log(`Hero Details (${vp.name}):`, JSON.stringify(heroInfo, null, 2));
 

@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 /* Global Treatment - Removed grayscale to ensure media quality and visibility */
-img, svg, video, canvas {
+img, svg, video {
   filter: contrast(1.05);
 }
+/* Canvas filter managed individually per component to avoid stacking */
 
 /* ===================================
    DESIGN TOKENS - Premium Luxury Refinement

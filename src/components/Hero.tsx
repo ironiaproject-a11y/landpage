@@ -78,11 +78,12 @@ export function Hero() {
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
-                        end: "bottom top",
-                        scrub: 0.5,
+                        end: "+=300vh",
+                        scrub: 2,
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
+                        refreshPriority: 1,
                     },
                     onUpdate: () => renderFrame(frameObj.current.index)
                 });
@@ -92,20 +93,25 @@ export function Hero() {
             const startAnimations = () => {
                 const tl = gsap.timeline({ onComplete: initScroll });
                 
+                // Reset state
                 gsap.set(pre, { opacity: 0, y: 20 });
                 gsap.set(title, { opacity: 0, y: 20 });
 
+                // 1. Reveal "Sua origem"
                 tl.to(pre, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "+=0.5");
                 
+                // 2. Start Frame Transformation (Skull to Smile)
                 tl.to(frameObj.current, { 
                     index: 80, 
                     duration: 3, 
-                    ease: "power2.inOut",
+                    ease: "slow(0.7, 0.7, false)",
                     onUpdate: () => renderFrame(frameObj.current.index)
                 }, "-=0.5");
                 
+                // 3. Subtle mask wipe (style-only) for "Sua origem"
                 tl.to(pre, { opacity: 0, y: -10, duration: 1, ease: "power2.inIn" }, "-=1.5");
                 
+                // 4. Powerful reveal of "Seu sorriso"
                 tl.to(title, { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }, "-=0.8");
             };
 
@@ -113,6 +119,7 @@ export function Hero() {
             window.addEventListener("resize", handleResize);
             handleResize();
 
+            // Minimal safety wait for first frame
             const firstFrame = framesRef.current[0];
             if (firstFrame) {
                 if (firstFrame.complete) {
@@ -141,59 +148,77 @@ export function Hero() {
             <style jsx>{`
                 .hero {
                     position: relative;
-                    width: 100%;
-                    height: 300vh;
-                    background: #000;
-                    overflow: visible;
-                }
-                .heroVisual {
-                    position: sticky;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100vh;
-                    overflow: hidden;
+                    min-height: 100svh;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    overflow: hidden;
+                    background: #000;
+                    width: 100%;
                 }
+
+                .heroVisual {
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                }
+
                 .heroCanvas {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    filter: brightness(1.1) contrast(1.1);
-                    z-index: 1;
+                    /* Refined brightness/contrast balance */
+                    filter: brightness(0.95) contrast(1.1) saturate(1.1);
+                    display: block;
+                    will-change: filter;
                 }
+
                 .heroCopy {
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
+                    position: relative;
                     z-index: 10;
-                    text-align: center;
-                    width: 100%;
+                    width: min(820px, 90vw);
+                    margin-left: 8%;
+                    transform: translateY(-4vh);
                     pointer-events: none;
+                    /* Editorial shadow for readability */
+                    text-shadow: 0 10px 40px rgba(0,0,0,0.4);
                 }
+
                 .heroPre {
                     display: block;
+                    margin: 0 0 1.2rem 0;
                     font-family: 'Playfair Display', serif;
-                    font-size: clamp(1rem, 2vw, 1.5rem);
+                    font-style: italic;
+                    letter-spacing: 0.35em;
                     text-transform: uppercase;
-                    letter-spacing: 0.4em;
-                    color: rgba(255, 255, 255, 0.6);
-                    margin-bottom: 2rem;
+                    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+                    color: rgba(255, 255, 255, 0.75);
                     opacity: 0;
                 }
+
                 .heroTitle {
-                    font-family: 'Inter', sans-serif;
-                    font-size: clamp(3rem, 12vw, 12rem);
-                    font-weight: 700;
-                    line-height: 0.9;
-                    color: #fff;
                     margin: 0;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 900;
+                    font-style: normal;
+                    text-transform: uppercase;
+                    color: #ffffff;
+                    font-size: clamp(3.2rem, 10vw, 6rem);
+                    line-height: 1.05;
+                    letter-spacing: -0.02em;
                     opacity: 0;
-                    white-space: nowrap;
-                    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                }
+
+                @media (max-width: 768px) {
+                    .heroCopy {
+                        width: min(340px, 88vw);
+                        margin-left: 6vw;
+                        transform: translateY(-2vh);
+                    }
+                    .heroTitle {
+                        font-size: clamp(2.8rem, 12vw, 3.5rem);
+                    }
                 }
             `}</style>
 
@@ -208,3 +233,4 @@ export function Hero() {
         </section>
     );
 }
+
