@@ -4,151 +4,114 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 export function Hero() {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const preRef = useRef<HTMLSpanElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const preRef = useRef<HTMLParagraphElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
-    const copyRef = useRef<HTMLDivElement>(null);
-
-    const framesRef = useRef<HTMLImageElement[]>([]);
-    const frameObj = useRef({ index: 0 });
-    const totalFrames = 144; // Optimized WebP sequence
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const context = canvas.getContext("2d");
+        if (!sectionRef.current || !videoRef.current || !preRef.current || !titleRef.current) return;
+
+        const video = videoRef.current;
         const section = sectionRef.current;
         const pre = preRef.current;
         const title = titleRef.current;
-        const copy = copyRef.current;
-
-        if (!context || !section || !pre || !title || !copy) return;
 
         const ctx = gsap.context(() => {
-            const renderFrame = (index: number) => {
-                const img = framesRef.current[Math.floor(index)];
-                if (img && (img.complete || img.naturalWidth > 0)) {
-                    const { width, height } = canvas;
-                    const imgRatio = img.width / img.height;
-                    const canvasRatio = width / height;
-                    let drawWidth, drawHeight, offsetX, offsetY;
+            // Force reset states
+            gsap.set([pre, title], { opacity: 0, y: 30 });
+            gsap.set(video, { currentTime: 0, opacity: 1 });
 
-                    if (imgRatio > canvasRatio) {
-                        drawHeight = height; drawWidth = height * imgRatio;
-                        offsetX = (width - drawWidth) / 2; offsetY = 0;
-                    } else {
-                        drawWidth = width; drawHeight = width / imgRatio;
-                        offsetX = 0; offsetY = (height - drawHeight) / 2;
-                    }
+            const startAnimations = () => {
+                const tl = gsap.timeline({
+                    onComplete: () => initScroll()
+                });
 
-                    context.clearRect(0, 0, width, height);
-                    context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-                }
+                // Tagline Entrance
+                tl.to(pre, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power3.out"
+                }, "+=0.3");
+
+                // Video Intro (Simulated play via currentTime)
+                tl.to(video, {
+                    currentTime: 3.2,
+                    duration: 2.5,
+                    ease: "power2.inOut"
+                }, "-=0.2");
+
+                // Tagline "Swept" Exit
+                tl.to(pre, {
+                    "--mask-p": "100%",
+                    duration: 1.0,
+                    ease: "power2.inOut"
+                }, "-=1.8");
+
+                tl.to(pre, {
+                    opacity: 0,
+                    duration: 0.3
+                }, "-=0.8");
+
+                // Title Reveal
+                tl.to(title, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "expo.out"
+                }, "-=0.5");
             };
 
-            const handleResize = () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                renderFrame(frameObj.current.index);
-            };
-
-            // ─── MASTER SCROLL TIMELINE ───────────────────────────────────
             const initScroll = () => {
-                const tlScroll = gsap.timeline({
+                // Ensure duration is valid before creating ScrollTrigger
+                if (!video.duration || isNaN(video.duration)) {
+                    video.addEventListener("loadedmetadata", initScroll, { once: true });
+                    return;
+                }
+                
+                gsap.to(video, {
+                    currentTime: video.duration,
+                    ease: "none",
+                    overwrite: true,
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
                         end: "+=300vh",
-                        scrub: 1.5,
+                        scrub: 1, // Slightly more responsive than 1.2
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
-                        refreshPriority: 1,
                     }
                 });
-
-                tlScroll.to(frameObj.current, {
-                    index: totalFrames - 1,
-                    ease: "none",
-                    onUpdate: () => renderFrame(frameObj.current.index)
-                }, 0);
-
-                tlScroll.to(copy, {
-                    y: -150,
-                    opacity: 0,
-                    ease: "power2.inOut"
-                }, 0.5);
-
-                tlScroll.to(canvas, {
-                    scale: 1.1,
-                    ease: "none"
-                }, 0);
             };
 
-            // ─── PROGRESSIVE LOADING & REVEAL ─────────────────────────────
-            const startAnimations = () => {
-                const tlEntry = gsap.timeline({ 
-                    onComplete: initScroll,
-                    defaults: { ease: "power3.out" }
-                });
-                
-                gsap.set([pre, title], { opacity: 0, y: 30 });
-                gsap.set(canvas, { scale: 1.05, opacity: 0 });
+            // Improved metadata and readyState handling
+            if (video.readyState >= 2) {
+                startAnimations();
+            } else {
+                video.addEventListener("loadeddata", startAnimations, { once: true });
+            }
 
-                // 1. Instant Reveal (Base Frame)
-                tlEntry.to(canvas, { opacity: 1, scale: 1.0, duration: 1.5 });
-                tlEntry.to(pre, { opacity: 1, y: 0, duration: 1.2 }, "-=1.0");
-                
-                // 2. Transformation Begins (Once buffer starts filling)
-                tlEntry.to(frameObj.current, { 
-                    index: totalFrames - 1, 
-                    duration: 4.0, 
-                    ease: "power2.inOut",
-                    onUpdate: () => renderFrame(frameObj.current.index)
-                }, "+=0.2");
-                
-                tlEntry.to(pre, { opacity: 0, y: -20, duration: 1.2 }, "-=2.8");
-                tlEntry.to(title, { opacity: 1, y: 0, duration: 1.8 }, "-=1.8");
-            };
-
-            const preloadFrames = () => {
-                let criticalCount = 0;
-                const criticalFrames = 15; // Load first batch instantly to avoid "stuck" look
-
-                for (let i = 0; i < totalFrames; i++) {
-                    const img = new Image();
-                    img.src = `/assets/videos/frame_${i.toString().padStart(3, '0')}_delay-0.041s.webp`;
-                    
-                    img.onload = () => {
-                        if (i < criticalFrames) {
-                            criticalCount++;
-                            if (criticalCount === criticalFrames) {
-                                renderFrame(0);
-                                startAnimations();
-                            }
-                        }
-                    };
-                    img.onerror = (e) => {
-                        console.error(`Frame ${i} failed`, e);
-                        if (i < criticalFrames) {
-                            criticalCount++;
-                            if (criticalCount === criticalFrames) startAnimations();
-                        }
-                    };
-                    framesRef.current[i] = img;
+            // Fallback to avoid black screen/stuck state
+            const fallback = setTimeout(() => {
+                if (gsap.getProperty(pre, "opacity") === 0) {
+                    startAnimations();
                 }
-            };
+            }, 3500);
 
-            preloadFrames();
-            window.addEventListener("resize", handleResize);
-            handleResize();
+            // Preloader interaction
+            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
-                window.removeEventListener("resize", handleResize);
+                clearTimeout(fallback);
+                video.removeEventListener("loadeddata", startAnimations);
+                video.removeEventListener("loadedmetadata", initScroll);
             };
         });
 
@@ -157,81 +120,82 @@ export function Hero() {
 
     return (
         <section ref={sectionRef} className="hero">
-            <style jsx>{`
+            <style>{`
                 .hero {
                     position: relative;
-                    width: 100%;
-                    height: 300vh;
-                    background: #000;
-                    overflow: visible;
-                }
-                .heroVisual {
-                    position: sticky;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100vh;
-                    overflow: hidden;
+                    min-height: 100svh;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    overflow: hidden;
+                    background: #000;
+                    width: 100%;
                 }
-                .heroCanvas {
+
+                .heroVideo {
+                    position: absolute;
+                    inset: 0;
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-                    filter: brightness(0.95) contrast(1.1) saturate(1.1);
-                    z-index: 1;
-                    will-change: transform, opacity;
+                    object-position: center; 
+                    filter: brightness(0.45) contrast(1.05) grayscale(100%);
+                    z-index: 1; /* Ensured it's above the black background */
+                    display: block;
                 }
+
                 .heroCopy {
-                    position: fixed;
-                    left: 8%;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 10;
-                    width: min(820px, 90vw);
-                    pointer-events: none;
+                    position: relative;
+                    z-index: 10; /* Far above the video */
+                    width: min(600px, 90vw);
+                    margin-left: clamp(24px, 8vw, 96px);
+                    transform: translateY(-4vh);
                 }
+
                 .heroPre {
                     display: block;
+                    margin: 0 0 1rem 0;
                     font-family: 'Playfair Display', serif;
-                    font-size: clamp(14px, 1.2vw, 18px);
-                    font-weight: 400;
                     font-style: italic;
-                    letter-spacing: 0.35em;
+                    letter-spacing: 0.3em;
                     text-transform: uppercase;
-                    color: rgba(255, 255, 255, 0.65);
-                    margin-bottom: 1.5rem;
+                    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+                    color: rgba(255, 255, 255, 0.7);
+                    --mask-p: 0%;
+                    mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
+                    -webkit-mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
                 }
+
                 .heroTitle {
-                    font-family: 'Outfit', sans-serif;
-                    font-size: clamp(45px, 8vw, 110px);
-                    font-weight: 700;
-                    line-height: 0.95;
-                    letter-spacing: -0.01em;
+                    margin: 0;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 900;
+                    font-style: normal;
                     text-transform: uppercase;
                     color: #ffffff;
-                    margin: 0;
-                    filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.4));
+                    font-size: clamp(3.2rem, 11vw, 5.5rem);
+                    line-height: 1;
+                    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
                 }
+
                 @media (max-width: 768px) {
                     .heroCopy {
-                        left: 5%;
-                        width: 90%;
-                        text-align: center;
-                    }
-                    .heroTitle {
-                        letter-spacing: -0.02em;
+                        width: min(340px, 88vw);
+                        margin-left: 6vw;
                     }
                 }
             `}</style>
 
-            <div className="heroVisual">
-                <canvas ref={canvasRef} className="heroCanvas" />
-            </div>
+            <video 
+                ref={videoRef}
+                muted 
+                playsInline 
+                className="heroVideo"
+                preload="auto"
+            >
+                <source src="/Aqui.mp4" type="video/mp4" />
+            </video>
 
-            <div ref={copyRef} className="heroCopy">
+            <div className="heroCopy">
                 <span ref={preRef} className="heroPre">Sua origem</span>
                 <h1 ref={titleRef} className="heroTitle">Seu sorriso</h1>
             </div>
