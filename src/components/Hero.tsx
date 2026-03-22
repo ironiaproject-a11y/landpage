@@ -91,17 +91,32 @@ export function Hero() {
                 });
             };
 
-            // Improved metadata and readyState handling
-            if (video.readyState >= 2) {
-                startAnimations();
+            const primeAndStart = () => {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                        setTimeout(startAnimations, 50);
+                    }).catch(() => {
+                        startAnimations();
+                    });
+                } else {
+                    startAnimations();
+                }
+            };
+
+            // Improved metadata and readyState handling (require readyState 3 for frames)
+            if (video.readyState >= 3) {
+                primeAndStart();
             } else {
-                video.addEventListener("loadeddata", startAnimations, { once: true });
+                video.addEventListener("canplay", primeAndStart, { once: true });
             }
 
             // Fallback to avoid black screen/stuck state
             const fallback = setTimeout(() => {
                 if (gsap.getProperty(pre, "opacity") === 0) {
-                    startAnimations();
+                    primeAndStart();
                 }
             }, 3500);
 
@@ -110,7 +125,7 @@ export function Hero() {
 
             return () => {
                 clearTimeout(fallback);
-                video.removeEventListener("loadeddata", startAnimations);
+                video.removeEventListener("canplay", primeAndStart);
                 video.removeEventListener("loadedmetadata", initScroll);
             };
         });
@@ -141,6 +156,8 @@ export function Hero() {
                     filter: brightness(0.45) contrast(1.05) grayscale(100%);
                     z-index: 1; /* Ensured it's above the black background */
                     display: block;
+                    opacity: 1 !important;
+                    visibility: visible !important;
                 }
 
                 .heroCopy {
