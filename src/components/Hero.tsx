@@ -30,18 +30,31 @@ export function Hero() {
         if (!context) return;
 
         const ctx = gsap.context(() => {
-            // ─── FRAME PRELOADING ─────────────────────────────────────────
+            // ─── FRAME LOADING SYSTEM ──────────────────────────────────────
+            let loadedCount = 0;
             const preloadFrames = () => {
                 for (let i = 0; i < totalFrames; i++) {
                     const img = new Image();
                     img.src = `/hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
+                    img.onload = () => {
+                        loadedCount++;
+                        if (loadedCount === totalFrames) {
+                            onAssetsReady();
+                        }
+                    };
+                    img.onerror = () => {
+                        loadedCount++; // Count even if error to avoid blocking forever
+                        if (loadedCount === totalFrames) {
+                            onAssetsReady();
+                        }
+                    };
                     framesRef.current[i] = img;
                 }
             };
 
             const renderFrame = (index: number) => {
                 const img = framesRef.current[Math.floor(index)];
-                if (img && img.complete) {
+                if (img && (img.complete || img.naturalWidth > 0)) {
                     const { width, height } = canvas;
                     const imgRatio = img.width / img.height;
                     const canvasRatio = width / height;
@@ -84,6 +97,10 @@ export function Hero() {
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
                         refreshPriority: 1,
+                        onUpdate: (self) => {
+                            // Backup update for extremely fast scrolls
+                            renderFrame(frameObj.current.index);
+                        }
                     },
                     onUpdate: () => renderFrame(frameObj.current.index)
                 });
@@ -91,49 +108,42 @@ export function Hero() {
 
             // ─── ENTRY ANIMATION ──────────────────────────────────────────
             const startAnimations = () => {
-                const tl = gsap.timeline({ onComplete: initScroll });
+                const tl = gsap.timeline({ 
+                    onComplete: initScroll,
+                    defaults: { ease: "power3.out" }
+                });
                 
                 // Reset state
                 gsap.set(pre, { opacity: 0, y: 20 });
                 gsap.set(title, { opacity: 0, y: 20 });
 
-                // 1. Reveal "Sua origem"
-                tl.to(pre, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "+=0.5");
+                // 1. Reveal "Sua origem" (Cinematic Fade)
+                tl.to(pre, { opacity: 1, y: 0, duration: 1.5 }, "+=0.3");
                 
-                // 2. Start Frame Transformation (Skull to Smile)
+                // 2. Full Frame Transformation (Skull to Smile - Complete Index 144)
                 tl.to(frameObj.current, { 
-                    index: 80, 
-                    duration: 3, 
-                    ease: "slow(0.7, 0.7, false)",
+                    index: totalFrames - 1, 
+                    duration: 3.5, 
+                    ease: "power2.inOut",
                     onUpdate: () => renderFrame(frameObj.current.index)
-                }, "-=0.5");
+                }, "-=0.8");
                 
-                // 3. Subtle mask wipe (style-only) for "Sua origem"
-                tl.to(pre, { opacity: 0, y: -10, duration: 1, ease: "power2.inIn" }, "-=1.5");
+                // 3. Elegant transition for "Sua origem"
+                tl.to(pre, { opacity: 0, y: -15, duration: 1.2, ease: "power2.in" }, "-=2.2");
                 
                 // 4. Powerful reveal of "Seu sorriso"
-                tl.to(title, { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }, "-=0.8");
+                tl.to(title, { opacity: 1, y: 0, duration: 2, ease: "expo.out" }, "-=1.5");
+            };
+
+            const onAssetsReady = () => {
+                renderFrame(0);
+                startAnimations();
+                window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
             };
 
             preloadFrames();
             window.addEventListener("resize", handleResize);
             handleResize();
-
-            // Minimal safety wait for first frame
-            const firstFrame = framesRef.current[0];
-            if (firstFrame) {
-                if (firstFrame.complete) {
-                    renderFrame(0);
-                    startAnimations();
-                } else {
-                    firstFrame.onload = () => {
-                        renderFrame(0);
-                        startAnimations();
-                    };
-                }
-            }
-
-            window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
                 window.removeEventListener("resize", handleResize);
