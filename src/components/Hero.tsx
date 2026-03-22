@@ -11,7 +11,8 @@ export function Hero() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const preRef = useRef<HTMLSpanElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
-    
+    const copyRef = useRef<HTMLDivElement>(null);
+
     const framesRef = useRef<HTMLImageElement[]>([]);
     const frameObj = useRef({ index: 0 });
     const totalFrames = 177; // Premium 177-frame sequence
@@ -23,8 +24,9 @@ export function Hero() {
         const section = sectionRef.current;
         const pre = preRef.current;
         const title = titleRef.current;
+        const copy = copyRef.current;
 
-        if (!context || !section || !pre || !title) return;
+        if (!context || !section || !pre || !title || !copy) return;
 
         const ctx = gsap.context(() => {
             // ─── FRAME LOADING SYSTEM ──────────────────────────────────────
@@ -32,19 +34,14 @@ export function Hero() {
             const preloadFrames = () => {
                 for (let i = 0; i < totalFrames; i++) {
                     const img = new Image();
-                    // Path using the premium 177-frame sequence
                     img.src = `/assets/premium-hero-frames/frame_${i.toString().padStart(3, '0')}_delay-0.041s.png`;
                     img.onload = () => {
                         loadedCount++;
-                        if (loadedCount === totalFrames) {
-                            onAssetsReady();
-                        }
+                        if (loadedCount === totalFrames) onAssetsReady();
                     };
                     img.onerror = () => {
-                        loadedCount++; // Count even if error to avoid blocking forever
-                        if (loadedCount === totalFrames) {
-                            onAssetsReady();
-                        }
+                        loadedCount++;
+                        if (loadedCount === totalFrames) onAssetsReady();
                     };
                     framesRef.current[i] = img;
                 }
@@ -59,15 +56,11 @@ export function Hero() {
                     let drawWidth, drawHeight, offsetX, offsetY;
 
                     if (imgRatio > canvasRatio) {
-                        drawHeight = height;
-                        drawWidth = height * imgRatio;
-                        offsetX = (width - drawWidth) / 2;
-                        offsetY = 0;
+                        drawHeight = height; drawWidth = height * imgRatio;
+                        offsetX = (width - drawWidth) / 2; offsetY = 0;
                     } else {
-                        drawWidth = width;
-                        drawHeight = width / imgRatio;
-                        offsetX = 0;
-                        offsetY = (height - drawHeight) / 2;
+                        drawWidth = width; drawHeight = width / imgRatio;
+                        offsetX = 0; offsetY = (height - drawHeight) / 2;
                     }
 
                     context.clearRect(0, 0, width, height);
@@ -81,56 +74,71 @@ export function Hero() {
                 renderFrame(frameObj.current.index);
             };
 
-            // ─── SCROLL ANIMATION ──────────────────────────────────────────
+            // ─── MASTER SCROLL TIMELINE ───────────────────────────────────
             const initScroll = () => {
-                gsap.to(frameObj.current, {
-                    index: totalFrames - 1,
-                    ease: "none",
+                const tlScroll = gsap.timeline({
                     scrollTrigger: {
                         trigger: section,
                         start: "top top",
                         end: "+=300vh",
-                        scrub: 2,
+                        scrub: 1.5,
                         pin: true,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
                         refreshPriority: 1,
-                        onUpdate: (self) => {
-                            // Backup update for extremely fast scrolls
-                            renderFrame(frameObj.current.index);
-                        }
-                    },
-                    onUpdate: () => renderFrame(frameObj.current.index)
+                    }
                 });
+
+                // 1. Frame Scrubbing (Skull to Smile)
+                tlScroll.to(frameObj.current, {
+                    index: totalFrames - 1,
+                    ease: "none",
+                    onUpdate: () => renderFrame(frameObj.current.index)
+                }, 0);
+
+                // 2. Text Parallax & Sweep
+                tlScroll.to(copy, {
+                    y: -150,
+                    opacity: 0,
+                    ease: "power2.inOut"
+                }, 0.5); // Starts exit transition halfway through scroll
+
+                // 3. Canvas Depth Scale
+                tlScroll.to(canvas, {
+                    scale: 1.1,
+                    ease: "none"
+                }, 0);
             };
 
             // ─── ENTRY ANIMATION ──────────────────────────────────────────
             const startAnimations = () => {
-                const tl = gsap.timeline({ 
+                const tlEntry = gsap.timeline({ 
                     onComplete: initScroll,
                     defaults: { ease: "power3.out" }
                 });
                 
                 // Initial State
                 gsap.set(pre, { opacity: 0, y: 30 });
-                gsap.set(title, { opacity: 0, y: 30 });
+                gsap.set(title, { opacity: 0, y: 40 });
+                gsap.set(canvas, { scale: 1.05, opacity: 0 });
 
-                // 1. Reveal "Sua origem" (Cinematic Reveal)
-                tl.to(pre, { opacity: 1, y: 0, duration: 1.8 }, "+=0.2");
+                // 1. Fade-in Canvas
+                tlEntry.to(canvas, { opacity: 1, scale: 1.0, duration: 2 });
+
+                // 2. Reveal "Sua origem" (Cinematic Reveal)
+                tlEntry.to(pre, { opacity: 1, y: 0, duration: 1.8 }, "-=1.5");
                 
-                // 2. Full Premium Sequence (Skull to Smile - 177 Frames)
-                tl.to(frameObj.current, { 
+                // 3. Full Premium Sequence (Skull to Smile - 177 Frames)
+                tlEntry.to(frameObj.current, { 
                     index: totalFrames - 1, 
                     duration: 4.5, 
                     ease: "power2.inOut",
                     onUpdate: () => renderFrame(frameObj.current.index)
-                }, "-=1.0");
+                }, "-=1.2");
                 
-                // 3. Elegant fade-out of "Sua origem"
-                tl.to(pre, { opacity: 0, y: -20, duration: 1.5, ease: "power2.in" }, "-=2.8");
-                
-                // 4. Hero Title Reveal ("Seu sorriso")
-                tl.to(title, { opacity: 1, y: 0, duration: 2.2, ease: "expo.out" }, "-=1.8");
+                // 4. Elegant fade-out of "Sua origem" & Reveal "Seu sorriso"
+                tlEntry.to(pre, { opacity: 0, y: -20, duration: 1.5 }, "-=3.0");
+                tlEntry.to(title, { opacity: 1, y: 0, duration: 2.2 }, "-=2.2");
             };
 
             const onAssetsReady = () => {
@@ -160,7 +168,6 @@ export function Hero() {
                     background: #000;
                     overflow: visible;
                 }
-
                 .heroVisual {
                     position: sticky;
                     top: 0;
@@ -172,7 +179,6 @@ export function Hero() {
                     align-items: center;
                     justify-content: center;
                 }
-
                 .heroCanvas {
                     width: 100%;
                     height: 100%;
@@ -180,8 +186,8 @@ export function Hero() {
                     /* Filtro balanceado para profundidade premium */
                     filter: brightness(0.95) contrast(1.1) saturate(1.1);
                     z-index: 1;
+                    will-change: transform, opacity;
                 }
-
                 .heroCopy {
                     position: fixed;
                     left: 8%;
@@ -191,7 +197,6 @@ export function Hero() {
                     width: min(820px, 90vw);
                     pointer-events: none;
                 }
-
                 .heroPre {
                     display: block;
                     font-family: 'Playfair Display', serif;
@@ -203,7 +208,6 @@ export function Hero() {
                     color: rgba(255, 255, 255, 0.65);
                     margin-bottom: 1.5rem;
                 }
-
                 .heroTitle {
                     font-family: 'Outfit', sans-serif;
                     font-size: clamp(45px, 8vw, 110px);
@@ -215,7 +219,6 @@ export function Hero() {
                     margin: 0;
                     filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.4));
                 }
-
                 @media (max-width: 768px) {
                     .heroCopy {
                         left: 5%;
@@ -232,7 +235,7 @@ export function Hero() {
                 <canvas ref={canvasRef} className="heroCanvas" />
             </div>
 
-            <div className="heroCopy">
+            <div ref={copyRef} className="heroCopy">
                 <span ref={preRef} className="heroPre">Sua origem</span>
                 <h1 ref={titleRef} className="heroTitle">Seu sorriso</h1>
             </div>
