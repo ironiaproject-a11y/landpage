@@ -40,10 +40,10 @@ export function Hero() {
                     ease: "power3.out"
                 }, "+=0.3");
 
-                // Video Intro (Simulated play via currentTime)
+                // Full Video Intro (Simulated play via currentTime)
                 tl.to(video, {
-                    currentTime: 3.2,
-                    duration: 2.5,
+                    currentTime: video.duration || 6.4,
+                    duration: 4.5,
                     ease: "power2.inOut"
                 }, "-=0.2");
 
@@ -75,20 +75,23 @@ export function Hero() {
                     return;
                 }
                 
-                gsap.to(video, {
-                    currentTime: video.duration,
-                    ease: "none",
-                    overwrite: true,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top top",
-                        end: "+=300vh",
-                        scrub: 1, // Slightly more responsive than 1.2
-                        pin: true,
-                        anticipatePin: 1,
-                        invalidateOnRefresh: true,
+                gsap.fromTo(video, 
+                    { currentTime: 0 },
+                    {
+                        currentTime: video.duration || 6.4,
+                        ease: "none",
+                        overwrite: true,
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top top",
+                            end: "+=300vh",
+                            scrub: 1.5,
+                            pin: true,
+                            anticipatePin: 1,
+                            invalidateOnRefresh: true,
+                        }
                     }
-                });
+                );
             };
 
             const primeAndStart = () => {
@@ -106,11 +109,11 @@ export function Hero() {
                 }
             };
 
-            // Improved metadata and readyState handling (require readyState 3 for frames)
-            if (video.readyState >= 3) {
+            // Start instantly on metadata load to prevent "taking too long"
+            if (video.readyState >= 1) {
                 primeAndStart();
             } else {
-                video.addEventListener("canplay", primeAndStart, { once: true });
+                video.addEventListener("loadedmetadata", primeAndStart, { once: true });
             }
 
             // Fallback to avoid black screen/stuck state
@@ -125,7 +128,7 @@ export function Hero() {
 
             return () => {
                 clearTimeout(fallback);
-                video.removeEventListener("canplay", primeAndStart);
+                video.removeEventListener("loadedmetadata", primeAndStart);
                 video.removeEventListener("loadedmetadata", initScroll);
             };
         });
