@@ -52,11 +52,23 @@ export function Hero() {
             // ─── ENTRY ANIMATION ──────────────────────────────────────────
             const startAnimations = () => {
                 const tl = gsap.timeline({ onComplete: initScroll });
-                tl.to(pre, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "+=0.3");
-                tl.to(video, { currentTime: 3.2, duration: 2.5, ease: "power2.inOut" }, "-=0.2");
-                tl.to(pre, { "--mask-p": "100%", duration: 1.0, ease: "power2.inOut" }, "-=1.8");
-                tl.to(pre, { opacity: 0, duration: 0.3 }, "-=0.8");
-                tl.to(title, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }, "-=0.5");
+                
+                // Reset state
+                gsap.set(pre, { opacity: 0, y: 20, "--mask-p": "0%" });
+                gsap.set(title, { opacity: 0, y: 20 });
+
+                // 1. Reveal "Sua origem"
+                tl.to(pre, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "+=0.5");
+                
+                // 2. Start Video Transformation (Skull to Smile)
+                // Assuming the transformation happens between 0s and 3.2s
+                tl.to(video, { currentTime: 3.2, duration: 3, ease: "slow(0.7, 0.7, false)" }, "-=0.5");
+                
+                // 3. Subtle mask wipe for "Sua origem" as it transitions
+                tl.to(pre, { opacity: 0, y: -10, duration: 1, ease: "power2.inIn" }, "-=1.5");
+                
+                // 4. Powerful reveal of "Seu sorriso"
+                tl.to(title, { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }, "-=0.8");
             };
 
             // ─── VIDEO ACTIVATION ─────────────────────────────────────────
@@ -183,7 +195,7 @@ export function Hero() {
                 preload="auto"
                 loop
             >
-                <source src="/hero-background.mp4" type="video/mp4" />
+                <source src="/Aqui.mp4" type="video/mp4" />
             </video>
 
             <div className="heroCopy">
