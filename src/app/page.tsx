@@ -2,7 +2,7 @@
 
 import nextDynamic from "next/dynamic";
 
-import { Hero } from "@/components/Hero";
+
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
@@ -62,7 +62,17 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Hero />
+      <section style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#000' }}>
+        <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}>
+          <source src="/Aqui.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-overlay">
+          <p className="hero-origin">Sua origem</p>
+          <hr className="hero-divider" />
+          <h1 className="hero-title">Seu sorriso</h1>
+          <a className="hero-cta" href="#sobre">↓ descubra como</a>
+        </div>
+      </section>
       <Stats />
       <About />
       <InstitutionalTrust />
