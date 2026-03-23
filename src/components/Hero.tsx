@@ -11,20 +11,23 @@ if (typeof window !== "undefined") {
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const preRef = useRef<HTMLParagraphElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
+    
+    // New typography refs
+    const topRef = useRef<HTMLDivElement>(null);
+    const centerRef = useRef<HTMLHeadingElement>(null);
+    const bottomRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        if (!sectionRef.current || !videoRef.current || !preRef.current || !titleRef.current) return;
+        if (!sectionRef.current || !videoRef.current || !topRef.current || !centerRef.current || !bottomRef.current) return;
 
         const video = videoRef.current;
         const section = sectionRef.current;
-        const pre = preRef.current;
-        const title = titleRef.current;
 
         const ctx = gsap.context(() => {
-            // Force reset states
-            gsap.set([pre, title], { opacity: 0, y: 30 });
+            // Force reset states for new structure
+            gsap.set(topRef.current, { opacity: 0 });
+            gsap.set(centerRef.current, { opacity: 0, y: 50 });
+            gsap.set(bottomRef.current, { opacity: 0 });
             gsap.set(video, { currentTime: 0, opacity: 1 });
 
             const startAnimations = () => {
@@ -32,49 +35,23 @@ export function Hero() {
                     onComplete: () => initScroll()
                 });
 
-                // Tagline Entrance
-                tl.to(pre, {
+                // 1. Element 1 (Top) Fade In on Load
+                tl.to(topRef.current, {
                     opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power3.out"
-                }, "+=0.3");
+                    duration: 1,
+                    ease: "power2.inOut"
+                });
 
-                // Full Video Intro (Simulated play via currentTime)
+                // 2. Full Video Intro (Simulated play via currentTime)
                 tl.to(video, {
                     currentTime: video.duration || 6.4,
                     duration: 4.5,
                     ease: "power2.inOut"
-                }, "-=0.2");
-
-                // Tagline "Swept" Exit
-                tl.to(pre, {
-                    "--mask-p": "100%",
-                    duration: 1.0,
-                    ease: "power2.inOut"
-                }, "-=1.8");
-
-                tl.to(pre, {
-                    opacity: 0,
-                    duration: 0.3
-                }, "-=0.8");
-
-                // Title Reveal
-                tl.to(title, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    ease: "expo.out"
-                }, "-=0.5");
+                }, 0);
             };
 
             const initScroll = () => {
-                // Ensure duration is valid before creating ScrollTrigger
-                if (!video.duration || isNaN(video.duration)) {
-                    video.addEventListener("loadedmetadata", initScroll, { once: true });
-                    return;
-                }
-                
+                // Scroll-triggered Video scrub (0 to end)
                 gsap.fromTo(video, 
                     { currentTime: 0 },
                     {
@@ -92,6 +69,35 @@ export function Hero() {
                         }
                     }
                 );
+
+                // Scroll-triggered Typography (Element 2 & 3)
+                // Trigger exactly when scroll reaches 55% of the video duration
+                // Video scroll is pinned for 300vh, so 55% of 300vh is 165vh.
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top -165%",
+                    onEnter: () => {
+                        // Element 2: Seu sorriso
+                        gsap.to(centerRef.current, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.9,
+                            ease: "power2.out"
+                        });
+                        // Element 3: ↓ descubra como
+                        gsap.to(bottomRef.current, {
+                            opacity: 1,
+                            duration: 1,
+                            delay: 0.7,
+                            ease: "power2.out"
+                        });
+                    },
+                    onLeaveBack: () => {
+                        // Gently fade out when scrolling back up
+                        gsap.to(centerRef.current, { y: 50, opacity: 0, duration: 0.5 });
+                        gsap.to(bottomRef.current, { opacity: 0, duration: 0.5 });
+                    }
+                });
             };
 
             const primeAndStart = () => {
@@ -118,7 +124,7 @@ export function Hero() {
 
             // Fallback to avoid black screen/stuck state
             const fallback = setTimeout(() => {
-                if (gsap.getProperty(pre, "opacity") === 0) {
+                if (gsap.getProperty(topRef.current, "opacity") === 0) {
                     primeAndStart();
                 }
             }, 3500);
@@ -129,7 +135,6 @@ export function Hero() {
             return () => {
                 clearTimeout(fallback);
                 video.removeEventListener("loadedmetadata", primeAndStart);
-                video.removeEventListener("loadedmetadata", initScroll);
             };
         });
 
@@ -163,45 +168,75 @@ export function Hero() {
                     visibility: visible !important;
                 }
 
-                .heroCopy {
-                    position: relative;
-                    z-index: 10; /* Far above the video */
-                    width: min(600px, 90vw);
-                    margin-left: clamp(24px, 8vw, 96px);
-                    transform: translateY(-4vh);
+                /* ELEMENT 1 (top) */
+                .heroTop {
+                    position: absolute;
+                    top: 14%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
 
                 .heroPre {
-                    display: block;
-                    margin: 0 0 1rem 0;
+                    margin: 0;
                     font-family: 'Playfair Display', serif;
-                    font-style: italic;
-                    letter-spacing: 0.3em;
+                    font-weight: 300;
+                    font-size: 12px;
+                    letter-spacing: 0.4em;
+                    color: rgba(255, 255, 255, 0.40);
                     text-transform: uppercase;
-                    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-                    color: rgba(255, 255, 255, 0.7);
-                    --mask-p: 0%;
-                    mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
-                    -webkit-mask-image: linear-gradient(to right, transparent var(--mask-p), black calc(var(--mask-p) + 20%));
+                }
+
+                .heroSeparator {
+                    width: 32px;
+                    height: 1px;
+                    background-color: rgba(255, 255, 255, 0.15);
+                    margin: 14px auto 0;
+                }
+
+                /* ELEMENT 2 (center) */
+                .heroCenter {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 10;
+                    width: 100%;
+                    text-align: center;
                 }
 
                 .heroTitle {
                     margin: 0;
-                    font-family: 'Inter', sans-serif;
-                    font-weight: 900;
-                    font-style: normal;
-                    text-transform: uppercase;
+                    font-family: 'Playfair Display', serif;
+                    font-weight: 700;
+                    font-size: clamp(48px, 7.5vw, 88px);
+                    letter-spacing: 0.02em;
+                    line-height: 1.05;
                     color: #ffffff;
-                    font-size: clamp(3.2rem, 11vw, 5.5rem);
-                    line-height: 1;
-                    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
                 }
 
-                @media (max-width: 768px) {
-                    .heroCopy {
-                        width: min(340px, 88vw);
-                        margin-left: 6vw;
-                    }
+                /* ELEMENT 3 (bottom) */
+                .heroBottom {
+                    position: absolute;
+                    bottom: 9%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10;
+                    text-align: center;
+                }
+
+                .heroDescubra {
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 300;
+                    font-size: 10px;
+                    letter-spacing: 0.35em;
+                    color: rgba(255, 255, 255, 0.30);
+                    text-transform: uppercase;
+                    display: inline-block;
                 }
             `}</style>
 
@@ -215,9 +250,17 @@ export function Hero() {
                 <source src="/Aqui.mp4" type="video/mp4" />
             </video>
 
-            <div className="heroCopy">
-                <span ref={preRef} className="heroPre">Sua origem</span>
-                <h1 ref={titleRef} className="heroTitle">Seu sorriso</h1>
+            <div ref={topRef} className="heroTop">
+                <span className="heroPre">Sua origem</span>
+                <div className="heroSeparator"></div>
+            </div>
+
+            <div className="heroCenter">
+                <h1 ref={centerRef} className="heroTitle">Seu sorriso</h1>
+            </div>
+
+            <div className="heroBottom">
+                <span ref={bottomRef} className="heroDescubra">↓ descubra como</span>
             </div>
         </section>
     );
