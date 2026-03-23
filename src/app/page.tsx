@@ -62,14 +62,53 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <section style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#000' }}>
-        <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}>
+      <section className="relative w-full h-screen overflow-hidden bg-black text-white font-sans flex flex-col justify-between p-6 md:p-12 lg:px-24 lg:py-16">
+        {/* Video Background */}
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0" style={{ filter: 'brightness(0.6)' }}>
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
-        <div className="hero-overlay">
-          <p className="hero-origin">Sua origem</p>
-          <h1 className="hero-title">Seu sorriso</h1>
-          <a className="hero-cta" href="#sobre">↓ descubra como</a>
+
+        {/* Top Content (Headline & Side Text) */}
+        <div className="flex flex-col lg:flex-row justify-between items-start mt-10 md:mt-20 w-full max-w-[1600px] mx-auto z-10 relative gap-10 lg:gap-0">
+          
+          {/* Main Headline */}
+          <div className="flex-1 w-full">
+            <h1 className="text-[clamp(3rem,8vw,7.5rem)] leading-[0.9] tracking-tighter font-medium font-sans text-white text-left max-w-4xl">
+              <span className="block">Porque seu sorriso</span>
+              <span className="block">merece</span>
+              <span className="block">o Melhor</span>
+            </h1>
+          </div>
+
+          {/* Side Content & Button */}
+          <div className="flex flex-col lg:w-[350px] lg:mt-[10%] shrink-0">
+            <p className="text-sm md:text-sm font-sans text-white/80 leading-relaxed font-light mb-8 max-w-sm">
+              Somos uma clínica odontológica moderna, digital e inovadora, focada em fornecer tratamentos seguros e eficazes com a mais recente tecnologia.
+            </p>
+
+            {/* Button */}
+            <a href="#sobre" className="inline-flex items-center justify-between bg-white text-black rounded-full px-6 py-3 font-sans font-medium hover:bg-white/90 transition-colors w-fit gap-6 group">
+              <span>Consulta</span>
+              <span className="bg-black text-white rounded-full w-8 h-8 flex items-center justify-center transform group-hover:rotate-45 transition-transform duration-300">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Info Blocks */}
+        <div className="w-full max-w-[1600px] mx-auto flex flex-col md:flex-row justify-start items-end pb-4 z-10 relative gap-12 md:gap-24">
+          <div className="hidden md:block text-white/30 mb-2">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M4 4v16h16"/></svg>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] uppercase font-sans tracking-widest text-white/50">Horário de funcionamento</span>
+            <span className="text-xs md:text-sm font-sans text-white font-medium">Seg - Sáb 8:00 - 20:00</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] uppercase font-sans tracking-widest text-white/50">Localização</span>
+            <span className="text-xs md:text-sm font-sans text-white font-medium">São Paulo, SP</span>
+          </div>
         </div>
       </section>
       <Stats />
