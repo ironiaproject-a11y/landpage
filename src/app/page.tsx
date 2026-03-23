@@ -62,45 +62,40 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <section className="relative w-full min-h-[100svh] overflow-hidden bg-black text-white flex flex-col justify-between px-6 pt-24 pb-8 md:p-12 lg:px-24 lg:py-16">
+      <section className="relative w-full h-[100svh] overflow-hidden bg-black text-white font-sans">
         {/* Video Background */}
         <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0" style={{ filter: 'brightness(0.6)' }}>
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
 
-        {/* Main Content (Headline & Button perfectly grouped) */}
-        <div className="flex flex-col flex-1 justify-center w-full max-w-[1600px] mx-auto z-10 relative mt-16 md:mt-0">
-          
-          <div className="flex flex-col items-start gap-8 md:gap-12 w-full">
-            {/* Main Headline */}
-            <h1 className="text-[clamp(2.75rem,11vw,9rem)] leading-[0.95] tracking-[-0.04em] font-sans text-white text-left w-full break-normal lg:whitespace-nowrap">
-              <span className="block font-normal text-white/90">Sua origem,</span>
-              <span className="block font-medium">Seu sorriso.</span>
+        {/* Main Content (Headline & Button) */}
+        <div className="absolute top-[60%] -translate-y-1/2 left-0 w-full px-6 lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
+          <div className="w-full max-w-[1600px] mx-auto">
+            <h1 className="flex flex-col text-left">
+              <span className="text-[18px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[300] lg:font-normal text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] mb-1 lg:mb-0">Sua origem,</span>
+              <span className="text-[42px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[700] lg:font-medium text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em]">Seu sorriso.</span>
             </h1>
 
-            {/* Button - logically grouped under the text */}
-            <a href="#sobre" className="inline-flex items-center justify-between bg-white text-black rounded-full px-7 py-4 md:py-5 md:px-10 font-sans hover:bg-white/90 transition-all w-fit gap-6 md:gap-8 group shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(255,255,255,0.25)]">
-              <span className="text-[16px] md:text-[18px] font-medium tracking-tight">Agendar Consulta</span>
-              <span className="bg-black text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transform group-hover:translate-x-1 transition-transform duration-400">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            {/* Button */}
+            <a href="#sobre" className="inline-flex items-center justify-between bg-transparent lg:bg-white text-white lg:text-black border border-[rgba(255,255,255,0.5)] lg:border-transparent rounded-full px-5 py-3 lg:py-5 lg:px-10 hover:bg-white/10 lg:hover:bg-white/90 transition-all w-full max-w-[220px] lg:w-fit lg:max-w-none mt-6 lg:mt-12 group lg:shadow-[0_0_30px_rgba(255,255,255,0.1)] lg:hover:shadow-[0_0_50px_rgba(255,255,255,0.25)]">
+              <span className="text-[15px] lg:text-[18px] font-medium tracking-tight">Agendar Consulta</span>
+              <span className="bg-black text-white rounded-full w-8 h-8 lg:w-12 lg:h-12 flex items-center justify-center transform group-hover:translate-x-1 transition-transform duration-400 shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lg:w-4 lg:h-4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </span>
             </a>
           </div>
         </div>
 
-        {/* Bottom Info Blocks - Anchored cleanly */}
-        <div className="w-full max-w-[1600px] mx-auto flex flex-row justify-between lg:justify-start items-end z-10 relative gap-4 md:gap-16 pb-4">
-          <div className="hidden lg:block text-white/30 mb-2">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M4 4v16h16"/></svg>
-          </div>
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-16 w-full lg:w-auto mt-8 lg:mt-0">
-            <div className="flex flex-col gap-1.5 flex-1 lg:flex-none">
-              <span className="text-[8px] md:text-[10px] uppercase font-sans tracking-[0.2em] text-white/50">Horário de funcionamento</span>
-              <span className="text-xs md:text-sm font-sans text-white font-medium tracking-tight">Seg - Sáb 8:00 - 20:00</span>
+        {/* Bottom Info Blocks */}
+        <div className="absolute bottom-8 left-0 w-full px-6 lg:px-24 z-10">
+          <div className="w-full max-w-[1600px] mx-auto flex flex-row gap-6 lg:gap-16">
+            <div className="flex flex-col gap-1 flex-1 lg:flex-none">
+              <span className="text-[10px] lg:text-[10px] uppercase font-sans tracking-[0.1em] text-[rgba(255,255,255,0.6)]">Horário de funcionamento</span>
+              <span className="text-[13px] md:text-[14px] font-sans text-white font-medium tracking-tight">Seg - Sáb 8:00 - 20:00</span>
             </div>
-            <div className="flex flex-col gap-1.5 flex-1 lg:flex-none">
-              <span className="text-[8px] md:text-[10px] uppercase font-sans tracking-[0.2em] text-white/50">Localização</span>
-              <span className="text-xs md:text-sm font-sans text-white font-medium tracking-tight">São Paulo, SP</span>
+            <div className="flex flex-col gap-1 flex-1 lg:flex-none">
+              <span className="text-[10px] lg:text-[10px] uppercase font-sans tracking-[0.1em] text-[rgba(255,255,255,0.6)]">Localização</span>
+              <span className="text-[13px] md:text-[14px] font-sans text-white font-medium tracking-tight">São Paulo, SP</span>
             </div>
           </div>
         </div>
