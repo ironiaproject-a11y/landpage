@@ -68,29 +68,23 @@ export default function Home() {
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
 
-        {/* Top Content (Headline & Side Text) */}
-        <div className="flex flex-col lg:flex-row justify-between items-start mt-4 md:mt-10 lg:mt-20 w-full max-w-[1600px] mx-auto z-10 relative gap-8 lg:gap-0">
+        {/* Top Content (Headline & Button) */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mt-4 md:mt-10 lg:mt-24 w-full max-w-[1600px] mx-auto z-10 relative gap-12 lg:gap-0">
           
           {/* Main Headline */}
           <div className="flex-1 w-full">
-            <h1 className="text-[clamp(4rem,14vw,8.5rem)] leading-[0.88] tracking-[-0.06em] font-normal font-sans text-white text-left w-full">
-              <span className="block">Porque seu sorriso</span>
-              <span className="block">merece</span>
-              <span className="block">o Melhor</span>
+            <h1 className="text-[clamp(4.5rem,15vw,11rem)] leading-[0.85] tracking-[-0.05em] font-sans text-white text-left w-full">
+              <span className="block font-normal">Sua origem,</span>
+              <span className="block font-medium">Seu sorriso.</span>
             </h1>
           </div>
 
-          {/* Side Content & Button */}
-          <div className="flex flex-col w-full lg:w-[320px] lg:mt-[5%] shrink-0">
-            <p className="text-sm md:text-sm font-sans text-white/80 leading-relaxed font-light mb-8 lg:mb-10 max-w-[280px] md:max-w-sm">
-              Somos uma clínica odontológica moderna, digital e inovadora, focada em fornecer tratamentos seguros e eficazes com a mais recente tecnologia.
-            </p>
-
-            {/* Button */}
-            <a href="#sobre" className="inline-flex items-center justify-between bg-white text-black rounded-full px-6 py-3.5 font-sans font-medium hover:bg-white/90 transition-colors w-fit gap-6 group">
-              <span className="text-[15px]">Consulta</span>
-              <span className="bg-black text-white rounded-full w-8 h-8 flex items-center justify-center transform group-hover:rotate-45 transition-transform duration-300">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+          {/* Button only (no more side paragraph) */}
+          <div className="flex flex-col items-start lg:items-end w-full lg:w-auto shrink-0 mb-2 lg:mb-8">
+            <a href="#sobre" className="inline-flex items-center justify-between bg-white text-black rounded-full px-8 py-4.5 md:py-5 md:px-10 font-sans hover:bg-white/90 transition-all w-fit gap-8 group shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]">
+              <span className="text-[17px] md:text-[20px] font-medium tracking-tight">Agendar Consulta</span>
+              <span className="bg-black text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
               </span>
             </a>
           </div>
