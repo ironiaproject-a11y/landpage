@@ -68,7 +68,6 @@ export default function Home() {
         </video>
         <div className="hero-overlay">
           <p className="hero-origin">Sua origem</p>
-          <hr className="hero-divider" />
           <h1 className="hero-title">Seu sorriso</h1>
           <a className="hero-cta" href="#sobre">↓ descubra como</a>
         </div>
