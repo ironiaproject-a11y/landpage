@@ -78,7 +78,7 @@ export function CTA() {
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <LuxuryCard
                     className="cta-glass-panel max-w-4xl mx-auto border-white/5 bg-white/5"
-                    innerClassName="p-10 md:p-24"
+                    innerClassName="p-6 md:p-24"
                     glowColor="rgba(255,255,255,0.1)"
                 >
                     {/* Decorative shine evolution */}

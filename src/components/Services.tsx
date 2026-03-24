@@ -63,7 +63,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 </div>
 
                 {/* Content Section */}
-                <div className="p-10 md:p-12 flex flex-col flex-grow">
+                <div className="p-6 md:p-12 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
                         <span className="text-level-4 text-white/40 uppercase">Pilar {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />

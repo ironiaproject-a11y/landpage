@@ -175,7 +175,7 @@ export function Experience() {
                                         className="object-cover object-center"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                                    <div className="absolute bottom-12 left-12 right-12 z-20 experience-image-content">
+                                    <div className="absolute bottom-6 left-6 right-6 md:bottom-12 md:left-12 md:right-12 z-20 experience-image-content">
                                         <div className="experience-content-parallax">
                                             <p className="text-level-2 mb-2 uppercase tracking-tight">Exclusividade</p>
                                             <p className="text-level-3 max-w-xs">Planejamento personalizado e alta tecnologia para cada sorriso de elite.</p>

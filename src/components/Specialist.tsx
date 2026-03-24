@@ -288,12 +288,12 @@ export function Specialist() {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
-                                    <div className="absolute top-8 right-8 glass-panel p-4 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
+                                    <div className="absolute top-4 right-4 md:top-8 md:right-8 glass-panel p-3 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist">
                                         <p className="text-[var(--color-text-primary)] text-level-2 font-medium tracking-tight">15</p>
                                         <p className="text-level-4 uppercase tracking-widest opacity-40">Anos de Maestria</p>
                                     </div>
 
-                                    <div className="absolute bottom-8 left-8 z-20 op-desc-parallax">
+                                    <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-20 op-desc-parallax">
                                         <h4 className="text-white text-level-3 font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
                                         <p className="text-level-4 uppercase tracking-wider opacity-80">Especialista em Reabilitação Oral</p>
                                     </div>
