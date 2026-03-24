@@ -233,7 +233,7 @@ export function Stats() {
             grid-template-columns: 1fr 1fr;
             max-width: 380px;
             padding: 40px 32px;
-            border-radius: 24px;
+            border-radius: 2rem;
             gap: 24px 0;
           }
 

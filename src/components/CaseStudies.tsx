@@ -184,7 +184,7 @@ export function CaseStudies() {
                         </span>
                     </PremiumReveal>
 
-                    <h2 className="text-level-2 mb-12 uppercase max-w-[500px]">
+                    <h2 className="text-level-2 mb-12 max-w-[500px]">
                         <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                             <span>Resultados que <br /> falam por si.</span>
                         </PremiumReveal>

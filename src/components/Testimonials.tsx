@@ -181,7 +181,7 @@ export function Testimonials() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom">
-                        <h2 className="text-level-2 uppercase">
+                        <h2 className="text-level-2">
                             Histórias de<br />
                             <span className="text-white text-level-3 block mt-4 italic">transformação real.</span>
                         </h2>
