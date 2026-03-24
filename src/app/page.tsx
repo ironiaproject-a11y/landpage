@@ -78,7 +78,7 @@ export default function Home() {
     if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. Initial State & Preload
+      // 1. Concurrent Preloading
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
@@ -113,19 +113,28 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Sequential Logic (Intro THEN Scrub)
+      // 2. UNIFIED HYBRID LOGIC
+      // Pin from the very beginning to ensure content doesn't "disappear" or jump
+      const masterST = ScrollTrigger.create({
+        trigger: scrollContainerRef.current,
+        start: "top top",
+        end: "+=350%", // Optimized scroll length
+        pin: containerRef.current,
+        pinSpacing: true,
+        anticipatePin: 1
+      });
+
+      // Sequential Animation Flow
       const setupScrollScrub = () => {
         gsap.to(frameObj.current, {
           index: frameCount - 1,
           scrollTrigger: {
             trigger: scrollContainerRef.current,
             start: "top top",
-            end: "+=500%", // Long scroll for ultra-fluidity
-            scrub: 1.2,
-            pin: containerRef.current,
-            anticipatePin: 1,
+            end: "+=350%",
+            scrub: 1.5,
             onUpdate: (self) => {
-               // Full logic: mapping 0-1 scrub to the rest of the transformation
+               // Full scroll range mapped to the rest of the transformation
                const currentFrame = 75 + (self.progress * (frameCount - 1 - 75));
                frameObj.current.index = currentFrame;
                render(currentFrame);
@@ -135,7 +144,7 @@ export default function Home() {
         });
       };
 
-      // Play Cinematic Intro on load
+      // Play Intro Automatically (0 -> 75)
       const startIntro = () => {
         gsap.to(frameObj.current, {
           index: 75,
@@ -149,7 +158,7 @@ export default function Home() {
         });
       };
 
-      // Draw first frame immediately if ready
+      // Initial Trigger
       const firstFrame = imagesRef.current[0];
       if (firstFrame.complete) {
         render(0);
@@ -173,37 +182,37 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="w-full overflow-x-hidden m-0 p-0 border-none bg-black">
+    <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
       <div ref={scrollContainerRef} className="relative w-full z-10">
-        <section ref={containerRef} className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none">
-          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none scale-[1.05] grayscale" />
-          <div className="absolute inset-0 w-full h-full bg-black/40 z-0 pointer-events-none scale-[1.05]" />
+        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/60 via-black/20 to-black/60 z-10 pointer-events-none" />
 
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-10 pointer-events-none">
+          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none">
             <div className="w-full max-w-[1600px] mx-auto flex justify-center">
-              <h1 className="flex flex-col text-center items-center w-full relative h-[300px] justify-center">
+              <h1 className="flex flex-col text-center items-center w-full relative h-[300px] pointer-events-none">
                 <AnimatePresence mode="wait">
                   {videoPhase === 'skull' ? (
                     <m.span 
                       key="skull-text"
-                      initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                      initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
                       animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                      exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                      style={{ fontFamily: 'var(--font-sans)' }} 
-                      className="absolute text-[18px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-white/55 lg:text-white/90 leading-tight tracking-[5px] uppercase text-center"
+                      exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
+                      transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ fontFamily: 'var(--font-sans)', letterSpacing: '0.5em' }} 
+                      className="absolute text-[16px] lg:text-[clamp(1.5rem,4vw,3rem)] font-[400] text-white/90 uppercase text-center"
                     >
                       Sua origem,
                     </m.span>
                   ) : (
                     <m.span 
                       key="woman-text"
-                      initial={{ opacity: 0, y: 20, clipPath: 'inset(100% 0 0 0)' }}
+                      initial={{ opacity: 0, y: 30, clipPath: 'inset(100% 0 0 0)' }}
                       animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
-                      exit={{ opacity: 0, y: -20, clipPath: 'inset(0 0 100% 0)' }}
-                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                      exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
+                      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                       style={{ fontFamily: 'var(--font-serif)' }} 
-                      className="absolute text-[42px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-white leading-[1.1] tracking-normal lowercase first-letter:uppercase text-center"
+                      className="absolute text-[48px] lg:text-[clamp(4.5rem,12vw,11rem)] font-[300] text-white leading-none lowercase first-letter:uppercase text-center"
                     >
                       Seu sorriso.
                     </m.span>
@@ -213,15 +222,20 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-20">
-            <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-white/25 rounded-full px-8 py-2.5 hover:bg-white/10 transition-colors whitespace-nowrap text-white/55 text-[11px] tracking-[4px] uppercase backdrop-blur-md">
+          <m.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-30"
+          >
+            <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-10 py-3 hover:bg-white/10 transition-all text-white/60 text-[10px] tracking-[5px] uppercase backdrop-blur-xl">
               AGENDAR CONSULTA &rarr;
             </a>
-          </div>
+          </m.div>
         </section>
       </div>
 
-      <div className="relative z-20">
+      <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
         <About />
         <InstitutionalTrust />
