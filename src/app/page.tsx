@@ -94,7 +94,7 @@ export default function Home() {
         <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none scale-[1.05] origin-center" />
 
         {/* Main Content (Headline) */}
-        <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
+        <div className="absolute top-[40%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
           <div className="w-full max-w-[1600px] mx-auto flex justify-center">
             <h1 className="flex flex-col text-center items-center w-full">
               <m.span 
@@ -102,7 +102,7 @@ export default function Home() {
                 animate={videoPhase === 'skull' ? { opacity: 1, filter: 'blur(0px)', y: 0 } : { opacity: 0, filter: 'blur(12px)', y: -10 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 style={{ fontFamily: 'var(--font-sans)' }} 
-                className="text-[18px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[5px] uppercase mb-2 lg:mb-4 text-center"
+                className="text-[14px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[3px] lg:tracking-[5px] uppercase mb-2 lg:mb-4 text-center"
               >
                 Sua origem,
               </m.span>
@@ -111,7 +111,7 @@ export default function Home() {
                 animate={videoPhase === 'woman' ? { opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' } : { opacity: 0, y: 20, clipPath: 'inset(100% 0 0 0)' }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 style={{ fontFamily: 'var(--font-serif)' }} 
-                className="text-[42px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center"
+                className="text-[48px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center"
               >
                 Seu sorriso.
               </m.span>
