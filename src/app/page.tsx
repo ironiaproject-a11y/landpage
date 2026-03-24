@@ -63,13 +63,13 @@ export default function Home() {
   return (
     <main className="w-full m-0 p-0 border-none overflow-x-hidden">
       <section className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none">
-        {/* Video Background (Strictly full-bleed) */}
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none" style={{ filter: 'grayscale(100%)' }}>
+        {/* Video Background (Strictly full-bleed, scaled to kill any edge lines) */}
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none scale-[1.05] origin-center" style={{ filter: 'grayscale(100%)' }}>
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
         
         {/* Subtle Dark Overlay for Contrast (Apple/Tesla vibe) */}
-        <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none" />
+        <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none scale-[1.05] origin-center" />
 
         {/* Main Content (Headline) */}
         <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
