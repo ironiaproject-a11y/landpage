@@ -162,22 +162,21 @@ export default function Home() {
     <main className="w-full m-0 p-0 border-none overflow-x-hidden">
       {/* Scrub Container - Defines the scroll depth for the hero */}
       <div ref={scrubContainerRef} className="relative h-[250vh] w-full">
-        <section ref={heroSectionRef} className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none z-10">
+        <section ref={heroSectionRef} className="w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none z-10">
           <video 
             ref={videoRef} 
             muted 
             playsInline 
-            className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none scale-[1.05] origin-center" 
-            style={{ filter: 'grayscale(100%)' }}
+            className="absolute top-0 left-0 w-[100vw] h-[100vh] object-cover z-0 m-0 p-0 border-none pointer-events-none" 
           >
             <source src="/Aqui.mp4" type="video/mp4" />
           </video>
           
-          <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none scale-[1.05] origin-center" />
+          <div className="absolute top-0 left-0 w-[100vw] h-[100vh] bg-black/40 z-0 m-0 p-0 border-none pointer-events-none" />
 
           {/* Main Content (Headline) */}
-          <div className="absolute top-[40%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
-            <div className="w-full max-w-[1600px] mx-auto flex justify-center">
+          <div className="absolute top-0 left-0 w-[100vw] h-[100vh] flex flex-col justify-center items-center px-4 md:px-24 z-10 pointer-events-none">
+            <div className="w-full max-w-[1600px] mx-auto flex justify-center translate-y-[-10vh]">
               <h1 className="flex flex-col text-center items-center w-full">
                 <span 
                   ref={title1Ref}
@@ -200,7 +199,7 @@ export default function Home() {
           <m.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: isIntroDone ? 1 : 0 }}
-            className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-20 pointer-events-none"
+            className="absolute bottom-0 left-0 w-[100vw] h-[100px] flex justify-center items-center z-20 pointer-events-none"
           >
             <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.7)] text-[12px] tracking-[4px] font-[400] uppercase backdrop-blur-md pointer-events-auto">
               AGENDAR CONSULTA &rarr;
