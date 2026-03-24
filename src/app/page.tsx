@@ -76,29 +76,14 @@ export default function Home() {
               <span className="text-[42px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[700] lg:font-medium text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em]">Seu sorriso.</span>
             </h1>
 
-            {/* Button */}
-            <a href="#sobre" className="inline-flex items-center justify-between bg-transparent lg:bg-white text-white lg:text-black border border-[rgba(255,255,255,0.5)] lg:border-transparent rounded-full px-5 py-3 lg:py-5 lg:px-10 hover:bg-white/10 lg:hover:bg-white/90 transition-all w-full max-w-[200px] lg:w-fit lg:max-w-none mt-6 lg:mt-12 group lg:shadow-[0_0_30px_rgba(255,255,255,0.1)] lg:hover:shadow-[0_0_50px_rgba(255,255,255,0.25)]">
-              <span className="text-[15px] lg:text-[18px] font-medium tracking-tight">Agendar Consulta</span>
-              <span className="bg-black text-white rounded-full w-8 h-8 lg:w-12 lg:h-12 flex items-center justify-center transform group-hover:translate-x-1 transition-transform duration-400 shrink-0">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lg:w-4 lg:h-4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </span>
-            </a>
+
           </div>
         </div>
 
-        {/* Bottom Info Blocks */}
-        <div className="absolute bottom-0 left-0 w-full px-6 pb-8 lg:px-24 z-10 pointer-events-none">
-          <div className="w-full max-w-[1600px] mx-auto flex flex-row justify-between lg:justify-start gap-4 lg:gap-16">
-            <div className="flex flex-col gap-1 lg:flex-none">
-              <span className="text-[10px] lg:text-[10px] uppercase font-sans tracking-[0.1em] text-[rgba(255,255,255,0.6)]">Horário de funcionamento</span>
-              <span className="text-[12px] md:text-[14px] font-sans text-[rgba(255,255,255,0.6)] font-medium tracking-tight">Seg - Sáb 8:00 - 20:00</span>
-            </div>
-            <div className="flex flex-col gap-1 lg:flex-none text-right lg:text-left">
-              <span className="text-[10px] lg:text-[10px] uppercase font-sans tracking-[0.1em] text-[rgba(255,255,255,0.6)]">Localização</span>
-              <span className="text-[12px] md:text-[14px] font-sans text-[rgba(255,255,255,0.6)] font-medium tracking-tight">São Paulo, SP</span>
-            </div>
-          </div>
-        </div>
+        {/* Centered Bottom Button */}
+        <a href="#sobre" className="absolute bottom-8 left-1/2 -translate-x-1/2 inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
+          AGENDAR CONSULTA &rarr;
+        </a>
       </section>
       <Stats />
       <About />
