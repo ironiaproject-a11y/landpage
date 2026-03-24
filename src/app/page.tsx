@@ -1,3 +1,4 @@
+"use client";
 import nextDynamic from "next/dynamic";
 import { useRef, useState, useEffect } from "react";
 import { m } from "framer-motion";
