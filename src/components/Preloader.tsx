@@ -92,7 +92,7 @@ export function Preloader() {
                             <span className="font-headline text-lg font-light text-white tracking-[var(--font-h3-tracking)] uppercase mb-2">
                                 Clínica
                             </span>
-                            <span className="text-white/40 text-[var(--font-small)] uppercase tracking-[var(--font-small-tracking)] ml-1 font-semibold">
+                            <span className="text-white/40 text-[var(--font-small)] uppercase tracking-[var(--font-small-tracking)] ml-1 font-[400]">
                                 Excellence in Dentistry
                             </span>
                         </m.div>

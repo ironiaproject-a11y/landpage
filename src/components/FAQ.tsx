@@ -117,7 +117,7 @@ export function FAQ() {
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-level-3 font-semibold text-white transition-colors leading-tight">
+                                            <span className="text-level-3 font-[400] text-white transition-colors leading-tight">
                                                 {faq.question}
                                             </span>
                                         </div>

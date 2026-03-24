@@ -243,7 +243,7 @@ export function Amenities() {
                                     className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
-                                        <h3 className="text-level-3 font-semibold text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
+                                        <h3 className="text-level-3 font-[400] text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
                                             {item.title}
                                         </h3>
                                         <span className="text-level-4 uppercase group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">

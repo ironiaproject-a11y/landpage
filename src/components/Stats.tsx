@@ -185,18 +185,20 @@ export function Stats() {
         .stats-number {
           font-family: var(--font-serif), serif;
           font-size: clamp(60px, 8vw, 110px); /* Massive editorial dominance */
-          font-weight: 500;
+          font-weight: 300;
           line-height: 0.9;
           letter-spacing: -0.06em;
           margin-bottom: 24px;
           display: block;
           color: var(--color-text-primary);
           font-variant-numeric: tabular-nums;
-          text-transform: uppercase;
+          text-transform: none;
         }
 
         .stats-suffix {
+          font-family: var(--font-sans), sans-serif;
           font-size: 0.7em;
+          font-weight: 200;
           margin-left: 2px;
           color: var(--color-premium-slate);
         }
@@ -209,10 +211,10 @@ export function Stats() {
         .stats-label {
           font-family: var(--font-sans), sans-serif;
           font-size: 11px;
-          font-weight: 700;
+          font-weight: 400;
           color: var(--color-accent-gold);
           opacity: 0.8;
-          letter-spacing: 0.45em;
+          letter-spacing: 3px;
           text-transform: uppercase;
           display: block;
           max-width: 250px;
@@ -286,22 +288,25 @@ export function Stats() {
           .stats-item:nth-child(1) .stats-number,
           .stats-item:nth-child(2) .stats-number {
              font-size: 44px;
-             font-weight: 700;
+             font-weight: 300;
              margin-bottom: 4px;
           }
           .stats-item:nth-child(1) .stats-suffix,
           .stats-item:nth-child(2) .stats-suffix {
+             font-family: var(--font-sans), sans-serif;
              position: absolute;
              top: 4px;
              right: -16px;
              font-size: 16px;
-             font-weight: 300;
+             font-weight: 200;
              color: rgba(255,255,255,0.45);
           }
           .stats-item:nth-child(1) .stats-label,
           .stats-item:nth-child(2) .stats-label {
+             font-family: var(--font-sans), sans-serif;
              font-size: 9px;
-             letter-spacing: 0.15em;
+             font-weight: 400;
+             letter-spacing: 3px;
              color: rgba(255,255,255,0.45);
              max-width: 100px;
              line-height: 1.4;
@@ -310,20 +315,23 @@ export function Stats() {
           /* Typo: Line 2 */
           .stats-item:nth-child(3) .stats-number {
              font-size: 56px;
-             font-weight: 700;
+             font-weight: 300;
              margin-bottom: 2px;
           }
           .stats-item:nth-child(3) .stats-suffix {
+             font-family: var(--font-sans), sans-serif;
              position: absolute;
              top: 6px;
              right: -24px;
              font-size: 20px;
-             font-weight: 300;
+             font-weight: 200;
              color: rgba(255,255,255,0.45);
           }
           .stats-item:nth-child(3) .stats-label {
+             font-family: var(--font-sans), sans-serif;
              font-size: 9px;
-             letter-spacing: 0.15em;
+             font-weight: 400;
+             letter-spacing: 3px;
              color: rgba(255,255,255,0.45);
              white-space: nowrap;
           }

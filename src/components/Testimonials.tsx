@@ -239,8 +239,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-semibold text-white text-level-3">{testimonial.name}</h4>
-                                                    <p className="text-level-4 uppercase font-semibold">{testimonial.role}</p>
+                                                    <h4 className="font-[400] text-white text-level-3">{testimonial.name}</h4>
+                                                    <p className="text-level-4 uppercase font-[400]">{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>

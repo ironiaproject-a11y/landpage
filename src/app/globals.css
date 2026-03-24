@@ -51,9 +51,9 @@ img, svg, video {
   --color-background:        var(--color-bg-dark);
 
 
-  /* ── TYPOGRAPHY TOKENS (Premium System — Source Serif 4 & Inter) ───────────────────────── */
-  --font-serif: 'Source Serif 4', serif;
-  --font-sans: 'Inter', sans-serif;
+  /* ── TYPOGRAPHY TOKENS (Premium System — Cormorant Garamond & Jost) ───────────────────────── */
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Jost', sans-serif;
 
   /* Legacy aliases (mapped to new system) */
   --font-headline: var(--font-serif);
@@ -63,18 +63,18 @@ img, svg, video {
   /* TYPOGRAPHIC SCALE (Updated) - Strict 4-Level System */
   /* LEVEL 1 (Hero Primary Headline) */
   --font-h1:              clamp(56px, 8vw, 88px);
-  --font-h1-weight:       400;
+  --font-h1-weight:       300;
   --font-h1-line-height:  1.05;
   --font-h1-tracking:     -0.05em;
 
   /* LEVEL 2 (Section Headlines) */
   --font-h2:              clamp(32px, 5vw, 48px);
-  --font-h2-weight:       500;
+  --font-h2-weight:       300;
   --font-h2-line-height:  1.2;
   --font-h2-tracking:     -0.02em;
 
   --font-h3:              clamp(24px, 3vw, 32px);
-  --font-h3-weight:       500;
+  --font-h3-weight:       300;
   --font-h3-line-height:  1.3;
   --font-h3-tracking:     -0.01em;
 
@@ -119,9 +119,9 @@ body {
   background: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
-  font-weight: 400;
+  font-weight: 300;
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.85;
   overflow-x: hidden;
   position: relative;
   cursor: none; 
@@ -145,7 +145,7 @@ select {
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.02em;
 }
 
@@ -291,7 +291,7 @@ h3 {
 .text-display-editorial {
   font-family: var(--font-sans);
   font-size: clamp(64px, 12vw, 150px);
-  font-weight: 800;
+  font-weight: 300;
   line-height: 0.9;
   letter-spacing: -0.05em;
   text-transform: none;
@@ -300,14 +300,14 @@ h3 {
 .text-caption-marker {
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
+  font-weight: 400;
+  letter-spacing: 5px;
   text-transform: uppercase;
   color: #FFFFFF;
 }
 
 .text-serif-accent {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 300;
   opacity: 0.9;
@@ -315,7 +315,7 @@ h3 {
 
 .drop-cap::first-letter {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 4.5em;
   float: left;
   line-height: 0.8;
@@ -326,9 +326,9 @@ h3 {
 
 /* EMPHASIS (hero phrases) */
 .emphasis {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: -0.02em;
   opacity: 0.95;
 }
@@ -336,8 +336,9 @@ h3 {
 /* BODY TEXT */
 p, .text-level-3 {
   font-family: var(--font-sans);
+  font-weight: 300;
   font-size: 18px; /* Strict hierarchy */
-  line-height: 1.8;
+  line-height: 1.85;
   color: #FFFFFF;
   opacity: 0.75;
 }
@@ -345,16 +346,19 @@ p, .text-level-3 {
 /* BUTTONS & UI */
 button, .btn, nav, a {
   font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  letter-spacing: 4px;
   color: #FFFFFF;
+  text-transform: uppercase;
 }
 
 /* MICROCOPY */
 .small, label, .editorial-label, input::placeholder, .text-level-4 {
   font-family: var(--font-sans);
   font-size: 13px; /* Strict hierarchy */
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: #FFFFFF;
   opacity: 0.5;
 }
@@ -363,7 +367,7 @@ button, .btn, nav, a {
 .text-hero-editorial {
   font-family: var(--font-serif);
   font-size: var(--font-h1);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.05;
   letter-spacing: -0.05em;
   text-shadow:
@@ -422,14 +426,15 @@ section:not(.hero) {
 }
 
 .btn-premium {
-  @apply relative overflow-hidden inline-flex items-center justify-center transition-all duration-700 font-medium uppercase tracking-[0.3em] rounded-full;
+  @apply relative overflow-hidden inline-flex items-center justify-center transition-all duration-700 font-medium tracking-[4px] rounded-full;
+  text-transform: uppercase;
   background: transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--color-text-primary);
   padding: 18px 48px;
   font-family: var(--font-ui);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   border: 1px solid rgba(245, 245, 245, 0.15);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -759,14 +764,15 @@ section:not(.hero) {
 }
 
 .btn-luxury-primary {
-  @apply relative overflow-hidden flex items-center justify-center transition-all duration-700 font-medium uppercase tracking-[0.25em] rounded-full;
+  @apply relative overflow-hidden flex items-center justify-center transition-all duration-700 tracking-[4px] rounded-full;
+  text-transform: uppercase;
   background: rgba(15, 15, 15, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--color-text-primary);
   padding: 18px 42px;
   font-family: var(--font-ui);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   /* Premium border without gold */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.15);

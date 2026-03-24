@@ -72,8 +72,8 @@ export default function Home() {
         <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
           <div className="w-full max-w-[1600px] mx-auto flex justify-center">
             <h1 className="flex flex-col text-center items-center w-full">
-              <span className="text-[18px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[300] lg:font-normal text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] mb-1 lg:mb-0 text-center">Sua origem,</span>
-              <span className="text-[42px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[700] lg:font-medium text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] text-center">Seu sorriso.</span>
+              <span style={{ fontFamily: 'var(--font-sans)' }} className="text-[18px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[5px] uppercase mb-2 lg:mb-4 text-center">Sua origem,</span>
+              <span style={{ fontFamily: 'var(--font-serif)' }} className="text-[42px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center">Seu sorriso.</span>
             </h1>
 
 
@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* Action Block securely between Hero and Stats */}
       <div className="w-full flex justify-center bg-black pt-8 pb-4 relative z-20">
-        <a href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
+        <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[4px] font-[400] uppercase">
           AGENDAR CONSULTA &rarr;
         </a>
       </div>

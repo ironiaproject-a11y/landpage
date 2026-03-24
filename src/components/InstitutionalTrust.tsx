@@ -210,7 +210,7 @@ export function InstitutionalTrust() {
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-level-3 font-semibold mb-6 transition-transform duration-500 uppercase">
+                                <h3 className="text-level-3 font-[400] mb-6 transition-transform duration-500 uppercase">
                                     {card.title}
                                 </h3>
 

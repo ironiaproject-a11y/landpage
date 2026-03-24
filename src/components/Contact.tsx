@@ -151,12 +151,12 @@ export function Contact() {
                                     disabled={formStatus !== "idle"}
                                     type="submit"
                                     className={clsx(
-                                        "w-full py-6 rounded-full font-bold text-caption-marker transition-all duration-500",
+                                        "w-full py-6 rounded-full font-[400] text-caption-marker transition-all duration-500",
                                         formStatus === "idle" ? "bg-white text-black hover:bg-white/90" : "bg-white/10 text-white/40 cursor-wait"
                                     )}
                                 >
                                     <AnimatePresence mode="wait">
-                                        <m.span key={formStatus} className="text-level-4 font-bold uppercase" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                                        <m.span key={formStatus} className="text-level-4 font-[400] uppercase" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                                             {formStatus === "idle" && "Solicitar Agendamento de Luxo"}
                                             {formStatus === "sending" && "Enviando Requisição..."}
                                             {formStatus === "sent" && "Solicitação Confirmada"}
@@ -181,7 +181,7 @@ export function Contact() {
                     className="absolute top-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-12 md:left-20 z-30 w-[calc(100%-3rem)] md:max-w-xs"
                 >
                     <div className="glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-xl shadow-premium-2 text-[var(--color-text-primary)]">
-                        <span className="text-[var(--color-text-secondary)] font-semibold tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-3 block opacity-80">
+                        <span className="text-[var(--color-text-secondary)] font-[400] tracking-[var(--font-small-tracking)] uppercase text-[var(--font-small)] mb-3 block opacity-80">
                             Localização Privilegiada
                         </span>
                         <h3 className="text-lg md:text-xl font-display text-white mb-3">Estamos no <span className="text-gradient-silver">coração da Paulista</span></h3>
@@ -192,7 +192,7 @@ export function Contact() {
                             href="https://goo.gl/maps/embed?pb=!1m18!1m12!1m3!1d3657.197509536098!2d-46.65215018502223!3d-23.56391498468305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001310-100!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white/60 text-level-4 font-bold uppercase flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
+                            className="text-white/60 text-level-4 font-[400] uppercase flex items-center gap-2 hover:gap-4 transition-all group-hover:text-white"
                         >
                             Ver no Google Maps <span className="text-lg">→</span>
                         </a>

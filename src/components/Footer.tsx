@@ -106,7 +106,7 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-level-2 font-bold text-white uppercase">
+                                    <h3 className="text-level-2 font-[400] text-white uppercase">
                                         Clínica<span className="text-white italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
@@ -190,13 +190,13 @@ export function Footer() {
                                     <MapPin strokeWidth={1} className="w-5 h-5 text-white/60" />
                                 </div>
                                 <div className="text-level-3">
-                                    <p className="font-bold text-white mb-1">Unidade Central</p>
+                                    <p className="font-[400] text-white mb-1">Unidade Central</p>
                                     <p>Centro, Pereira Barreto - SP</p>
                                     <p>Brasil</p>
                                 </div>
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-white/30 transition-colors">
-                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-level-3 font-bold text-white hover:text-white transition-colors">
+                                <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-level-3 font-[400] text-white hover:text-white transition-colors">
                                     <Phone strokeWidth={1} className="w-5 h-5 text-white/60" />
                                     {COMPANY_PHONE}
                                 </a>

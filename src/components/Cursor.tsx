@@ -209,7 +209,7 @@ export function Cursor() {
                         animate={{ opacity: 0.6, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-level-4 font-bold uppercase text-[var(--color-text-primary)] whitespace-nowrap"
+                        className="fixed top-0 left-0 pointer-events-none z-[10000] text-level-4 font-[400] uppercase text-[var(--color-text-primary)] whitespace-nowrap"
                         style={{
                             x: cursorXSpring,
                             y: cursorYSpring,

@@ -97,7 +97,7 @@ export function Navbar() {
                             }}
                             className="relative z-50 flex items-center gap-2"
                         >
-                            <span className="font-headline text-level-4 font-semibold text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
+                            <span className="font-headline text-level-4 font-[400] text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
                                 Clínica<span className="text-white italic font-light">.</span>
                             </span>
                         </a>
@@ -261,7 +261,7 @@ export function Navbar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className="group relative inline-block py-2 sm:py-3"
                                         >
-                                            <span className="font-headline text-2xl sm:text-3xl text-white group-hover:text-white transition-colors tracking-[var(--font-h3-tracking)] font-semibold uppercase" data-text={link.name}>
+                                            <span className="font-headline text-2xl sm:text-3xl text-white group-hover:text-white transition-colors tracking-[var(--font-h3-tracking)] font-[400] uppercase" data-text={link.name}>
                                                 {link.name}
                                             </span>
                                             <m.div

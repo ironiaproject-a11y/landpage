@@ -236,7 +236,7 @@ export function Specialist() {
                                     </div>
                                 </Magnetic>
                                 <div>
-                                    <h4 className="text-[#F8F8F6] text-level-3 font-semibold mb-1 group-hover:text-white transition-colors">Formação de Excelência</h4>
+                                    <h4 className="text-[#F8F8F6] text-level-3 font-[400] mb-1 group-hover:text-white transition-colors">Formação de Excelência</h4>
                                     <p className="text-level-3">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@ export function Specialist() {
                                     </div>
                                 </Magnetic>
                                 <div>
-                                    <h4 className="text-[#F8F8F6] text-level-3 font-semibold mb-1 group-hover:text-white transition-colors">Reconhecimento Internacional</h4>
+                                    <h4 className="text-[#F8F8F6] text-level-3 font-[400] mb-1 group-hover:text-white transition-colors">Reconhecimento Internacional</h4>
                                     <p className="text-level-3">Certificação Master em Lentes de Contato 3D por institutos da Alemanha e Suíça.</p>
                                 </div>
                             </div>
@@ -266,7 +266,7 @@ export function Specialist() {
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                         <div className="relative z-10">
-                                            <h4 className="text-[var(--color-text-primary)] text-level-3 font-semibold tracking-tight">Dr. Ricardo Alessandro</h4>
+                                            <h4 className="text-[var(--color-text-primary)] text-level-3 font-[400] tracking-tight">Dr. Ricardo Alessandro</h4>
                                             <p className="text-level-4 uppercase tracking-widest">Diretor Clínico • CRO 00.000</p>
                                         </div>
                                     </div>

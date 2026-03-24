@@ -94,7 +94,7 @@ export function WhatsAppButton() {
                                 initial={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
                                 animate={{ opacity: 1, scale: 1, x: 0, y: "-50%" }}
                                 exit={{ opacity: 0, scale: 0.8, x: 20, y: "-50%" }}
-                                className="absolute right-[120%] top-1/2 whitespace-nowrap px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl text-white/90 text-level-4 font-bold uppercase shadow-2xl border border-white/10 pointer-events-none hidden sm:block"
+                                className="absolute right-[120%] top-1/2 whitespace-nowrap px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl text-white/90 text-level-4 font-[400] uppercase shadow-2xl border border-white/10 pointer-events-none hidden sm:block"
                             >
                                 <span className="flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] shadow-[0_0_10px_#25D366] animate-pulse" />

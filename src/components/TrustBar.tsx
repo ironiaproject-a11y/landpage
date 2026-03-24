@@ -76,10 +76,10 @@ export function TrustBar() {
                         transition={{ duration: 1, delay: 0.2 }}
                         className="flex flex-col items-center lg:items-start text-center lg:text-left"
                     >
-                        <span className="text-white/60 font-bold uppercase text-level-4 mb-2">
+                        <span className="text-white/60 font-[400] uppercase text-level-4 mb-2">
                             Qualidade Certificada
                         </span>
-                        <h3 className="text-[var(--color-text-secondary)] font-headline text-xl md:text-2xl font-bold tracking-wide italic leading-relaxed" style={{ fontFamily: 'var(--font-headline)' }}>
+                        <h3 className="text-[var(--color-text-secondary)] font-headline text-xl md:text-2xl font-[400] tracking-wide italic leading-relaxed" style={{ fontFamily: 'var(--font-headline)' }}>
                             Padrões Internacionais
                         </h3>
                     </m.div>

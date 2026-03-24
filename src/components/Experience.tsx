@@ -142,12 +142,12 @@ export function Experience() {
                                     <div className="flex flex-col items-center pt-1">
                                         <Magnetic strength={0.3} range={60}>
                                             <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all duration-500 bg-[#0A0A0A] backdrop-blur-sm shadow-premium-1">
-                                                <span className="text-level-4 font-bold uppercase">{step.number}</span>
+                                                <span className="text-level-4 font-[400] uppercase">{step.number}</span>
                                             </div>
                                         </Magnetic>
                                     </div>
                                     <div className="pb-8">
-                                        <h3 className="text-level-3 font-semibold text-white mb-2">{step.title}</h3>
+                                        <h3 className="text-level-3 font-[400] text-white mb-2">{step.title}</h3>
                                         <p className="text-level-3 max-w-md">
                                             {step.description}
                                         </p>
