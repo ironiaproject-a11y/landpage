@@ -64,7 +64,7 @@ export default function Home() {
     <main className="min-h-screen">
       <section className="relative w-full h-[100svh] overflow-hidden bg-black text-white font-sans">
         {/* Video Background */}
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0" style={{ filter: 'brightness(0.6)' }}>
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0" style={{ filter: 'brightness(0.6) grayscale(100%)' }}>
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
 
