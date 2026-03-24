@@ -164,7 +164,7 @@ export function About() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-level-2 mb-12 text-white max-w-[700px] uppercase">
+                        <h2 className="text-level-2 mb-12 text-white max-w-[700px]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Redefinindo o <br /> Conceito de Luxo</span>
                             </PremiumReveal>
@@ -211,7 +211,7 @@ export function About() {
                                 border-radius: 999px;
                                 font-family: var(--font-sans), sans-serif;
                                 font-size: 11px;
-                                font-weight: 600;
+                                font-weight: 400;
                                 letter-spacing: 0.35em;
                                 text-transform: uppercase;
                                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.04);

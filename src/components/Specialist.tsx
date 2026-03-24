@@ -222,7 +222,7 @@ export function Specialist() {
                         </PremiumReveal>
 
                         <PremiumReveal type="mask" direction="bottom">
-                            <h2 className="text-level-2 mb-10 uppercase">
+                            <h2 className="text-level-2 mb-10">
                                 A ciência por trás do seu<br />
                                 <span className="text-white text-level-3 block mt-4 italic font-light">melhor sorriso</span>.
                             </h2>

@@ -39,7 +39,7 @@ export function Contact() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-level-2 mb-12 uppercase">
+                        <h2 className="text-level-2 mb-12">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Vamos planejar seu</span>
                             </PremiumReveal>

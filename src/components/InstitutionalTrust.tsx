@@ -176,7 +176,7 @@ export function InstitutionalTrust() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-level-2 uppercase max-w-[800px]">
+                        <h2 className="text-level-2 max-w-[800px]">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>A harmonia entre o <br /> Rigor e a Sensibilidade.</span>
                             </PremiumReveal>
@@ -210,7 +210,7 @@ export function InstitutionalTrust() {
                             </div>
 
                             <div className="relative z-10">
-                                <h3 className="text-level-3 font-[400] mb-6 transition-transform duration-500 uppercase">
+                                <h3 className="text-level-3 font-[400] mb-6 transition-transform duration-500">
                                     {card.title}
                                 </h3>
 

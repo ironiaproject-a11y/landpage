@@ -93,7 +93,7 @@ export function CTA() {
                     </PremiumReveal>
 
                     <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                        <h2 className="font-headline text-[var(--font-h2)] font-[400] text-[var(--color-text-primary)] mb-10 leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)] uppercase">
+                        <h2 className="font-headline text-[var(--font-h2)] font-[400] text-[var(--color-text-primary)] mb-10 leading-[var(--font-h2-line-height)] tracking-[var(--font-h2-tracking)]">
                             Seu novo sorriso<br />
                             <span className="text-white font-headline italic font-light">começa hoje.</span>
                         </h2>

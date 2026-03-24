@@ -88,7 +88,7 @@ export function FAQ() {
                             </span>
                         </PremiumReveal>
 
-                        <h2 className="text-level-2 uppercase">
+                        <h2 className="text-level-2">
                             <PremiumReveal type="mask" direction="bottom" delay={0.2}>
                                 <span>Alguma outra</span>
                             </PremiumReveal>
