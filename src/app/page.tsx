@@ -113,62 +113,44 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. UNIFIED HYBRID LOGIC
-      // Pin from the very beginning to ensure content doesn't "disappear" or jump
-      const masterST = ScrollTrigger.create({
-        trigger: scrollContainerRef.current,
-        start: "top top",
-        end: "+=350%", // Optimized scroll length
-        pin: containerRef.current,
-        pinSpacing: true,
-        anticipatePin: 1
+      // 2. Definitive Hybrid Logic
+      // Sequential Timeline: Intro (0-75) then Scroll (0-144)
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: scrollContainerRef.current,
+          start: "top top",
+          end: "+=250%", // Faster, more accessible scroll range
+          scrub: 1.2,
+          pin: containerRef.current,
+          pinSpacing: true,
+          anticipatePin: 1
+        }
       });
 
-      // Sequential Animation Flow
-      const setupScrollScrub = () => {
-        gsap.to(frameObj.current, {
-          index: frameCount - 1,
-          scrollTrigger: {
-            trigger: scrollContainerRef.current,
-            start: "top top",
-            end: "+=350%",
-            scrub: 1.5,
-            onUpdate: (self) => {
-               // Full scroll range mapped to the rest of the transformation
-               const currentFrame = 75 + (self.progress * (frameCount - 1 - 75));
-               frameObj.current.index = currentFrame;
-               render(currentFrame);
-               if (currentFrame >= 75) setVideoPhase('woman'); else setVideoPhase('skull');
-            }
-          }
-        });
-      };
+      tl.to(frameObj.current, {
+        index: frameCount - 1,
+        ease: "none",
+        onUpdate: () => {
+          render(frameObj.current.index);
+          const nextPhase = frameObj.current.index >= 75 ? 'woman' : 'skull';
+          setVideoPhase(prev => (prev !== nextPhase ? nextPhase : prev));
+        }
+      });
 
-      // Play Intro Automatically (0 -> 75)
+      // AUTO-PLAY INTRO: We "drive" the timeline automatically to frame 75
       const startIntro = () => {
-        gsap.to(frameObj.current, {
-          index: 75,
+        gsap.to(tl, {
+          progress: 75 / (frameCount - 1),
           duration: 3,
           ease: "power2.inOut",
-          onUpdate: () => {
-            render(frameObj.current.index);
-            if (frameObj.current.index >= 75) setVideoPhase('woman');
-          },
-          onComplete: setupScrollScrub
+          overwrite: "auto"
         });
       };
 
-      // Initial Trigger
+      // Initial Draw & Start
       const firstFrame = imagesRef.current[0];
-      if (firstFrame.complete) {
-        render(0);
-        startIntro();
-      } else {
-        firstFrame.onload = () => {
-          render(0);
-          startIntro();
-        };
-      }
+      if (firstFrame.complete) { render(0); startIntro(); }
+      else { firstFrame.onload = () => { render(0); startIntro(); }; }
 
       return () => {
         window.removeEventListener("resize", handleResize);
@@ -186,49 +168,48 @@ export default function Home() {
       <div ref={scrollContainerRef} className="relative w-full z-10">
         <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/60 via-black/20 to-black/60 z-10 pointer-events-none" />
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/70 via-black/30 to-black/70 z-10 pointer-events-none" />
 
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none">
-            <div className="w-full max-w-[1600px] mx-auto flex justify-center">
-              <h1 className="flex flex-col text-center items-center w-full relative h-[300px] pointer-events-none">
-                <AnimatePresence mode="wait">
-                  {videoPhase === 'skull' ? (
-                    <m.span 
-                      key="skull-text"
-                      initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
-                      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                      exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
-                      transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-                      style={{ fontFamily: 'var(--font-sans)', letterSpacing: '0.5em' }} 
-                      className="absolute text-[16px] lg:text-[clamp(1.5rem,4vw,3rem)] font-[400] text-white/90 uppercase text-center"
-                    >
-                      Sua origem,
-                    </m.span>
-                  ) : (
-                    <m.span 
-                      key="woman-text"
-                      initial={{ opacity: 0, y: 30, clipPath: 'inset(100% 0 0 0)' }}
-                      animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
-                      exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
-                      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                      style={{ fontFamily: 'var(--font-serif)' }} 
-                      className="absolute text-[48px] lg:text-[clamp(4.5rem,12vw,11rem)] font-[300] text-white leading-none lowercase first-letter:uppercase text-center"
-                    >
-                      Seu sorriso.
-                    </m.span>
-                  )}
-                </AnimatePresence>
-              </h1>
-            </div>
+          {/* Typography Hierarchy: top-[30%] Position */}
+          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center">
+            <h1 className="relative flex flex-col items-center justify-center h-[350px]">
+              <AnimatePresence mode="wait">
+                {videoPhase === 'skull' ? (
+                  <m.span 
+                    key="skull-text"
+                    initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
+                    animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                    exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
+                    transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }} 
+                    className="absolute text-[18px] lg:text-[42px] font-[200] text-white/90 uppercase"
+                  >
+                    Sua origem,
+                  </m.span>
+                ) : (
+                  <m.span 
+                    key="woman-text"
+                    initial={{ opacity: 0, y: 30, clipPath: 'inset(100% 0 0 0)' }}
+                    animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
+                    exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ fontFamily: "'Cormorant Garamond', serif" }} 
+                    className="absolute text-[52px] lg:text-[140px] font-[300] text-white lowercase first-letter:uppercase leading-none"
+                  >
+                    Seu sorriso.
+                  </m.span>
+                )}
+              </AnimatePresence>
+            </h1>
           </div>
 
           <m.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
-            className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-30"
+            transition={{ delay: 2.5, duration: 1 }}
+            className="absolute bottom-[50px] left-0 right-0 w-full flex justify-center z-30"
           >
-            <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-10 py-3 hover:bg-white/10 transition-all text-white/60 text-[10px] tracking-[5px] uppercase backdrop-blur-xl">
+            <a style={{ fontFamily: "'Jost', sans-serif" }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-12 py-3.5 hover:bg-white/10 transition-all text-white/60 text-[11px] tracking-[5px] uppercase backdrop-blur-2xl">
               AGENDAR CONSULTA &rarr;
             </a>
           </m.div>
