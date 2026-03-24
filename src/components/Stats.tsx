@@ -224,7 +224,7 @@ export function Stats() {
         @media (max-width: 1023px) {
           .stats-section { 
             padding: 0 16px;
-            margin-top: 32px; 
+            margin-top: 0; 
             z-index: 50; 
             background: transparent;
           }

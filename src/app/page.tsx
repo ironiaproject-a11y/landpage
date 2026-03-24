@@ -83,15 +83,13 @@ export default function Home() {
           </div>
         </div>
 
-
+        {/* Action Button securely inside Hero */}
+        <div className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-20">
+          <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[4px] font-[400] uppercase backdrop-blur-md">
+            AGENDAR CONSULTA &rarr;
+          </a>
+        </div>
       </section>
-
-      {/* Action Block securely between Hero and Stats */}
-      <div className="w-full flex justify-center bg-black pt-8 pb-4 relative z-20">
-        <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[4px] font-[400] uppercase">
-          AGENDAR CONSULTA &rarr;
-        </a>
-      </div>
 
       <Stats />
       <About />
