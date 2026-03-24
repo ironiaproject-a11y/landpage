@@ -1,25 +1,24 @@
-# Hero Narrative Transformation Walkthrough
+# Hero Animation & Typography Fix Walkthrough
 
-I've restructured the Hero section to create a powerful visual narrative of transformation, centering the smile animation as the lead protagonist of the user journey.
+We have refined the Hero section to restore the preferred typography hierarchy and ensure perfectly smooth scroll performance.
 
-## Key Accomplishments
-# Hero Cinematic Typography & Hierarchy Walkthrough (PRESTIGE Inspired)
+## Key Improvements
 
-The Hero section now features a high-end typography hierarchy inspired by luxury "PRESTIGE" aesthetics, framing the dental transformation with architectural elegance.
+### 1. Typography Restoration
+- **Hierarchy Refined**: Restored the original typography where:
+  - **`Sua origem,`** uses a sleek, uppercase sans-serif font with wide tracking.
+  - **`Seu sorriso.`** uses a large, elegant lowercase serif font.
+- **Minimalist Aesthetic**: Removed the brackets and extra descriptive text to maintain the clean, premium feel the user preferred.
 
-## Changes Made
+### 2. Scroll Performance Optimization
+- **Lag Elimination**: Optimized the React render loop. The component no longer re-renders on every scroll frame. Instead, it only updates the "phase" state once when crossing the transformation threshold.
+- **Canvas Fluidity**: Maintained the Canvas-based image sequence for the 145 frames, ensuring the highest possible smoothness compared to standard video scrubbing.
 
-### 1. "PRESTIGE" Typography Aesthetic
-- **Visual Style**: Re-introduced the phrases as **`[ SUA ORIGEM ]`** and **`[ SEU SORRISO ]`** using bold, uppercase typography with wide letter-spacing.
-- **Architectural Brackets**: Added thin, high-contrast brackets that "frame" each phrase, creating a premium, curated look similar to high-fashion or luxury gallery interfaces.
-- **Dynamic Centering**: The phrases are positioned to "sandwich" the central video transformation, creating a clear and powerful visual narrative.
+### 3. Visual Polish
+- **Blur Transitions**: Kept the cinematic blur-fade and clip-path entry animations for a high-end feel.
+- **Mobile Fidelity**: Ensured the typography scales correctly on smaller screens while keeping the "object-cover" behavior for the canvas.
 
-### 2. Scroll-Synchronized Narrative
-- **Cinematic Sync**: Implemented a GSAP cross-fade logic where:
-    - **`[ SUA ORIGEM ]`** dominates the initial structure phase.
-    - As the user scrolls and the video morphs, it dissolves into a blur-fade out.
-    - **`[ SEU SORRISO ]`** gracefully emerges as the smile transformation completes, leading the user directly to the CTA.
-- **Fluid Transitions**: Used `expo.out` easings and blur-fade combinations to ensure the transition feels as expensive and smooth as the 3D video itself.
+✅ The Hero section now combines the best of both worlds: the "good hierarchy" typography with a smooth, optimized scroll transformation.
 
 ### 3. Mobile Adaptation
 - **Mobile Scale**: Balanced the typography for mobile screens, ensuring the large-scale titles don't obstruct the video while maintaining the "sandwiched" layout.

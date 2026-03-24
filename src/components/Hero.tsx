@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [frameIndex, setFrameIndex] = useState(0);
+  const [phase, setPhase] = useState<'origin' | 'smile'>('origin');
   const [isLoaded, setIsLoaded] = useState(false);
   
   const framesRef = useRef<HTMLImageElement[]>([]);
@@ -71,7 +71,13 @@ export function Hero() {
 
           context.clearRect(0, 0, width, height);
           context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-          setFrameIndex(roundedIndex);
+          
+          // Optimization: Only update state when crossing threshold
+          if (roundedIndex < 75) {
+            setPhase(p => p !== 'origin' ? 'origin' : p);
+          } else {
+            setPhase(p => p !== 'smile' ? 'smile' : p);
+          }
         }
       };
 
@@ -110,80 +116,58 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  // Determine which phase of text to show based on frame index
-  // Frame 0-75: SUA ORIGEM
-  // Frame 75-144: SEU SORRISO
-  const showOrigin = frameIndex < 75;
-  const showSmile = frameIndex >= 75;
-
   return (
-    <section ref={sectionRef} className="relative w-full bg-black overflow-hidden">
-      <div className="relative w-full h-[100vh] flex items-center justify-center">
+    <section ref={sectionRef} className="relative w-full bg-black overflow-hidden m-0 p-0 border-none">
+      <div className="relative w-full h-[100vh] flex items-center justify-center m-0 p-0">
         {/* Canvas Background */}
         <canvas 
           ref={canvasRef} 
-          className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-80"
+          className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.02] grayscale"
           style={{ filter: 'brightness(1.1) contrast(1.1) grayscale(100%)' }}
         />
 
         {/* Cinematic Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-10" />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none z-10" />
 
-        {/* "PRESTIGE" Typography Container */}
-        <div className="relative z-20 flex flex-col items-center justify-center w-full px-4 text-center pointer-events-none">
+        {/* Restored Typography Hierarchy */}
+        <div className="relative z-20 w-full max-w-[1600px] mx-auto flex justify-center px-6 pointer-events-none">
           <AnimatePresence mode="wait">
-            {showOrigin && (
-              <m.div
+            {phase === 'origin' ? (
+              <m.h1
                 key="origin"
-                initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="flex flex-col items-center"
-              >
-                <span className="text-[12px] lg:text-[14px] tracking-[0.6em] text-white/40 uppercase mb-4">
-                  A jornada começa na
-                </span>
-                <h1 className="text-[32px] lg:text-[72px] font-[300] tracking-[0.3em] uppercase text-white flex items-center gap-4 lg:gap-8">
-                  <span className="text-white/20 font-[100]">[</span>
-                  Sua Origem
-                  <span className="text-white/20 font-[100]">]</span>
-                </h1>
-              </m.div>
-            )}
-
-            {showSmile && (
-              <m.div
-                key="smile"
-                initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
+                initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
                 transition={{ duration: 1.2, ease: "easeOut" }}
-                className="flex flex-col items-center"
+                style={{ fontFamily: 'var(--font-sans)' }}
+                className="text-[18px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-white/90 leading-tight lg:leading-[0.95] tracking-[5px] uppercase text-center"
               >
-                <span className="text-[12px] lg:text-[14px] tracking-[0.6em] text-white/40 uppercase mb-4">
-                  Revelando a perfeição em
-                </span>
-                <h1 className="text-[32px] lg:text-[84px] font-[300] tracking-[0.2em] uppercase text-white flex items-center gap-4 lg:gap-8">
-                  <span className="text-white/20 font-[100]">[</span>
-                  Seu Sorriso
-                  <span className="text-white/20 font-[100]">]</span>
-                </h1>
-              </m.div>
+                Sua origem,
+              </m.h1>
+            ) : (
+              <m.h1
+                key="smile"
+                initial={{ opacity: 0, y: 20, clipPath: 'inset(100% 0 0 0)' }}
+                animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
+                exit={{ opacity: 0, y: 10, filter: 'blur(10px)' }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                style={{ fontFamily: 'var(--font-serif)' }}
+                className="text-[42px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-white leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center"
+              >
+                Seu sorriso.
+              </m.h1>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Bottom Action Securely inside Hero */}
-        <div className="absolute bottom-[60px] left-0 right-0 w-full flex justify-center z-30">
+        {/* Action Button */}
+        <div className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-30">
           <a 
+            style={{ fontFamily: 'var(--font-sans)' }} 
             href="#sobre" 
-            className="group flex flex-col items-center gap-4 transition-all hover:opacity-100 opacity-60 pointer-events-auto"
+            className="inline-flex items-center justify-center bg-transparent border border-white/25 rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors whitespace-nowrap text-white/55 text-[11px] tracking-[4px] font-[400] uppercase backdrop-blur-md pointer-events-auto"
           >
-            <span className="text-[9px] tracking-[0.5em] uppercase text-white/50 group-hover:text-white transition-colors">
-              Explorar Experiência
-            </span>
-            <div className="w-[1px] h-[40px] bg-gradient-to-b from-white/40 to-transparent group-hover:from-white/100 transition-all" />
+            AGENDAR CONSULTA &rarr;
           </a>
         </div>
       </div>
