@@ -80,11 +80,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Centered Bottom Button */}
-        <a href="#sobre" className="absolute bottom-[40px] left-1/2 -translate-x-1/2 inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
+
+      </section>
+
+      {/* Action Block securely between Hero and Stats */}
+      <div className="w-full flex justify-center bg-black pt-8 pb-4 relative z-20">
+        <a href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
           AGENDAR CONSULTA &rarr;
         </a>
-      </section>
+      </div>
+
       <Stats />
       <About />
       <InstitutionalTrust />
