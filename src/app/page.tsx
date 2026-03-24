@@ -61,12 +61,15 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <section className="relative w-full h-[100svh] overflow-hidden bg-black text-white font-sans">
-        {/* Video Background */}
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0" style={{ filter: 'brightness(0.6) grayscale(100%)' }}>
+    <main className="w-full m-0 p-0 border-none overflow-x-hidden">
+      <section className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none">
+        {/* Video Background (Strictly full-bleed) */}
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none" style={{ filter: 'grayscale(100%)' }}>
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
+        
+        {/* Subtle Dark Overlay for Contrast (Apple/Tesla vibe) */}
+        <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none" />
 
         {/* Main Content (Headline) */}
         <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
