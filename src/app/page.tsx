@@ -68,12 +68,12 @@ export default function Home() {
           <source src="/Aqui.mp4" type="video/mp4" />
         </video>
 
-        {/* Main Content (Headline & Button) */}
-        <div className="absolute top-[45%] -translate-y-1/2 left-0 w-full px-6 lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
-          <div className="w-full max-w-[1600px] mx-auto">
-            <h1 className="flex flex-col text-left">
-              <span className="text-[18px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[300] lg:font-normal text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] mb-1 lg:mb-0">Sua origem,</span>
-              <span className="text-[42px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[700] lg:font-medium text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em]">Seu sorriso.</span>
+        {/* Main Content (Headline) */}
+        <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
+          <div className="w-full max-w-[1600px] mx-auto flex justify-center">
+            <h1 className="flex flex-col text-center items-center w-full">
+              <span className="text-[18px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[300] lg:font-normal text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] mb-1 lg:mb-0 text-center">Sua origem,</span>
+              <span className="text-[42px] lg:text-[clamp(2.75rem,11vw,9rem)] font-[700] lg:font-medium text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-tight lg:tracking-[-0.04em] text-center">Seu sorriso.</span>
             </h1>
 
 
@@ -81,7 +81,7 @@ export default function Home() {
         </div>
 
         {/* Centered Bottom Button */}
-        <a href="#sobre" className="absolute bottom-8 left-1/2 -translate-x-1/2 inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
+        <a href="#sobre" className="absolute bottom-[40px] left-1/2 -translate-x-1/2 inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.55)] text-[11px] tracking-[0.2em] font-sans font-medium uppercase">
           AGENDAR CONSULTA &rarr;
         </a>
       </section>
