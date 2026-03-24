@@ -37,18 +37,18 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
     return (
         <LuxuryCard
             delay={index * 0.1}
-            className="h-full"
+            className="h-auto md:h-full"
             innerClassName="p-0" // We'll handle padding internally for media alignment
         >
             <div
-                className="flex flex-col h-full cursor-pointer"
+                className="flex flex-col h-auto md:h-full cursor-pointer"
                 onMouseEnter={() => setIsVideoActive(true)}
                 onMouseLeave={() => setIsVideoActive(false)}
                 onTouchStart={() => setIsVideoActive(true)}
                 onTouchEnd={() => setIsVideoActive(false)}
             >
                 {/* Media Section */}
-                <div className="relative overflow-hidden rounded-t-[2rem] p-6 pb-0">
+                <div className="relative overflow-hidden rounded-t-[2rem] p-6 pb-0 md:p-10 md:pb-0">
                     <div className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.03]">
                         <MediaCard
                             mp4Src={service.video}
@@ -63,7 +63,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 </div>
 
                 {/* Content Section */}
-                <div className="p-6 md:p-12 flex flex-col flex-grow">
+                <div className="px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
                         <span className="text-level-4 text-white/40 uppercase">Pilar {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />
@@ -309,10 +309,10 @@ export function Services() {
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[80px] md:gap-32">
                 {
                     services.map((service, index) => (
-                        <div key={index} className="service-card-wrapper h-full">
+                        <div key={index} className="service-card-wrapper h-auto md:h-full">
                             <ServiceCard
                                 service={service}
                                 index={index}

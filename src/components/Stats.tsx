@@ -235,6 +235,7 @@ export function Stats() {
             padding: 40px 32px;
             border-radius: 2rem;
             gap: 24px 0;
+            overflow: hidden;
           }
 
           .stats-item {
@@ -296,8 +297,8 @@ export function Stats() {
              font-family: var(--font-sans), sans-serif;
              position: absolute;
              top: 4px;
-             right: -16px;
-             font-size: 16px;
+             right: -12px;
+             font-size: 14px;
              font-weight: 200;
              color: rgba(255,255,255,0.45);
           }
@@ -306,9 +307,9 @@ export function Stats() {
              font-family: var(--font-sans), sans-serif;
              font-size: 9px;
              font-weight: 400;
-             letter-spacing: 3px;
+             letter-spacing: 2px;
              color: rgba(255,255,255,0.45);
-             max-width: 100px;
+             max-width: 120px;
              line-height: 1.4;
           }
 
@@ -322,8 +323,8 @@ export function Stats() {
              font-family: var(--font-sans), sans-serif;
              position: absolute;
              top: 6px;
-             right: -24px;
-             font-size: 20px;
+             right: -18px;
+             font-size: 18px;
              font-weight: 200;
              color: rgba(255,255,255,0.45);
           }
@@ -331,9 +332,10 @@ export function Stats() {
              font-family: var(--font-sans), sans-serif;
              font-size: 9px;
              font-weight: 400;
-             letter-spacing: 3px;
+             letter-spacing: 2px;
              color: rgba(255,255,255,0.45);
-             white-space: nowrap;
+             white-space: normal;
+             max-width: 200px;
           }
         }
       `}</style>

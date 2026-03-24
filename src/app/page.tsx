@@ -1,9 +1,13 @@
-"use client";
-
 import nextDynamic from "next/dynamic";
 import { useRef, useState, useEffect } from "react";
 import { m } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// Register ScrollTrigger
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 
@@ -62,87 +66,166 @@ const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Sta
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 
 export default function Home() {
+  const scrubContainerRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoPhase, setVideoPhase] = useState<'skull' | 'woman'>('skull');
+  const [isIntroDone, setIsIntroDone] = useState(false);
+  const title1Ref = useRef<HTMLSpanElement>(null);
+  const title2Ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleTimeUpdate = () => {
-      // Transition exactly at 3.5 seconds (tweak this split boundary if needed)
-      if (video.currentTime < 3.5) {
-        setVideoPhase('skull');
-      } else {
-        setVideoPhase('woman');
-      }
-    };
+    // Fast Forward to start of content and wait for metadata
+    video.currentTime = 0;
 
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  }, []);
+    const handleLoadedMetadata = () => {
+      (window as any).__HERO_ASSETS_LOADED__ = true;
+      window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+    };
+    
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+
+    const ctx = gsap.context(() => {
+      // Intro sequence handler
+      const startIntro = () => {
+        const lenis = (window as any).lenis;
+        if (lenis) lenis.stop();
+
+        const introTl = gsap.timeline({
+          onComplete: () => {
+            setIsIntroDone(true);
+            
+            // 3. SECURE HANDOFF: Create scrub sequence ONLY after intro is perfectly done
+            // This prevents GSAP from recording opacity 0 and currentTime 0 as the "start" of the scrub
+            const scrubTl = gsap.timeline({
+              scrollTrigger: {
+                trigger: scrubContainerRef.current,
+                start: "top top",
+                end: "bottom top", 
+                scrub: 1.2, // Add slight smoothing to the scrub
+                pin: heroSectionRef.current,
+              }
+            });
+
+            // Video scrubbing (from intro end at 2.5s to end)
+            scrubTl.fromTo(video, 
+              { currentTime: 2.5 },
+              { currentTime: video.duration || 6.5, ease: "none" }, 
+              0
+            );
+
+            // Exit title1 (Sua origem)
+            scrubTl.fromTo(title1Ref.current, 
+              { opacity: 1, y: 0, filter: "blur(0px)" },
+              { opacity: 0, y: -60, filter: "blur(20px)", ease: "power2.inOut" }, 
+              0
+            );
+
+            // Enter title2 (Seu sorriso)
+            scrubTl.fromTo(title2Ref.current, 
+              { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
+              { opacity: 1, y: 0, clipPath: "inset(0% 0 -20% 0)", ease: "power3.out" }, 
+              0.1
+            );
+
+            if (lenis) lenis.start();
+            ScrollTrigger.refresh();
+          }
+        });
+
+        // Entrance animation
+        introTl.to(video, { currentTime: 2.5, duration: 3, ease: "slow(0.7, 0.7, false)" })
+               .fromTo(title1Ref.current, 
+                 { opacity: 0, filter: 'blur(12px)', y: 20 },
+                 { opacity: 1, filter: 'blur(0px)', y: 0, duration: 2, ease: "power2.out" }, 
+                 "-=2"
+               );
+      };
+
+      window.addEventListener("preloader-finished", startIntro);
+
+      return () => {
+        window.removeEventListener("preloader-finished", startIntro);
+      };
+    }, scrubContainerRef);
+
+    return () => {
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      ctx.revert();
+    };
+  }, []); // Re-run carefully or handle updates in state
 
   return (
     <main className="w-full m-0 p-0 border-none overflow-x-hidden">
-      <section className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none">
-        {/* Video Background (Strictly full-bleed, scaled to kill any edge lines) */}
-        <video ref={videoRef} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none scale-[1.05] origin-center" style={{ filter: 'grayscale(100%)' }}>
-          <source src="/Aqui.mp4" type="video/mp4" />
-        </video>
-        
-        {/* Subtle Dark Overlay for Contrast (Apple/Tesla vibe) */}
-        <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none scale-[1.05] origin-center" />
+      {/* Scrub Container - Defines the scroll depth for the hero */}
+      <div ref={scrubContainerRef} className="relative h-[250vh] w-full">
+        <section ref={heroSectionRef} className="relative w-full h-[100vh] overflow-hidden bg-black text-white m-0 p-0 border-none z-10">
+          <video 
+            ref={videoRef} 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover z-0 m-0 p-0 border-none scale-[1.05] origin-center" 
+            style={{ filter: 'grayscale(100%)' }}
+          >
+            <source src="/Aqui.mp4" type="video/mp4" />
+          </video>
+          
+          <div className="absolute inset-0 w-full h-full bg-black/40 z-0 m-0 p-0 border-none pointer-events-none scale-[1.05] origin-center" />
 
-        {/* Main Content (Headline) */}
-        <div className="absolute top-[40%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
-          <div className="w-full max-w-[1600px] mx-auto flex justify-center">
-            <h1 className="flex flex-col text-center items-center w-full">
-              <m.span 
-                initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                animate={videoPhase === 'skull' ? { opacity: 1, filter: 'blur(0px)', y: 0 } : { opacity: 0, filter: 'blur(12px)', y: -10 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                style={{ fontFamily: 'var(--font-sans)' }} 
-                className="text-[14px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[3px] lg:tracking-[5px] uppercase mb-2 lg:mb-4 text-center"
-              >
-                Sua origem,
-              </m.span>
-              <m.span 
-                initial={{ opacity: 0, y: 20, clipPath: 'inset(100% 0 0 0)' }}
-                animate={videoPhase === 'woman' ? { opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' } : { opacity: 0, y: 20, clipPath: 'inset(100% 0 0 0)' }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                style={{ fontFamily: 'var(--font-serif)' }} 
-                className="text-[48px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center"
-              >
-                Seu sorriso.
-              </m.span>
-            </h1>
-
-
+          {/* Main Content (Headline) */}
+          <div className="absolute top-[40%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full lg:static lg:flex lg:flex-col lg:justify-center lg:h-full lg:px-24 lg:translate-y-0 z-10">
+            <div className="w-full max-w-[1600px] mx-auto flex justify-center">
+              <h1 className="flex flex-col text-center items-center w-full">
+                <span 
+                  ref={title1Ref}
+                  style={{ fontFamily: 'var(--font-sans)', opacity: 0 }} 
+                  className="text-[14px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[3px] lg:tracking-[5px] uppercase mb-2 lg:mb-4 text-center block"
+                >
+                  Sua origem,
+                </span>
+                <span 
+                  ref={title2Ref}
+                  style={{ fontFamily: 'var(--font-serif)', opacity: 0 }} 
+                  className="text-[48px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center block"
+                >
+                  Seu sorriso.
+                </span>
+              </h1>
+            </div>
           </div>
-        </div>
 
-        {/* Action Button securely inside Hero */}
-        <div className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-20">
-          <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.7)] text-[12px] tracking-[4px] font-[400] uppercase backdrop-blur-md">
-            AGENDAR CONSULTA &rarr;
-          </a>
-        </div>
-      </section>
+          <m.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isIntroDone ? 1 : 0 }}
+            className="absolute bottom-[40px] left-0 right-0 w-full flex justify-center z-20 pointer-events-none"
+          >
+            <a style={{ fontFamily: 'var(--font-sans)' }} href="#sobre" className="inline-flex items-center justify-center bg-transparent border border-[rgba(255,255,255,0.25)] rounded-full px-[32px] py-[10px] hover:bg-white/10 transition-colors z-20 whitespace-nowrap text-[rgba(255,255,255,0.7)] text-[12px] tracking-[4px] font-[400] uppercase backdrop-blur-md pointer-events-auto">
+              AGENDAR CONSULTA &rarr;
+            </a>
+          </m.div>
+        </section>
+      </div>
 
-      <Stats />
-      <About />
-      <InstitutionalTrust />
-      <TrustBar />
-      <Services />
-      <CaseStudies />
-      <Specialist />
-      <Experience />
-      <Amenities />
-      <Testimonials />
-      <FAQ />
-      <CTA />
-      <Contact />
-      <Footer />
+      <div className="relative z-20 bg-[var(--color-background)]">
+        <Stats />
+        <About />
+        <InstitutionalTrust />
+        <TrustBar />
+        <Services />
+        <CaseStudies />
+        <Specialist />
+        <Experience />
+        <Amenities />
+        <Testimonials />
+        <FAQ />
+        <CTA />
+        <Contact />
+        <Footer />
+      </div>
     </main>
   );
 }
+
+
