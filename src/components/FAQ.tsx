@@ -117,7 +117,10 @@ export function FAQ() {
                                                 }`}>
                                                 <HelpCircle strokeWidth={1.2} className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
-                                            <span className="text-level-3 font-[400] text-white transition-colors leading-tight">
+                                            <span 
+                                                className="text-white transition-colors leading-tight"
+                                                style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: '13px', letterSpacing: '1px', textTransform: 'none' }}
+                                            >
                                                 {faq.question}
                                             </span>
                                         </div>
