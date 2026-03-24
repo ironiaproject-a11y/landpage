@@ -1,24 +1,27 @@
-# Hero Restoration Walkthrough (Definitive Stable Version)
+# Hybrid Hero Transformation Walkthrough
 
-We have successfully restored the Hero section to the definitive stable state (commit `5fcabc53`), as requested by the user.
+We have successfully implemented the ultimate Hero experience: a cinematic, automatic introduction that seamlessly transitions into an interactive scroll-scrubbed transformation.
 
-## Key Restoration Points
+## Key Features
 
-### 1. Typography Hierarchy & Positioning
-- **Center-High Position**: Typography has been restored to `top-[30%]`, positioning it in the center but slightly higher as requested.
-- **Original Hierarchy**:
-  - **`Sua origem,`** (Jost sans-serif, uppercase, tracking [5px]).
-  - **`Seu sorriso.`** (Cormorant Garamond serif, lowercase).
+### 1. Hybrid Animation System
+- **Cinematic Intro**: Upon loading, the Hero plays an automatic sequence (Frames 0-75) that frames the "Sua origem" phase with elegant blur-fade transitions.
+- **Interactive Scrub**: Once the intro is complete, the user takes control. Scrolling now scrubs the transformation (Frames 75-144) to reveal "Seu sorriso" at the user's own pace.
+- **Autoplay Fixed**: Resolved the bug where the video could start paused, ensuring a perfect "first impression" every time.
 
-### 2. Automatic Animation
-- **On-Load Intro**: Restored the `framer-motion` automatic blur-fade entrance that plays immediately upon page load.
-- **Time-Based Transitions**: The phase switch between "Sua origem" and "Seu sorriso" is once again controlled by the video playback time, ensuring perfect fluidity.
+### 2. High-Performance Canvas Rendering
+- **Fluidity**: Switched from standard video to a high-perf Canvas image sequence (145 frames).
+- **Ref-Based Logic**: Eliminated all React state lag by using direct Ref-based rendering for the frames, ensuring a zero-stutter experience.
+- **Responsive Scaling**: The canvas automatically adapts to any screen size while maintaining the premium "cover" behavior.
 
-### 3. Stability & Performance
-- **No Scroll Logic**: All scroll-scrubbing, pinning, and canvas-based logic has been removed. The hero returns to a standard, high-performance autoplay video background.
-- **Build Verified**: Verified that the project is clean of any unwanted components or conflicting scroll triggers.
+### 3. "Good Hierarchy" Restoration
+- **Centered-High Position**: Typography is perfectly centered and positioned at **`top-[30%]`** for a more balanced and focused feel.
+- **Classic Typography**:
+  - **`Sua origem,`**: Jost sans-serif, uppercase, wide tracking.
+  - **`Seu sorriso.`**: Cormorant Garamond serif, lowercase.
+- **AnimatePresence**: Used Framer Motion's `AnimatePresence` to ensure perfectly smooth transitions between text phases.
 
-✅ The Hero section is now back to its definitive, visually perfect and stable state.
+✅ The Hero section now combines cinematic storytelling with high-end interactivity, all while strictly adhering to the user's preferred visual hierarchy.
 
 ### 3. Mobile Adaptation
 - **Mobile Scale**: Balanced the typography for mobile screens, ensuring the large-scale titles don't obstruct the video while maintaining the "sandwiched" layout.
