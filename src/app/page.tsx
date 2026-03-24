@@ -73,11 +73,12 @@ export default function Home() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) return;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. High-Perf Preload
+      // 1. Preload Images
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
@@ -87,71 +88,84 @@ export default function Home() {
       const render = (index: number) => {
         const img = imagesRef.current[Math.floor(index)];
         if (img && img.complete) {
-          context.clearRect(0, 0, canvas.width, canvas.height);
+          const { width, height } = canvas;
           const imgRatio = img.width / img.height;
-          const canvasRatio = canvas.width / canvas.height;
+          const canvasRatio = width / height;
           let dWidth, dHeight, dx, dy;
           if (imgRatio > canvasRatio) {
-            dHeight = canvas.height;
-            dWidth = dHeight * imgRatio;
-            dx = (canvas.width - dWidth) / 2;
-            dy = 0;
+            dHeight = height; dWidth = dHeight * imgRatio;
+            dx = (width - dWidth) / 2; dy = 0;
           } else {
-            dWidth = canvas.width;
-            dHeight = dWidth / imgRatio;
-            dx = 0;
-            dy = (canvas.height - dHeight) / 2;
+            dWidth = width; dHeight = dWidth / imgRatio;
+            dx = 0; dy = (height - dHeight) / 2;
           }
+          context.clearRect(0, 0, width, height);
           context.drawImage(img, dx, dy, dWidth, dHeight);
         }
       };
 
-      const resize = () => {
+      const handleResize = () => {
         canvas.width = window.innerWidth * window.devicePixelRatio;
         canvas.height = window.innerHeight * window.devicePixelRatio;
         render(frameObj.current.index);
       };
-      window.addEventListener("resize", resize);
-      resize();
+      window.addEventListener("resize", handleResize);
+      handleResize();
 
-      // 2. Initial render
-      const firstImg = imagesRef.current[0];
-      if (firstImg.complete) render(0); else firstImg.onload = () => render(0);
-
-      // 3. Sequential Animation Sequence
+      // 2. Sequential Animation System
       const initScrollScrub = () => {
         gsap.to(frameObj.current, {
           index: frameCount - 1,
           scrollTrigger: {
             trigger: scrollContainerRef.current,
             start: "top top",
-            end: "+=200%",
+            end: "+=400%", // Longer range for more precision
             scrub: 1,
             pin: containerRef.current,
+            anticipatePin: 1,
             onUpdate: (self) => {
+              // Map scroll progress to frames 75-144
               const currentFrame = 75 + (self.progress * (frameCount - 1 - 75));
               frameObj.current.index = currentFrame;
               render(currentFrame);
-              if (currentFrame >= 75) setVideoPhase('woman'); else setVideoPhase('skull');
+              
+              // Text Phase Switching
+              if (currentFrame >= 75 && videoPhase !== 'woman') setVideoPhase('woman');
+              if (currentFrame < 75 && videoPhase !== 'skull') setVideoPhase('skull');
             }
           }
         });
       };
 
+      // Play Intro automatically
       gsap.to(frameObj.current, {
         index: 75,
         duration: 3,
         ease: "power2.inOut",
         onUpdate: () => {
           render(frameObj.current.index);
-          if (frameObj.current.index >= 75) setVideoPhase('woman'); else setVideoPhase('skull');
+          if (frameObj.current.index >= 75) setVideoPhase('woman');
         },
         onComplete: initScrollScrub
       });
+
+      // Pin the container from the start even during intro
+      ScrollTrigger.create({
+        trigger: scrollContainerRef.current,
+        start: "top top",
+        end: "+=400%",
+        pin: containerRef.current,
+        pinSpacing: true
+      });
+
+      // Initial Draw
+      const firstImg = imagesRef.current[0];
+      if (firstImg.complete) render(0); else firstImg.onload = () => render(0);
     });
 
     return () => {
       ctx.revert();
+      window.removeEventListener("resize", handleResize);
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
@@ -165,7 +179,7 @@ export default function Home() {
 
           <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-10 pointer-events-none">
             <div className="w-full max-w-[1600px] mx-auto flex justify-center">
-              <h1 className="flex flex-col text-center items-center w-full relative h-[200px] justify-center">
+              <h1 className="flex flex-col text-center items-center w-full relative h-[250px] justify-center">
                 <AnimatePresence mode="wait">
                   {videoPhase === 'skull' ? (
                     <m.span 
