@@ -1,24 +1,23 @@
-# Hero Animation & Typography Fix Walkthrough
+# Hero Restoration Walkthrough (Stable Version)
 
-We have refined the Hero section to restore the preferred typography hierarchy and ensure perfectly smooth scroll performance.
+We have successfully restored the Hero section to its last known stable state (commit `22dca6be`), exactly as it was before the scroll animation request.
 
-## Key Improvements
+## Key Restoration Points
 
-### 1. Typography Restoration
-- **Hierarchy Refined**: Restored the original typography where:
-  - **`Sua origem,`** uses a sleek, uppercase sans-serif font with wide tracking.
-  - **`Seu sorriso.`** uses a large, elegant lowercase serif font.
-- **Minimalist Aesthetic**: Removed the brackets and extra descriptive text to maintain the clean, premium feel the user preferred.
+### 1. Original Typography Hierarchy
+- **`Sua origem,`**: Restored the Jost sans-serif uppercase style with wide tracking as it was in the stable version.
+- **`Seu sorriso.`**: Restored the large Cormorant Garamond serif style with lowercase letters.
 
-### 2. Scroll Performance Optimization
-- **Lag Elimination**: Optimized the React render loop. The component no longer re-renders on every scroll frame. Instead, it only updates the "phase" state once when crossing the transformation threshold.
-- **Canvas Fluidity**: Maintained the Canvas-based image sequence for the 145 frames, ensuring the highest possible smoothness compared to standard video scrubbing.
+### 2. Video & Animation Behavior
+- **Autoplay Video**: Restored the standard `<video>` autoplay behavior (no scroll-scrubbing).
+- **Time-Based Phases**: Transitions between "Sua origem" and "Seu sorriso" are now handled by playback time (`timeupdate` event) instead of the scroll position, ensuring a perfectly fluid experience.
+- **Entrance Effects**: Restored the original blur-fade and clip-path entrance animations.
 
-### 3. Visual Polish
-- **Blur Transitions**: Kept the cinematic blur-fade and clip-path entry animations for a high-end feel.
-- **Mobile Fidelity**: Ensured the typography scales correctly on smaller screens while keeping the "object-cover" behavior for the canvas.
+### 3. Structural Cleanup
+- **Inline Logic**: The Hero logic has been moved back inline to `page.tsx` to match the exact structure of the successful version.
+- **Component Removal**: Deleted the `src/components/Hero.tsx` file created during the scroll animation attempt.
 
-✅ The Hero section now combines the best of both worlds: the "good hierarchy" typography with a smooth, optimized scroll transformation.
+✅ The Hero section is now back to its most stable and visually approved state.
 
 ### 3. Mobile Adaptation
 - **Mobile Scale**: Balanced the typography for mobile screens, ensuring the large-scale titles don't obstruct the video while maintaining the "sandwiched" layout.
