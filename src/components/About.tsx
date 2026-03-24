@@ -130,9 +130,9 @@ export function About() {
         <section ref={sectionRef} className="py-20 md:py-40 relative bg-transparent overflow-hidden" id="sobre">
             <div className="container mx-auto px-6 pb-32 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
-                    {/* Image Side */}
+                    {/* Image Side (Desktop Only — on mobile, image is inline within text) */}
                     <m.div
-                        className="w-full lg:w-1/2 relative group"
+                        className="hidden lg:block w-full lg:w-1/2 relative group"
                         style={!isMobile ? { perspective: 1000 } : {}}
                     >
                         <m.div
@@ -172,6 +172,20 @@ export function About() {
                                 <span className="text-white text-level-3 italic block mt-6 border-l border-white/20 pl-8 ml-2">Odontológico Master.</span>
                             </PremiumReveal>
                         </h2>
+
+                        {/* Mobile-Only Editorial Image (between title and text) */}
+                        <div className="block lg:hidden w-full mb-12 -mx-6">
+                            <div className="relative w-[calc(100%+48px)] h-[280px] overflow-hidden rounded-2xl">
+                                <Image
+                                    src="/assets/images/elevando-padrao-premium.jpg"
+                                    alt="Elevando o padrão da Odontologia Estética"
+                                    fill
+                                    className="object-cover"
+                                    sizes="100vw"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                            </div>
+                        </div>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
                             <div className="space-y-10 mb-16 max-w-[600px]">
