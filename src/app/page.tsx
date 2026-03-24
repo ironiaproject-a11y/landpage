@@ -78,7 +78,7 @@ export default function Home() {
     if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. Preload Images
+      // 1. Initial State & Preload
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
@@ -105,6 +105,7 @@ export default function Home() {
       };
 
       const handleResize = () => {
+        if (!canvas) return;
         canvas.width = window.innerWidth * window.devicePixelRatio;
         canvas.height = window.innerHeight * window.devicePixelRatio;
         render(frameObj.current.index);
@@ -112,60 +113,61 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Sequential Animation System
-      const initScrollScrub = () => {
+      // 2. Sequential Logic (Intro THEN Scrub)
+      const setupScrollScrub = () => {
         gsap.to(frameObj.current, {
           index: frameCount - 1,
           scrollTrigger: {
             trigger: scrollContainerRef.current,
             start: "top top",
-            end: "+=400%", // Longer range for more precision
-            scrub: 1,
+            end: "+=500%", // Long scroll for ultra-fluidity
+            scrub: 1.2,
             pin: containerRef.current,
             anticipatePin: 1,
             onUpdate: (self) => {
-              // Map scroll progress to frames 75-144
-              const currentFrame = 75 + (self.progress * (frameCount - 1 - 75));
-              frameObj.current.index = currentFrame;
-              render(currentFrame);
-              
-              // Text Phase Switching
-              if (currentFrame >= 75 && videoPhase !== 'woman') setVideoPhase('woman');
-              if (currentFrame < 75 && videoPhase !== 'skull') setVideoPhase('skull');
+               // Full logic: mapping 0-1 scrub to the rest of the transformation
+               const currentFrame = 75 + (self.progress * (frameCount - 1 - 75));
+               frameObj.current.index = currentFrame;
+               render(currentFrame);
+               if (currentFrame >= 75) setVideoPhase('woman'); else setVideoPhase('skull');
             }
           }
         });
       };
 
-      // Play Intro automatically
-      gsap.to(frameObj.current, {
-        index: 75,
-        duration: 3,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          render(frameObj.current.index);
-          if (frameObj.current.index >= 75) setVideoPhase('woman');
-        },
-        onComplete: initScrollScrub
-      });
+      // Play Cinematic Intro on load
+      const startIntro = () => {
+        gsap.to(frameObj.current, {
+          index: 75,
+          duration: 3,
+          ease: "power2.inOut",
+          onUpdate: () => {
+            render(frameObj.current.index);
+            if (frameObj.current.index >= 75) setVideoPhase('woman');
+          },
+          onComplete: setupScrollScrub
+        });
+      };
 
-      // Pin the container from the start even during intro
-      ScrollTrigger.create({
-        trigger: scrollContainerRef.current,
-        start: "top top",
-        end: "+=400%",
-        pin: containerRef.current,
-        pinSpacing: true
-      });
+      // Draw first frame immediately if ready
+      const firstFrame = imagesRef.current[0];
+      if (firstFrame.complete) {
+        render(0);
+        startIntro();
+      } else {
+        firstFrame.onload = () => {
+          render(0);
+          startIntro();
+        };
+      }
 
-      // Initial Draw
-      const firstImg = imagesRef.current[0];
-      if (firstImg.complete) render(0); else firstImg.onload = () => render(0);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
     });
 
     return () => {
       ctx.revert();
-      window.removeEventListener("resize", handleResize);
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
@@ -179,7 +181,7 @@ export default function Home() {
 
           <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-10 pointer-events-none">
             <div className="w-full max-w-[1600px] mx-auto flex justify-center">
-              <h1 className="flex flex-col text-center items-center w-full relative h-[250px] justify-center">
+              <h1 className="flex flex-col text-center items-center w-full relative h-[300px] justify-center">
                 <AnimatePresence mode="wait">
                   {videoPhase === 'skull' ? (
                     <m.span 

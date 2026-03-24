@@ -1,27 +1,26 @@
-# Hybrid Hero Transformation Walkthrough
+# Unified Hybrid Hero Transformation Walkthrough
 
-We have successfully implemented the ultimate Hero experience: a cinematic, automatic introduction that seamlessly transitions into an interactive scroll-scrubbed transformation.
+We have successfully implemented the definitive Hero experience: a cinematic, automatic introduction that seamlessly transitions into an interactive scroll-scrubbed transformation.
 
 ## Key Features
 
-### 1. Hybrid Animation System
-- **Cinematic Intro**: Upon loading, the Hero plays an automatic sequence (Frames 0-75) that frames the "Sua origem" phase with elegant blur-fade transitions.
-- **Interactive Scrub**: Once the intro is complete, the user takes control. Scrolling now scrubs the transformation (Frames 75-144) to reveal "Seu sorriso" at the user's own pace.
-- **Autoplay Fixed**: Resolved the bug where the video could start paused, ensuring a perfect "first impression" every time.
+### 1. Unified Sequential System
+- **Direct Pinning**: The Hero is pinned to the viewport from the very first frame. This ensures the user is "locked in" for the cinematic intro, preventing the page from scrolling away prematurely.
+- **Cinematic Intro (Auto)**: Upon loading, the Hero plays an automatic sequence (Frames 0-75) that frames the "Sua origem" phase with elegant blur-fade transitions.
+- **Seamless Scrub Transition**: Once the 3-second intro completes, the scroll-scrubbing logic is activated. The user now controls the transformation (Frames 75-144) to reveal "Seu sorriso" at their own pace.
+- **Full Range Logic**: Fixed the "freezing" issue by ensuring the scroll-scrubbing logic correctly maps the entire remaining frame range (75-144) without gaps.
 
 ### 2. High-Performance Canvas Rendering
-- **Fluidity**: Switched from standard video to a high-perf Canvas image sequence (145 frames).
-- **Ref-Based Logic**: Eliminated all React state lag by using direct Ref-based rendering for the frames, ensuring a zero-stutter experience.
+- **Fluidity**: Uses a high-perf Canvas image sequence (145 frames) for maximum smoothness.
+- **Ref-Based Logic**: Eliminated React state stutter by using direct Ref-based rendering for the frames.
 - **Responsive Scaling**: The canvas automatically adapts to any screen size while maintaining the premium "cover" behavior.
 
-### 3. "Good Hierarchy" Restoration
-- **Centered-High Position**: Typography is perfectly centered and positioned at **`top-[30%]`** for a more balanced and focused feel.
-- **Classic Typography**:
-  - **`Sua origem,`**: Jost sans-serif, uppercase, wide tracking.
-  - **`Seu sorriso.`**: Cormorant Garamond serif, lowercase.
-- **AnimatePresence**: Used Framer Motion's `AnimatePresence` to ensure perfectly smooth transitions between text phases.
+### 3. Visual & Technical Robustness
+- **Centered-High Position**: Typography is perfectly centered and positioned at **`top-[30%]`**.
+- **GitHub Sync**: Resolved synchronization issues with a clean, forced push to ensure the latest code is live.
+- **Dynamic Skeletons**: Restored all original loading skeletons in `page.tsx` for a polished initial load experience.
 
-✅ The Hero section now combines cinematic storytelling with high-end interactivity, all while strictly adhering to the user's preferred visual hierarchy.
+✅ The Hero section now perfectly balances cinematic storytelling with high-end interactivity.
 
 ### 3. Mobile Adaptation
 - **Mobile Scale**: Balanced the typography for mobile screens, ensuring the large-scale titles don't obstruct the video while maintaining the "sandwiched" layout.
