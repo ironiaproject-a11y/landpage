@@ -12,6 +12,7 @@ if (typeof window !== "undefined") {
 export function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const visualRef = useRef<HTMLDivElement>(null);
     const preRef = useRef<HTMLSpanElement>(null);
     const titleRef = useRef<HTMLSpanElement>(null);
     const [isIntroDone, setIsIntroDone] = useState(false);
@@ -85,7 +86,7 @@ export function Hero() {
                         start: "top top",
                         end: "bottom top",
                         scrub: 1.2, // smoother scrub
-                        pin: true,
+                        pin: visualRef.current,
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
                     }
@@ -159,14 +160,25 @@ export function Hero() {
                 }
             };
 
-            window.addEventListener("preloader-finished", checkPreloaderSequence);
+            // Fallback in case the preloader event already fired before mount
+            const preloaderFallback = setTimeout(() => {
+                checkPreloaderSequence();
+            }, 3000); // Max delay just to guarantee it starts
+
+            const onPreloaderFinished = () => {
+                clearTimeout(preloaderFallback);
+                checkPreloaderSequence();
+            };
+
+            window.addEventListener("preloader-finished", onPreloaderFinished);
             
             // Dispatch that hero is technically loaded
             window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
 
             return () => {
+                clearTimeout(preloaderFallback);
                 window.removeEventListener("resize", handleResize);
-                window.removeEventListener("preloader-finished", checkPreloaderSequence);
+                window.removeEventListener("preloader-finished", onPreloaderFinished);
             };
         });
 
@@ -176,7 +188,7 @@ export function Hero() {
     return (
         <section ref={sectionRef} className="relative w-full h-[250vh] bg-black text-white m-0 p-0 border-none z-10">
             {/* Visual Container */}
-            <div className="absolute top-0 left-0 w-[100vw] h-[100vh] overflow-hidden flex items-center justify-center pointer-events-none">
+            <div ref={visualRef} className="absolute top-0 left-0 w-[100vw] h-[100vh] overflow-hidden flex items-center justify-center pointer-events-none">
                 <canvas 
                     ref={canvasRef} 
                     className="absolute top-0 left-0 w-full h-full object-cover z-0 filter brightness-110 contrast-110" 
@@ -192,14 +204,14 @@ export function Hero() {
                                 style={{ fontFamily: 'var(--font-sans)', opacity: 0 }} 
                                 className="text-[14px] lg:text-[clamp(1.75rem,5vw,4rem)] font-[400] text-[rgba(255,255,255,0.55)] lg:text-white/90 leading-tight lg:leading-[0.95] tracking-[3px] lg:tracking-[5px] uppercase mb-2 lg:mb-4 text-center block"
                             >
-                                [ SUA ORIGEM ]
+                                Sua origem,
                             </span>
                             <span 
                                 ref={titleRef}
                                 style={{ fontFamily: 'var(--font-serif)', opacity: 0 }} 
-                                className="text-[48px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-[0.05em] uppercase text-center block"
+                                className="text-[48px] lg:text-[clamp(3.75rem,11vw,10rem)] font-[300] text-[#ffffff] leading-[1.1] lg:leading-[0.95] tracking-normal lowercase first-letter:uppercase text-center block"
                             >
-                                [ SEU SORRISO ]
+                                Seu sorriso.
                             </span>
                         </h1>
                     </div>
