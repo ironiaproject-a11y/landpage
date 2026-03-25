@@ -68,8 +68,7 @@ export default function Home() {
   const imagesRef = useRef<HTMLImageElement[]>([]);
   
   // Ref-based state to prevent React lag
-  const autoFrame = useRef({ val: 0 });
-  const scrollFrame = useRef({ val: 0 });
+  const frameObj = useRef({ index: 0 });
   const [videoPhase, setVideoPhase] = useState<'skull' | 'woman'>('skull');
   const frameCount = 145;
 
@@ -108,11 +107,8 @@ export default function Home() {
       };
 
       const updateFrame = () => {
-        // TACTILE HAND-OFF: Take the maximum of auto-intro or user-scroll
-        const currentIdx = Math.max(autoFrame.current.val, scrollFrame.current.val);
-        render(currentIdx);
-        // Phase Threshold at frame 75
-        const nextPhase = currentIdx >= 75 ? 'woman' : 'skull';
+        render(frameObj.current.index);
+        const nextPhase = frameObj.current.index >= 75 ? 'woman' : 'skull';
         setVideoPhase(prev => (prev !== nextPhase ? nextPhase : prev));
       };
 
@@ -125,37 +121,49 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Hybrid Control Logic
-      // PIN: Static pin for the whole sequence
-      ScrollTrigger.create({
+      // 2. Fluid Hybrid Control Logic
+      let introFinished = false;
+
+      const scrubTrigger = ScrollTrigger.create({
+        id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
         end: "+=350%",
         pin: containerRef.current,
         pinSpacing: true,
-        anticipatePin: 1
-      });
-
-      // SCRUB: Maps scroll progress to the total frame range
-      gsap.to(scrollFrame.current, {
-        val: frameCount - 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: scrollContainerRef.current,
-          start: "top top",
-          end: "+=350%",
-          scrub: 0.8, // Tighter, "tactile" scrub
-          onUpdate: updateFrame
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          if (introFinished) {
+            const targetIdx = 75 + self.progress * (frameCount - 1 - 75);
+            gsap.to(frameObj.current, {
+              index: targetIdx,
+              duration: 0.6, // Tactile 'fluidity' without locking
+              ease: "power3.out",
+              overwrite: "auto",
+              onUpdate: updateFrame
+            });
+          }
         }
       });
 
-      // INTRO: Automatic drive from 0 to 75
       const startIntro = () => {
-        gsap.to(autoFrame.current, {
-          val: 75,
+        gsap.to(frameObj.current, {
+          index: 75,
           duration: 3,
           ease: "power2.inOut",
-          onUpdate: updateFrame
+          onUpdate: updateFrame,
+          onComplete: () => {
+            introFinished = true;
+            // Sync gently if user already scrolled during intro
+            const targetIdx = 75 + scrubTrigger.progress * (frameCount - 1 - 75);
+            gsap.to(frameObj.current, {
+              index: targetIdx,
+              duration: 1,
+              ease: "power3.out",
+              overwrite: "auto",
+              onUpdate: updateFrame
+            });
+          }
         });
       };
 
