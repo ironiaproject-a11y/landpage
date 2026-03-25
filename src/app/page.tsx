@@ -264,18 +264,18 @@ export default function Home() {
                   className="w-full flex justify-center"
                 >
                   <m.a 
-                    whileHover={{ scale: 1.02, backgroundColor: "white", color: "black", borderColor: "white" }}
+                    whileHover={{ scale: 1.02, backgroundColor: "#f2f2f2" }}
                     whileTap={{ scale: 0.98 }}
                     style={{ fontFamily: "'Jost', sans-serif" }} 
                     href="#agendamento" 
-                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center bg-white/10 border border-white/50 rounded-none px-8 md:px-[64px] py-6 md:py-[24px] transition-all text-white text-[14px] md:text-[15px] tracking-[0.25em] font-semibold uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.3)]"
+                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center bg-white text-[#0D0D0D] border-none rounded-none px-8 md:px-[64px] min-h-[56px] transition-all duration-300 text-[15px] md:text-[16px] tracking-[0.1em] font-semibold uppercase shadow-[0_8px_32px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.25)]"
                   >
                     <span>Agendar Consulta</span>
                     <svg 
-                      className="hero-arrow ml-4 w-5 h-5 stroke-current fill-none transition-transform duration-500 group-hover:translate-x-2"
+                      className="hero-arrow ml-3 w-5 h-5 stroke-current fill-none transition-transform duration-500 group-hover:translate-x-2 text-[#0D0D0D]"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M0 12 L20 12 M15 7 L20 12 L15 17" strokeWidth="1.5" />
+                      <path d="M0 12 L20 12 M15 7 L20 12 L15 17" strokeWidth="1.75" />
                     </svg>
                   </m.a>
                 </m.div>
