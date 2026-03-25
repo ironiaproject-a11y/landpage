@@ -162,9 +162,6 @@ export default function Home() {
         trigger: scrollContainerRef.current,
         start: "top top",
         end: "bottom bottom",  // 300vh container → 200vh of scrub room
-        pin: containerRef.current,
-        pinSpacing: false,     // we manage spacing via explicit 300vh wrapper
-        anticipatePin: 1,
         scrub: 0.5,
         onUpdate: (self) => {
           const targetIdx = self.progress * (frameCount - 1);
@@ -254,7 +251,7 @@ export default function Home() {
           pinSpacing:false prevents GSAP from injecting its own spacer div,
           which was the root cause of the ghost hero gap. */}
       <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
-        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
+        <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
