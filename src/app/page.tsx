@@ -181,13 +181,13 @@ export default function Home() {
         const lenis = (window as any).lenis;
         if (!lenis) return;
 
-        // Exact scroll target based on 200% scrub distance + frame 75 ratio
+        // Exact scroll target to play the ENTIRE sequence, completely synced to typography changes
         const totalScrubDistance = window.innerHeight * 2.0;
-        const targetScroll = (scrollContainerRef.current?.offsetTop || 0) + (totalScrubDistance * (75 / (frameCount - 1)));
+        const targetScroll = (scrollContainerRef.current?.offsetTop || 0) + totalScrubDistance;
         
         // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
         lenis.scrollTo(targetScroll, {
-          duration: 2.8,
+          duration: 4.8, // Smooth cinematic duration for the full morphing intro
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           onComplete: () => {
             introTween = null;
