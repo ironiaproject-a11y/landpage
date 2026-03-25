@@ -300,7 +300,7 @@ export default function Home() {
               filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' 
             }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute top-[72vh] left-1/2 -translate-x-1/2 z-30 pointer-events-auto"
+            className="absolute top-[82vh] left-1/2 -translate-x-1/2 z-30 pointer-events-auto"
           >
             <m.a 
               whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
