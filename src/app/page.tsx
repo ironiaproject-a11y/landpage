@@ -231,10 +231,10 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20, filter: "blur(12px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="hero-headline text-white/95 font-[300] tracking-[-0.03em] flex items-baseline justify-center italic mb-8 md:mb-12"
+                  className="hero-headline text-white/95 font-[300] tracking-[-0.03em] flex items-baseline justify-center italic mb-10 md:mb-14"
                   style={{ 
                     fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(56px, 10vw, 100px)', 
+                    fontSize: 'clamp(48px, 12vw, 100px)', 
                     lineHeight: '1.0' 
                   }}
                 >
@@ -245,9 +245,9 @@ export default function Home() {
                 {/* Subheadline */}
                 <m.p 
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.7 }}
+                  animate={{ opacity: 0.9 }}
                   transition={{ duration: 1.0, delay: 1.0 }}
-                  className="hero-subheadline text-white/70 text-sm md:text-base font-light leading-[1.8] max-w-[440px] mb-12"
+                  className="hero-subheadline text-white/90 text-sm md:text-base font-normal leading-[1.8] max-w-[440px] mb-14 md:mb-16"
                   style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.05em' }}
                 >
                   Odontologia de alta performance onde<br className="hidden md:block"/>
@@ -256,18 +256,19 @@ export default function Home() {
               </m.div>
 
               {/* CTA Button: Visible Immediately on Load */}
-              <div className="z-30 pointer-events-auto">
+              <div className="z-40 relative pointer-events-auto w-full max-w-[320px] md:max-w-none md:w-auto px-4 md:px-0">
                 <m.div 
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+                  className="w-full flex justify-center"
                 >
                   <m.a 
                     whileHover={{ scale: 1.02, backgroundColor: "white", color: "black", borderColor: "white" }}
                     whileTap={{ scale: 0.98 }}
                     style={{ fontFamily: "'Jost', sans-serif" }} 
                     href="#agendamento" 
-                    className="hero-cta group inline-flex items-center justify-center bg-white/5 border border-white/30 rounded-none px-12 md:px-[48px] py-5 md:py-[20px] transition-all text-white text-[13px] tracking-[0.2em] font-medium uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
+                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center bg-white/10 border border-white/50 rounded-none px-8 md:px-[64px] py-6 md:py-[24px] transition-all text-white text-[14px] md:text-[15px] tracking-[0.25em] font-semibold uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.3)]"
                   >
                     <span>Agendar Consulta</span>
                     <svg 
