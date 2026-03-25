@@ -292,14 +292,25 @@ export default function Home() {
           </div>
 
           <m.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.5, duration: 1 }}
-            className="absolute bottom-[50px] left-0 right-0 w-full flex justify-center z-30"
+            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ delay: 2.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute bottom-[8vh] lg:bottom-[10vh] left-0 right-0 w-full flex justify-center z-30"
           >
-            <a style={{ fontFamily: "'Jost', sans-serif" }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-12 py-3.5 hover:bg-white/10 transition-all text-white/55 text-[11px] tracking-[5px] uppercase backdrop-blur-3xl">
-              AGENDAR CONSULTA &rarr;
-            </a>
+            <m.a 
+              whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+              whileTap={{ scale: 0.98 }}
+              style={{ fontFamily: "'Jost', sans-serif" }} 
+              href="#sobre" 
+              className="group inline-flex items-center justify-center bg-white/10 border border-white/30 rounded-full px-14 py-4 hover:border-white/60 transition-all text-white/90 text-[12px] tracking-[6px] uppercase backdrop-blur-3xl shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+            >
+              AGENDAR CONSULTA 
+              <m.span 
+                className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-2"
+              >
+                &rarr;
+              </m.span>
+            </m.a>
           </m.div>
         </section>
       </div>
