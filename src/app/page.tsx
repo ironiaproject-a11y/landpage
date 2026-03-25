@@ -66,7 +66,10 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
-  const frameObj = useRef({ index: 0 });
+  
+  // Ref-based state to prevent React lag
+  const autoFrame = useRef({ val: 0 });
+  const scrollFrame = useRef({ val: 0 });
   const [videoPhase, setVideoPhase] = useState<'skull' | 'woman'>('skull');
   const frameCount = 145;
 
@@ -78,7 +81,7 @@ export default function Home() {
     if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. Concurrent Preloading
+      // 1. Preload High-Quality Frames
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
@@ -104,57 +107,64 @@ export default function Home() {
         }
       };
 
+      const updateFrame = () => {
+        // TACTILE HAND-OFF: Take the maximum of auto-intro or user-scroll
+        const currentIdx = Math.max(autoFrame.current.val, scrollFrame.current.val);
+        render(currentIdx);
+        // Phase Threshold at frame 75
+        const nextPhase = currentIdx >= 75 ? 'woman' : 'skull';
+        setVideoPhase(prev => (prev !== nextPhase ? nextPhase : prev));
+      };
+
       const handleResize = () => {
         if (!canvas) return;
         canvas.width = window.innerWidth * window.devicePixelRatio;
         canvas.height = window.innerHeight * window.devicePixelRatio;
-        render(frameObj.current.index);
+        updateFrame();
       };
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Definitive Hybrid Logic
-      // Sequential Timeline: Intro (0-75) then Scroll (0-144)
-      const tl = gsap.timeline({
+      // 2. Hybrid Control Logic
+      // PIN: Static pin for the whole sequence
+      ScrollTrigger.create({
+        trigger: scrollContainerRef.current,
+        start: "top top",
+        end: "+=350%",
+        pin: containerRef.current,
+        pinSpacing: true,
+        anticipatePin: 1
+      });
+
+      // SCRUB: Maps scroll progress to the total frame range
+      gsap.to(scrollFrame.current, {
+        val: frameCount - 1,
+        ease: "none",
         scrollTrigger: {
           trigger: scrollContainerRef.current,
           start: "top top",
-          end: "+=250%", // Faster, more accessible scroll range
-          scrub: 1.2,
-          pin: containerRef.current,
-          pinSpacing: true,
-          anticipatePin: 1
+          end: "+=350%",
+          scrub: 0.8, // Tighter, "tactile" scrub
+          onUpdate: updateFrame
         }
       });
 
-      tl.to(frameObj.current, {
-        index: frameCount - 1,
-        ease: "none",
-        onUpdate: () => {
-          render(frameObj.current.index);
-          const nextPhase = frameObj.current.index >= 75 ? 'woman' : 'skull';
-          setVideoPhase(prev => (prev !== nextPhase ? nextPhase : prev));
-        }
-      });
-
-      // AUTO-PLAY INTRO: We "drive" the timeline automatically to frame 75
+      // INTRO: Automatic drive from 0 to 75
       const startIntro = () => {
-        gsap.to(tl, {
-          progress: 75 / (frameCount - 1),
+        gsap.to(autoFrame.current, {
+          val: 75,
           duration: 3,
           ease: "power2.inOut",
-          overwrite: "auto"
+          onUpdate: updateFrame
         });
       };
 
-      // Initial Draw & Start
+      // Start Trigger
       const firstFrame = imagesRef.current[0];
       if (firstFrame.complete) { render(0); startIntro(); }
       else { firstFrame.onload = () => { render(0); startIntro(); }; }
 
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
+      return () => window.removeEventListener("resize", handleResize);
     });
 
     return () => {
@@ -168,10 +178,10 @@ export default function Home() {
       <div ref={scrollContainerRef} className="relative w-full z-10">
         <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/70 via-black/30 to-black/70 z-10 pointer-events-none" />
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
-          {/* Typography Hierarchy: top-[30%] Position */}
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center">
+          {/* Correct Typography Hierarchy: Jost & Cormorant Garamond */}
+          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4">
             <h1 className="relative flex flex-col items-center justify-center h-[350px]">
               <AnimatePresence mode="wait">
                 {videoPhase === 'skull' ? (
@@ -182,7 +192,7 @@ export default function Home() {
                     exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
                     transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                     style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }} 
-                    className="absolute text-[18px] lg:text-[42px] font-[200] text-white/90 uppercase"
+                    className="absolute text-[18px] lg:text-[42px] font-[200] text-white/55 lg:text-white/90 uppercase"
                   >
                     Sua origem,
                   </m.span>
@@ -194,7 +204,7 @@ export default function Home() {
                     exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
                     transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ fontFamily: "'Cormorant Garamond', serif" }} 
-                    className="absolute text-[52px] lg:text-[140px] font-[300] text-white lowercase first-letter:uppercase leading-none"
+                    className="absolute text-[48px] lg:text-[140px] font-[300] text-white lowercase first-letter:uppercase leading-none italic"
                   >
                     Seu sorriso.
                   </m.span>
@@ -209,7 +219,7 @@ export default function Home() {
             transition={{ delay: 2.5, duration: 1 }}
             className="absolute bottom-[50px] left-0 right-0 w-full flex justify-center z-30"
           >
-            <a style={{ fontFamily: "'Jost', sans-serif" }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-12 py-3.5 hover:bg-white/10 transition-all text-white/60 text-[11px] tracking-[5px] uppercase backdrop-blur-2xl">
+            <a style={{ fontFamily: "'Jost', sans-serif" }} href="#sobre" className="inline-flex items-center justify-center bg-white/5 border border-white/20 rounded-full px-12 py-3.5 hover:bg-white/10 transition-all text-white/55 text-[11px] tracking-[5px] uppercase backdrop-blur-3xl">
               AGENDAR CONSULTA &rarr;
             </a>
           </m.div>
