@@ -200,17 +200,28 @@ export default function Home() {
       window.addEventListener("wheel", handleUserScroll, { passive: true });
       window.addEventListener("touchstart", handleUserScroll, { passive: true });
 
+      // Guard to prevent multiple intro runs
+      let introStarted = false;
+
       // Start Trigger: Only start intro after preloader is signal to exit
       const onPreloaderExit = () => {
+        if (introStarted) return;
+        introStarted = true;
         setTimeout(startIntro, 400); // Slight delay for preloader blur to settle
       };
       window.addEventListener("preloader-exiting", onPreloaderExit);
 
+      // Store local references for cleanup
+      const localResize = handleResize;
+      const localWheel = handleUserScroll;
+      const localTouch = handleUserScroll;
+      const localExit = onPreloaderExit;
+
       return () => {
-        window.removeEventListener("resize", handleResize);
-        window.removeEventListener("wheel", handleUserScroll);
-        window.removeEventListener("touchstart", handleUserScroll);
-        window.removeEventListener("preloader-exiting", onPreloaderExit);
+        window.removeEventListener("resize", localResize);
+        window.removeEventListener("wheel", localWheel);
+        window.removeEventListener("touchstart", localTouch);
+        window.removeEventListener("preloader-exiting", localExit);
       };
     });
 
