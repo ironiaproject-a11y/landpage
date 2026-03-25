@@ -113,7 +113,8 @@ export default function Home() {
       }
 
       const render = (index: number) => {
-        const img = imagesRef.current[Math.floor(index)];
+        const roundedIndex = Math.min(Math.round(index), frameCount - 1);
+        const img = imagesRef.current[roundedIndex];
         if (img && img.complete) {
           const { width, height } = canvas;
           const imgRatio = img.width / img.height;
@@ -131,7 +132,7 @@ export default function Home() {
         } else if (img) {
           // Ghost-loading fix: If frame isn't loaded yet, draw it the ms it arrives
           img.onload = () => {
-            if (Math.floor(frameObj.current.index) === Math.floor(index)) {
+            if (Math.round(frameObj.current.index) === Math.round(index)) {
               render(index);
             }
           };
@@ -162,7 +163,7 @@ export default function Home() {
         trigger: scrollContainerRef.current,
         start: "top top",
         end: "bottom bottom",  // 300vh container → 200vh of scrub room
-        scrub: 0.5,
+        scrub: true,
         onUpdate: (self) => {
           const targetIdx = self.progress * (frameCount - 1);
           frameObj.current.index = targetIdx;
@@ -181,15 +182,17 @@ export default function Home() {
         const lenis = (window as any).lenis;
         if (!lenis) return;
 
-        // Exact scroll target to play the ENTIRE sequence, completely synced to typography changes
-        const totalScrubDistance = window.innerHeight * 2.0;
-        const targetScroll = (scrollContainerRef.current?.offsetTop || 0) + totalScrubDistance;
+        // Exact scroll target to play the ENTIRE sequence, completely synced to GSAP's physical marker ends
+        const targetScroll = scrubTrigger.end; // Reliably uses GSAP's own end calculation to never miss a pixel
         
         // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
         lenis.scrollTo(targetScroll, {
           duration: 3.5, // Faster, strictly constant playback speed
           easing: (t: number) => t, // LINEAR playback: prevents mathematical frame drops/freezing entirely at the end
           onComplete: () => {
+            // Force final frame to ensure completion even if scroll-sync has micro-millisecond lag
+            frameObj.current.index = frameCount - 1;
+            updateFrame();
             introTween = null;
           }
         });
