@@ -64,7 +64,7 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scrollContainerRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   
   // Ref-based state to prevent React lag
@@ -146,14 +146,15 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. CSS-sticky scroll scrub — no GSAP pin, no spacer, no ghost.
-      // scrollContainerRef is 300vh (set in JSX), the hero section is sticky top-0.
-      // ScrollTrigger only reads scroll progress and updates the canvas frame.
+      // 2. Scroll-Synced Scrub via GSAP Pin (handles its own spacer cleanly)
       ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "bottom bottom",
+        end: "+=200%",
+        pin: containerRef.current,
+        pinSpacing: true,
+        anticipatePin: 1,
         scrub: 0.5,
         onUpdate: (self) => {
           const targetIdx = self.progress * (frameCount - 1);
@@ -234,15 +235,8 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
-      {/* The section is 300vh — gives 200vh of scrub room.
-          The inner div is sticky top-0 h-screen, so the hero always fills
-          the viewport. Stats follow right after the section — NO empty gap. */}
-      <section
-        ref={scrollContainerRef as React.RefObject<HTMLElement>}
-        style={{ height: '300vh' }}
-        className="relative w-full"
-      >
-        <div ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white">
+      <div ref={scrollContainerRef} className="relative w-full z-10">
+        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
@@ -289,8 +283,8 @@ export default function Home() {
               AGENDAR CONSULTA &rarr;
             </a>
           </m.div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
