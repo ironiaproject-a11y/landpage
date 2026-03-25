@@ -80,9 +80,26 @@ export default function Home() {
     if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. Preload High-Quality Frames
+      // 1. Preload High-Quality Frames with Progress Tracking
+      let loadedCount = 0;
+      const criticalFrames = 30; // Min frames for a smooth start
+
+      const onImageLoad = () => {
+        loadedCount++;
+        if (loadedCount === criticalFrames) {
+          // Render first frame as soon as we have enough critical frames
+          render(0);
+        }
+        if (loadedCount === frameCount) {
+          window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+          (window as any).__HERO_ASSETS_LOADED__ = true;
+        }
+      };
+
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
+        img.onload = onImageLoad;
+        img.onerror = onImageLoad; // Don't block on errors
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
         imagesRef.current[i] = img;
       }
@@ -103,12 +120,20 @@ export default function Home() {
           }
           context.clearRect(0, 0, width, height);
           context.drawImage(img, dx, dy, dWidth, dHeight);
+        } else if (img) {
+          // Ghost-loading fix: If frame isn't loaded yet, draw it the ms it arrives
+          img.onload = () => {
+            if (Math.floor(frameObj.current.index) === Math.floor(index)) {
+              render(index);
+            }
+          };
         }
       };
 
       const updateFrame = () => {
-        render(frameObj.current.index);
-        const nextPhase = frameObj.current.index >= 75 ? 'woman' : 'skull';
+        const idx = frameObj.current.index;
+        render(idx);
+        const nextPhase = idx >= 75 ? 'woman' : 'skull';
         setVideoPhase(prev => (prev !== nextPhase ? nextPhase : prev));
       };
 
@@ -121,55 +146,72 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Exact Control Logic (No Dead Zones, Short Pin)
-      let isScrubbing = false;
-      const autoFrame = { val: 0 };
-      const scrollFrame = { val: 75 };
-
-      ScrollTrigger.create({
+      // 2. Absolute Scroll-Synced Logic (0 to 144)
+      const scrubTrigger = ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "+=120%", // Faster, brings the rest of landpage into view quickly
+        end: "+=200%",
         pin: containerRef.current,
         pinSpacing: true,
         anticipatePin: 1,
+        scrub: 0.5, // Much snappier (was 1.2)
         onUpdate: (self) => {
-          // As soon as user scrolls past 1%, they take over
-          if (self.progress > 0.01) isScrubbing = true;
-
-          if (isScrubbing) {
-            // Map scroll physically from frame 75 to 144 -> 100% fluid, no dead zones
-            const targetIdx = 75 + self.progress * (frameCount - 1 - 75);
-            gsap.to(scrollFrame, {
-              val: targetIdx,
-              duration: 0.3, // Ultra-responsive tactile fluidity
-              ease: "power2.out",
-              overwrite: "auto",
-              onUpdate: () => {
-                frameObj.current.index = scrollFrame.val;
-                updateFrame();
-              }
-            });
-          }
+          const targetIdx = self.progress * (frameCount - 1);
+          frameObj.current.index = targetIdx;
+          updateFrame();
         }
       });
 
-      // Cinematic Intro (0 to 75)
-      gsap.to(autoFrame, {
-        val: 75,
-        duration: 2.5,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          // Yield control if the user starts scrubbing
-          if (!isScrubbing) {
-            frameObj.current.index = autoFrame.val;
-            updateFrame();
-          }
-        }
-      });
+      // 3. Cinematic Auto-Intro via Physical Scroll Sync
+      // Instead of fighting the scrollbar, we physically move it!
+      let introTween: any = null;
+      
+      const startIntro = () => {
+        const lenis = (window as any).lenis;
+        if (!lenis) return;
 
-      return () => window.removeEventListener("resize", handleResize);
+        // Exact scroll target based on 200% scrub distance + frame 75 ratio
+        const totalScrubDistance = window.innerHeight * 2.0;
+        const targetScroll = (scrollContainerRef.current?.offsetTop || 0) + (totalScrubDistance * (75 / (frameCount - 1)));
+        
+        // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
+        lenis.scrollTo(targetScroll, {
+          duration: 2.8,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          onComplete: () => {
+            introTween = null;
+          }
+        });
+        
+        // Track the active scroll operation for override
+        introTween = true;
+      };
+
+      // Kill the intro if the user manually scrubs (takes control)
+      const handleUserScroll = () => {
+        const lenis = (window as any).lenis;
+        if (introTween && lenis) {
+          lenis.stop(); // Stop the auto-scroll immediately
+          lenis.start(); // Resume for manual control
+          introTween = null;
+        }
+      };
+      window.addEventListener("wheel", handleUserScroll, { passive: true });
+      window.addEventListener("touchstart", handleUserScroll, { passive: true });
+
+      // Start Trigger: Only start intro after preloader is signal to exit
+      const onPreloaderExit = () => {
+        setTimeout(startIntro, 400); // Slight delay for preloader blur to settle
+      };
+      window.addEventListener("preloader-exiting", onPreloaderExit);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("wheel", handleUserScroll);
+        window.removeEventListener("touchstart", handleUserScroll);
+        window.removeEventListener("preloader-exiting", onPreloaderExit);
+      };
     });
 
     return () => {
@@ -195,7 +237,7 @@ export default function Home() {
                     initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
                     animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
                     exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
-                    transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }} 
                     className="absolute text-[18px] lg:text-[42px] font-[200] text-white/55 lg:text-white/90 uppercase"
                   >
@@ -207,7 +249,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 30, clipPath: 'inset(100% 0 0 0)' }}
                     animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
                     exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
-                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     style={{ fontFamily: "'Cormorant Garamond', serif" }} 
                     className="absolute text-[48px] lg:text-[140px] font-[300] text-white lowercase first-letter:uppercase leading-none italic"
                   >
