@@ -187,8 +187,8 @@ export default function Home() {
         
         // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
         lenis.scrollTo(targetScroll, {
-          duration: 4.8, // Smooth cinematic duration for the full morphing intro
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          duration: 3.8, // Faster, smoother duration
+          easing: (t: number) => 1 - Math.pow(1 - t, 3), // Cubic Out for fluid deceleration without freezing
           onComplete: () => {
             introTween = null;
           }
