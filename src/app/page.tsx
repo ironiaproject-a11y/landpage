@@ -210,50 +210,47 @@ export default function Home() {
               
               {/* Overline/Secondary Headline: Appears during Skull phase */}
               <m.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ 
                   opacity: videoPhase === 'skull' ? 0.6 : 0, 
-                  y: videoPhase === 'skull' ? 0 : -20,
-                  scale: videoPhase === 'skull' ? 1 : 0.95
+                  y: videoPhase === 'skull' ? 0 : -15,
+                  scale: videoPhase === 'skull' ? 1 : 0.98
                 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-2"
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-4"
               >
                 <span 
-                  className="hero-overline block text-white/60 italic font-light tracking-[0.1em]"
-                  style={{ 
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(20px, 4vw, 24px)'
-                  }}
+                  className="hero-overline block text-white/50 uppercase font-light tracking-[0.4em] md:tracking-[0.6em] text-[12px] md:text-[14px]"
+                  style={{ fontFamily: "'Jost', sans-serif" }}
                 >
-                  Sua origem,
+                  Sua origem
                 </span>
               </m.div>
 
               {/* Headline & Period: Appears during Woman phase */}
-              <div className="relative mb-6 h-[72px] md:h-[90px] flex items-center justify-center">
+              <div className="relative mb-6 h-[90px] md:h-[120px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
                   {videoPhase === 'woman' && (
                     <m.h1 
                       key="hero-headline"
-                      initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                      initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-                      className="hero-headline text-white/95 font-[300] tracking-[-0.02em] flex items-baseline justify-center"
+                      exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                      className="hero-headline text-white/95 font-[300] tracking-[-0.03em] flex items-baseline justify-center italic"
                       style={{ 
                         fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: 'clamp(56px, 10vw, 84px)', 
+                        fontSize: 'clamp(64px, 12vw, 110px)', 
                         lineHeight: '1.0' 
                       }}
-                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <span className="inline-block whitespace-nowrap">Seu sorriso</span>
                       <m.span 
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 0.4, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.8 }}
-                        className="hero-period inline-block text-white origin-bottom ml-1"
-                        style={{ fontSize: '1.2em', transform: 'translateY(0.1em)' }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.8 }}
+                        transition={{ duration: 0.8, delay: 1.0 }}
+                        className="hero-period inline-block text-white/80 ml-2"
+                        style={{ fontSize: '0.8em', fontStyle: 'normal' }}
                       >.</m.span>
                     </m.h1>
                   )}
