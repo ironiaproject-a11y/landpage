@@ -198,97 +198,155 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
-      {/* Hero Section with Scrubbing Video */}
-      <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
-        <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
-          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/40 to-black/70 lg:from-black/80 lg:via-black/30 lg:to-black/80 z-10 pointer-events-none" />
+      {/* Hero Section – Video Background */}
+      <section
+        style={{
+          position: 'relative',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Background Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
+          }}
+          src="/hero-background-new.mp4"
+        />
 
-          {/* Enhanced Hero Typography - Phase Synchronized */}
-          <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6 pointer-events-none">
-            <div className="max-w-4xl w-full text-center flex flex-col items-center">
-              
-              {/* Unified Hero Typography Lockup: Visible Immediately on Load */}
-              <m.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], staggerChildren: 0.2 }}
-                className="flex flex-col items-center justify-center w-full"
-              >
-                {/* Overline: Sua origem */}
-                <m.span 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 0.7, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="hero-overline block text-white/70 uppercase font-light tracking-[0.4em] md:tracking-[0.6em] text-[12px] md:text-[14px] mb-4 md:mb-6"
-                  style={{ fontFamily: "'Jost', sans-serif" }}
-                >
-                  Sua origem,
-                </m.span>
+        {/* Gradient overlay – bottom 65% */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '65%',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.92) 40%, transparent 100%)',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        />
 
-                {/* Headline: Seu sorriso */}
-                <m.h1 
-                  initial={{ opacity: 0, y: 20, filter: "blur(12px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="hero-headline text-white/95 font-[300] tracking-[-0.03em] flex items-baseline justify-center italic mb-10 md:mb-14"
-                  style={{ 
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(48px, 12vw, 100px)', 
-                    lineHeight: '1.0' 
-                  }}
-                >
-                  <span className="inline-block whitespace-nowrap">Seu sorriso</span>
-                  <span className="hero-period inline-block text-white/80 ml-2" style={{ fontSize: '0.8em', fontStyle: 'normal' }}>.</span>
-                </m.h1>
+        {/* Text Zone */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            padding: '1.5rem',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingBottom: '2.5rem',
+          }}
+        >
+          {/* Eyebrow */}
+          <p
+            style={{
+              fontSize: '9px',
+              fontWeight: 300,
+              letterSpacing: '0.28em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.4)',
+              marginBottom: '0.35rem',
+              fontFamily: "'Barlow', sans-serif",
+            }}
+          >
+            Sua origem
+          </p>
 
-                {/* Subheadline */}
-                <m.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.9 }}
-                  transition={{ duration: 1.0, delay: 1.0 }}
-                  className="hero-subheadline text-white/90 text-sm md:text-base font-normal leading-[1.8] max-w-[440px] mb-14 md:mb-16"
-                  style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.05em' }}
-                >
-                  Odontologia de alta performance onde<br className="hidden md:block"/>
-                  a excelência encontra a precisão biológica.
-                </m.p>
-              </m.div>
+          {/* Headline */}
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(2.6rem, 10vw, 4rem)',
+              fontWeight: 300,
+              fontStyle: 'italic',
+              color: '#fff',
+              lineHeight: 1.05,
+              marginBottom: '0.75rem',
+            }}
+          >
+            Seu sorriso.
+          </h1>
 
-              {/* CTA Button: Visible Immediately on Load */}
-              <div className="z-40 relative pointer-events-auto w-full px-6 md:px-0 mt-8 md:mt-10">
-                <m.div 
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-                  className="w-full flex justify-center"
-                >
-                  <m.a 
-                    whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{ 
-                      fontFamily: "'Jost', sans-serif",
-                      color: '#111111',
-                      backgroundColor: '#ffffff',
-                    }} 
-                    href="#agendamento" 
-                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center rounded-md px-10 md:px-16 min-h-[52px] md:min-h-[56px] transition-all duration-300 text-base md:text-[17px] tracking-normal font-semibold shadow-[0_4px_24px_rgba(255,255,255,0.12)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.25)] cursor-pointer"
-                  >
-                    <span style={{ color: '#111111' }}>Agendar Consulta</span>
-                    <svg 
-                      className="hero-arrow ml-3 w-5 h-5 fill-none transition-transform duration-500 group-hover:translate-x-2"
-                      viewBox="0 0 24 24"
-                      style={{ stroke: '#111111' }}
-                    >
-                      <path d="M0 12 L20 12 M15 7 L20 12 L15 17" strokeWidth="1.75" />
-                    </svg>
-                  </m.a>
-                </m.div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+          {/* Body */}
+          <p
+            style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '13px',
+              fontWeight: 300,
+              lineHeight: 1.6,
+              color: 'rgba(255,255,255,0.5)',
+              maxWidth: '28ch',
+              marginBottom: '1.5rem',
+            }}
+          >
+            Odontologia de alta performance onde a excelência encontra a precisão biológica.
+          </p>
+
+          {/* CTA Pill */}
+          <a
+            href="#agendamento"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.65rem 1.5rem',
+              background: 'rgba(255,255,255,0.1)',
+              border: '0.5px solid rgba(255,255,255,0.2)',
+              borderRadius: '40px',
+              color: '#fff',
+              fontSize: '10px',
+              fontWeight: 300,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              fontFamily: "'Barlow', sans-serif",
+              cursor: 'pointer',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#fff',
+                opacity: 0.7,
+                flexShrink: 0,
+              }}
+            />
+            Agendar consulta
+          </a>
+
+          {/* Scroll Hint */}
+          <p
+            style={{
+              fontSize: '9px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.25)',
+              marginTop: '0.75rem',
+              fontFamily: "'Barlow', sans-serif",
+            }}
+          >
+            role para explorar ↓
+          </p>
+        </div>
+      </section>
 
       {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
