@@ -226,8 +226,10 @@ export default function Home() {
     });
 
     return () => {
+      // Kill only the hero's own ScrollTrigger by ID to avoid destroying
+      // other components' triggers (which was causing orphaned spacer divs = ghost)
+      ScrollTrigger.getById("heroScroll")?.kill(true);
       ctx.revert();
-      ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
 
