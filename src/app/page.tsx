@@ -210,13 +210,12 @@ export default function Home() {
               
               {/* Overline: Appears early (Skull phase) */}
               <m.div
-                initial={{ opacity: 0, y: 10, filter: 'blur(10px)' }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ 
-                  opacity: videoPhase === 'skull' || videoPhase === 'woman' ? 0.5 : 0, 
-                  y: videoPhase === 'skull' || videoPhase === 'woman' ? 0 : 10,
-                  filter: videoPhase === 'skull' || videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)'
+                  opacity: videoPhase === 'skull' || videoPhase === 'woman' ? 1 : 0, 
+                  y: videoPhase === 'skull' || videoPhase === 'woman' ? 0 : 10
                 }}
-                transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
                 className="mb-6"
               >
                 <span 
@@ -233,21 +232,22 @@ export default function Home() {
                   {videoPhase === 'woman' && (
                     <m.h1 
                       key="hero-headline"
-                      initial={{ opacity: 0, y: 30, filter: 'blur(20px)' }}
-                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                      exit={{ opacity: 0, y: -20, filter: 'blur(20px)' }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                       className="hero-headline text-white font-[300] tracking-[-0.01em] leading-[0.9] flex items-baseline justify-center"
                       style={{ 
                         fontFamily: "'Cormorant Garamond', serif",
                         fontSize: 'clamp(56px, 10vw, 72px)', 
                         lineHeight: '0.9' 
                       }}
+                      transition={{ duration: 0.7, delay: 1.6, ease: "easeOut" }}
                     >
                       <span className="inline-block whitespace-nowrap">Seu sorriso</span>
                       <m.span 
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 0.3, scale: 1 }}
-                        transition={{ delay: 0.6, duration: 1 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.3 }}
+                        transition={{ duration: 0.7, delay: 1.6, ease: "easeOut" }}
                         className="hero-period inline-block text-white origin-bottom ml-1"
                         style={{ fontSize: '1.6em', transform: 'translateY(0.15em)' }}
                       >.</m.span>
@@ -277,13 +277,12 @@ export default function Home() {
               {/* CTA Button: Appears during Woman phase */}
               <div className="z-30 pointer-events-auto">
                 <m.div 
-                  initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ 
                     opacity: videoPhase === 'woman' ? 1 : 0, 
-                    y: videoPhase === 'woman' ? 0 : 20, 
-                    filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' 
+                    y: videoPhase === 'woman' ? 0 : 10
                   }}
-                  transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.6, delay: 2.1, ease: "easeOut" }}
                 >
                   <m.a 
                     whileHover={{ scale: 1.02, backgroundColor: "white", color: "black", borderColor: "white" }}
