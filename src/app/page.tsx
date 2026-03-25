@@ -187,8 +187,8 @@ export default function Home() {
         
         // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
         lenis.scrollTo(targetScroll, {
-          duration: 3.8, // Faster, smoother duration
-          easing: (t: number) => 1 - Math.pow(1 - t, 3), // Cubic Out for fluid deceleration without freezing
+          duration: 3.5, // Faster, strictly constant playback speed
+          easing: (t: number) => t, // LINEAR playback: prevents mathematical frame drops/freezing entirely at the end
           onComplete: () => {
             introTween = null;
           }
