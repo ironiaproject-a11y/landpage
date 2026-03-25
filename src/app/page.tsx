@@ -50,7 +50,6 @@ const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Sta
   loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
-const PremiumReveal = nextDynamic(() => import("@/components/PremiumReveal").then(mod => mod.PremiumReveal), { ssr: false });
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -205,43 +204,78 @@ export default function Home() {
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/40 to-black/70 lg:from-black/80 lg:via-black/30 lg:to-black/80 z-10 pointer-events-none" />
 
-          {/* Enhanced Hero Typography */}
-          <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6">
+          {/* Enhanced Hero Typography - Phase Synchronized */}
+          <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6 pointer-events-none">
             <div className="max-w-4xl w-full text-center flex flex-col items-center">
-              <PremiumReveal direction="bottom" delay={0.4}>
+              
+              {/* Overline: Appears early (Skull phase) */}
+              <m.div
+                initial={{ opacity: 0, y: 10, filter: 'blur(10px)' }}
+                animate={{ 
+                  opacity: videoPhase === 'skull' || videoPhase === 'woman' ? 0.5 : 0, 
+                  y: videoPhase === 'skull' || videoPhase === 'woman' ? 0 : 10,
+                  filter: videoPhase === 'skull' || videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)'
+                }}
+                transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-6"
+              >
                 <span 
-                  className="hero-overline block mb-6 text-white uppercase tracking-[0.4em] font-light opacity-50 text-[11px]"
-                  style={{ letterSpacing: '0.4em' }}
+                  className="hero-overline block text-white uppercase tracking-[0.4em] font-light text-[11px]"
+                  style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }}
                 >
                   SUA ORIGEM,
                 </span>
-              </PremiumReveal>
+              </m.div>
 
-              <div className="relative mb-8">
-                <h1 
-                  className="hero-headline text-white font-headline font-[300] tracking-[-0.01em] leading-[0.9] flex flex-wrap justify-center items-baseline"
-                  style={{ fontSize: 'clamp(56px, 10vw, 72px)', lineHeight: '0.9' }}
-                >
-                  <PremiumReveal type="mask" direction="bottom" delay={0.6}>
-                    <span className="inline-block whitespace-nowrap">Seu sorriso</span>
-                  </PremiumReveal>
-                  <PremiumReveal type="fade" delay={1.2}>
-                    <span 
-                      className="hero-period inline-block text-white opacity-30 origin-bottom"
-                      style={{ fontSize: '1.6em', transform: 'translateY(0.15em)' }}
-                    >.</span>
-                  </PremiumReveal>
-                </h1>
+              {/* Headline & Period: Appears during Woman phase */}
+              <div className="relative mb-8 h-[72px] md:h-[90px] flex items-center justify-center">
+                <AnimatePresence>
+                  {videoPhase === 'woman' && (
+                    <m.h1 
+                      key="hero-headline"
+                      initial={{ opacity: 0, y: 30, filter: 'blur(20px)' }}
+                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, y: -20, filter: 'blur(20px)' }}
+                      className="hero-headline text-white font-[300] tracking-[-0.01em] leading-[0.9] flex items-baseline justify-center"
+                      style={{ 
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: 'clamp(56px, 10vw, 72px)', 
+                        lineHeight: '0.9' 
+                      }}
+                    >
+                      <span className="inline-block whitespace-nowrap">Seu sorriso</span>
+                      <m.span 
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 0.3, scale: 1 }}
+                        transition={{ delay: 0.6, duration: 1 }}
+                        className="hero-period inline-block text-white origin-bottom ml-1"
+                        style={{ fontSize: '1.6em', transform: 'translateY(0.15em)' }}
+                      >.</m.span>
+                    </m.h1>
+                  )}
+                </AnimatePresence>
               </div>
 
-              <PremiumReveal direction="bottom" delay={0.8}>
-                <p className="hero-subheadline text-white/70 text-base md:text-[16px] font-light leading-[1.6] max-w-[500px] mb-12">
+              {/* Subheadline: Appears during Woman phase */}
+              <m.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: videoPhase === 'woman' ? 0.7 : 0, 
+                  y: videoPhase === 'woman' ? 0 : 20 
+                }}
+                transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p 
+                  className="hero-subheadline text-white text-base md:text-[16px] font-light leading-[1.6] max-w-[500px] mb-12"
+                  style={{ fontFamily: "'Jost', sans-serif" }}
+                >
                   Odontologia de alta performance<br/>
                   onde a excelência encontra a precisão.
                 </p>
-              </PremiumReveal>
+              </m.div>
 
-              <div className="z-30">
+              {/* CTA Button: Appears during Woman phase */}
+              <div className="z-30 pointer-events-auto">
                 <m.div 
                   initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
                   animate={{ 
@@ -249,7 +283,7 @@ export default function Home() {
                     y: videoPhase === 'woman' ? 0 : 20, 
                     filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' 
                   }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <m.a 
                     whileHover={{ scale: 1.02, backgroundColor: "white", color: "black", borderColor: "white" }}
