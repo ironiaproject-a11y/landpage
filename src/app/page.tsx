@@ -155,14 +155,15 @@ export default function Home() {
       handleResize();
 
       // 2. Scroll-Synced Scrub via GSAP Pin
-      // (stored in outer scope so cleanup can kill it directly)
+      // pinSpacing:false — we own the spacing via the 300vh wrapper.
+      // This prevents GSAP from injecting its own spacer (which caused the ghost).
       const scrubTrigger = ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "+=200%",
+        end: "bottom bottom",  // 300vh container → 200vh of scrub room
         pin: containerRef.current,
-        pinSpacing: true,
+        pinSpacing: false,     // we manage spacing via explicit 300vh wrapper
         anticipatePin: 1,
         scrub: 0.5,
         onUpdate: (self) => {
@@ -249,7 +250,10 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
-      <div ref={scrollContainerRef} className="relative w-full z-10">
+      {/* 300vh wrapper: gives 200vh scrub room without relying on GSAP’s pinSpacing.
+          pinSpacing:false prevents GSAP from injecting its own spacer div,
+          which was the root cause of the ghost hero gap. */}
+      <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
         <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
