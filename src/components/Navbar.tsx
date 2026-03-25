@@ -68,8 +68,8 @@ export function Navbar() {
 
     const links = [
         { name: "Início", href: "#" },
-        { name: "Sobre", href: "#sobre" },
         { name: "Tratamentos", href: "#servicos" },
+        { name: "Sobre", href: "#sobre" },
         { name: "Resultados", href: "#casos" },
         { name: "Depoimentos", href: "#depoimentos" },
     ];
@@ -175,7 +175,7 @@ export function Navbar() {
                                         duration: 3,
                                         ease: "easeInOut"
                                     }}
-                                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                    onClick={() => document.getElementById('agendamento')?.scrollIntoView({ behavior: 'smooth' })}
                                     className="btn-premium !py-3 !px-8 text-level-4 shadow-none hover:shadow-glow-white relative overflow-hidden !bg-white !text-black"
                                 >
                                     <m.div
@@ -288,7 +288,7 @@ export function Navbar() {
                                     className="mt-8 sm:mt-12 w-full max-w-[280px] sm:max-w-[320px]"
                                 >
                                     <a
-                                        href="#contato"
+                                        href="#agendamento"
                                         onClick={() => setIsMobileOpen(false)}
                                         className="btn-luxury-primary flex items-center justify-center !py-4 sm:!py-6 w-full text-[var(--font-small)] sm:text-sm tracking-[var(--font-small-tracking)]"
                                     >

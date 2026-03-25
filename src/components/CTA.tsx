@@ -108,7 +108,7 @@ export function CTA() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
                         <Magnetic strength={0.2} range={100}>
                             <button
-                                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                                onClick={() => document.getElementById('agendamento')?.scrollIntoView({ behavior: 'smooth' })}
                                 className="btn-premium w-full sm:w-auto"
                             >
                                 Agendar Avaliação

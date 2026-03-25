@@ -80,7 +80,7 @@ export function Footer() {
         { name: "Sobre Nós", href: "#sobre" },
         { name: "Serviços", href: "#servicos" },
         { name: "Depoimentos", href: "#depoimentos" },
-        { name: "Contato", href: "#contato" },
+        { name: "Contato", href: "#agendamento" },
     ];
 
     const services = [

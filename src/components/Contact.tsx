@@ -28,7 +28,7 @@ export function Contact() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="contato">
+        <section ref={sectionRef} className="py-20 md:py-40 relative bg-[var(--color-background)] overflow-hidden" id="agendamento">
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
                     {/* Info Side */}

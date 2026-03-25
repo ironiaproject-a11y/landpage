@@ -164,14 +164,14 @@ export function FAQ() {
                         <p className="text-level-4 uppercase mb-8">
                             Ainda tem alguma dúvida específica?
                         </p>
-                        <m.button
+                        <m.a
+                            href="#agendamento"
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => window.open('https://wa.me/551837433000', '_blank')}
                             className="btn-premium inline-flex items-center gap-4 px-6 md:px-12 bg-white/5 border-white/10 hover:border-white/50 text-level-4 uppercase"
                         >
                             Falar com um Especialista
-                        </m.button>
+                        </m.a>
                     </m.div>
                 </div>
             </div>

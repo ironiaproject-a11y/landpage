@@ -294,18 +294,27 @@ export function Services() {
             {/* Background Texture (Reduced opacity to prevent gray effect) */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
 
-            <div className="max-w-4xl mb-16 md:mb-32 px-6 md:px-0">
-                <PremiumReveal direction="bottom" delay={0.1}>
-                    <span className="text-level-4 uppercase">
-                        Tratamentos de Elite
-                    </span>
-                </PremiumReveal>
-
-                <h2 className="text-level-2 text-white max-w-[700px]">
-                    <PremiumReveal type="mask" direction="bottom" delay={0.2}>
-                        <span>Soluções clínicas de <br /> Extrema Precisão.</span>
+            <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-20 md:mb-32">
+                <div className="max-w-3xl">
+                    <PremiumReveal direction="bottom" delay={0.1}>
+                        <span className="text-level-4 uppercase mb-6 block text-[var(--color-accent-gold)] tracking-[0.3em]">
+                            O QUE FAZEMOS
+                        </span>
                     </PremiumReveal>
-                </h2>
+                    <h2 className="text-level-2 mb-8">
+                        <PremiumReveal type="mask" direction="bottom" delay={0.2}>
+                            <span>Tratamentos</span>
+                        </PremiumReveal>
+                        <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+                            <span className="text-white text-level-3 italic block mt-2">Especializados.</span>
+                        </PremiumReveal>
+                    </h2>
+                    <PremiumReveal direction="bottom" delay={0.4}>
+                        <p className="text-level-3 max-w-xl">
+                            Odontologia de alta performance para transformar seu sorriso com tecnologia de ponta e cuidado humano.
+                        </p>
+                    </PremiumReveal>
+                </div>
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
