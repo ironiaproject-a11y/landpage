@@ -74,6 +74,14 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    // ── StrictMode guard: kill any stale pin from a previous run ──────────
+    // React StrictMode intentionally runs effects twice in dev. Without this,
+    // two ScrollTrigger pins exist simultaneously producing the ghost hero.
+    ScrollTrigger.getById("heroScroll")?.kill(true);
+    // Also clear any orphaned GSAP pin spacers from the previous run
+    ScrollTrigger.refresh();
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
@@ -146,8 +154,9 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Scroll-Synced Scrub via GSAP Pin (handles its own spacer cleanly)
-      ScrollTrigger.create({
+      // 2. Scroll-Synced Scrub via GSAP Pin
+      // (stored in outer scope so cleanup can kill it directly)
+      const scrubTrigger = ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
@@ -162,6 +171,9 @@ export default function Home() {
           updateFrame();
         }
       });
+
+      // Expose for outer cleanup
+      (scrollContainerRef as any).__scrubTrigger = scrubTrigger;
 
       // 3. Cinematic Auto-Intro via Physical Scroll Sync
       // Instead of fighting the scrollbar, we physically move it!
@@ -226,8 +238,10 @@ export default function Home() {
     });
 
     return () => {
-      // Kill only the hero's own ScrollTrigger by ID to avoid destroying
-      // other components' triggers (which was causing orphaned spacer divs = ghost)
+      // Kill the pin trigger directly (spacer removed with kill(true))
+      const st = (scrollContainerRef as any).__scrubTrigger;
+      if (st) { st.kill(true); delete (scrollContainerRef as any).__scrubTrigger; }
+      // Fallback by ID
       ScrollTrigger.getById("heroScroll")?.kill(true);
       ctx.revert();
     };
