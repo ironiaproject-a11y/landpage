@@ -208,48 +208,52 @@ export default function Home() {
           <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6 pointer-events-none">
             <div className="max-w-4xl w-full text-center flex flex-col items-center">
               
-              {/* Overline: Appears early (Skull phase) */}
+              {/* Overline/Secondary Headline: Appears during Skull phase */}
               <m.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ 
-                  opacity: videoPhase === 'skull' || videoPhase === 'woman' ? 1 : 0, 
-                  y: videoPhase === 'skull' || videoPhase === 'woman' ? 0 : 10
+                  opacity: videoPhase === 'skull' ? 0.6 : 0, 
+                  y: videoPhase === 'skull' ? 0 : -20,
+                  scale: videoPhase === 'skull' ? 1 : 0.95
                 }}
-                transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
-                className="mb-6"
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-2"
               >
                 <span 
-                  className="hero-overline block text-white uppercase tracking-[0.4em] font-light text-[11px]"
-                  style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }}
+                  className="hero-overline block text-white/60 italic font-light tracking-[0.1em]"
+                  style={{ 
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 'clamp(20px, 4vw, 24px)'
+                  }}
                 >
-                  SUA ORIGEM,
+                  Sua origem,
                 </span>
               </m.div>
 
               {/* Headline & Period: Appears during Woman phase */}
-              <div className="relative mb-8 h-[72px] md:h-[90px] flex items-center justify-center">
-                <AnimatePresence>
+              <div className="relative mb-6 h-[72px] md:h-[90px] flex items-center justify-center">
+                <AnimatePresence mode="wait">
                   {videoPhase === 'woman' && (
                     <m.h1 
                       key="hero-headline"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="hero-headline text-white font-[300] tracking-[-0.01em] leading-[0.9] flex items-baseline justify-center"
+                      initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+                      className="hero-headline text-white/95 font-[300] tracking-[-0.02em] flex items-baseline justify-center"
                       style={{ 
                         fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: 'clamp(56px, 10vw, 72px)', 
-                        lineHeight: '0.9' 
+                        fontSize: 'clamp(56px, 10vw, 84px)', 
+                        lineHeight: '1.0' 
                       }}
-                      transition={{ duration: 0.7, delay: 1.6, ease: "easeOut" }}
+                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <span className="inline-block whitespace-nowrap">Seu sorriso</span>
                       <m.span 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.3 }}
-                        transition={{ duration: 0.7, delay: 1.6, ease: "easeOut" }}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 0.4, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
                         className="hero-period inline-block text-white origin-bottom ml-1"
-                        style={{ fontSize: '1.6em', transform: 'translateY(0.15em)' }}
+                        style={{ fontSize: '1.2em', transform: 'translateY(0.1em)' }}
                       >.</m.span>
                     </m.h1>
                   )}
@@ -260,17 +264,17 @@ export default function Home() {
               <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ 
-                  opacity: videoPhase === 'woman' ? 0.7 : 0, 
+                  opacity: videoPhase === 'woman' ? 0.6 : 0, 
                   y: videoPhase === 'woman' ? 0 : 20 
                 }}
-                transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <p 
-                  className="hero-subheadline text-white text-base md:text-[16px] font-light leading-[1.6] max-w-[500px] mb-12"
-                  style={{ fontFamily: "'Jost', sans-serif" }}
+                  className="hero-subheadline text-white/60 text-base md:text-[14px] font-light leading-[1.8] max-w-[440px] mb-12"
+                  style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.05em' }}
                 >
-                  Odontologia de alta performance<br/>
-                  onde a excelência encontra a precisão.
+                  Odontologia de alta performance onde<br className="hidden md:block"/>
+                  a excelência encontra a precisão biológica.
                 </p>
               </m.div>
 
@@ -289,7 +293,7 @@ export default function Home() {
                     whileTap={{ scale: 0.98 }}
                     style={{ fontFamily: "'Jost', sans-serif" }} 
                     href="#agendamento" 
-                    className="hero-cta group inline-flex items-center justify-center bg-white/5 border border-white/30 rounded-none px-12 md:px-[48px] py-5 md:py-[20px] transition-all text-white text-[13px] tracking-[0.15em] uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
+                    className="hero-cta group inline-flex items-center justify-center bg-white/5 border border-white/30 rounded-none px-12 md:px-[48px] py-5 md:py-[20px] transition-all text-white text-[13px] tracking-[0.2em] font-medium uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
                   >
                     <span>Agendar Consulta</span>
                     <svg 
