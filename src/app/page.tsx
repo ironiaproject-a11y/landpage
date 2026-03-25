@@ -259,8 +259,8 @@ export default function Home() {
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
           {/* Correct Typography Hierarchy: Jost & Cormorant Garamond */}
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4">
-            <h1 className="relative flex flex-col items-center justify-center h-[350px]">
+          <div className="absolute top-[42%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4 flex flex-col items-center">
+            <h1 className="relative flex flex-col items-center justify-center h-[280px] lg:h-[350px]">
               <AnimatePresence mode="wait">
                 {videoPhase === 'skull' ? (
                   <m.span 
@@ -289,29 +289,30 @@ export default function Home() {
                 )}
               </AnimatePresence>
             </h1>
-          </div>
 
-          <m.div 
-            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ delay: 2.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-[8vh] lg:bottom-[10vh] left-0 right-0 w-full flex justify-center z-30"
-          >
-            <m.a 
-              whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
-              whileTap={{ scale: 0.98 }}
-              style={{ fontFamily: "'Jost', sans-serif" }} 
-              href="#sobre" 
-              className="group inline-flex items-center justify-center bg-white/10 border border-white/30 rounded-full px-14 py-4 hover:border-white/60 transition-all text-white/90 text-[12px] tracking-[6px] uppercase backdrop-blur-3xl shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+            {/* CTA Button repositioned for better visual grouping */}
+            <m.div 
+              initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+              animate={{ opacity: videoPhase === 'woman' ? 1 : 0, y: videoPhase === 'woman' ? 0 : 20, filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mt-2 lg:mt-6 z-30 pointer-events-auto"
             >
-              AGENDAR CONSULTA 
-              <m.span 
-                className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-2"
+              <m.a 
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                whileTap={{ scale: 0.98 }}
+                style={{ fontFamily: "'Jost', sans-serif" }} 
+                href="#sobre" 
+                className="group inline-flex items-center justify-center bg-white/10 border border-white/30 rounded-full px-12 lg:px-14 py-3.5 lg:py-4 hover:border-white/60 transition-all text-white/90 text-[11px] lg:text-[12px] tracking-[5px] lg:tracking-[6px] uppercase backdrop-blur-3xl shadow-[0_0_30px_rgba(255,255,255,0.05)]"
               >
-                &rarr;
-              </m.span>
-            </m.a>
-          </m.div>
+                AGENDAR CONSULTA 
+                <m.span 
+                  className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-2"
+                >
+                  &rarr;
+                </m.span>
+              </m.a>
+            </m.div>
+          </div>
         </section>
       </div>
 
