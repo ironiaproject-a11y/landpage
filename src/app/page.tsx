@@ -64,7 +64,7 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   
   // Ref-based state to prevent React lag
@@ -234,11 +234,15 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
-      {/* scrollContainerRef is 300vh: 100vh visible + 200vh scrub room.
-          The section is sticky so it stays on screen while the user scrolls
-          through the container — no GSAP spacer needed, zero ghost risk. */}
-      <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
-        <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
+      {/* The section is 300vh — gives 200vh of scrub room.
+          The inner div is sticky top-0 h-screen, so the hero always fills
+          the viewport. Stats follow right after the section — NO empty gap. */}
+      <section
+        ref={scrollContainerRef as React.RefObject<HTMLElement>}
+        style={{ height: '300vh' }}
+        className="relative w-full"
+      >
+        <div ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
@@ -285,8 +289,8 @@ export default function Home() {
               AGENDAR CONSULTA &rarr;
             </a>
           </m.div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
