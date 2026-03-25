@@ -97,76 +97,62 @@ export default function Home() {
           }}
         />
 
-        {/* ── Editorial Lockup ── */}
-
-        {/* Top-left anchor: "Sua origem" — the starting point */}
+        {/* ── Unified Centered Lockup ── */}
         <div style={{
           position: 'absolute',
-          top: '1.75rem',
-          left: '1.5rem',
+          inset: 0,
           zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}>
-          <span style={{
-            display: 'inline-block',
-            width: '18px',
-            height: '0.5px',
-            background: 'rgba(255,255,255,0.3)',
-          }} />
-          <p style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '9px',
-            fontWeight: 300,
-            letterSpacing: '0.28em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.35)',
-            margin: 0,
-          }}>Sua origem</p>
-        </div>
-
-        {/* Bottom text zone: main lockup */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          padding: '0 1.5rem 2.25rem',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 1.5rem',
           textAlign: 'center',
         }}>
-          {/* H1: Seu sorriso. — the destination */}
+          {/* Eyebrow: Sua origem — contextualizes the headline above it */}
+          <p style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '10px',
+            fontWeight: 300,
+            letterSpacing: '0.32em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.42)',
+            marginBottom: '0.6rem',
+          }}>
+            Sua origem,
+          </p>
+
+          {/* H1: Seu sorriso. — the promise */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(3rem, 13vw, 5rem)',
+            fontSize: 'clamp(3.2rem, 14vw, 5.5rem)',
             fontWeight: 300,
             fontStyle: 'italic',
             color: '#ffffff',
             lineHeight: 1.0,
             letterSpacing: '-0.01em',
-            marginBottom: '1rem',
+            marginBottom: '1.5rem',
           }}>
             Seu sorriso.
           </h1>
 
-          {/* Divider line — visual breath */}
+          {/* Divider */}
           <div style={{
-            width: '32px',
+            width: '28px',
             height: '0.5px',
-            background: 'rgba(255,255,255,0.25)',
-            marginBottom: '1rem',
+            background: 'rgba(255,255,255,0.22)',
+            marginBottom: '1.25rem',
           }} />
 
-          {/* Refined copy — concise, poetic, connected to the visual */}
+          {/* Copy */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
             fontSize: '12px',
             fontWeight: 300,
-            lineHeight: 1.65,
-            color: 'rgba(255,255,255,0.48)',
-            maxWidth: '24ch',
-            marginBottom: '1.75rem',
+            lineHeight: 1.7,
+            color: 'rgba(255,255,255,0.45)',
+            maxWidth: '22ch',
+            marginBottom: '2rem',
             letterSpacing: '0.01em',
           }}>
             Onde biologia e beleza<br />convergem em precisão.
@@ -210,12 +196,13 @@ export default function Home() {
             fontSize: '9px',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.2)',
-            marginTop: '0.75rem',
+            color: 'rgba(255,255,255,0.18)',
+            marginTop: '0.9rem',
           }}>
             role para explorar ↓
           </p>
         </div>
+
       </section>
 
 
