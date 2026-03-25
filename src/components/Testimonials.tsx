@@ -235,7 +235,7 @@ export function Testimonials() {
                                                         src={testimonial.image}
                                                         alt={testimonial.name}
                                                         fill
-                                                        className="object-cover grayscale-[30%]"
+                                                        className="object-cover grayscale"
                                                     />
                                                 </div>
                                                 <div>

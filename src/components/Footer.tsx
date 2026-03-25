@@ -119,7 +119,7 @@ export function Footer() {
                                     src="/assets/images/luxury-lounge.png"
                                     alt="Ambiente Premium"
                                     fill
-                                    className="object-cover opacity-40 group-hover/img:opacity-80 group-hover/img:scale-105 transition-all duration-1000"
+                                    className="object-cover opacity-40 group-hover/img:opacity-80 group-hover/img:scale-105 transition-all duration-1000 grayscale"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-premium-dark)] via-transparent to-transparent" />
                             </div>

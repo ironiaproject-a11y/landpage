@@ -172,7 +172,7 @@ export function Experience() {
                                         src="/assets/images/elite-digital-protocol-final.png"
                                         alt="Clínica Premium - Protocolo Digital"
                                         fill
-                                        className="object-cover object-center"
+                                        className="object-cover object-center grayscale"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                                     <div className="absolute bottom-6 left-6 right-6 md:bottom-12 md:left-12 md:right-12 z-20 experience-image-content">

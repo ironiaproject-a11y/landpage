@@ -219,7 +219,7 @@ export function Amenities() {
                                     src="/assets/images/luxury-lounge.png"
                                     alt="Lounge Private"
                                     fill
-                                    className="object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 lounge-image-parallax"
+                                    className="object-cover grayscale transition-all duration-1000 lounge-image-parallax"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
                                 <div className="absolute bottom-8 left-8 z-20">
