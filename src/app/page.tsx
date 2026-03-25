@@ -256,7 +256,7 @@ export default function Home() {
               </m.div>
 
               {/* CTA Button: Visible Immediately on Load */}
-              <div className="z-40 relative pointer-events-auto w-full max-w-[320px] md:max-w-none md:w-auto px-4 md:px-0">
+              <div className="z-40 relative pointer-events-auto w-full px-6 md:px-0 mt-8 md:mt-10">
                 <m.div 
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -264,16 +264,21 @@ export default function Home() {
                   className="w-full flex justify-center"
                 >
                   <m.a 
-                    whileHover={{ scale: 1.02, backgroundColor: "#f2f2f2" }}
-                    whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: "'Jost', sans-serif" }} 
+                    whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
+                    whileTap={{ scale: 0.97 }}
+                    style={{ 
+                      fontFamily: "'Jost', sans-serif",
+                      color: '#111111',
+                      backgroundColor: '#ffffff',
+                    }} 
                     href="#agendamento" 
-                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center bg-white text-[#0D0D0D] border-none rounded-none px-8 md:px-[64px] min-h-[56px] transition-all duration-300 text-[15px] md:text-[16px] tracking-[0.1em] font-semibold uppercase shadow-[0_8px_32px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.25)]"
+                    className="hero-cta group inline-flex w-full md:w-auto items-center justify-center rounded-md px-10 md:px-16 min-h-[52px] md:min-h-[56px] transition-all duration-300 text-base md:text-[17px] tracking-normal font-semibold shadow-[0_4px_24px_rgba(255,255,255,0.12)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.25)] cursor-pointer"
                   >
-                    <span>Agendar Consulta</span>
+                    <span style={{ color: '#111111' }}>Agendar Consulta</span>
                     <svg 
-                      className="hero-arrow ml-3 w-5 h-5 stroke-current fill-none transition-transform duration-500 group-hover:translate-x-2 text-[#0D0D0D]"
+                      className="hero-arrow ml-3 w-5 h-5 fill-none transition-transform duration-500 group-hover:translate-x-2"
                       viewBox="0 0 24 24"
+                      style={{ stroke: '#111111' }}
                     >
                       <path d="M0 12 L20 12 M15 7 L20 12 L15 17" strokeWidth="1.75" />
                     </svg>
