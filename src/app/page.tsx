@@ -259,8 +259,8 @@ export default function Home() {
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
           {/* Correct Typography Hierarchy: Jost & Cormorant Garamond */}
-          <div className="absolute top-[42%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4 flex flex-col items-center">
-            <h1 className="relative flex flex-col items-center justify-center h-[280px] lg:h-[350px]">
+          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4 flex flex-col items-center">
+            <h1 className="relative flex flex-col items-center justify-center h-[350px]">
               <AnimatePresence mode="wait">
                 {videoPhase === 'skull' ? (
                   <m.span 
@@ -290,12 +290,12 @@ export default function Home() {
               </AnimatePresence>
             </h1>
 
-            {/* CTA Button repositioned for better visual grouping */}
+            {/* CTA Button repositioned for better visual grouping - Spacing increased as requested */}
             <m.div 
               initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
               animate={{ opacity: videoPhase === 'woman' ? 1 : 0, y: videoPhase === 'woman' ? 0 : 20, filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mt-2 lg:mt-6 z-30 pointer-events-auto"
+              className="relative mt-4 lg:mt-24 z-30 pointer-events-auto"
             >
               <m.a 
                 whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
