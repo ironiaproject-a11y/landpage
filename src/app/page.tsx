@@ -1,7 +1,7 @@
 "use client";
 
 import nextDynamic from "next/dynamic";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
@@ -48,60 +48,9 @@ const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Sta
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 
-// Shared styles
-const eyebrowStyle: React.CSSProperties = {
-  fontSize: '9px',
-  fontWeight: 300,
-  letterSpacing: '0.28em',
-  textTransform: 'uppercase',
-  color: 'rgba(255,255,255,0.38)',
-  marginBottom: '0.4rem',
-  fontFamily: "'Barlow', sans-serif",
-};
-const bodyStyle: React.CSSProperties = {
-  fontFamily: "'Barlow', sans-serif",
-  fontSize: '12px',
-  fontWeight: 300,
-  lineHeight: 1.6,
-  color: 'rgba(255,255,255,0.45)',
-  maxWidth: '26ch',
-  marginBottom: '1.2rem',
-};
-const phaseBlockStyle: React.CSSProperties = {
-  position: 'absolute',
-  bottom: '1.75rem',
-  left: '1.5rem',
-  right: '1.5rem',
-  textAlign: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  transition: 'opacity 0.7s ease, transform 0.7s ease',
-};
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [activePhase, setActivePhase] = useState(0);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const handleTime = () => {
-      if (!video.duration) return;
-      const p = video.currentTime / video.duration;
-      if (p < 0.25) setActivePhase(0);
-      else if (p < 0.55) setActivePhase(1);
-      else if (p < 0.80) setActivePhase(2);
-      else setActivePhase(3);
-    };
-    video.addEventListener('timeupdate', handleTime);
-    return () => video.removeEventListener('timeupdate', handleTime);
-  }, []);
-
-  const phaseVisible = (i: number): React.CSSProperties => ({
-    opacity: activePhase === i ? 1 : 0,
-    transform: activePhase === i ? 'translateY(0)' : 'translateY(10px)',
-  });
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
@@ -148,103 +97,127 @@ export default function Home() {
           }}
         />
 
-        {/* Phase Text Blocks Container */}
-        <div style={{ position: 'relative', zIndex: 2, height: '220px' }}>
+        {/* ── Editorial Lockup ── */}
 
-          {/* Phase 0 – Sua origem / A estrutura. */}
-          <div style={{ ...phaseBlockStyle, ...phaseVisible(0) }}>
-            <p style={eyebrowStyle}>Sua origem</p>
-            <h1 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '2.7rem',
-              fontWeight: 300,
-              fontStyle: 'italic',
-              color: '#fff',
-              lineHeight: 1.05,
-              marginBottom: '0.6rem',
-            }}>A estrutura.</h1>
-            <p style={{ ...bodyStyle, marginBottom: 0 }}>onde tudo começa</p>
-          </div>
+        {/* Top-left anchor: "Sua origem" — the starting point */}
+        <div style={{
+          position: 'absolute',
+          top: '1.75rem',
+          left: '1.5rem',
+          zIndex: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+        }}>
+          <span style={{
+            display: 'inline-block',
+            width: '18px',
+            height: '0.5px',
+            background: 'rgba(255,255,255,0.3)',
+          }} />
+          <p style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '9px',
+            fontWeight: 300,
+            letterSpacing: '0.28em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.35)',
+            margin: 0,
+          }}>Sua origem</p>
+        </div>
 
-          {/* Phase 1 – A transformação / Precisão biológica. */}
-          <div style={{ ...phaseBlockStyle, ...phaseVisible(1) }}>
-            <p style={eyebrowStyle}>A transformação</p>
-            <h1 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '2.3rem',
-              fontWeight: 300,
-              fontStyle: 'italic',
-              color: '#fff',
-              lineHeight: 1.05,
-              marginBottom: '0.6rem',
-            }}>Precisão biológica.</h1>
-          </div>
+        {/* Bottom text zone: main lockup */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: '0 1.5rem 2.25rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}>
+          {/* H1: Seu sorriso. — the destination */}
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(3rem, 13vw, 5rem)',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            color: '#ffffff',
+            lineHeight: 1.0,
+            letterSpacing: '-0.01em',
+            marginBottom: '1rem',
+          }}>
+            Seu sorriso.
+          </h1>
 
-          {/* Phase 2 – Alta performance / Excelência. */}
-          <div style={{ ...phaseBlockStyle, ...phaseVisible(2) }}>
-            <p style={eyebrowStyle}>Alta performance</p>
-            <h1 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '2.6rem',
-              fontWeight: 300,
-              fontStyle: 'italic',
-              color: '#fff',
-              lineHeight: 1.05,
-              marginBottom: '0.6rem',
-            }}>Excelência.</h1>
-            <p style={{ ...bodyStyle, marginBottom: 0 }}>Odontologia que nasce da sua biologia.</p>
-          </div>
+          {/* Divider line — visual breath */}
+          <div style={{
+            width: '32px',
+            height: '0.5px',
+            background: 'rgba(255,255,255,0.25)',
+            marginBottom: '1rem',
+          }} />
 
-          {/* Phase 3 – Seu resultado / Seu sorriso. + CTA */}
-          <div style={{ ...phaseBlockStyle, ...phaseVisible(3) }}>
-            <p style={{ ...eyebrowStyle, color: 'rgba(255,255,255,0.55)' }}>Seu resultado</p>
-            <h1 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '3rem',
+          {/* Refined copy — concise, poetic, connected to the visual */}
+          <p style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '12px',
+            fontWeight: 300,
+            lineHeight: 1.65,
+            color: 'rgba(255,255,255,0.48)',
+            maxWidth: '24ch',
+            marginBottom: '1.75rem',
+            letterSpacing: '0.01em',
+          }}>
+            Onde biologia e beleza<br />convergem em precisão.
+          </p>
+
+          {/* Pill CTA */}
+          <a
+            href="#agendamento"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.55rem',
+              padding: '0.65rem 1.5rem',
+              background: 'rgba(255,255,255,0.08)',
+              border: '0.5px solid rgba(255,255,255,0.22)',
+              borderRadius: '40px',
+              color: 'rgba(255,255,255,0.9)',
+              fontSize: '10px',
               fontWeight: 300,
-              fontStyle: 'italic',
-              color: '#fff',
-              lineHeight: 1.05,
-              marginBottom: '0.6rem',
-            }}>Seu sorriso.</h1>
-            <p style={bodyStyle}>
-              Odontologia de alta performance onde a excelência encontra a precisão biológica.
-            </p>
-            <a
-              href="#agendamento"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.65rem 1.4rem',
-                background: 'rgba(255,255,255,0.1)',
-                border: '0.5px solid rgba(255,255,255,0.2)',
-                borderRadius: '40px',
-                color: '#fff',
-                fontSize: '10px',
-                fontWeight: 300,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                fontFamily: "'Barlow', sans-serif",
-                cursor: 'pointer',
-              }}
-            >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff', opacity: 0.6, flexShrink: 0 }} />
-              Agendar consulta
-            </a>
-            <p style={{
-              fontSize: '9px',
-              letterSpacing: '0.12em',
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.22)',
-              marginTop: '0.55rem',
+              textDecoration: 'none',
               fontFamily: "'Barlow', sans-serif",
-            }}>role para explorar ↓</p>
-          </div>
+              cursor: 'pointer',
+            }}
+          >
+            <span style={{
+              width: '5px',
+              height: '5px',
+              borderRadius: '50%',
+              background: '#fff',
+              opacity: 0.55,
+              flexShrink: 0,
+            }} />
+            Agendar consulta
+          </a>
 
+          {/* Scroll hint */}
+          <p style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '9px',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.2)',
+            marginTop: '0.75rem',
+          }}>
+            role para explorar ↓
+          </p>
         </div>
       </section>
+
 
       {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
