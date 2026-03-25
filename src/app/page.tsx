@@ -146,16 +146,15 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Absolute Scroll-Synced Logic (0 to 144)
-      const scrubTrigger = ScrollTrigger.create({
+      // 2. CSS-sticky scroll scrub — no GSAP pin, no spacer, no ghost.
+      // scrollContainerRef is 300vh (set in JSX), the hero section is sticky top-0.
+      // ScrollTrigger only reads scroll progress and updates the canvas frame.
+      ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "+=200%",
-        pin: containerRef.current,
-        pinSpacing: true,
-        anticipatePin: 1,
-        scrub: 0.5, // Much snappier (was 1.2)
+        end: "bottom bottom",
+        scrub: 0.5,
         onUpdate: (self) => {
           const targetIdx = self.progress * (frameCount - 1);
           frameObj.current.index = targetIdx;
@@ -235,8 +234,11 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
-      <div ref={scrollContainerRef} className="relative w-full z-10">
-        <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
+      {/* scrollContainerRef is 300vh: 100vh visible + 200vh scrub room.
+          The section is sticky so it stays on screen while the user scrolls
+          through the container — no GSAP spacer needed, zero ghost risk. */}
+      <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
+        <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
 
