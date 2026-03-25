@@ -246,7 +246,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="w-full bg-[#0D0D0D] overflow-x-hidden">
+    <main className="w-full bg-[#0D0D0D] overflow-x-clip">
       {/* 300vh wrapper: gives 200vh scrub room without relying on GSAP’s pinSpacing.
           pinSpacing:false prevents GSAP from injecting its own spacer div,
           which was the root cause of the ghost hero gap. */}
