@@ -6,13 +6,11 @@ import { m, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
+import { InstitutionalTrust } from "@/components/InstitutionalTrust";
+import { Agendamento } from "@/components/Agendamento";
 
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
   ssr: false, 
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
-});
-const InstitutionalTrust = nextDynamic(() => import("@/components/InstitutionalTrust").then(mod => mod.InstitutionalTrust), { 
-  ssr: false,
   loading: () => <div className="h-screen bg-[#0D0D0D]" />
 });
 const TrustBar = nextDynamic(() => import("@/components/TrustBar").then(mod => mod.TrustBar), { 
@@ -47,19 +45,12 @@ const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), {
   ssr: false,
   loading: () => <div className="h-40 bg-[#0D0D0D]" />
 });
-const CTA = nextDynamic(() => import("@/components/CTA").then(mod => mod.CTA), { 
-  ssr: false,
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
-});
-const Contact = nextDynamic(() => import("@/components/Contact").then(mod => mod.Contact), { 
-  ssr: false,
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
-});
 const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
   ssr: false,
   loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
+const PremiumReveal = nextDynamic(() => import("@/components/PremiumReveal").then(mod => mod.PremiumReveal), { ssr: false });
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,19 +58,13 @@ export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   
-  // Ref-based state to prevent React lag
   const frameObj = useRef({ index: 0 });
   const [videoPhase, setVideoPhase] = useState<'skull' | 'woman'>('skull');
   const frameCount = 145;
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
-    // ── StrictMode guard: kill any stale pin from a previous run ──────────
-    // React StrictMode intentionally runs effects twice in dev. Without this,
-    // two ScrollTrigger pins exist simultaneously producing the ghost hero.
     ScrollTrigger.getById("heroScroll")?.kill(true);
-    // Also clear any orphaned GSAP pin spacers from the previous run
     ScrollTrigger.refresh();
 
     const canvas = canvasRef.current;
@@ -88,26 +73,23 @@ export default function Home() {
     if (!context) return;
 
     const ctx = gsap.context(() => {
-      // 1. Preload High-Quality Frames with Progress Tracking
       let loadedCount = 0;
-      const criticalFrames = 30; // Min frames for a smooth start
+      const criticalFrames = 30;
 
       const onImageLoad = () => {
         loadedCount++;
         if (loadedCount === criticalFrames) {
-          // Render first frame as soon as we have enough critical frames
           render(0);
         }
         if (loadedCount === frameCount) {
           window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-          (window as any).__HERO_ASSETS_LOADED__ = true;
         }
       };
 
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.onload = onImageLoad;
-        img.onerror = onImageLoad; // Don't block on errors
+        img.onerror = onImageLoad;
         img.src = `/hero-frames/frame_${i.toString().padStart(3, "0")}_delay-0.041s.png`;
         imagesRef.current[i] = img;
       }
@@ -129,13 +111,6 @@ export default function Home() {
           }
           context.clearRect(0, 0, width, height);
           context.drawImage(img, dx, dy, dWidth, dHeight);
-        } else if (img) {
-          // Ghost-loading fix: If frame isn't loaded yet, draw it the ms it arrives
-          img.onload = () => {
-            if (Math.round(frameObj.current.index) === Math.round(index)) {
-              render(index);
-            }
-          };
         }
       };
 
@@ -155,14 +130,11 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Scroll-Synced Scrub via GSAP Pin
-      // pinSpacing:false — we own the spacing via the 300vh wrapper.
-      // This prevents GSAP from injecting its own spacer (which caused the ghost).
       const scrubTrigger = ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "bottom bottom",  // 300vh container → 200vh of scrub room
+        end: "bottom bottom",
         scrub: true,
         onUpdate: (self) => {
           const targetIdx = self.progress * (frameCount - 1);
@@ -171,78 +143,55 @@ export default function Home() {
         }
       });
 
-      // Expose for outer cleanup
       (scrollContainerRef as any).__scrubTrigger = scrubTrigger;
 
-      // 3. Cinematic Auto-Intro via Physical Scroll Sync
-      // Instead of fighting the scrollbar, we physically move it!
       let introTween: any = null;
-      
       const startIntro = () => {
         const lenis = (window as any).lenis;
         if (!lenis) return;
-
-        // Exact scroll target to play the ENTIRE sequence, completely synced to GSAP's physical marker ends
-        const targetScroll = scrubTrigger.end; // Reliably uses GSAP's own end calculation to never miss a pixel
-        
-        // Use Lenis.scrollTo for perfect sync with the smooth scroll engine
+        const targetScroll = scrubTrigger.end;
         lenis.scrollTo(targetScroll, {
-          duration: 3.5, // Faster, strictly constant playback speed
-          easing: (t: number) => t, // LINEAR playback: prevents mathematical frame drops/freezing entirely at the end
+          duration: 3.5,
+          easing: (t: number) => t,
           onComplete: () => {
-            // Force final frame to ensure completion even if scroll-sync has micro-millisecond lag
             frameObj.current.index = frameCount - 1;
             updateFrame();
             introTween = null;
           }
         });
-        
-        // Track the active scroll operation for override
         introTween = true;
       };
 
-      // Kill the intro if the user manually scrubs (takes control)
       const handleUserScroll = () => {
         const lenis = (window as any).lenis;
         if (introTween && lenis) {
-          lenis.stop(); // Stop the auto-scroll immediately
-          lenis.start(); // Resume for manual control
+          lenis.stop();
+          lenis.start();
           introTween = null;
         }
       };
       window.addEventListener("wheel", handleUserScroll, { passive: true });
       window.addEventListener("touchstart", handleUserScroll, { passive: true });
 
-      // Guard to prevent multiple intro runs
       let introStarted = false;
-
-      // Start Trigger: Only start intro after preloader is signal to exit
       const onPreloaderExit = () => {
         if (introStarted) return;
         introStarted = true;
-        setTimeout(startIntro, 400); // Slight delay for preloader blur to settle
+        setTimeout(startIntro, 400);
       };
       window.addEventListener("preloader-exiting", onPreloaderExit);
 
-      // Store local references for cleanup
-      const localResize = handleResize;
-      const localWheel = handleUserScroll;
-      const localTouch = handleUserScroll;
-      const localExit = onPreloaderExit;
-
       return () => {
-        window.removeEventListener("resize", localResize);
-        window.removeEventListener("wheel", localWheel);
-        window.removeEventListener("touchstart", localTouch);
-        window.removeEventListener("preloader-exiting", localExit);
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("wheel", handleUserScroll);
+        window.removeEventListener("touchstart", handleUserScroll);
+        window.removeEventListener("preloader-exiting", onPreloaderExit);
       };
     });
 
     return () => {
-      // Kill the pin trigger directly (spacer removed with kill(true))
       const st = (scrollContainerRef as any).__scrubTrigger;
-      if (st) { st.kill(true); delete (scrollContainerRef as any).__scrubTrigger; }
-      // Fallback by ID
+      if (st) st.kill(true);
       ScrollTrigger.getById("heroScroll")?.kill(true);
       ctx.revert();
     };
@@ -250,83 +199,86 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
-      {/* 300vh wrapper: gives 200vh scrub room without relying on GSAP’s pinSpacing.
-          pinSpacing:false prevents GSAP from injecting its own spacer div,
-          which was the root cause of the ghost hero gap. */}
+      {/* Hero Section with Scrubbing Video */}
       <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
         <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
           <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/40 to-black/70 lg:from-black/80 lg:via-black/30 lg:to-black/80 z-10 pointer-events-none" />
 
-          {/* Correct Typography Hierarchy: Jost & Cormorant Garamond */}
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-6 md:px-4 flex flex-col items-center">
-            <h1 className="relative flex flex-col items-center justify-center h-[280px] lg:h-[350px]">
-              <AnimatePresence mode="wait">
-                {videoPhase === 'skull' ? (
-                  <m.span 
-                    key="skull-text"
-                    initial={{ opacity: 0, filter: 'blur(15px)', y: 20 }}
-                    animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                    exit={{ opacity: 0, filter: 'blur(15px)', y: -20 }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ fontFamily: "'Jost', sans-serif", letterSpacing: '0.4em' }} 
-                    className="absolute text-[18px] lg:text-[42px] font-[200] text-white/55 lg:text-white/90 uppercase"
-                  >
-                    Sua origem,
-                  </m.span>
-                ) : (
-                  <m.span 
-                    key="woman-text"
-                    initial={{ opacity: 0, y: 30, clipPath: 'inset(100% 0 0 0)' }}
-                    animate={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 -20% 0)' }}
-                    exit={{ opacity: 0, y: -30, clipPath: 'inset(0 0 100% 0)' }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }} 
-                    className="absolute text-[48px] lg:text-[140px] font-[300] text-white lowercase first-letter:uppercase leading-none italic"
-                  >
-                    Seu sorriso.
-                  </m.span>
-                )}
-              </AnimatePresence>
-            </h1>
-          </div>
-
-          {/* CTA Button repositioned to "bottom-weighted" center for better hierarchy */}
-          <div className="absolute top-[82vh] left-0 right-0 w-full flex justify-center z-30 pointer-events-none">
-            <m.div 
-              initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-              animate={{ 
-                opacity: videoPhase === 'woman' ? 1 : 0, 
-                y: videoPhase === 'woman' ? 0 : 20, 
-                filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' 
-              }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="pointer-events-auto"
-            >
-              <m.a 
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
-                whileTap={{ scale: 0.98 }}
-                style={{ fontFamily: "'Jost', sans-serif" }} 
-                href="#agendamento" 
-                className="group inline-flex items-center justify-center bg-white/10 border border-white/30 rounded-full px-12 lg:px-14 py-3.5 lg:py-4 hover:border-white/60 transition-all text-white/90 text-[11px] lg:text-[12px] tracking-[5px] lg:tracking-[6px] uppercase backdrop-blur-3xl shadow-[0_0_30px_rgba(255,255,255,0.05)]"
-              >
-                AGENDAR CONSULTA 
-                <m.span 
-                  className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-2"
+          {/* Enhanced Hero Typography */}
+          <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6">
+            <div className="max-w-4xl w-full text-center flex flex-col items-center">
+              <PremiumReveal direction="bottom" delay={0.4}>
+                <span 
+                  className="hero-overline block mb-6 text-white uppercase tracking-[0.4em] font-light opacity-50 text-[11px]"
+                  style={{ letterSpacing: '0.4em' }}
                 >
-                  &rarr;
-                </m.span>
-              </m.a>
-            </m.div>
+                  SUA ORIGEM,
+                </span>
+              </PremiumReveal>
+
+              <div className="relative mb-8">
+                <h1 
+                  className="hero-headline text-white font-headline font-[300] tracking-[-0.01em] leading-[0.9] flex flex-wrap justify-center items-baseline"
+                  style={{ fontSize: 'clamp(56px, 10vw, 72px)', lineHeight: '0.9' }}
+                >
+                  <PremiumReveal type="mask" direction="bottom" delay={0.6}>
+                    <span className="inline-block whitespace-nowrap">Seu sorriso</span>
+                  </PremiumReveal>
+                  <PremiumReveal type="fade" delay={1.2}>
+                    <span 
+                      className="hero-period inline-block text-white opacity-30 origin-bottom"
+                      style={{ fontSize: '1.6em', transform: 'translateY(0.15em)' }}
+                    >.</span>
+                  </PremiumReveal>
+                </h1>
+              </div>
+
+              <PremiumReveal direction="bottom" delay={0.8}>
+                <p className="hero-subheadline text-white/70 text-base md:text-[16px] font-light leading-[1.6] max-w-[500px] mb-12">
+                  Odontologia de alta performance<br/>
+                  onde a excelência encontra a precisão.
+                </p>
+              </PremiumReveal>
+
+              <div className="z-30">
+                <m.div 
+                  initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                  animate={{ 
+                    opacity: videoPhase === 'woman' ? 1 : 0, 
+                    y: videoPhase === 'woman' ? 0 : 20, 
+                    filter: videoPhase === 'woman' ? 'blur(0px)' : 'blur(10px)' 
+                  }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <m.a 
+                    whileHover={{ scale: 1.02, backgroundColor: "white", color: "black", borderColor: "white" }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ fontFamily: "'Jost', sans-serif" }} 
+                    href="#agendamento" 
+                    className="hero-cta group inline-flex items-center justify-center bg-white/5 border border-white/30 rounded-none px-12 md:px-[48px] py-5 md:py-[20px] transition-all text-white text-[13px] tracking-[0.15em] uppercase backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
+                  >
+                    <span>Agendar Consulta</span>
+                    <svg 
+                      className="hero-arrow ml-4 w-5 h-5 stroke-current fill-none transition-transform duration-500 group-hover:translate-x-2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M0 12 L20 12 M15 7 L20 12 L15 17" strokeWidth="1.5" />
+                    </svg>
+                  </m.a>
+                </m.div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
 
+      {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
+        <Services />
         <Stats />
         <TrustBar />
         <InstitutionalTrust />
-        <Services />
         <About />
         <Specialist />
         <Experience />
@@ -334,8 +286,7 @@ export default function Home() {
         <CaseStudies />
         <Testimonials />
         <FAQ />
-        <CTA />
-        <Contact />
+        <Agendamento />
         <Footer />
       </div>
     </main>
