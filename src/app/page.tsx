@@ -256,11 +256,11 @@ export default function Home() {
       <div ref={scrollContainerRef} style={{ height: '300vh' }} className="relative w-full z-10">
         <section ref={containerRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black text-white m-0 p-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 grayscale opacity-90 scale-[1.05]" />
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/80 via-black/30 to-black/80 z-10 pointer-events-none" />
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-black/40 to-black/70 lg:from-black/80 lg:via-black/30 lg:to-black/80 z-10 pointer-events-none" />
 
           {/* Correct Typography Hierarchy: Jost & Cormorant Garamond */}
-          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-4 flex flex-col items-center">
-            <h1 className="relative flex flex-col items-center justify-center h-[350px]">
+          <div className="absolute top-[30%] -translate-y-1/2 left-1/2 -translate-x-1/2 w-full z-20 pointer-events-none text-center px-6 md:px-4 flex flex-col items-center">
+            <h1 className="relative flex flex-col items-center justify-center h-[280px] lg:h-[350px]">
               <AnimatePresence mode="wait">
                 {videoPhase === 'skull' ? (
                   <m.span 
@@ -324,14 +324,14 @@ export default function Home() {
 
       <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
-        <About />
-        <InstitutionalTrust />
         <TrustBar />
-        <Services />
-        <CaseStudies />
+        <InstitutionalTrust />
+        <About />
         <Specialist />
         <Experience />
         <Amenities />
+        <Services />
+        <CaseStudies />
         <Testimonials />
         <FAQ />
         <CTA />

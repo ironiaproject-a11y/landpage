@@ -235,6 +235,7 @@ export function Testimonials() {
                                                         src={testimonial.image}
                                                         alt={testimonial.name}
                                                         fill
+                                                        loading="lazy"
                                                         className="object-cover grayscale"
                                                     />
                                                 </div>

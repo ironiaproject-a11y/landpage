@@ -5,16 +5,18 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { Sparkles, ShieldCheck, Award, GraduationCap } from "lucide-react";
+
 // Register ScrollTrigger
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
 const trustTokens = [
-    { name: "USP", detail: "Excelência em Formação" },
-    { name: "CRO-SP", detail: "Registro Profissional" },
-    { name: "ABO", detail: "Associação Brasileira" },
-    { name: "SBOE", detail: "Sociedade de Estética" },
+    { name: "USP", detail: "Excelência em Formação", icon: <GraduationCap className="w-5 h-5" /> },
+    { name: "CRO-SP", detail: "Registro Profissional", icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: "ABO", detail: "Associação Brasileira", icon: <Award className="w-5 h-5" /> },
+    { name: "SBOE", detail: "Sociedade de Estética", icon: <Sparkles className="w-5 h-5" /> },
 ];
 
 export function TrustBar() {
@@ -98,9 +100,14 @@ export function TrustBar() {
                                 viewport={{ once: true }}
                                 className="trust-token flex flex-col items-center lg:items-start group cursor-default"
                             >
-                                <span className="font-headline text-2xl md:text-3xl text-white/90 font-light tracking-[0.15em] group-hover:text-white group-hover:drop-shadow-glow transition-all duration-700">
-                                    {token.name}
-                                </span>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:border-white/30 transition-all text-white/40 group-hover:text-white">
+                                        {token.icon}
+                                    </div>
+                                    <span className="font-headline text-2xl md:text-3xl text-white/90 font-light tracking-[0.10em] group-hover:text-white group-hover:drop-shadow-glow transition-all duration-700">
+                                        {token.name}
+                                    </span>
+                                </div>
                                 <div className="h-[1px] w-0 group-hover:w-full bg-white/20 transition-all duration-700 mb-2" />
                                 <span className="text-level-4 uppercase text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-500">
                                     {token.detail}
