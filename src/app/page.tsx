@@ -121,56 +121,53 @@ export default function Home() {
       window.addEventListener("resize", handleResize);
       handleResize();
 
-      // 2. Fluid Hybrid Control Logic
-      let introFinished = false;
+      // 2. Exact Control Logic (No Dead Zones, Short Pin)
+      let isScrubbing = false;
+      const autoFrame = { val: 0 };
+      const scrollFrame = { val: 75 };
 
-      const scrubTrigger = ScrollTrigger.create({
+      ScrollTrigger.create({
         id: "heroScroll",
         trigger: scrollContainerRef.current,
         start: "top top",
-        end: "+=350%",
+        end: "+=120%", // Faster, brings the rest of landpage into view quickly
         pin: containerRef.current,
         pinSpacing: true,
         anticipatePin: 1,
         onUpdate: (self) => {
-          if (introFinished) {
+          // As soon as user scrolls past 1%, they take over
+          if (self.progress > 0.01) isScrubbing = true;
+
+          if (isScrubbing) {
+            // Map scroll physically from frame 75 to 144 -> 100% fluid, no dead zones
             const targetIdx = 75 + self.progress * (frameCount - 1 - 75);
-            gsap.to(frameObj.current, {
-              index: targetIdx,
-              duration: 0.6, // Tactile 'fluidity' without locking
-              ease: "power3.out",
+            gsap.to(scrollFrame, {
+              val: targetIdx,
+              duration: 0.3, // Ultra-responsive tactile fluidity
+              ease: "power2.out",
               overwrite: "auto",
-              onUpdate: updateFrame
+              onUpdate: () => {
+                frameObj.current.index = scrollFrame.val;
+                updateFrame();
+              }
             });
           }
         }
       });
 
-      const startIntro = () => {
-        gsap.to(frameObj.current, {
-          index: 75,
-          duration: 3,
-          ease: "power2.inOut",
-          onUpdate: updateFrame,
-          onComplete: () => {
-            introFinished = true;
-            // Sync gently if user already scrolled during intro
-            const targetIdx = 75 + scrubTrigger.progress * (frameCount - 1 - 75);
-            gsap.to(frameObj.current, {
-              index: targetIdx,
-              duration: 1,
-              ease: "power3.out",
-              overwrite: "auto",
-              onUpdate: updateFrame
-            });
+      // Cinematic Intro (0 to 75)
+      gsap.to(autoFrame, {
+        val: 75,
+        duration: 2.5,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          // Yield control if the user starts scrubbing
+          if (!isScrubbing) {
+            frameObj.current.index = autoFrame.val;
+            updateFrame();
           }
-        });
-      };
-
-      // Start Trigger
-      const firstFrame = imagesRef.current[0];
-      if (firstFrame.complete) { render(0); startIntro(); }
-      else { firstFrame.onload = () => { render(0); startIntro(); }; }
+        }
+      });
 
       return () => window.removeEventListener("resize", handleResize);
     });
