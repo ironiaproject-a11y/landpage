@@ -79,7 +79,7 @@ export default function Home() {
             height: '100%',
             objectFit: 'cover',
             zIndex: 0,
-            filter: 'grayscale(1)',
+            filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
           }}
           src="/hero-background-new.mp4"
         />
@@ -110,15 +110,15 @@ export default function Home() {
           padding: '0 1.5rem',
           textAlign: 'center',
         }}>
-          {/* Eyebrow: Sua origem — very faint, highly tracked */}
+          {/* Eyebrow: Sua origem — improved legibility (10px, 0.45 opacity) */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '8px',
+            fontSize: '10px',
             fontWeight: 300,
             letterSpacing: '0.42em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.28)',
-            marginBottom: '0.9rem',
+            color: 'rgba(255,255,255,0.45)',
+            marginBottom: '0.8rem',
           }}>
             Sua origem,
           </p>
@@ -146,15 +146,15 @@ export default function Home() {
             marginBottom: '1.25rem',
           }} />
 
-          {/* Copy */}
+          {/* Copy — improved legibility (14px, 0.65 opacity) */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '12px',
+            fontSize: '14px',
             fontWeight: 300,
-            lineHeight: 1.7,
-            color: 'rgba(255,255,255,0.45)',
-            maxWidth: '22ch',
-            marginBottom: '2rem',
+            lineHeight: 1.6,
+            color: 'rgba(255,255,255,0.65)',
+            maxWidth: '24ch',
+            marginBottom: '1.75rem',
             letterSpacing: '0.01em',
           }}>
             Onde biologia e beleza<br />convergem em precisão.
@@ -192,14 +192,14 @@ export default function Home() {
             Agendar consulta
           </a>
 
-          {/* Scroll hint */}
+          {/* Scroll hint — improved legibility (10px, 0.3 opacity) */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '9px',
+            fontSize: '10px',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.18)',
-            marginTop: '0.9rem',
+            color: 'rgba(255,255,255,0.3)',
+            marginTop: '0.75rem',
           }}>
             role para explorar ↓
           </p>
