@@ -130,7 +130,6 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  will-change: transform;
 }
 
 /* Ensure interactive elements use correct UI font */

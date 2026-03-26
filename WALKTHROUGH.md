@@ -1,20 +1,20 @@
-# Walkthrough: Full-Viewport Immersive Hero Implementation
+# Walkthrough: True Full-Bleed Immersive Hero Implementation
 
-We have further refined the Hero section to achieve a truly cinematic, edge-to-edge experience that seamlessly integrates with the navigation system.
+We have successfully "nuked" the boxed appearance and achieved a truly edge-to-edge cinematic Hero section.
 
 ## Key Accomplishments
 
-### 1. Zero-Gap Viewport Integration
-- **Absolute Positioning**: The Hero section now starts at the absolute top of the screen (`y: 0`), spanning the entire `100vh` without any margins or layout gaps.
-- **Navbar Overlay**: The "Clínica." navbar now floats elegantly over the video background, utilizing its glassmorphism effect to create a layered, Three-Dimensional feel.
+### 1. Removing the 'Boxed' Frame
+- **Vignette Removal**: Identified and removed a light-colored vignette (`body::after` in `globals.css`) that was creating a "frame" or "relief" effect at the edges of the screen.
+- **CSS Consolidation**: Cleaned up legacy Hero styles to prevent naming collisions and ensure the modern layout is the only one active.
 
-### 2. Dual-Gradient Cinematic Blending
-- **Softening the Edges**: Implemented a new top-down gradient that subtly darkens the very top of the video, ensuring a perfect transition into the black navbar area and eliminating any "boxed" or "square" appearance.
-- **Enhanced Legibility**: Refined the bottom-up gradient to further highlight the typography while maintaining a natural, atmospheric look.
+### 2. Forced 100vw Scaling
+- **Absolute Width**: Forced the Hero section to use `100vw` (viewport width) instead of `100%`, bypassing any potential parent layout constraints.
+- **Video Over-Scaling**: Added a `transform: scale(1.05)` to the background video. This forces the media to "bleed" past the literal edges of the browser container, ensuring zero sub-pixel gaps.
 
-### 3. Balanced Content Layout
-- **Navbar Respect**: Adjusted the Hero content container with strategic top padding (`160px`). This ensures that headlines and subtext never collide with the navigation logo or triggers, even on different screen sizes.
-- **Responsive Symmetry**: Verified that the vertical balance remains consistent across devices.
+### 3. Absolute Top Alignment
+- **Y-Zero Positioning**: Re-verified and forced the Hero container to start at the absolute top of the screen (`top: 0`, `left: 0`).
+- **Layout Sync**: Ensured the `main` tag and `body` have zero margins/paddings that could push the content down.
 
 ### 4. Technical Validation
 - **Build Integrity**: Verified with `npm run build` to ensure production stability.
@@ -22,4 +22,4 @@ We have further refined the Hero section to achieve a truly cinematic, edge-to-e
 
 ---
 
-The transition from the top of the browser to the Hero content is now completely fluid, achieving the high-end, immersive aesthetic requested.
+The Hero now occupies 100% of the visual space with zero "boxed" effect, providing the maximum possible cinematic immersion.

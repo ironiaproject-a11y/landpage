@@ -58,18 +58,16 @@ export default function Home() {
       <section
         className="hero-section"
         style={{
-          position: 'relative',
+          position: 'absolute',
+          top: 0,
+          left: 0,
           height: '100vh',
           width: '100vw',
-          left: 0,
-          top: 0,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
           overflow: 'hidden',
           zIndex: 10,
-          marginTop: 0,
-          paddingTop: 0,
         }}
       >
         {/* Background Video */}
@@ -90,7 +88,7 @@ export default function Home() {
             objectPosition: 'center 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
-            transform: 'scale(1.05)', // Force bleed to remove 'boxed' look
+            transform: 'scale(1.08)', // Maximum bleed to eliminate all possible gaps
           }}
           src="/hero-background-new.mp4"
         />
@@ -204,6 +202,9 @@ export default function Home() {
       </section>
 
 
+
+      {/* Spacer to push content below the absolute Hero */}
+      <div className="h-screen w-full invisible pointer-events-none" />
 
       {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
