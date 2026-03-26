@@ -83,62 +83,63 @@ export function Navbar() {
                 }}
                 animate={isHidden ? "hidden" : "visible"}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "py-4 bg-[var(--color-premium-dark)]/85 backdrop-blur-xl border-b border-white/5" : "pt-12 pb-8 bg-transparent"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "bg-[var(--color-premium-dark)]/85 backdrop-blur-xl border-b border-white/5" : "bg-transparent"
                     }`}
             >
-                <div className="container mx-auto px-6 flex items-center justify-between">
-                    {/* Logo Area */}
-                    <div className="flex flex-col gap-1">
-                        {/* Elite Meta Info Bar (The requested "three dots" info style) */}
-                        <m.div 
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1, duration: 1 }}
-                            className="hidden lg:flex items-center gap-4 text-[9px] uppercase tracking-[0.2em] text-white/30 font-light"
-                        >
-                            <div className="flex items-center gap-3">
-                                <span className="text-white/50">+12 ANOS</span>
-                                <span className="text-white/10">•</span>
-                                <span className="text-white/50">+700 PACIENTES</span>
-                                <span className="text-white/10">•</span>
-                                <span className="text-white/50">TECNOLOGIA 3D</span>
-                            </div>
-                            
-                            <div className="h-3 w-[1px] bg-white/10 mx-2" />
-
-                            <div className="flex items-center gap-3 italic lowercase tracking-[0.1em] text-white/20">
-                                <span>resultados naturais</span>
-                                <span className="text-white/5">•</span>
-                                <span>planejamento digital</span>
-                                <span className="text-white/5">•</span>
-                                <span>atendimento humanizado</span>
-                            </div>
-
-                            <div className="flex-1" />
-
-                            <div className="flex items-center gap-3">
+                <div className="border-b border-white/5 bg-white/[0.02] backdrop-blur-md">
+                    <div className="container mx-auto px-6 py-2.5 flex items-center justify-between text-[10px] uppercase tracking-[0.2em] font-light">
+                        {/* Left Side: Contact & Location */}
+                        <div className="flex items-center gap-6 text-white/40">
+                            <div className="flex items-center gap-2">
+                                <span className="text-white/60">Local:</span>
                                 <span>Pereira Barreto, SP</span>
-                                <span className="text-white/10">•</span>
+                            </div>
+                            <div className="hidden sm:flex items-center gap-2 border-l border-white/10 pl-6">
+                                <span className="text-white/60">Tel:</span>
                                 <span>+55 (18) 3743-3000</span>
                             </div>
-                        </m.div>
-
-                        <div className="flex items-center gap-6">
-                            <Magnetic strength={0.2} range={60}>
-                                <a
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                                    }}
-                                    className="relative z-50 flex items-center gap-2"
-                                >
-                                    <span className="font-headline text-level-4 font-[400] text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
-                                        Clínica<span className="text-white italic font-light">.</span>
-                                    </span>
-                                </a>
-                            </Magnetic>
                         </div>
+
+                        {/* Center: Tagline */}
+                        <div className="hidden xl:flex items-center gap-3 italic lowercase tracking-[0.1em] text-white/20">
+                            <span>resultados naturais</span>
+                            <span className="text-white/5">•</span>
+                            <span>planejamento digital</span>
+                            <span className="text-white/5">•</span>
+                            <span>atendimento humanizado</span>
+                        </div>
+
+                        {/* Right Side: Hours & Email */}
+                        <div className="flex items-center gap-6 text-white/40">
+                            <div className="hidden lg:flex items-center gap-2">
+                                <span className="text-white/60">Horário:</span>
+                                <span>Seg — Sex: 08h — 20h</span>
+                            </div>
+                            <div className="hidden md:flex items-center gap-2 border-l border-white/10 pl-6">
+                                <span className="text-white/60">Email:</span>
+                                <span>contato@clinicapremium.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`container mx-auto px-6 flex items-center justify-between transition-all duration-500 ${isScrolled ? "py-4" : "py-8"}`}>
+                    {/* Logo Area */}
+                    <div className="flex items-center gap-6">
+                        <Magnetic strength={0.2} range={60}>
+                            <a
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="relative z-50 flex items-center gap-2"
+                            >
+                                <span className="font-headline text-level-4 font-[400] text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
+                                    Clínica<span className="text-white italic font-light">.</span>
+                                </span>
+                            </a>
+                        </Magnetic>
                     </div>
 
                     {/* Desktop Menu */}
