@@ -60,7 +60,9 @@ export default function Home() {
         style={{
           position: 'relative',
           height: '100vh',
-          width: '100%',
+          width: '100vw',
+          left: 0,
+          top: 0,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
@@ -88,6 +90,7 @@ export default function Home() {
             objectPosition: 'center 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
+            transform: 'scale(1.05)', // Force bleed to remove 'boxed' look
           }}
           src="/hero-background-new.mp4"
         />

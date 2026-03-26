@@ -188,15 +188,9 @@ body::before {
   }
 }
 
-/* Subtle Cinematic Vignette */
+/* Removed subtle vignette to eliminate the 'boxed' frame effect requested by the user */
 body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.02) 100%);
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.5;
+  content: none;
 }
 
 @media (max-width: 1024px) {
@@ -1102,91 +1096,20 @@ section:not(.hero) {
   animation-delay: 320ms;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.hero-origin {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: 11px;
-  letter-spacing: 0.8em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0;
+/* ── Hero Entrance Base Styles (Consolidated) ── */
+.animate-hero-fade {
   opacity: 0;
-  animation: fadeIn 1.4s ease forwards 0.4s;
+  animation: heroFadeIn 700ms cubic-bezier(.22, .9, .32, 1) forwards;
+  will-change: transform, opacity;
 }
-.hero-divider {
-  display: none;
-}
-.hero-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  white-space: nowrap;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  font-size: clamp(52px, 8vw, 92px);
-  line-height: 1.04;
-  letter-spacing: 0.015em;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-  opacity: 0;
-  animation: revealUpCentered 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1s;
-}
-.hero-cta {
-  position: absolute;
-  bottom: 9%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  pointer-events: all;
-  cursor: pointer;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: 10px;
-  letter-spacing: 0.4em;
-  text-transform: lowercase;
-  color: rgba(255,255,255,0.30);
-  text-decoration: none;
-  transition: color 0.4s ease;
-  opacity: 0;
-  animation: fadeIn 1s ease forwards 2s;
-}
-.hero-cta:hover {
-  color: rgba(255,255,255,0.60);
-}
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-@keyframes revealUpCentered {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 40px)); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
-}
-@media (max-width: 640px) {
-  .hero-origin {
-    font-size: 9px;
-    top: 11%;
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .hero-divider {
-    top: calc(11% + 24px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .hero-title {
-    font-size: clamp(40px, 11vw, 60px);
-  }
-}
+}
