@@ -6,8 +6,6 @@ import { useRef } from "react";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
-import { Clinica } from "@/components/Clinica";
-
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
   ssr: false, 
   loading: () => <div className="h-screen bg-[#0D0D0D]" />
@@ -56,15 +54,12 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
-      <Clinica />
-      
       {/* Hero Section – Video Background */}
       <section
         className="hero-section"
         style={{
           position: 'relative',
-          height: 'calc(100vh - 100px)',
-          marginTop: '-2px',
+          height: '100vh',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',

@@ -94,13 +94,33 @@ export function Navbar() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1, duration: 1 }}
-                            className="hidden lg:flex items-center gap-3 text-[9px] uppercase tracking-[0.2em] text-white/30 font-light"
+                            className="hidden lg:flex items-center gap-4 text-[9px] uppercase tracking-[0.2em] text-white/30 font-light"
                         >
-                            <span>Pereira Barreto, SP</span>
-                            <span className="text-white/10">•</span>
-                            <span>+55 (18) 3743-3000</span>
-                            <span className="text-white/10">•</span>
-                            <span>Seg — Sex: 08h — 20h</span>
+                            <div className="flex items-center gap-3">
+                                <span className="text-white/50">+12 ANOS</span>
+                                <span className="text-white/10">•</span>
+                                <span className="text-white/50">+700 PACIENTES</span>
+                                <span className="text-white/10">•</span>
+                                <span className="text-white/50">TECNOLOGIA 3D</span>
+                            </div>
+                            
+                            <div className="h-3 w-[1px] bg-white/10 mx-2" />
+
+                            <div className="flex items-center gap-3 italic lowercase tracking-[0.1em] text-white/20">
+                                <span>resultados naturais</span>
+                                <span className="text-white/5">•</span>
+                                <span>planejamento digital</span>
+                                <span className="text-white/5">•</span>
+                                <span>atendimento humanizado</span>
+                            </div>
+
+                            <div className="flex-1" />
+
+                            <div className="flex items-center gap-3">
+                                <span>Pereira Barreto, SP</span>
+                                <span className="text-white/10">•</span>
+                                <span>+55 (18) 3743-3000</span>
+                            </div>
                         </m.div>
 
                         <div className="flex items-center gap-6">
