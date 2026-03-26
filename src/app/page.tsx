@@ -61,13 +61,16 @@ export default function Home() {
         style={{
           position: 'relative',
           height: '100vh',
-          width: '100vw',
+          width: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
           backgroundColor: '#000',
+          borderBottomLeftRadius: 'clamp(3rem, 10vw, 10rem)',
+          borderBottomRightRadius: 'clamp(3rem, 10vw, 10rem)',
+          zIndex: 10,
         }}
       >
         {/* Background Video */}
@@ -204,28 +207,20 @@ export default function Home() {
             Inicie sua jornada
           </a>
 
-          {/* Scroll hint — improved legibility (10px, 0.3 opacity) */}
+          {/* Visual Indicator of Premium Depth */}
           <div style={{
             position: 'absolute',
-            bottom: '-15vh',
+            bottom: '6vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '1rem'
+            gap: '0.8rem',
+            opacity: 0.6
           }}>
-            <p style={{
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: '10px',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.35)',
-            }}>
-              explore o novo padrão
-            </p>
             <div style={{
               width: '1px',
-              height: '40px',
-              background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)',
+              height: '30px',
+              background: 'linear-gradient(to bottom, #fff, transparent)',
             }} />
           </div>
         </div>
