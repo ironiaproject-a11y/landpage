@@ -79,6 +79,7 @@ export default function Home() {
             height: '100%',
             objectFit: 'cover',
             zIndex: 0,
+            filter: 'grayscale(1)',
           }}
           src="/hero-background-new.mp4"
         />
