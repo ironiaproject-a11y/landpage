@@ -1,25 +1,25 @@
-# Walkthrough: Hero Hard Reset Implementation
+# Walkthrough: Hero Over-fill Implementation
 
-We have executed a "Hard Reset" on the Hero section to ensure absolute zero-gap integration at the top of the viewport.
+We have implemented an "Over-fill" strategy to guarantee absolute zero-gap integration at the top of the browser, physically forcing the media past the viewport boundaries.
 
 ## Key Accomplishments
 
-### 1. Eliminating the 'Top Line'
-- **ScrollProgress Removal**: Temporarily disabled the `ScrollProgress` bar (the 2px line at the top) to eliminate it as a potential source of visual separation.
-- **Rendering Optimization**: Removed `will-change: transform` from the `body` tag in `globals.css`. This prevents the browser from creating a new stacking context that could lead to sub-pixel rendering gaps between the Hero and the screen edge.
+### 1. Brute-Force Top Alignment (Over-fill)
+- **-60px Top Shift**: Pushed the Hero media container to `top: -60px`. This deliberately forces the start of the video to occur *above* the browser's physical top edge, burying any potential line or gap under the video itself.
+- **Height Compensation**: Adjusted the container height to `calc(100vh + 60px)` to ensure the bottom of the Hero still perfectly meets the standard `100vh` scroll point.
 
-### 2. Force-Bleed Absolute Alignment
-- **Absolute Top-0**: Forced the Hero container to use `position: absolute` with a hard `top: 0` and `left: 0`, and set its width to `100vw`. This ensures it ignores any parent layout padding or navbar-induced shifts.
-- **Aggressive Over-Scaling**: Increased the background video's `scale` to `1.08`. This ensures the video "leaks" past the browser's physical boundaries, providing a perfect bleed into the absolute top pixels.
+### 2. Navbar Integration & Masking
+- **Integrator Bar**: Added a dedicated `bg-black/40` integrator bar at the very top of the Navbar area. This creates a solid visual base for the "Clínica." logo and masks any residual system lines.
+- **Seamless Gradient**: Implemented a `bg-gradient-to-b from-black/60` on the Navbar to soften the transition and unify the top edge with the cinematic video.
 
-### 3. Layered Stacking Correction
-- **Z-Index Harmony**: Verified that the Hero (`z-10`) stays behind the Navbar (`z-50`) while both occupy the same top space correctly.
-- **Content Spacing**: Kept the `160px` top padding on the Hero *text* so information remains legible despite the background filling the entire screen.
+### 3. Maximum Coverage
+- **1.25x Over-Scale**: Scaled the background video to `1.25`. This 25% zoom ensures that even if the video file has internal letterboxing, it is cropped far beyond the visible viewport area.
+- **DIV Isolation**: Switched to a `div` element with the `.hero-container-reset` class to bypass all global CSS `section` padding rules.
 
 ### 4. Technical Validation
 - **Build Integrity**: Verified with `npm run build` to ensure production stability.
-- **GitHub Sync**: All changes are fully synchronized with the `main` branch.
+- **GitHub Sync**: All changes are fully synchronized on the `main` branch.
 
 ---
 
-The Hero now occupies 100% of the visual space from the absolute top of the viewport, with no lines or gaps.
+The Hero now occupies 100% of the visual space from the absolute top of the viewport, with zero possibility of gaps or black lines.

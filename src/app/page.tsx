@@ -59,7 +59,10 @@ export default function Home() {
       <div
         className="hero-container-reset"
         style={{
-          height: '100vh',
+          position: 'absolute',
+          top: '-60px', // Over-fill: Pushing above the browser edge
+          left: 0,
+          height: 'calc(100vh + 60px)',
           width: '100vw',
           display: 'flex',
           flexDirection: 'column',
@@ -86,7 +89,7 @@ export default function Home() {
             objectPosition: 'center 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
-            transform: 'scale(1.2)', // Nuclear Scale to cut any possible letterboxing
+            transform: 'scale(1.25)', // Over-scale to ensure zero letterboxing
           }}
           src="/hero-background-new.mp4"
         />
@@ -132,7 +135,7 @@ export default function Home() {
         <div style={{
           position: 'relative',
           zIndex: 2,
-          paddingTop: '160px', // Respect clinic space (top bar/navbar)
+          paddingTop: '200px', // Increased to respect the Over-fill shift
           paddingBottom: '5rem',
           paddingLeft: '40px',
           paddingRight: '40px',
