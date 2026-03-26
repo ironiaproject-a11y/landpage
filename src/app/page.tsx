@@ -99,6 +99,17 @@ export default function Home() {
           }}
         />
 
+        {/* Radial gradient shadow for text legibility — centered behind text */}
+        <div
+          style={{
+            background: 'radial-gradient(ellipse 85% 45% at 50% 55%, rgba(0,0,0,0.55) 0%, transparent 100%)',
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
+
         {/* ── Unified Centered Lockup ── */}
         <div style={{
           position: 'absolute',
@@ -111,28 +122,27 @@ export default function Home() {
           padding: '0 1.5rem',
           textAlign: 'center',
         }}>
-          {/* Eyebrow: Sua origem — italic style added */}
+          {/* Eyebrow: SUA ORIGEM, — 10px, 300 weight, 0.28em tracking, tight margin */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '13px',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            letterSpacing: '0.32em',
+            fontSize: '10px',
+            fontWeight: 300,
+            letterSpacing: '0.28em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.7)',
-            marginBottom: '0.8rem',
+            color: 'rgba(255,255,255,0.45)',
+            marginBottom: '0.3rem',
           }}>
-            Sua origem,
+            SUA ORIGEM,
           </p>
 
-          {/* H1: Seu sorriso. — dominant, luminous */}
+          {/* H1: Seu sorriso. — clamp(2.8rem, 11vw, 4rem), 300 weight, 1.05 line-height */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(3.4rem, 15vw, 6rem)',
+            fontSize: 'clamp(2.8rem, 11vw, 4rem)',
             fontWeight: 300,
             fontStyle: 'italic',
             color: '#ffffff',
-            lineHeight: 1.0,
+            lineHeight: 1.05,
             letterSpacing: '-0.02em',
             marginBottom: '1.5rem',
             textShadow: '0 0 40px rgba(255,255,255,0.12)',
@@ -148,14 +158,14 @@ export default function Home() {
             marginBottom: '1.25rem',
           }} />
 
-          {/* Copy — improved legibility (14px, 0.65 opacity) */}
+          {/* Copy — 13px, 300 weight, white/50%, 26ch max-width */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '14px',
+            fontSize: '13px',
             fontWeight: 300,
             lineHeight: 1.6,
-            color: 'rgba(255,255,255,0.65)',
-            maxWidth: '24ch',
+            color: 'rgba(255,255,255,0.5)',
+            maxWidth: '26ch',
             marginBottom: '1.75rem',
             letterSpacing: '0.01em',
           }}>
@@ -172,7 +182,7 @@ export default function Home() {
               padding: '0.65rem 1.5rem',
               background: 'rgba(255,255,255,0.08)',
               border: '0.5px solid rgba(255,255,255,0.22)',
-              borderRadius: '40px',
+              borderRadius: '4px',
               color: 'rgba(255,255,255,0.9)',
               fontSize: '10px',
               fontWeight: 300,
