@@ -109,29 +109,30 @@ export default function Home() {
           padding: '0 1.5rem',
           textAlign: 'center',
         }}>
-          {/* Eyebrow: Sua origem — contextualizes the headline above it */}
+          {/* Eyebrow: Sua origem — very faint, highly tracked */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '10px',
+            fontSize: '8px',
             fontWeight: 300,
-            letterSpacing: '0.32em',
+            letterSpacing: '0.42em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.42)',
-            marginBottom: '0.6rem',
+            color: 'rgba(255,255,255,0.28)',
+            marginBottom: '0.9rem',
           }}>
             Sua origem,
           </p>
 
-          {/* H1: Seu sorriso. — the promise */}
+          {/* H1: Seu sorriso. — dominant, luminous */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(3.2rem, 14vw, 5.5rem)',
+            fontSize: 'clamp(3.4rem, 15vw, 6rem)',
             fontWeight: 300,
             fontStyle: 'italic',
             color: '#ffffff',
             lineHeight: 1.0,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
             marginBottom: '1.5rem',
+            textShadow: '0 0 40px rgba(255,255,255,0.12)',
           }}>
             Seu sorriso.
           </h1>
