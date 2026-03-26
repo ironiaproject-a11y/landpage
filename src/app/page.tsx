@@ -66,6 +66,8 @@ export default function Home() {
           justifyContent: 'flex-end',
           overflow: 'hidden',
           zIndex: 10,
+          marginTop: 0,
+          paddingTop: 0,
         }}
       >
         {/* Background Video */}
@@ -90,12 +92,23 @@ export default function Home() {
           src="/hero-background-new.mp4"
         />
 
-        {/* Layer 1: Base gradient */}
+        {/* Layer 1: Bottom-up gradient for content legibility */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Layer 1.5: Top-down gradient to soften the navbar edge */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 20%, transparent 40%)',
             zIndex: 1,
             pointerEvents: 'none',
           }}
@@ -120,10 +133,12 @@ export default function Home() {
         <div style={{
           position: 'relative',
           zIndex: 2,
-          paddingBottom: '3rem',
-          paddingLeft: '24px',
-          paddingRight: '24px',
+          paddingTop: '160px', // Respect clinic space (top bar/navbar)
+          paddingBottom: '5rem',
+          paddingLeft: '40px',
+          paddingRight: '40px',
           textAlign: 'center',
+          width: '100%',
         }}>
           {/* Eyebrow */}
           <p style={{
