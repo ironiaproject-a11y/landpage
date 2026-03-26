@@ -2,7 +2,7 @@
 
 import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, Instagram, Facebook, Linkedin } from "lucide-react";
+import { Menu, X, Phone, Instagram, Facebook, Linkedin, MoreHorizontal, MapPin, Clock, Mail } from "lucide-react";
 import { Magnetic } from "./Magnetic";
 
 export function Navbar() {
@@ -11,6 +11,7 @@ export function Navbar() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [activeSection, setActiveSection] = useState("");
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
     const { scrollY } = useScroll();
 
     useEffect(() => {
@@ -86,46 +87,9 @@ export function Navbar() {
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "bg-[var(--color-premium-dark)]/85 backdrop-blur-xl border-b border-white/5" : "bg-transparent"
                     }`}
             >
-                <div className="border-b border-white/5 bg-white/[0.02] backdrop-blur-md">
-                    <div className="container mx-auto px-6 py-2.5 flex items-center justify-between text-[10px] uppercase tracking-[0.2em] font-light">
-                        {/* Left Side: Contact & Location */}
-                        <div className="flex items-center gap-6 text-white/40">
-                            <div className="flex items-center gap-2">
-                                <span className="text-white/60">Local:</span>
-                                <span>Pereira Barreto, SP</span>
-                            </div>
-                            <div className="hidden sm:flex items-center gap-2 border-l border-white/10 pl-6">
-                                <span className="text-white/60">Tel:</span>
-                                <span>+55 (18) 3743-3000</span>
-                            </div>
-                        </div>
-
-                        {/* Center: Tagline */}
-                        <div className="hidden xl:flex items-center gap-3 italic lowercase tracking-[0.1em] text-white/20">
-                            <span>resultados naturais</span>
-                            <span className="text-white/5">•</span>
-                            <span>planejamento digital</span>
-                            <span className="text-white/5">•</span>
-                            <span>atendimento humanizado</span>
-                        </div>
-
-                        {/* Right Side: Hours & Email */}
-                        <div className="flex items-center gap-6 text-white/40">
-                            <div className="hidden lg:flex items-center gap-2">
-                                <span className="text-white/60">Horário:</span>
-                                <span>Seg — Sex: 08h — 20h</span>
-                            </div>
-                            <div className="hidden md:flex items-center gap-2 border-l border-white/10 pl-6">
-                                <span className="text-white/60">Email:</span>
-                                <span>contato@clinicapremium.com</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div className={`container mx-auto px-6 flex items-center justify-between transition-all duration-500 ${isScrolled ? "py-4" : "py-8"}`}>
                     {/* Logo Area */}
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4 relative">
                         <Magnetic strength={0.2} range={60}>
                             <a
                                 href="#"
@@ -140,6 +104,80 @@ export function Navbar() {
                                 </span>
                             </a>
                         </Magnetic>
+
+                        {/* Interactive Info Trigger */}
+                        <m.button
+                            whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setIsInfoOpen(!isInfoOpen)}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors border ${isInfoOpen ? "bg-white text-black border-white" : "text-white/40 border-white/10"
+                                }`}
+                            aria-label="Informações da clínica"
+                        >
+                            <MoreHorizontal size={14} />
+                        </m.button>
+
+                        {/* Premium Info Menu Overlay */}
+                        <AnimatePresence>
+                            {isInfoOpen && (
+                                <m.div
+                                    initial={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
+                                    animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                                    exit={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
+                                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                    className="absolute top-full left-0 mt-6 w-[280px] sm:w-[320px] glass-panel p-6 border border-white/10 shadow-3xl z-[60] origin-top-left"
+                                >
+                                    <div className="space-y-6">
+                                        <div className="flex items-start gap-4 group/item">
+                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                <MapPin size={14} strokeWidth={1.5} />
+                                            </div>
+                                            <div>
+                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Localização</span>
+                                                <p className="text-[11px] text-white/70 leading-relaxed font-light">Centro, Pereira Barreto - SP</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-4 group/item">
+                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                <Phone size={14} strokeWidth={1.5} />
+                                            </div>
+                                            <div>
+                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Atendimento</span>
+                                                <p className="text-[11px] text-white/70 font-light">+55 (18) 3743-3000</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-4 group/item">
+                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                <Clock size={14} strokeWidth={1.5} />
+                                            </div>
+                                            <div>
+                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Horário</span>
+                                                <p className="text-[11px] text-white/70 font-light">Seg — Sex: 08h — 20h</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-4 group/item">
+                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                <Mail size={14} strokeWidth={1.5} />
+                                            </div>
+                                            <div>
+                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Direct</span>
+                                                <p className="text-[11px] text-white/70 font-light underline-offset-4 decoration-white/10 hover:decoration-white/40 transition-all cursor-pointer">contato@clinicapremium.com</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Subtle brand tagline at bottom of menu */}
+                                    <div className="mt-8 pt-6 border-t border-white/5">
+                                        <p className="text-[9px] italic text-white/10 tracking-[0.15em] lowercase text-center">
+                                            resultados naturais • planejamento digital
+                                        </p>
+                                    </div>
+                                </m.div>
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     {/* Desktop Menu */}
