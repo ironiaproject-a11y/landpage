@@ -57,13 +57,17 @@ export default function Home() {
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
       {/* Hero Section – Video Background */}
       <section
+        className="hero-section"
         style={{
           position: 'relative',
           height: '100vh',
+          width: '100vw',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-end',
+          justifyContent: 'center',
+          alignItems: 'center',
           overflow: 'hidden',
+          backgroundColor: '#000',
         }}
       >
         {/* Background Video */}
@@ -112,8 +116,7 @@ export default function Home() {
 
         {/* ── Unified Centered Lockup ── */}
         <div style={{
-          position: 'absolute',
-          inset: 0,
+          position: 'relative',
           zIndex: 2,
           display: 'flex',
           flexDirection: 'column',
@@ -121,6 +124,7 @@ export default function Home() {
           justifyContent: 'center',
           padding: '0 1.5rem',
           textAlign: 'center',
+          width: '100%',
         }}>
           {/* Eyebrow: SUA ORIGEM, — 10px, 300 weight, 0.28em tracking, halo shadow */}
           <p style={{
@@ -130,7 +134,7 @@ export default function Home() {
             letterSpacing: '0.28em',
             textTransform: 'uppercase',
             color: 'rgba(255,255,255,0.55)',
-            marginBottom: '0.3rem',
+            marginBottom: '0.5rem',
             textShadow: '0 0 12px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.8)',
           }}>
             SUA ORIGEM,
@@ -139,14 +143,14 @@ export default function Home() {
           {/* H1: Seu sorriso. — clamp(3.2rem, 12vw, 4.5rem), 400 weight, italic, deep halo shadow */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(3.2rem, 12vw, 4.5rem)',
+            fontSize: 'clamp(3.5rem, 15vw, 6.5rem)',
             fontWeight: 400,
             fontStyle: 'italic',
             color: '#ffffff',
-            lineHeight: 1.05,
-            letterSpacing: '-0.02em',
-            marginBottom: '1.5rem',
-            textShadow: '0 0 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.6)',
+            lineHeight: 0.95,
+            letterSpacing: '-0.03em',
+            marginBottom: '1.8rem',
+            textShadow: '0 0 30px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.8), 0 0 100px rgba(0,0,0,0.6)',
           }}>
             Seu sorriso.
           </h1>
@@ -154,16 +158,16 @@ export default function Home() {
           {/* Copy — 13px, 400 weight, white/75%, halo shadow */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '13px',
+            fontSize: '14px',
             fontWeight: 400,
             lineHeight: 1.6,
             color: 'rgba(255,255,255,0.75)',
-            maxWidth: '26ch',
-            marginBottom: '1.75rem',
-            letterSpacing: '0.01em',
+            maxWidth: '30ch',
+            marginBottom: '2rem',
+            letterSpacing: '0.02em',
             textShadow: '0 0 12px rgba(0,0,0,0.95), 0 0 20px rgba(0,0,0,0.9)',
           }}>
-            Onde biologia e beleza<br />convergem em precisão.
+            Onde biologia e beleza<br />convergem em precisão absoluta.
           </p>
 
           {/* Pill CTA */}
@@ -172,43 +176,58 @@ export default function Home() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.55rem',
-              padding: '0.65rem 1.5rem',
-              background: 'rgba(255,255,255,0.08)',
-              border: '0.5px solid rgba(255,255,255,0.22)',
-              borderRadius: '4px',
-              color: 'rgba(255,255,255,0.9)',
-              fontSize: '10px',
-              fontWeight: 300,
-              letterSpacing: '0.14em',
+              gap: '0.6rem',
+              padding: '0.8rem 1.8rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '0.5px solid rgba(255,255,255,0.15)',
+              borderRadius: '100px',
+              color: 'rgba(255,255,255,0.95)',
+              fontSize: '11px',
+              fontWeight: 400,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               textDecoration: 'none',
               fontFamily: "'Barlow', sans-serif",
               cursor: 'pointer',
+              transition: 'all 0.4s ease',
+              backdropFilter: 'blur(10px)',
             }}
           >
             <span style={{
-              width: '5px',
-              height: '5px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
               background: '#fff',
-              opacity: 0.55,
+              opacity: 0.8,
               flexShrink: 0,
             }} />
-            Agendar consulta
+            Inicie sua jornada
           </a>
 
           {/* Scroll hint — improved legibility (10px, 0.3 opacity) */}
-          <p style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '10px',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.3)',
-            marginTop: '1.5rem',
+          <div style={{
+            position: 'absolute',
+            bottom: '-15vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
-            role para explorar ↓
-          </p>
+            <p style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '10px',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.35)',
+            }}>
+              explore o novo padrão
+            </p>
+            <div style={{
+              width: '1px',
+              height: '40px',
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)',
+            }} />
+          </div>
         </div>
 
       </section>

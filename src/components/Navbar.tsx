@@ -2,7 +2,7 @@
 
 import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, Instagram, Facebook, Linkedin } from "lucide-react";
+import { Menu, X, Phone, Instagram, Facebook, Linkedin, MoreVertical, MapPin, Clock } from "lucide-react";
 import { Magnetic } from "./Magnetic";
 
 export function Navbar() {
@@ -87,21 +87,69 @@ export function Navbar() {
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
-                    {/* Logo */}
-                    <Magnetic strength={0.2} range={60}>
-                        <a
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            }}
-                            className="relative z-50 flex items-center gap-2"
-                        >
-                            <span className="font-headline text-level-4 font-[400] text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
-                                Clínica<span className="text-white italic font-light">.</span>
-                            </span>
-                        </a>
-                    </Magnetic>
+                    {/* Logo & Info Dots Container */}
+                    <div className="flex items-center gap-6">
+                        <Magnetic strength={0.2} range={60}>
+                            <a
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="relative z-50 flex items-center gap-2"
+                            >
+                                <span className="font-headline text-level-4 font-[400] text-[var(--color-text-primary)] tracking-[0.1em] uppercase transition-all duration-700">
+                                    Clínica<span className="text-white italic font-light">.</span>
+                                </span>
+                            </a>
+                        </Magnetic>
+
+                        {/* Three Dots Info Trigger */}
+                        <div className="relative group hidden sm:block">
+                            <m.button
+                                whileHover={{ scale: 1.1 }}
+                                className="text-white/30 hover:text-white/80 transition-colors p-2"
+                            >
+                                <MoreVertical size={16} strokeWidth={1.5} />
+                            </m.button>
+
+                            {/* Dropdown Info Panel */}
+                            <div className="absolute top-full left-0 mt-2 w-64 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-500 z-50">
+                                <div className="bg-black/80 backdrop-blur-2xl border border-white/10 p-5 rounded-2xl shadow-2xl">
+                                    <div className="space-y-4">
+                                        <div className="flex items-start gap-3">
+                                            <MapPin size={14} className="text-white/40 mt-1" />
+                                            <div>
+                                                <p className="text-[10px] uppercase tracking-widest text-white/30 mb-1">Localização</p>
+                                                <p className="text-xs text-white/80 leading-relaxed font-light">Pereira Barreto - SP <br/>Centro Profissional</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex items-start gap-3">
+                                            <Phone size={14} className="text-white/40 mt-1" />
+                                            <div>
+                                                <p className="text-[10px] uppercase tracking-widest text-white/30 mb-1">Contato</p>
+                                                <p className="text-xs text-white/80 font-light">+55 (18) 3743-3000</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-3">
+                                            <Clock size={14} className="text-white/40 mt-1" />
+                                            <div>
+                                                <p className="text-[10px] uppercase tracking-widest text-white/30 mb-1">Horário</p>
+                                                <p className="text-xs text-white/80 font-light">Seg — Sex: 08h às 20h</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-5 pt-4 border-t border-white/5 flex gap-4">
+                                        <Instagram size={14} className="text-white/20 hover:text-white/60 transition-colors cursor-pointer" />
+                                        <Linkedin size={14} className="text-white/20 hover:text-white/60 transition-colors cursor-pointer" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center gap-10">
