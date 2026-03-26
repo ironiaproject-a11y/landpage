@@ -110,14 +110,14 @@ export default function Home() {
           padding: '0 1.5rem',
           textAlign: 'center',
         }}>
-          {/* Eyebrow: Sua origem — improved legibility (10px, 0.45 opacity) */}
+          {/* Eyebrow: Sua origem — substantial legibility fix (13px, 400 weight, 0.7 opacity) */}
           <p style={{
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '10px',
-            fontWeight: 300,
-            letterSpacing: '0.42em',
+            fontSize: '13px',
+            fontWeight: 400,
+            letterSpacing: '0.32em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.45)',
+            color: 'rgba(255,255,255,0.7)',
             marginBottom: '0.8rem',
           }}>
             Sua origem,
