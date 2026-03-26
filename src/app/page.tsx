@@ -1,4 +1,5 @@
 "use client";
+/* SYNC: Restored Unified Hero Design */
 
 import nextDynamic from "next/dynamic";
 import { useRef } from "react";
