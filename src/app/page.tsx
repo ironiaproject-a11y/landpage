@@ -56,12 +56,15 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
+      <Clinica />
+      
       {/* Hero Section – Video Background */}
       <section
         className="hero-section"
         style={{
           position: 'relative',
-          height: '100vh',
+          height: 'calc(100vh - 100px)',
+          marginTop: '-2px',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -82,6 +85,8 @@ export default function Home() {
             inset: 0,
             width: '100%',
             height: '100%',
+            minWidth: '100%',
+            minHeight: '100%',
             objectFit: 'cover',
             objectPosition: 'center 35%',
             zIndex: 0,
@@ -95,7 +100,7 @@ export default function Home() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 70%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
             zIndex: 1,
             pointerEvents: 'none',
           }}
@@ -120,7 +125,9 @@ export default function Home() {
         <div style={{
           position: 'relative',
           zIndex: 2,
-          padding: '0 24px 3.5rem',
+          paddingBottom: '3rem',
+          paddingLeft: '24px',
+          paddingRight: '24px',
           textAlign: 'center',
         }}>
           {/* Eyebrow */}
@@ -187,7 +194,6 @@ export default function Home() {
 
       {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
-        <Clinica />
         <Services />
         <Stats />
         <TrustBar />
