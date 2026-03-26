@@ -55,12 +55,10 @@ export default function Home() {
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
       {/* Hero Section – Video Background */}
-      <section
-        className="hero-section"
+      {/* Hero Section – Nuclear Reset (Using DIV to bypass section-wide padding) */}
+      <div
+        className="hero-container-reset"
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
           height: '100vh',
           width: '100vw',
           display: 'flex',
@@ -88,7 +86,7 @@ export default function Home() {
             objectPosition: 'center 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
-            transform: 'scale(1.08)', // Maximum bleed to eliminate all possible gaps
+            transform: 'scale(1.2)', // Nuclear Scale to cut any possible letterboxing
           }}
           src="/hero-background-new.mp4"
         />
@@ -199,7 +197,7 @@ export default function Home() {
             Inicie sua jornada
           </a>
         </div>
-      </section>
+      </div>
 
 
 
