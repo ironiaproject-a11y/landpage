@@ -428,13 +428,15 @@ button, .btn, nav, a {
 .hero-overline {
   font-size: 16px !important;
   letter-spacing: 0.8em !important;
-  font-weight: 200 !important;
+  text-indent: 0.8em !important; /* Optical correction for center alignment */
+  font-weight: 300 !important;
   opacity: 0.55;
   text-transform: uppercase !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 24px !important; /* Increased for better optical vertical rhythm */
   font-family: var(--font-sans) !important;
   line-height: 1 !important;
   font-style: italic !important;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.4) !important; /* Subtle protection over video highlights */
 }
 
 .hero-headline {
