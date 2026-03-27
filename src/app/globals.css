@@ -392,17 +392,87 @@ button, .btn, nav, a {
     0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* ── Subtitle / Subheadline — Light, Airy ─────────────── */
-.text-subheadline-editorial {
-  font-family: var(--font-sans);
-  font-size: 18px; /* Updated to Level 3 */
-  font-weight: 400;
-  line-height: 1.8;
-  letter-spacing: -0.01em;
-  opacity: 0.75;
-  color: #FFFFFF;
-  max-width: 58ch;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+/* ── HIERARQUIA OTIMIZADA ── */
+.hero-content-optimized {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20vh 24px 10vh;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.hero-overline {
+  font-size: 9px !important;
+  letter-spacing: 0.6em !important;
+  font-weight: 200 !important;
+  opacity: 0.4 !important;
+  text-transform: uppercase !important;
+  margin-bottom: 40px !important;
+  font-family: var(--font-sans) !important;
+}
+
+.hero-headline {
+  font-size: clamp(64px, 12vw, 80px) !important;
+  line-height: 0.85 !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 24px !important;
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+}
+
+.hero-period {
+  font-size: 1.8em !important;
+  opacity: 0.2 !important;
+  margin-left: -0.05em !important;
+}
+
+.hero-subheadline {
+  font-size: 15px !important;
+  font-weight: 300 !important;
+  opacity: 0.6 !important;
+  margin-bottom: 56px !important;
+  max-width: 400px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  line-height: 1.6 !important;
+}
+
+.hero-cta {
+  padding: 22px 56px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.2em !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  border: 2px solid white !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.4s ease !important;
+  border-radius: 0 !important; /* Match the provided style's sharp look or keep it refined */
+  color: white !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.hero-cta:hover {
+  background: white !important;
+  color: black !important;
+  transform: translateY(-2px) !important;
+}
+
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 64px !important;
+  }
+  .hero-cta {
+    width: 100% !important;
+    padding: 20px !important;
+  }
 }
 
 /* ── Overline / Editorial Label ───────── */

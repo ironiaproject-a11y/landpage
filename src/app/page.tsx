@@ -133,79 +133,37 @@ export default function Home() {
         />
 
         {/* ── Refactored Text Block ── */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          paddingTop: '200px', // Increased to respect the Over-fill shift
-          paddingBottom: '5rem',
-          paddingLeft: '40px',
-          paddingRight: '40px',
-          textAlign: 'center',
-          width: '100%',
-        }}>
+        <div className="hero-content-optimized">
           {/* Eyebrow */}
           <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-            <p style={{
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.32em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.75)',
-              marginBottom: '12px',
-            }}>
+            <p className="hero-overline">
               SUA ORIGEM,
             </p>
           </PremiumReveal>
-
+ 
           {/* Headline */}
           <PremiumReveal type="mask" direction="bottom" delay={0.25}>
-            <h1 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: '42px',
-              lineHeight: 1.1,
-              color: '#fff',
-              marginBottom: '16px',
-              fontStyle: 'italic',
-            }}>
-              Seu sorriso.
+            <h1 className="hero-headline">
+              Seu sorriso<span className="hero-period">.</span>
             </h1>
           </PremiumReveal>
-
+ 
           {/* Subtext */}
           <PremiumReveal type="fade" direction="bottom" delay={0.4}>
-            <p style={{
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: '15px',
-              color: 'rgba(255,255,255,0.7)',
-              maxWidth: '280px',
-              margin: '0 auto 24px',
-            }}>
+            <p className="hero-subheadline">
               Onde biologia e beleza<br />convergem em precisão absoluta.
             </p>
           </PremiumReveal>
-
+ 
           {/* CTA Button */}
-          <a
-            href="#agendamento"
-            className="hover:bg-[rgba(255,255,255,0.16)] transition-all duration-300"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              borderRadius: '6px',
-              padding: '14px 22px',
-              background: 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: '#fff',
-              fontSize: '13px',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Inicie sua jornada
-          </a>
+          <PremiumReveal type="fade" direction="bottom" delay={0.55}>
+            <a
+              href="#agendamento"
+              className="hero-cta"
+            >
+              Inicie sua jornada
+            </a>
+          </PremiumReveal>
         </div>
       </div>
 
