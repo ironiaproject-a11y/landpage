@@ -87,7 +87,7 @@ export default function Home() {
             minWidth: '100%',
             minHeight: '100%',
             objectFit: 'cover',
-            objectPosition: 'center 35%',
+            objectPosition: '40% 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
             transform: 'scale(1.25)', // Over-scale to ensure zero letterboxing
