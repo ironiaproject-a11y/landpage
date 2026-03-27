@@ -426,14 +426,15 @@ button, .btn, nav, a {
 }
 
 .hero-overline {
-  font-size: 9px !important;
+  font-size: 11px !important;
   letter-spacing: 0.6em !important;
   font-weight: 200 !important;
   opacity: 0.35 !important;
   text-transform: uppercase !important;
-  margin-bottom: 56px !important;
+  margin-bottom: 12px !important;
   font-family: var(--font-sans) !important;
   line-height: 1 !important;
+  font-style: italic !important;
 }
 
 .hero-headline {
