@@ -87,8 +87,36 @@ export function Navbar() {
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"} ${isScrolled ? "bg-[var(--color-premium-dark)]/85 backdrop-blur-xl border-b border-white/5" : "bg-gradient-to-b from-black/60 to-transparent"
                     }`}
             >
-                {/* Seamless Top Integrator Line */}
-                {!isScrolled && <div className="absolute top-0 left-0 right-0 h-[60px] bg-black/40 pointer-events-none" />}
+                {/* Seamless Top Integrator Line (Luxury Info Strip) */}
+                <AnimatePresence>
+                    {!isScrolled && (
+                        <m.div 
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            className="absolute top-0 left-0 right-0 h-[60px] bg-black/40 backdrop-blur-md border-b border-white/5 pointer-events-none hidden md:flex items-center justify-between px-12 z-50"
+                        >
+                            <div className="flex items-center gap-8">
+                                <div className="flex items-center gap-2">
+                                    <MapPin size={10} className="text-white/30" />
+                                    <span className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-light">Centro, Pereira Barreto - SP</span>
+                                </div>
+                                <div className="w-px h-3 bg-white/10" />
+                                <div className="flex items-center gap-2">
+                                    <Clock size={10} className="text-white/30" />
+                                    <span className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-light">Seg — Sex: 08h — 20h</span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                    <Phone size={10} className="text-white/30" />
+                                    <span className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-light">+55 (18) 3743-3000</span>
+                                </div>
+                            </div>
+                        </m.div>
+                    )}
+                </AnimatePresence>
                 
                 <div className={`container mx-auto px-6 flex items-center justify-between transition-all duration-500 ${isScrolled ? "py-4" : "py-10"}`}>
 
@@ -108,80 +136,6 @@ export function Navbar() {
                                 </span>
                             </a>
                         </Magnetic>
-
-                        {/* Interactive Info Trigger */}
-                        <m.button
-                            whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => setIsInfoOpen(!isInfoOpen)}
-                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors border ${isInfoOpen ? "bg-white text-black border-white" : "text-white/40 border-white/10"
-                                }`}
-                            aria-label="Informações da clínica"
-                        >
-                            <MoreHorizontal size={14} />
-                        </m.button>
-
-                        {/* Premium Info Menu Overlay */}
-                        <AnimatePresence>
-                            {isInfoOpen && (
-                                <m.div
-                                    initial={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
-                                    animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-                                    exit={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
-                                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                                    className="absolute top-full left-0 mt-6 w-[280px] sm:w-[320px] glass-panel p-6 border border-white/10 shadow-3xl z-[60] origin-top-left"
-                                >
-                                    <div className="space-y-6">
-                                        <div className="flex items-start gap-4 group/item">
-                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
-                                                <MapPin size={14} strokeWidth={1.5} />
-                                            </div>
-                                            <div>
-                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Localização</span>
-                                                <p className="text-[11px] text-white/70 leading-relaxed font-light">Centro, Pereira Barreto - SP</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-start gap-4 group/item">
-                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
-                                                <Phone size={14} strokeWidth={1.5} />
-                                            </div>
-                                            <div>
-                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Atendimento</span>
-                                                <p className="text-[11px] text-white/70 font-light">+55 (18) 3743-3000</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-start gap-4 group/item">
-                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
-                                                <Clock size={14} strokeWidth={1.5} />
-                                            </div>
-                                            <div>
-                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Horário</span>
-                                                <p className="text-[11px] text-white/70 font-light">Seg — Sex: 08h — 20h</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-start gap-4 group/item">
-                                            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
-                                                <Mail size={14} strokeWidth={1.5} />
-                                            </div>
-                                            <div>
-                                                <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Direct</span>
-                                                <p className="text-[11px] text-white/70 font-light underline-offset-4 decoration-white/10 hover:decoration-white/40 transition-all cursor-pointer">contato@clinicapremium.com</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Subtle brand tagline at bottom of menu */}
-                                    <div className="mt-8 pt-6 border-t border-white/5">
-                                        <p className="text-[9px] italic text-white/10 tracking-[0.15em] lowercase text-center">
-                                            resultados naturais • planejamento digital
-                                        </p>
-                                    </div>
-                                </m.div>
-                            )}
-                        </AnimatePresence>
                     </div>
 
                     {/* Desktop Menu */}
@@ -239,7 +193,21 @@ export function Navbar() {
                             ))}
                         </ul>
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-6 relative">
+                            {/* Premium Info Trigger (Three Lines) */}
+                            <Magnetic strength={0.3} range={50}>
+                                <m.button
+                                    whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => setIsInfoOpen(!isInfoOpen)}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border ${isInfoOpen ? "bg-white text-black border-white" : "text-white/60 border-white/10"
+                                        }`}
+                                    aria-label="Informações da clínica"
+                                >
+                                    {isInfoOpen ? <X size={18} /> : <Menu size={18} />}
+                                </m.button>
+                            </Magnetic>
+
                             <Magnetic strength={0.4} range={80}>
                                 <m.button
                                     whileHover={{ y: -3, scale: 1.05 }}
@@ -267,6 +235,68 @@ export function Navbar() {
                                     <span className="relative z-10 uppercase tracking-[0.08em]">Agendar</span>
                                 </m.button>
                             </Magnetic>
+
+                            {/* Premium Info Menu Overlay (Right-aligned) */}
+                            <AnimatePresence>
+                                {isInfoOpen && (
+                                    <m.div
+                                        initial={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
+                                        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                                        exit={{ opacity: 0, scale: 0.95, y: 10, filter: "blur(10px)" }}
+                                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                        className="absolute top-full right-0 mt-6 w-[280px] sm:w-[320px] glass-panel p-6 border border-white/10 shadow-3xl z-[60] origin-top-right text-right"
+                                    >
+                                        <div className="space-y-6">
+                                            <div className="flex items-start justify-end gap-4 group/item">
+                                                <div>
+                                                    <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Localização</span>
+                                                    <p className="text-[11px] text-white/70 leading-relaxed font-light">Centro, Pereira Barreto - SP</p>
+                                                </div>
+                                                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                    <MapPin size={14} strokeWidth={1.5} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-start justify-end gap-4 group/item">
+                                                <div>
+                                                    <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Atendimento</span>
+                                                    <p className="text-[11px] text-white/70 font-light">+55 (18) 3743-3000</p>
+                                                </div>
+                                                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                    <Phone size={14} strokeWidth={1.5} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-start justify-end gap-4 group/item">
+                                                <div>
+                                                    <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Horário</span>
+                                                    <p className="text-[11px] text-white/70 font-light">Seg — Sex: 08h — 20h</p>
+                                                </div>
+                                                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                    <Clock size={14} strokeWidth={1.5} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-start justify-end gap-4 group/item">
+                                                <div>
+                                                    <span className="text-[9px] uppercase tracking-widest text-white/20 block mb-1">Direct</span>
+                                                    <p className="text-[11px] text-white/70 font-light underline-offset-4 decoration-white/10 hover:decoration-white/40 transition-all cursor-pointer">contato@clinicapremium.com</p>
+                                                </div>
+                                                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-white/40 group-hover/item:text-white transition-colors">
+                                                    <Mail size={14} strokeWidth={1.5} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Subtle brand tagline at bottom of menu */}
+                                        <div className="mt-8 pt-6 border-t border-white/5">
+                                            <p className="text-[9px] italic text-white/10 tracking-[0.15em] lowercase text-center">
+                                                resultados naturais • planejamento digital
+                                            </p>
+                                        </div>
+                                    </m.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </div>
 

@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
+import { PremiumReveal } from "@/components/PremiumReveal";
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
   ssr: false, 
   loading: () => <div className="h-screen bg-[#0D0D0D]" />
@@ -143,39 +144,45 @@ export default function Home() {
           width: '100%',
         }}>
           {/* Eyebrow */}
-          <p style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '11px',
-            letterSpacing: '0.32em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.75)',
-            marginBottom: '12px',
-          }}>
-            SUA ORIGEM,
-          </p>
+          <PremiumReveal type="fade" direction="bottom" delay={0.1}>
+            <p style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '11px',
+              letterSpacing: '0.32em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.75)',
+              marginBottom: '12px',
+            }}>
+              SUA ORIGEM,
+            </p>
+          </PremiumReveal>
 
           {/* Headline */}
-          <h1 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: '42px',
-            lineHeight: 1.1,
-            color: '#fff',
-            marginBottom: '16px',
-            fontStyle: 'italic',
-          }}>
-            Seu sorriso.
-          </h1>
+          <PremiumReveal type="mask" direction="bottom" delay={0.25}>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: '42px',
+              lineHeight: 1.1,
+              color: '#fff',
+              marginBottom: '16px',
+              fontStyle: 'italic',
+            }}>
+              Seu sorriso.
+            </h1>
+          </PremiumReveal>
 
           {/* Subtext */}
-          <p style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '15px',
-            color: 'rgba(255,255,255,0.7)',
-            maxWidth: '280px',
-            margin: '0 auto 24px',
-          }}>
-            Onde biologia e beleza<br />convergem em precisão absoluta.
-          </p>
+          <PremiumReveal type="fade" direction="bottom" delay={0.4}>
+            <p style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '15px',
+              color: 'rgba(255,255,255,0.7)',
+              maxWidth: '280px',
+              margin: '0 auto 24px',
+            }}>
+              Onde biologia e beleza<br />convergem em precisão absoluta.
+            </p>
+          </PremiumReveal>
 
           {/* CTA Button */}
           <a

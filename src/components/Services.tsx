@@ -78,9 +78,9 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     </p>
 
                     <div className="mt-auto">
-                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-level-4 uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:border-white">
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-level-4 uppercase transition-all duration-700 group-hover:bg-white group-hover:text-black group-hover:border-white group-hover:shadow-[0_12px_40px_rgba(255,255,255,0.12)]">
                             <span>Conhecer Protocolo</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
                         </div>
                     </div>
                 </div>
