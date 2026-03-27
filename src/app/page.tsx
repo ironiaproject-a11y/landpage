@@ -90,7 +90,7 @@ export default function Home() {
             objectPosition: '40% 35%',
             zIndex: 0,
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
-            transform: 'scale(1.25)', // Over-scale to ensure zero letterboxing
+            transform: 'scale(1.1)', // Reduced for more cinematic depth and space
           }}
           src="/hero-background-new.mp4"
         />
