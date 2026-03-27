@@ -67,7 +67,7 @@ export default function Home() {
           width: '100vw',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-end',
+          justifyContent: 'center',
           overflow: 'hidden',
           zIndex: 10,
         }}
@@ -151,7 +151,7 @@ export default function Home() {
           {/* Subtext */}
           <PremiumReveal type="fade" direction="bottom" delay={0.4}>
             <p className="hero-subheadline">
-              Onde biologia e beleza<br />convergem em precisão absoluta.
+              Odontologia de alta performance
             </p>
           </PremiumReveal>
  
@@ -161,7 +161,7 @@ export default function Home() {
               href="#agendamento"
               className="hero-cta"
             >
-              Inicie sua jornada
+              AGENDAR CONSULTA →
             </a>
           </PremiumReveal>
         </div>
