@@ -426,10 +426,10 @@ button, .btn, nav, a {
 }
 
 .hero-overline {
-  font-size: 11px !important;
+  font-size: 16px !important;
   letter-spacing: 0.6em !important;
   font-weight: 200 !important;
-  opacity: 0.35 !important;
+  opacity: 0.45 !important;
   text-transform: uppercase !important;
   margin-bottom: 12px !important;
   font-family: var(--font-sans) !important;
