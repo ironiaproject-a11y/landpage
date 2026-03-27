@@ -55,22 +55,51 @@ export default function Home() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.muted = true;
-      video.defaultMuted = true;
-      
-      const playVideo = async () => {
-        try {
-          await video.load();
-          await video.play();
-        } catch (err) {
-          console.log("Autoplay failed, retrying on interaction...", err);
-          // Fallback: try playing again if anything changes
-        }
-      };
-      
-      playVideo();
-    }
+    if (!video) return;
+
+    // Force muted states to satisfy all browser policies
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    const attemptPlay = async () => {
+      try {
+        await video.play();
+        // Signal preloader that we are ready
+        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+      } catch (err) {
+        console.log("Autoplay blocked, waiting for interaction...");
+        // Fallback: Signal regardless so user isn't stuck behind preloader
+        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+      }
+    };
+
+    // Attempt playback immediately and on data load
+    attemptPlay();
+    
+    const handleCanPlay = () => {
+      attemptPlay();
+      window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+    };
+
+    video.addEventListener('canplaythrough', handleCanPlay);
+
+    // One-time emergency listener for any user interaction
+    const handleUserInteraction = () => {
+      video.play();
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('touchstart', handleUserInteraction);
+    };
+
+    window.addEventListener('click', handleUserInteraction);
+    window.addEventListener('touchstart', handleUserInteraction);
+
+    return () => {
+      video.removeEventListener('canplaythrough', handleCanPlay);
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('touchstart', handleUserInteraction);
+    };
   }, []);
 
   return (
