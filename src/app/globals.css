@@ -411,7 +411,7 @@ button, .btn, nav, a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: clamp(96px, 16vh, 160px);
+  padding-top: clamp(120px, 22vh, 220px); /* Lowered for better cinematic balance */
   width: 100%;
 }
 
