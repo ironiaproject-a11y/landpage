@@ -54,11 +54,22 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(error => {
-        console.error("Video play failed:", error);
-      });
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+      
+      const playVideo = async () => {
+        try {
+          await video.load();
+          await video.play();
+        } catch (err) {
+          console.log("Autoplay failed, retrying on interaction...", err);
+          // Fallback: try playing again if anything changes
+        }
+      };
+      
+      playVideo();
     }
   }, []);
 
@@ -88,6 +99,7 @@ export default function Home() {
           muted
           loop
           playsInline
+          preload="auto"
           style={{
             position: 'absolute',
             inset: 0,
@@ -101,8 +113,9 @@ export default function Home() {
             filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
             transform: 'scale(1.1)', // Reduced for more cinematic depth and space
           }}
-          src="/hero-background-new.mp4"
-        />
+        >
+          <source src="/hero-background-new.mp4" type="video/mp4" />
+        </video>
 
         {/* Layer 1: Bottom-up gradient for content legibility */}
         <div
