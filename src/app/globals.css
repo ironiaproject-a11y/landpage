@@ -429,7 +429,7 @@ button, .btn, nav, a {
   font-size: 16px !important;
   letter-spacing: 0.8em !important;
   font-weight: 200 !important;
-  opacity: 0.55 !important;
+  opacity: 0.55;
   text-transform: uppercase !important;
   margin-bottom: 20px !important;
   font-family: var(--font-sans) !important;
@@ -457,7 +457,7 @@ button, .btn, nav, a {
 .hero-subheadline {
   font-size: 14px !important;
   font-weight: 300 !important;
-  opacity: 0.55 !important;
+  opacity: 0.55;
   margin-top: 8px !important;
   margin-bottom: 64px !important;
   max-width: 600px !important;
