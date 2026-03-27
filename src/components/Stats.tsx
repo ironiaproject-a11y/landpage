@@ -98,66 +98,43 @@ export function Stats() {
       <style>{`
         .stats-container {
           background: transparent;
-          padding: 80px 24px 40px;
+          padding: 0 24px 80px;
           position: relative;
           z-index: 30;
           opacity: 0;
           transform: translateY(30px);
           will-change: transform, opacity;
           display: flex;
-          justify-content: center;
+          justify-content: flex-start; /* Left-aligned */
           width: 100%;
+          max-width: var(--container-width);
+          margin: 0 auto;
         }
 
-        .stats-vertical-card {
+        .stats-vertical-sidebar {
           display: flex;
           flex-direction: column;
-          gap: 60px;
-          width: 100%;
-          max-width: 340px;
-          margin: 0 auto;
+          gap: 48px;
           position: relative;
-          background: rgba(13, 13, 13, 0.6);
-          backdrop-filter: blur(40px);
-          -webkit-backdrop-filter: blur(40px);
-          border-radius: 40px;
-          padding: 70px 40px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 
-            0 30px 60px -12px rgba(0, 0, 0, 0.8),
-            0 0 20px rgba(255, 255, 255, 0.02) inset;
+          padding-left: 20px;
+          border-left: 1px solid rgba(255, 255, 255, 0.1); /* Vertical elegant divider */
         }
 
         .stats-item {
           position: relative;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-
-        .stats-divider {
-          position: absolute;
-          bottom: -30px;
-          left: 50%;
-          transform: translateX(-50%);
-          height: 1px;
-          width: 30px;
-          background: linear-gradient(
-            to right,
-            transparent,
-            rgba(255, 255, 255, 0.15),
-            transparent
-          );
+          align-items: flex-start; /* Left-aligned content */
+          text-align: left;
         }
 
         .stats-number {
           font-family: var(--font-serif), serif;
-          font-size: 64px;
+          font-size: 56px;
           font-weight: 300;
           line-height: 1;
           letter-spacing: -0.04em;
-          margin-bottom: 12px;
+          margin-bottom: 8px;
           color: #FFFFFF;
           display: flex;
           align-items: flex-start;
@@ -165,7 +142,7 @@ export function Stats() {
 
         .stats-suffix {
           font-family: var(--font-sans), sans-serif;
-          font-size: 0.45em;
+          font-size: 0.4em;
           font-weight: 200;
           margin-left: 1px;
           opacity: 0.4;
@@ -180,9 +157,11 @@ export function Stats() {
           letter-spacing: 0.25em;
           text-transform: uppercase;
           line-height: 1.4;
+          max-width: 140px; /* Force internal line breaks for verticality */
         }
 
         .stats-number--accent {
+          color: #FFFFFF;
           text-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
         }
 
@@ -190,17 +169,16 @@ export function Stats() {
           .stats-container {
             padding: 40px 20px;
           }
-          .stats-vertical-card {
-            padding: 50px 30px;
-            gap: 40px;
+          .stats-vertical-sidebar {
+            gap: 32px;
           }
           .stats-number {
-            font-size: 54px;
+            font-size: 48px;
           }
         }
       `}</style>
 
-      <div className="stats-vertical-card">
+      <div className="stats-vertical-sidebar">
         {metrics.map((metric, i) => (
           <div key={i} className="stats-item">
             <span className={`stats-number ${metric.accent ? "stats-number--accent" : ""}`}>
@@ -208,8 +186,6 @@ export function Stats() {
               <span className="stats-suffix">{metric.suffix}</span>
             </span>
             <span className="stats-label">{metric.label}</span>
-            
-            {i < metrics.length - 1 && <span className="stats-divider" />}
           </div>
         ))}
       </div>
