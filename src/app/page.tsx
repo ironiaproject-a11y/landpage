@@ -67,7 +67,7 @@ export default function Home() {
           width: '100vw',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           overflow: 'hidden',
           zIndex: 10,
         }}
@@ -132,38 +132,35 @@ export default function Home() {
           }}
         />
 
-        {/* ── Refactored Text Block ── */}
-        <div className="hero-content-optimized">
-          {/* Eyebrow */}
-          <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-            <p className="hero-overline">
-              SUA ORIGEM,
-            </p>
-          </PremiumReveal>
- 
-          {/* Headline */}
-          <PremiumReveal type="mask" direction="bottom" delay={0.25}>
-            <h1 className="hero-headline">
-              Seu sorriso<span className="hero-period">.</span>
-            </h1>
-          </PremiumReveal>
- 
-          {/* Subtext */}
-          <PremiumReveal type="fade" direction="bottom" delay={0.4}>
-            <p className="hero-subheadline">
-              Odontologia de alta performance
-            </p>
-          </PremiumReveal>
- 
-          {/* CTA Button */}
-          <PremiumReveal type="fade" direction="bottom" delay={0.55}>
-            <a
-              href="#agendamento"
-              className="hero-cta"
-            >
-              AGENDAR CONSULTA →
-            </a>
-          </PremiumReveal>
+        {/* ── Hero: dois grupos verticais ── */}
+        <div className="hero-content-split">
+
+          {/* TOPO — Overline + Headline */}
+          <div className="hero-text-group">
+            <PremiumReveal type="fade" direction="bottom" delay={0.1}>
+              <p className="hero-overline">SUA ORIGEM,</p>
+            </PremiumReveal>
+            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+              <h1 className="hero-headline">
+                Seu sorriso<span className="hero-period">.</span>
+              </h1>
+            </PremiumReveal>
+          </div>
+
+          {/* BASE — Subheadline + CTA */}
+          <div className="hero-action-group">
+            <PremiumReveal type="fade" direction="bottom" delay={0.5}>
+              <p className="hero-subheadline">
+                Odontologia de alta performance
+              </p>
+            </PremiumReveal>
+            <PremiumReveal type="fade" direction="bottom" delay={0.65}>
+              <a href="#agendamento" className="hero-cta">
+                AGENDAR CONSULTA →
+              </a>
+            </PremiumReveal>
+          </div>
+
         </div>
       </div>
 
