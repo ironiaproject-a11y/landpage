@@ -427,11 +427,11 @@ button, .btn, nav, a {
 
 .hero-overline {
   font-size: 16px !important;
-  letter-spacing: 0.6em !important;
+  letter-spacing: 0.8em !important;
   font-weight: 200 !important;
-  opacity: 0.45 !important;
+  opacity: 0.55 !important;
   text-transform: uppercase !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 20px !important;
   font-family: var(--font-sans) !important;
   line-height: 1 !important;
   font-style: italic !important;
@@ -445,9 +445,7 @@ button, .btn, nav, a {
   margin-bottom: 40px !important;
   font-family: var(--font-serif) !important;
   font-style: normal !important;
-  text-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.7),
-    0 2px 8px rgba(0, 0, 0, 0.95) !important;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.8) !important;
 }
 
 .hero-period {
