@@ -2,7 +2,7 @@
 /* SYNC: Restored Unified Hero Design */
 
 import nextDynamic from "next/dynamic";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
@@ -52,6 +52,15 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(error => {
+        console.error("Video play failed:", error);
+      });
+    }
+  }, []);
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
