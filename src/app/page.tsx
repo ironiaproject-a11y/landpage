@@ -171,8 +171,8 @@ export default function Home() {
 
       {/* Main Content Sections Reordered for Conversion */}
       <div className="relative z-30 bg-[#0D0D0D]">
-        <Services />
         <Stats />
+        <Services />
         <TrustBar />
         <InstitutionalTrust />
         <About />
