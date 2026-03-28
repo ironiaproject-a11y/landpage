@@ -141,7 +141,7 @@ export default function Home() {
           ease: "expo.out",
           onComplete: () => {
             // 4. Smooth Handover
-            // Animating from current entrance end to the current scroll state
+            ScrollTrigger.refresh();
             gsap.to(video, {
               scale: scrollState.scale,
               filter: `grayscale(1) contrast(1.1) brightness(${scrollState.brightness}) blur(${scrollState.blur}px)`,
