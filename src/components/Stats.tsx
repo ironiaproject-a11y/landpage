@@ -11,9 +11,9 @@ if (typeof window !== "undefined") {
 
 /* ─── data ────────────────────────────────────────────────── */
 const metrics = [
-  { numeric: 20,  suffix: "+", label: "anos de experiência" },
-  { numeric: 97,  suffix: "%", label: "pacientes satisfeitos", accent: true },
-  { numeric: 785, suffix: "+", label: "sorrisos transformados" },
+  { numeric: 20,  suffix: "+", label: "anos de", subLabel: "experiência" },
+  { numeric: 97,  suffix: "%", label: "pacientes", subLabel: "satisfeitos", accent: true },
+  { numeric: 785, suffix: "+", label: "sorrisos", subLabel: "transformados" },
 ];
 
 export function Stats() {
@@ -98,94 +98,144 @@ export function Stats() {
       <style>{`
         .stats-container {
           background: transparent;
-          padding: 0 24px 80px;
+          padding: 0 0 120px;
           position: relative;
           z-index: 30;
           opacity: 0;
           transform: translateY(30px);
           will-change: transform, opacity;
           display: flex;
-          justify-content: flex-start; /* Left-aligned */
+          justify-content: center;
           width: 100%;
           max-width: var(--container-width);
           margin: 0 auto;
         }
 
-        .stats-vertical-sidebar {
+        .stats-editorial-bar {
           display: flex;
-          flex-direction: column;
-          gap: 48px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: stretch;
+          gap: 0;
           position: relative;
-          padding-left: 20px;
-          border-left: 1px solid rgba(255, 255, 255, 0.1); /* Vertical elegant divider */
+          padding: 40px 60px;
+          background: rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 4px;
+          width: fit-content;
+          box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.3),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         .stats-item {
           position: relative;
           display: flex;
           flex-direction: column;
-          align-items: flex-start; /* Left-aligned content */
-          text-align: left;
+          align-items: center;
+          text-align: center;
+          padding: 0 60px;
+          min-width: 240px;
+        }
+
+        .stats-item:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 20%;
+          height: 60%;
+          width: 1px;
+          background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
 
         .stats-number {
           font-family: var(--font-serif), serif;
-          font-size: 56px;
+          font-size: 72px;
           font-weight: 300;
           line-height: 1;
           letter-spacing: -0.04em;
-          margin-bottom: 8px;
+          margin-bottom: 12px;
           color: #FFFFFF;
           display: flex;
           align-items: flex-start;
+          font-style: italic;
         }
 
         .stats-suffix {
-          font-family: var(--font-sans), sans-serif;
-          font-size: 0.4em;
+          font-family: var(--font-serif), serif;
+          font-size: 0.5em;
           font-weight: 200;
-          margin-left: 1px;
-          opacity: 0.4;
-          margin-top: 4px;
+          margin-left: 2px;
+          opacity: 0.3;
+          margin-top: 8px;
+          font-style: italic;
+        }
+
+        .stats-label-group {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
         }
 
         .stats-label {
           font-family: var(--font-sans), sans-serif;
-          font-size: 10px;
+          font-size: 11px;
           font-weight: 400;
           color: rgba(255,255,255,0.4);
-          letter-spacing: 0.25em;
+          letter-spacing: 0.3em;
           text-transform: uppercase;
-          line-height: 1.4;
-          max-width: 140px; /* Force internal line breaks for verticality */
+          line-height: 1.2;
         }
 
         .stats-number--accent {
           color: #FFFFFF;
-          text-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+          text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
         }
 
-        @media (max-width: 768px) {
-          .stats-container {
-            padding: 40px 20px;
+        @media (max-width: 1100px) {
+          .stats-item {
+            padding: 0 40px;
+            min-width: 200px;
           }
-          .stats-vertical-sidebar {
-            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+          .stats-editorial-bar {
+            flex-direction: column;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 400px;
+          }
+          .stats-item {
+            padding: 30px 0;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .stats-item:last-child {
+            border-bottom: none;
+          }
+          .stats-item:not(:last-child)::after {
+            display: none;
           }
           .stats-number {
-            font-size: 48px;
+            font-size: 64px;
           }
         }
       `}</style>
 
-      <div className="stats-vertical-sidebar">
+      <div className="stats-editorial-bar">
         {metrics.map((metric, i) => (
           <div key={i} className="stats-item">
             <span className={`stats-number ${metric.accent ? "stats-number--accent" : ""}`}>
               <span className={`count-target-${i}`}>0</span>
               <span className="stats-suffix">{metric.suffix}</span>
             </span>
-            <span className="stats-label">{metric.label}</span>
+            <div className="stats-label-group">
+              <span className="stats-label">{metric.label}</span>
+              <span className="stats-label">{metric.subLabel}</span>
+            </div>
           </div>
         ))}
       </div>
