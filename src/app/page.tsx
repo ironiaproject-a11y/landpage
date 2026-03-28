@@ -74,14 +74,12 @@ export default function Home() {
         await video.play();
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       } catch (err) {
-        // Fallback: Signal regardless so user isn't stuck behind preloader
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       }
     };
 
     attemptPlay();
 
-    // One-time emergency listener for any user interaction
     const handleUserInteraction = () => {
       if (video.paused) {
         video.play().catch(() => {});
@@ -94,42 +92,69 @@ export default function Home() {
     window.addEventListener('touchstart', handleUserInteraction);
 
     const ctx = gsap.context(() => {
-      // 1. Initial State (Entrance Source)
-      gsap.set(video, {
-        scale: 1.4,
-        filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)',
-        opacity: 0,
-        transformOrigin: "center center"
-      });
+      // 1. Data Store for Scroll Sync
+      const scrollState = {
+        scale: 1.1,
+        brightness: 0.95,
+        blur: 0,
+        opacity: 1,
+        isActive: false
+      };
 
-      const heroTl = gsap.timeline({
-        delay: 0.5,
-        onComplete: () => {
-          // 2. Setup ScrollTrigger after entrance is ready
-          gsap.to(video, {
-            scrollTrigger: {
-              trigger: ".hero-container-reset",
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
-              markers: false
-            },
-            scale: 1.0,
-            filter: 'grayscale(1) contrast(1.05) brightness(0.3) blur(10px)',
-            opacity: 0.6,
-            ease: "none"
-          });
+      // 2. Prepare ScrollTrigger (Scrubbing the Proxy Object)
+      const st = ScrollTrigger.create({
+        trigger: ".hero-container-reset",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (self) => {
+          // Manual scrub of the proxy object
+          scrollState.scale = gsap.utils.interpolate(1.1, 1.0, self.progress);
+          scrollState.brightness = gsap.utils.interpolate(0.95, 0.3, self.progress);
+          scrollState.blur = gsap.utils.interpolate(0, 15, self.progress);
+          scrollState.opacity = gsap.utils.interpolate(1, 0.6, self.progress);
+
+          // Apply to video ONLY if entrance is finished
+          if (scrollState.isActive) {
+            gsap.set(video, {
+              scale: scrollState.scale,
+              filter: `grayscale(1) contrast(1.1) brightness(${scrollState.brightness}) blur(${scrollState.blur}px)`,
+              opacity: scrollState.opacity
+            });
+          }
         }
       });
 
-      // Entrance Animation Sequence
-      heroTl.to(video, {
-        opacity: 1,
-        filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)',
-        scale: 1.1,
-        duration: 2.2,
-        ease: "expo.out"
-      });
+      // 3. Entrance Animation (Auto-play)
+      gsap.fromTo(video, 
+        { 
+          scale: 1.4, 
+          filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)', 
+          opacity: 0 
+        },
+        { 
+          scale: 1.1, 
+          filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)', 
+          opacity: 1,
+          duration: 2.2,
+          delay: 0.5,
+          ease: "expo.out",
+          onComplete: () => {
+            // 4. Smooth Handover
+            // Animating from current entrance end to the current scroll state
+            gsap.to(video, {
+              scale: scrollState.scale,
+              filter: `grayscale(1) contrast(1.1) brightness(${scrollState.brightness}) blur(${scrollState.blur}px)`,
+              opacity: scrollState.opacity,
+              duration: 0.8,
+              ease: "power2.out",
+              onComplete: () => {
+                scrollState.isActive = true;
+              }
+            });
+          }
+        }
+      );
 
     }, videoRef);
 
