@@ -133,7 +133,7 @@ export default function Home() {
               trigger:  spacer,
               start:    "top top",
               end:      "bottom top",
-              scrub:    1.2,
+              scrub:    2, // Weighted luxury scrubbing
             },
             currentTime: video.duration || 0,
             ease: "none",
@@ -164,7 +164,7 @@ export default function Home() {
           trigger:  spacer,
           start:    "top top",
           end:      "bottom top",
-          scrub:    1.5,
+          scrub:    2, // Weighted luxury scrubbing
         },
         scale:    1.45,
         yPercent: -10,
@@ -295,12 +295,9 @@ export default function Home() {
       </div>
 
       {/*
-        SPACER — 100vh of scrollable space that triggers the parallax.
-        The hero container is now `position:fixed` so it stays on screen
-        while this spacer scrolls past it. ScrollTrigger targets the spacer
-        (which is in normal document flow) for accurate position measurement.
+        SPACER — 400vh of interaction runway for sticky hero experience.
       */}
-      <div ref={spacerRef} className="h-screen w-full" style={{ zIndex: 5 }} />
+      <div ref={spacerRef} className="h-[400vh] w-full" style={{ zIndex: 5 }} />
 
       {/* Main Sections */}
       <div className="relative z-30 bg-[#0D0D0D]">
