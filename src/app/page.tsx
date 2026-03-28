@@ -13,183 +13,216 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
-  ssr: false, 
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
-});
-const TrustBar = nextDynamic(() => import("@/components/TrustBar").then(mod => mod.TrustBar), { 
+
+const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), {
   ssr: false,
-  loading: () => <div className="h-10 bg-[#0D0D0D]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />,
+});
+const TrustBar = nextDynamic(() => import("@/components/TrustBar").then(mod => mod.TrustBar), {
+  ssr: false,
+  loading: () => <div className="h-10 bg-[#0D0D0D]" />,
 });
 const Services = nextDynamic(() => import("@/components/Services").then(mod => mod.Services), {
   ssr: false,
-  loading: () => <ServicesSkeleton />
+  loading: () => <ServicesSkeleton />,
 });
 const CaseStudies = nextDynamic(() => import("@/components/CaseStudies").then(mod => mod.CaseStudies), {
   ssr: false,
-  loading: () => <CaseStudiesSkeleton />
+  loading: () => <CaseStudiesSkeleton />,
 });
-const Specialist = nextDynamic(() => import("@/components/Specialist").then(mod => mod.Specialist), { 
+const Specialist = nextDynamic(() => import("@/components/Specialist").then(mod => mod.Specialist), {
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />,
 });
-const Experience = nextDynamic(() => import("@/components/Experience").then(mod => mod.Experience), { 
+const Experience = nextDynamic(() => import("@/components/Experience").then(mod => mod.Experience), {
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />,
 });
-const Amenities = nextDynamic(() => import("@/components/Amenities").then(mod => mod.Amenities), { 
+const Amenities = nextDynamic(() => import("@/components/Amenities").then(mod => mod.Amenities), {
   ssr: false,
-  loading: () => <div className="h-screen bg-[#0D0D0D]" />
+  loading: () => <div className="h-screen bg-[#0D0D0D]" />,
 });
 const Testimonials = nextDynamic(() => import("@/components/Testimonials").then(mod => mod.Testimonials), {
   ssr: false,
-  loading: () => <TestimonialsSkeleton />
+  loading: () => <TestimonialsSkeleton />,
 });
-const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), { 
+const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), {
   ssr: false,
-  loading: () => <div className="h-40 bg-[#0D0D0D]" />
+  loading: () => <div className="h-40 bg-[#0D0D0D]" />,
 });
 const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
   ssr: false,
-  loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />
+  loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />,
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 
 
 export default function Home() {
+  const spacerRef   = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
+  /* ─── VIDEO AUTOPLAY ─────────────────────────────────────────────── */
   useEffect(() => {
     const video = videoRef.current;
-    const container = containerRef.current;
-    const heroContent = heroContentRef.current;
-    if (!video || !container || !heroContent) return;
+    if (!video) return;
 
-    // Force muted states to satisfy all browser autoplay policies
+    // Force muted — required for autoplay in all browsers
     video.muted = true;
     video.defaultMuted = true;
-    video.setAttribute('muted', '');
-    video.setAttribute('playsinline', '');
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
 
-    const attemptPlay = async () => {
-      try {
-        await video.play();
-        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-      } catch (err) {
-        window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-      }
+    const tryPlay = () => video.play().catch(() => {});
+
+    // Attempt 1: as soon as the component mounts
+    tryPlay();
+
+    // Attempt 2: once enough data is buffered (covers slow connections)
+    video.addEventListener("canplay", tryPlay, { once: true });
+    video.addEventListener("loadeddata", tryPlay, { once: true });
+
+    // Attempt 3: on first user interaction of ANY kind (covers strict autoplay policies)
+    const onInteraction = () => {
+      tryPlay();
+      window.removeEventListener("pointerdown", onInteraction);
+      window.removeEventListener("keydown", onInteraction);
     };
+    window.addEventListener("pointerdown", onInteraction, { passive: true });
+    window.addEventListener("keydown", onInteraction, { passive: true });
 
-    attemptPlay();
+    // Signal preloader that assets are ready
+    const onLoaded = () => window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+    video.addEventListener("canplay", onLoaded, { once: true });
+    // Safety net: fire after 4 s regardless
+    const safetyId = setTimeout(onLoaded, 4000);
 
-    const handleUserInteraction = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
-      window.removeEventListener('click', handleUserInteraction);
-      window.removeEventListener('touchstart', handleUserInteraction);
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("loadeddata", tryPlay);
+      video.removeEventListener("canplay", onLoaded);
+      window.removeEventListener("pointerdown", onInteraction);
+      window.removeEventListener("keydown", onInteraction);
+      clearTimeout(safetyId);
     };
+  }, []);
 
-    window.addEventListener('click', handleUserInteraction);
-    window.addEventListener('touchstart', handleUserInteraction);
+  /* ─── GSAP ANIMATIONS ────────────────────────────────────────────── */
+  useEffect(() => {
+    const video       = videoRef.current;
+    const container   = containerRef.current;
+    const heroContent = heroContentRef.current;
+    const spacer      = spacerRef.current;
+    if (!video || !container || !heroContent || !spacer) return;
+
+    // Total entrance duration: delay 0.5 + duration 2.2 = 2.7 s
+    const ENTRANCE_DURATION = 2.2;
+    const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
 
-      // ─── 1. ENTRANCE ANIMATION (automatic, runs once on load) ─────────────
-      // The video's initial state (opacity:0, scale:1.4, filter blur) is applied
-      // synchronously via inline styles on the <video> element — this prevents
-      // the "ghost loading" flash that occurred when the video appeared in its
-      // raw state before GSAP could set the fromTo initial values.
+      /* ── 1. ENTRANCE — cinematic zoom-in + fade ───────────────────── */
+      // Initial state is set inline on the <video> element (opacity:0, scale:1.4,
+      // blur:20px) so the video is already hidden on first paint — no ghost flash.
       gsap.to(video, {
-        scale: 1.0,
-        filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)',
-        opacity: 1,
-        duration: 2.2,
-        delay: 0.5,
-        ease: "expo.out",
-        onComplete: () => {
-          // ─── 2. SCROLL PARALLAX — only activates after entrance completes ──
-          // This sequencing ensures no collision between entrance and scroll.
-          ScrollTrigger.refresh();
-
-          // 2a. Video parallax — subtle zoom-out + upward drift (cinematic depth)
-          gsap.to(video, {
-            scrollTrigger: {
-              trigger: container,
-              start: "top top",
-              end: "bottom top",
-              scrub: 1.2,
-            },
-            scale: 1.15,
-            yPercent: -8,
-            ease: "none",
-          });
-
-          // 2b. Hero text parallax — slower drift (layered depth: text closer than video)
-          gsap.to(heroContent, {
-            scrollTrigger: {
-              trigger: container,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.8,
-            },
-            yPercent: -18,
-            opacity: 0,
-            ease: "none",
-          });
-
-          // 2c. Hero container — smooth cinematic fade-out on exit
-          gsap.to(container, {
-            scrollTrigger: {
-              trigger: container,
-              start: "60% top",
-              end: "bottom top",
-              scrub: true,
-            },
-            opacity: 0.4,
-            ease: "none",
-          });
-        }
+        scale:    1.0,
+        filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
+        opacity:  1,
+        duration: ENTRANCE_DURATION,
+        delay:    ENTRANCE_DELAY,
+        ease:     "expo.out",
+        // overwrite ensures entrance doesn't conflict with the scroll tween
+        // that is also targeting `scale` (both start at the same from-value)
+        overwrite: "auto",
       });
 
-    }, containerRef);
+      /* ── 2. SCROLL PARALLAX ───────────────────────────────────────── */
+      // Created upfront (not inside onComplete) so they are properly registered
+      // with Lenis+ScrollTrigger from the start.
+      // The `delay` on the entrance animation ensures the user cannot see
+      // any scroll-driven changes before the entrance completes naturally,
+      // because the page is still on the preloader/top of the screen during
+      // those first 2.7 s.
+
+      // 2a. VIDEO — zoom-out + slow upward drift (background depth layer)
+      gsap.to(video, {
+        scrollTrigger: {
+          trigger:  spacer,   // spacer is in document flow → reliable measurement
+          start:    "top top",
+          end:      "bottom top",
+          scrub:    1.5,
+        },
+        scale:    1.18,
+        yPercent: -10,
+        ease:     "none",
+        overwrite: "auto",
+      });
+
+      // 2b. HERO TEXT — faster upward drift (foreground layer, creates depth illusion)
+      gsap.to(heroContent, {
+        scrollTrigger: {
+          trigger: spacer,
+          start:   "top top",
+          end:     "bottom top",
+          scrub:   0.8,
+        },
+        yPercent: -22,
+        opacity:  0,
+        ease:     "none",
+      });
+
+      // 2c. HERO CONTAINER — gentle fade-out as it exits the viewport
+      gsap.to(container, {
+        scrollTrigger: {
+          trigger: spacer,
+          start:   "55% top",
+          end:     "bottom top",
+          scrub:   true,
+        },
+        opacity: 0.35,
+        ease:    "none",
+      });
+
+    });
+
+    // Refresh ScrollTrigger after a tick so Lenis has initialised its scroll
+    // proxy — without this the trigger positions can be miscalculated on first load.
+    const rafId = requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => {
       ctx.revert();
-      window.removeEventListener('click', handleUserInteraction);
-      window.removeEventListener('touchstart', handleUserInteraction);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
-      {/* Hero Section */}
+
+      {/* ── HERO — fixed above the spacer ─────────────────────────── */}
       <div
         ref={containerRef}
         className="hero-container-reset"
         style={{
-          position: 'absolute',
-          top: '-60px',
-          left: 0,
-          height: 'calc(100vh + 60px)',
-          width: '100vw',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          overflow: 'hidden',
-          zIndex: 10,
-          willChange: 'opacity',
+          position:       "fixed",   // fixed keeps it in place while SpacerRef scrolls
+          top:            0,
+          left:           0,
+          height:         "100vh",
+          width:          "100vw",
+          display:        "flex",
+          flexDirection:  "column",
+          justifyContent: "space-between",
+          overflow:       "hidden",
+          zIndex:         10,
+          willChange:     "opacity",
+          pointerEvents:  "none",   // let scroll events pass through to the page
         }}
       >
         {/*
-          ⚠️ GHOST-LOADING FIX:
-          The inline styles below define the animation's initial state SYNCHRONOUSLY,
-          before GSAP hydrates. Previously, GSAP's fromTo() set the initial state only
-          after client-side mount, causing a flash where the video appeared fully visible
-          for a split second before snapping to opacity:0 / scale:1.4 / blur.
-          Now the video starts hidden from SSR — no flash, no ghost.
+          ⚠️  GHOST-LOADING FIX
+          The initial inline styles (opacity:0, scale:1.4, filter blur) are applied
+          synchronously at render time. GSAP then uses gsap.to() to animate FROM
+          these values — so the video is never briefly visible in its raw state.
         */}
         <video
           ref={videoRef}
@@ -199,64 +232,31 @@ export default function Home() {
           playsInline
           preload="auto"
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: '40% 35%',
-            zIndex: 0,
-            willChange: 'transform, filter, opacity',
-            // Initial state — GSAP animates FROM here to the final state
-            opacity: 0,
-            transform: 'scale(1.4)',
-            filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)',
+            position:       "absolute",
+            inset:          0,
+            width:          "100%",
+            height:         "100%",
+            objectFit:      "cover",
+            objectPosition: "40% 35%",
+            zIndex:         0,
+            willChange:     "transform, filter, opacity",
+            // Ghost-loading fix — entrance animation starts from these values
+            opacity:   0,
+            transform: "scale(1.4)",
+            filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(20px)",
           }}
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
         </video>
 
-        {/* Layer 1: Bottom-up gradient for content legibility */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
-        />
+        {/* Gradient layers */}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)", zIndex:1, pointerEvents:"none" }} />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 20%, transparent 40%)", zIndex:1, pointerEvents:"none" }} />
+        <div style={{ background:"radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, transparent 70%)", position:"absolute", top:"40%", left:"50%", transform:"translate(-50%, -50%)", width:"90%", height:"50%", zIndex:1, pointerEvents:"none" }} />
 
-        {/* Layer 1.5: Top-down gradient to soften the navbar edge */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 20%, transparent 40%)',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
-        />
+        {/* ── Hero Content ── */}
+        <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto" }}>
 
-        {/* Layer 2: Radial vignette */}
-        <div
-          style={{
-            background: 'radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, transparent 70%)',
-            position: 'absolute',
-            top: '40%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '90%',
-            height: '50%',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* ── Hero Content — ref'd for scroll parallax ── */}
-        <div ref={heroContentRef} className="hero-content-split">
-
-          {/* TOPO — Overline + Headline */}
           <div className="hero-text-group">
             <PremiumReveal type="fade" direction="bottom" delay={0.1}>
               <p className="hero-overline">SUA ORIGEM,</p>
@@ -268,7 +268,6 @@ export default function Home() {
             </PremiumReveal>
           </div>
 
-          {/* BASE — Subheadline + CTA */}
           <div className="hero-action-group">
             <PremiumReveal type="fade" direction="bottom" delay={0.5}>
               <p className="hero-subheadline">
@@ -285,10 +284,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Spacer to push content below the absolute Hero */}
-      <div className="h-screen w-full invisible pointer-events-none" />
+      {/*
+        SPACER — 100vh of scrollable space that triggers the parallax.
+        The hero container is now `position:fixed` so it stays on screen
+        while this spacer scrolls past it. ScrollTrigger targets the spacer
+        (which is in normal document flow) for accurate position measurement.
+      */}
+      <div ref={spacerRef} className="h-screen w-full" style={{ zIndex: 5 }} />
 
-      {/* Main Content Sections */}
+      {/* Main Sections */}
       <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
         <Services />
