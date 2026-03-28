@@ -121,26 +121,31 @@ export default function Home() {
     const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
-      // ── 1. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%) ────────────────
-      // We animate the video's currentTime from 0 to its full duration.
-      // This is uninterruptible cinematic reveal.
-      const tl = gsap.timeline({
-        onComplete: () => {
-          // ── 2. SCROLL SCRUBBING: HANDOVER ────────────────────────────
-          // Once revealed, the user can "re-scrub" the video based on scroll.
-          gsap.to(video, {
-            scrollTrigger: {
-              trigger:  spacer,
-              start:    "top top",
-              end:      "bottom top",
-              scrub:    2, // Weighted luxury scrubbing
-            },
-            currentTime: video.duration || 0,
-            ease: "none",
-            overwrite: "auto",
-          });
+      // 1. PINNING: THE LOCK (TRAVA) ──────────────────────────────────
+      // This physically anchors the Hero section to the viewport for 3000px
+      // of scroll, forcing the user to see the transformation.
+      ScrollTrigger.create({
+        trigger: container,
+        start:   "top top",
+        end:     "+=3000", // The "trava" distance
+        pin:     true,
+        scrub:   2,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Sync video progress to pin progress after entrance
+          if (tl.progress() === 1) {
+            gsap.to(video, {
+              currentTime: self.progress * (video.duration || 0),
+              duration:    0.1,
+              ease:        "none",
+              overwrite:   "auto",
+            });
+          }
         }
       });
+
+      // 2. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%) ────────────────
+      const tl = gsap.timeline();
 
       // Cinematic Reveal: Automatic Playback Sweep
       tl.to(video, {
@@ -158,13 +163,13 @@ export default function Home() {
         ease:     "expo.out",
       }, 0); // Start at same time as video sweep
 
-      // Parallel Depth Parallax (Scale/Position) linked to scroll
+      // 3. PARALLAX EFFECTS (Mapped to the pinned section)
       gsap.to(video, {
         scrollTrigger: {
-          trigger:  spacer,
-          start:    "top top",
-          end:      "bottom top",
-          scrub:    2, // Weighted luxury scrubbing
+          trigger: container,
+          start:   "top top",
+          end:     "+=3000",
+          scrub:   2,
         },
         scale:    1.45,
         yPercent: -10,
@@ -186,9 +191,9 @@ export default function Home() {
 
       gsap.to(container, {
         scrollTrigger: {
-          trigger: spacer,
-          start:   "55% top",
-          end:     "bottom top",
+          trigger: container,
+          start:   "2500 top", // Start fading out near the end of the pin
+          end:     "+=500",
           scrub:   true,
         },
         opacity: 0.35,
@@ -209,15 +214,15 @@ export default function Home() {
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
 
-      {/* ── HERO — fixed above the spacer ─────────────────────────── */}
+      {/* ── HERO — Pinned by GSAP ─────────────────────────── */}
       <div
         ref={containerRef}
         className="hero-container-reset"
         style={{
-          position:       "fixed",   // fixed keeps it in place while SpacerRef scrolls
+          position:       "relative", // GSAP will handle the "fixed" positioning during pin
           top:            "-60px",   // OVER-FILL: buried under browser top edge
           left:           0,
-          height:         "calc(100vh + 60px)", // OVER-FILL: height compensation
+          height:         "calc(100vh + 60px)",
           width:          "100vw",
           display:        "flex",
           flexDirection:  "column",
@@ -225,7 +230,7 @@ export default function Home() {
           overflow:       "hidden",
           zIndex:         10,
           willChange:     "opacity",
-          pointerEvents:  "none",   // let scroll events pass through to the page
+          pointerEvents:  "none",
         }}
       >
         {/*
@@ -295,9 +300,8 @@ export default function Home() {
       </div>
 
       {/*
-        SPACER — 400vh of interaction runway for sticky hero experience.
+        The spacer is no longer needed as the pin distance creates the gap.
       */}
-      <div ref={spacerRef} className="h-[400vh] w-full" style={{ zIndex: 5 }} />
 
       {/* Main Sections */}
       <div className="relative z-30 bg-[#0D0D0D]">
