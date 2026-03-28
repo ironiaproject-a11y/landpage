@@ -57,6 +57,7 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -102,19 +103,18 @@ export default function Home() {
       };
 
       // 2. Prepare ScrollTrigger (Scrubbing the Proxy Object)
-      const st = ScrollTrigger.create({
+      // trigger is scoped to containerRef
+      ScrollTrigger.create({
         trigger: ".hero-container-reset",
         start: "top top",
         end: "bottom top",
         scrub: true,
         onUpdate: (self) => {
-          // Manual scrub of the proxy object
           scrollState.scale = gsap.utils.interpolate(1.1, 1.0, self.progress);
-          scrollState.brightness = gsap.utils.interpolate(0.95, 0.3, self.progress);
+          scrollState.brightness = gsap.utils.interpolate(1, 0.3, self.progress);
           scrollState.blur = gsap.utils.interpolate(0, 15, self.progress);
           scrollState.opacity = gsap.utils.interpolate(1, 0.6, self.progress);
 
-          // Apply to video ONLY if entrance is finished
           if (scrollState.isActive) {
             gsap.set(video, {
               scale: scrollState.scale,
@@ -156,7 +156,7 @@ export default function Home() {
         }
       );
 
-    }, videoRef);
+    }, containerRef); // Scoped to container
 
     return () => {
       ctx.revert();
@@ -170,6 +170,7 @@ export default function Home() {
       {/* Hero Section – Video Background */}
       {/* Hero Section – Nuclear Reset (Using DIV to bypass section-wide padding) */}
       <div
+        ref={containerRef}
         className="hero-container-reset"
         style={{
           position: 'absolute',
