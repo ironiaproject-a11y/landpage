@@ -92,40 +92,27 @@ export default function Home() {
     window.addEventListener('click', handleUserInteraction);
     window.addEventListener('touchstart', handleUserInteraction);
 
+    const scrollContainer = containerRef.current;
+    if (!scrollContainer) return;
+
     const ctx = gsap.context(() => {
-      // 1. Data Store for Scroll Sync
-      const scrollState = {
-        scale: 1.1,
-        brightness: 0.95,
-        blur: 0,
-        opacity: 1,
-        isActive: false
-      };
-
-      // 2. Prepare ScrollTrigger (Scrubbing the Proxy Object)
-      // trigger is scoped to containerRef
-      ScrollTrigger.create({
-        trigger: ".hero-container-reset",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (self) => {
-          scrollState.scale = gsap.utils.interpolate(1.1, 1.0, self.progress);
-          scrollState.brightness = gsap.utils.interpolate(1, 0.3, self.progress);
-          scrollState.blur = gsap.utils.interpolate(0, 15, self.progress);
-          scrollState.opacity = gsap.utils.interpolate(1, 0.6, self.progress);
-
-          if (scrollState.isActive) {
-            gsap.set(video, {
-              scale: scrollState.scale,
-              filter: `grayscale(1) contrast(1.1) brightness(${scrollState.brightness}) blur(${scrollState.blur}px)`,
-              opacity: scrollState.opacity
-            });
-          }
-        }
+      // 1. Scroll-Controlled Layer (Container)
+      gsap.to(scrollContainer, {
+        scrollTrigger: {
+          trigger: ".hero-container-reset",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+          markers: false
+        },
+        scale: 0.9,
+        // Using filter on container to darken everything
+        filter: 'brightness(0.3) blur(10px)',
+        opacity: 0.6,
+        ease: "none"
       });
 
-      // 3. Entrance Animation (Auto-play)
+      // 2. Cinematic Entrance Layer (Video Element)
       gsap.fromTo(video, 
         { 
           scale: 1.4, 
@@ -133,30 +120,20 @@ export default function Home() {
           opacity: 0 
         },
         { 
-          scale: 1.1, 
+          scale: 1.0, 
           filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)', 
           opacity: 1,
           duration: 2.2,
           delay: 0.5,
           ease: "expo.out",
           onComplete: () => {
-            // 4. Smooth Handover
-            ScrollTrigger.refresh();
-            gsap.to(video, {
-              scale: scrollState.scale,
-              filter: `grayscale(1) contrast(1.1) brightness(${scrollState.brightness}) blur(${scrollState.blur}px)`,
-              opacity: scrollState.opacity,
-              duration: 0.8,
-              ease: "power2.out",
-              onComplete: () => {
-                scrollState.isActive = true;
-              }
-            });
+             // Optional: Force a refresh after intro settles
+             ScrollTrigger.refresh();
           }
         }
       );
 
-    }, containerRef); // Scoped to container
+    }, containerRef);
 
     return () => {
       ctx.revert();
@@ -183,6 +160,8 @@ export default function Home() {
           justifyContent: 'space-between',
           overflow: 'hidden',
           zIndex: 10,
+          willChange: 'transform, filter',
+          transformStyle: 'preserve-3d'
         }}
       >
         {/* Background Video */}
