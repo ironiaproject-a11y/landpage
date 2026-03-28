@@ -126,7 +126,7 @@ export default function Home() {
       // Initial state is set inline on the <video> element (opacity:0, scale:1.4,
       // blur:20px) so the video is already hidden on first paint — no ghost flash.
       gsap.to(video, {
-        scale:    1.0,
+        scale:    1.25, // OVER-FILL: 25% zoom to crop internal letterboxing
         filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
         opacity:  1,
         duration: ENTRANCE_DURATION,
@@ -153,7 +153,7 @@ export default function Home() {
           end:      "bottom top",
           scrub:    1.5,
         },
-        scale:    1.18,
+        scale:    1.45, // Parallax depth starting from 1.25
         yPercent: -10,
         ease:     "none",
         overwrite: "auto",
@@ -205,9 +205,9 @@ export default function Home() {
         className="hero-container-reset"
         style={{
           position:       "fixed",   // fixed keeps it in place while SpacerRef scrolls
-          top:            0,
+          top:            "-60px",   // OVER-FILL: buried under browser top edge
           left:           0,
-          height:         "100vh",
+          height:         "calc(100vh + 60px)", // OVER-FILL: height compensation
           width:          "100vw",
           display:        "flex",
           flexDirection:  "column",
