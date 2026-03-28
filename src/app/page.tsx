@@ -1,5 +1,4 @@
 "use client";
-/* SYNC: Restored Unified Hero Design */
 
 import nextDynamic from "next/dynamic";
 import { useRef, useEffect } from "react";
@@ -7,6 +6,13 @@ import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/c
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
 import { PremiumReveal } from "@/components/PremiumReveal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+/* ─── register gsap ─────────────────────────────────────────── */
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), { 
   ssr: false, 
   loading: () => <div className="h-screen bg-[#0D0D0D]" />
@@ -57,7 +63,7 @@ export default function Home() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Force muted states to satisfy all browser policies
+    // Standard video setup
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute('muted', '');
@@ -66,40 +72,56 @@ export default function Home() {
     const attemptPlay = async () => {
       try {
         await video.play();
-        // Signal preloader that we are ready
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       } catch (err) {
-        console.log("Autoplay blocked, waiting for interaction...");
-        // Fallback: Signal regardless so user isn't stuck behind preloader
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       }
     };
 
-    // Attempt playback immediately and on data load
     attemptPlay();
-    
-    const handleCanPlay = () => {
-      attemptPlay();
-      window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-    };
 
-    video.addEventListener('canplaythrough', handleCanPlay);
+    const ctx = gsap.context(() => {
+      // 1. Initial State (Entrance Source)
+      gsap.set(video, {
+        scale: 1.4,
+        filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)',
+        opacity: 0,
+        transformOrigin: "center center"
+      });
 
-    // One-time emergency listener for any user interaction
-    const handleUserInteraction = () => {
-      video.play();
-      window.removeEventListener('click', handleUserInteraction);
-      window.removeEventListener('touchstart', handleUserInteraction);
-    };
+      const heroTl = gsap.timeline({
+        delay: 0.5,
+        onComplete: () => {
+          // 2. Setup ScrollTrigger after entrance is ready
+          gsap.to(video, {
+            scrollTrigger: {
+              trigger: ".hero-container-reset",
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+              markers: false
+            },
+            scale: 1.0,
+            filter: 'grayscale(1) contrast(1.05) brightness(0.3) blur(10px)',
+            opacity: 0.6,
+            ease: "none"
+          });
+        }
+      });
 
-    window.addEventListener('click', handleUserInteraction);
-    window.addEventListener('touchstart', handleUserInteraction);
+      // Entrance Animation Sequence
+      heroTl.to(video, {
+        opacity: 1,
+        blur: 0, // GSAP blur shortcut or use filter string
+        filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)',
+        scale: 1.1,
+        duration: 2.2,
+        ease: "expo.out"
+      });
 
-    return () => {
-      video.removeEventListener('canplaythrough', handleCanPlay);
-      window.removeEventListener('click', handleUserInteraction);
-      window.removeEventListener('touchstart', handleUserInteraction);
-    };
+    }, videoRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -110,7 +132,7 @@ export default function Home() {
         className="hero-container-reset"
         style={{
           position: 'absolute',
-          top: '-60px', // Over-fill: Pushing above the browser edge
+          top: '-60px', 
           left: 0,
           height: 'calc(100vh + 60px)',
           width: '100vw',
@@ -128,19 +150,15 @@ export default function Home() {
           muted
           loop
           playsInline
-          preload="auto"
           style={{
             position: 'absolute',
             inset: 0,
             width: '100%',
             height: '100%',
-            minWidth: '100%',
-            minHeight: '100%',
             objectFit: 'cover',
             objectPosition: '40% 35%',
             zIndex: 0,
-            filter: 'grayscale(1) contrast(1.1) brightness(0.95)',
-            transform: 'scale(1.1)', // Reduced for more cinematic depth and space
+            willChange: 'transform, filter'
           }}
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
