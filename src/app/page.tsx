@@ -121,84 +121,89 @@ export default function Home() {
     const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
-      // 1. PINNING: THE LOCK (TRAVA) ──────────────────────────────────
-      // This physically anchors the Hero section to the viewport for 3000px
-      // of scroll, forcing the user to see the transformation.
-      ScrollTrigger.create({
-        trigger: container,
-        start:   "top top",
-        end:     "+=3000", // The "trava" distance
-        pin:     true,
-        scrub:   2,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          // Sync video progress to pin progress after entrance
-          if (tl.progress() === 1) {
-            gsap.to(video, {
-              currentTime: self.progress * (video.duration || 0),
-              duration:    0.1,
-              ease:        "none",
-              overwrite:   "auto",
-            });
-          }
-        }
-      });
+      const initGSAP = () => {
+        const duration = video.duration || 5;
 
-      // 2. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%) ────────────────
-      const tl = gsap.timeline();
-
-      // Cinematic Reveal: Automatic Playback Sweep
-      tl.to(video, {
-        currentTime: video.duration || 0,
-        duration:    3.5, // 3.5s of automatic cinematic sweep
-        ease:        "power2.inOut",
-      });
-
-      // Synchronized Typographic Entrance
-      tl.to(video, {
-        scale:    1.25,
-        filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
-        opacity:  1,
-        duration: 2.2,
-        ease:     "expo.out",
-      }, 0); // Start at same time as video sweep
-
-      // 3. PARALLAX EFFECTS (Mapped to the pinned section)
-      gsap.to(video, {
-        scrollTrigger: {
+        // 1. PINNING: THE LOCK (TRAVA)
+        ScrollTrigger.create({
           trigger: container,
           start:   "top top",
           end:     "+=3000",
+          pin:     true,
           scrub:   2,
-        },
-        scale:    1.45,
-        yPercent: -10,
-        ease:     "none",
-      });
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (tl.progress() === 1) {
+              gsap.to(video, {
+                currentTime: self.progress * duration,
+                duration:    0.1,
+                ease:        "none",
+                overwrite:   "auto",
+              });
+            }
+          }
+        });
 
-      // Text and Container Parallax
-      gsap.to(heroContent, {
-        scrollTrigger: {
-          trigger: spacer,
-          start:   "top top",
-          end:     "bottom top",
-          scrub:   0.8,
-        },
-        yPercent: -22,
-        opacity:  0,
-        ease:     "none",
-      });
+        // 2. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%)
+        const tl = gsap.timeline();
 
-      gsap.to(container, {
-        scrollTrigger: {
-          trigger: container,
-          start:   "2500 top", // Start fading out near the end of the pin
-          end:     "+=500",
-          scrub:   true,
-        },
-        opacity: 0.35,
-        ease:    "none",
-      });
+        tl.to(video, {
+          currentTime: duration,
+          duration:    3.5,
+          ease:        "power2.inOut",
+        });
+
+        tl.to(video, {
+          scale:    1.25,
+          filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
+          opacity:  1,
+          duration: 2.2,
+          ease:     "expo.out",
+        }, 0);
+
+        // 3. PARALLAX EFFECTS
+        gsap.to(video, {
+          scrollTrigger: {
+            trigger: container,
+            start:   "top top",
+            end:     "+=3000",
+            scrub:   2,
+          },
+          scale:    1.45,
+          yPercent: -10,
+          ease:     "none",
+        });
+
+        gsap.to(heroContent, {
+          scrollTrigger: {
+            trigger: container,
+            start:   "top top",
+            end:     "+=3000",
+            scrub:   0.8,
+          },
+          yPercent: -22,
+          opacity:  0,
+          ease:     "none",
+        });
+
+        gsap.to(container, {
+          scrollTrigger: {
+            trigger: container,
+            start:   "2500 top",
+            end:     "+=500",
+            scrub:   true,
+          },
+          opacity: 0.35,
+          ease:    "none",
+        });
+      };
+
+      // Ensure duration is available before starting
+      if (video.readyState >= 1) {
+        initGSAP();
+      } else {
+        video.onloadedmetadata = initGSAP;
+      }
     });
 
     // Refresh ScrollTrigger after a tick so Lenis has initialised its scroll
@@ -219,16 +224,16 @@ export default function Home() {
         ref={containerRef}
         className="hero-container-reset"
         style={{
-          position:       "relative", // GSAP will handle the "fixed" positioning during pin
-          top:            "-60px",   // OVER-FILL: buried under browser top edge
+          position:       "relative",
+          top:            0,         // Reset top to 0 for GSAP pinning
           left:           0,
-          height:         "calc(100vh + 60px)",
+          height:         "100vh",   // Clean 100vh for pinning trigger
           width:          "100vw",
           display:        "flex",
           flexDirection:  "column",
           justifyContent: "space-between",
           overflow:       "hidden",
-          zIndex:         10,
+          zIndex:         50,        // Elevated above all following content (z-30)
           willChange:     "opacity",
           pointerEvents:  "none",
         }}
@@ -255,10 +260,12 @@ export default function Home() {
             objectPosition: "40% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
-            // Ghost-loading fix — entrance animation starts from these values
+            // Over-fill handled internally on the video asset
             opacity:   0,
-            transform: "scale(1.4)",
+            transform: "scale(1.4) translateY(-30px)", // Negative translate for over-fill
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(20px)",
+            height:    "120%", // Extra height within the container
+            top:       "-10%", // Centered offset
           }}
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
