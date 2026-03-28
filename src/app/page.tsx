@@ -121,45 +121,57 @@ export default function Home() {
     const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
-
-      /* ── 1. ENTRANCE — cinematic zoom-in + fade ───────────────────── */
-      // Initial state is set inline on the <video> element (opacity:0, scale:1.4,
-      // blur:20px) so the video is already hidden on first paint — no ghost flash.
-      gsap.to(video, {
-        scale:    1.25, // OVER-FILL: 25% zoom to crop internal letterboxing
-        filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
-        opacity:  1,
-        duration: ENTRANCE_DURATION,
-        delay:    ENTRANCE_DELAY,
-        ease:     "expo.out",
-        // overwrite ensures entrance doesn't conflict with the scroll tween
-        // that is also targeting `scale` (both start at the same from-value)
-        overwrite: "auto",
+      // ── 1. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%) ────────────────
+      // We animate the video's currentTime from 0 to its full duration.
+      // This is uninterruptible cinematic reveal.
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // ── 2. SCROLL SCRUBBING: HANDOVER ────────────────────────────
+          // Once revealed, the user can "re-scrub" the video based on scroll.
+          gsap.to(video, {
+            scrollTrigger: {
+              trigger:  spacer,
+              start:    "top top",
+              end:      "bottom top",
+              scrub:    1.2,
+            },
+            currentTime: video.duration || 0,
+            ease: "none",
+            overwrite: "auto",
+          });
+        }
       });
 
-      /* ── 2. SCROLL PARALLAX ───────────────────────────────────────── */
-      // Created upfront (not inside onComplete) so they are properly registered
-      // with Lenis+ScrollTrigger from the start.
-      // The `delay` on the entrance animation ensures the user cannot see
-      // any scroll-driven changes before the entrance completes naturally,
-      // because the page is still on the preloader/top of the screen during
-      // those first 2.7 s.
+      // Cinematic Reveal: Automatic Playback Sweep
+      tl.to(video, {
+        currentTime: video.duration || 0,
+        duration:    3.5, // 3.5s of automatic cinematic sweep
+        ease:        "power2.inOut",
+      });
 
-      // 2a. VIDEO — zoom-out + slow upward drift (background depth layer)
+      // Synchronized Typographic Entrance
+      tl.to(video, {
+        scale:    1.25,
+        filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
+        opacity:  1,
+        duration: 2.2,
+        ease:     "expo.out",
+      }, 0); // Start at same time as video sweep
+
+      // Parallel Depth Parallax (Scale/Position) linked to scroll
       gsap.to(video, {
         scrollTrigger: {
-          trigger:  spacer,   // spacer is in document flow → reliable measurement
+          trigger:  spacer,
           start:    "top top",
           end:      "bottom top",
           scrub:    1.5,
         },
-        scale:    1.45, // Parallax depth starting from 1.25
+        scale:    1.45,
         yPercent: -10,
         ease:     "none",
-        overwrite: "auto",
       });
 
-      // 2b. HERO TEXT — faster upward drift (foreground layer, creates depth illusion)
+      // Text and Container Parallax
       gsap.to(heroContent, {
         scrollTrigger: {
           trigger: spacer,
@@ -172,7 +184,6 @@ export default function Home() {
         ease:     "none",
       });
 
-      // 2c. HERO CONTAINER — gentle fade-out as it exits the viewport
       gsap.to(container, {
         scrollTrigger: {
           trigger: spacer,
@@ -183,7 +194,6 @@ export default function Home() {
         opacity: 0.35,
         ease:    "none",
       });
-
     });
 
     // Refresh ScrollTrigger after a tick so Lenis has initialised its scroll
