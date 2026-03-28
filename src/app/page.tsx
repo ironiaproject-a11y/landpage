@@ -63,7 +63,7 @@ export default function Home() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Standard video setup
+    // Force muted states to satisfy all browser policies
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute('muted', '');
@@ -74,11 +74,24 @@ export default function Home() {
         await video.play();
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       } catch (err) {
+        // Fallback: Signal regardless so user isn't stuck behind preloader
         window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
       }
     };
 
     attemptPlay();
+
+    // One-time emergency listener for any user interaction
+    const handleUserInteraction = () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('touchstart', handleUserInteraction);
+    };
+
+    window.addEventListener('click', handleUserInteraction);
+    window.addEventListener('touchstart', handleUserInteraction);
 
     const ctx = gsap.context(() => {
       // 1. Initial State (Entrance Source)
@@ -112,7 +125,6 @@ export default function Home() {
       // Entrance Animation Sequence
       heroTl.to(video, {
         opacity: 1,
-        blur: 0, // GSAP blur shortcut or use filter string
         filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)',
         scale: 1.1,
         duration: 2.2,
@@ -121,7 +133,11 @@ export default function Home() {
 
     }, videoRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('touchstart', handleUserInteraction);
+    };
   }, []);
 
   return (
@@ -150,6 +166,7 @@ export default function Home() {
           muted
           loop
           playsInline
+          preload="auto"
           style={{
             position: 'absolute',
             inset: 0,
