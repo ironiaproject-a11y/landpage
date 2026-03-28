@@ -59,12 +59,15 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const container = containerRef.current;
+    const heroContent = heroContentRef.current;
+    if (!video || !container || !heroContent) return;
 
-    // Force muted states to satisfy all browser policies
+    // Force muted states to satisfy all browser autoplay policies
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute('muted', '');
@@ -92,46 +95,64 @@ export default function Home() {
     window.addEventListener('click', handleUserInteraction);
     window.addEventListener('touchstart', handleUserInteraction);
 
-    const scrollContainer = containerRef.current;
-    if (!scrollContainer) return;
-
     const ctx = gsap.context(() => {
-      // 1. Scroll-Controlled Layer (Container)
-      gsap.to(scrollContainer, {
-        scrollTrigger: {
-          trigger: ".hero-container-reset",
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-          markers: false
-        },
-        scale: 0.9,
-        // Using filter on container to darken everything
-        filter: 'brightness(0.3) blur(10px)',
-        opacity: 0.6,
-        ease: "none"
-      });
 
-      // 2. Cinematic Entrance Layer (Video Element)
-      gsap.fromTo(video, 
-        { 
-          scale: 1.4, 
-          filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)', 
-          opacity: 0 
-        },
-        { 
-          scale: 1.0, 
-          filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)', 
-          opacity: 1,
-          duration: 2.2,
-          delay: 0.5,
-          ease: "expo.out",
-          onComplete: () => {
-             // Optional: Force a refresh after intro settles
-             ScrollTrigger.refresh();
-          }
+      // ─── 1. ENTRANCE ANIMATION (automatic, runs once on load) ─────────────
+      // The video's initial state (opacity:0, scale:1.4, filter blur) is applied
+      // synchronously via inline styles on the <video> element — this prevents
+      // the "ghost loading" flash that occurred when the video appeared in its
+      // raw state before GSAP could set the fromTo initial values.
+      gsap.to(video, {
+        scale: 1.0,
+        filter: 'grayscale(1) contrast(1.1) brightness(0.95) blur(0px)',
+        opacity: 1,
+        duration: 2.2,
+        delay: 0.5,
+        ease: "expo.out",
+        onComplete: () => {
+          // ─── 2. SCROLL PARALLAX — only activates after entrance completes ──
+          // This sequencing ensures no collision between entrance and scroll.
+          ScrollTrigger.refresh();
+
+          // 2a. Video parallax — subtle zoom-out + upward drift (cinematic depth)
+          gsap.to(video, {
+            scrollTrigger: {
+              trigger: container,
+              start: "top top",
+              end: "bottom top",
+              scrub: 1.2,
+            },
+            scale: 1.15,
+            yPercent: -8,
+            ease: "none",
+          });
+
+          // 2b. Hero text parallax — slower drift (layered depth: text closer than video)
+          gsap.to(heroContent, {
+            scrollTrigger: {
+              trigger: container,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.8,
+            },
+            yPercent: -18,
+            opacity: 0,
+            ease: "none",
+          });
+
+          // 2c. Hero container — smooth cinematic fade-out on exit
+          gsap.to(container, {
+            scrollTrigger: {
+              trigger: container,
+              start: "60% top",
+              end: "bottom top",
+              scrub: true,
+            },
+            opacity: 0.4,
+            ease: "none",
+          });
         }
-      );
+      });
 
     }, containerRef);
 
@@ -144,14 +165,13 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
-      {/* Hero Section – Video Background */}
-      {/* Hero Section – Nuclear Reset (Using DIV to bypass section-wide padding) */}
+      {/* Hero Section */}
       <div
         ref={containerRef}
         className="hero-container-reset"
         style={{
           position: 'absolute',
-          top: '-60px', 
+          top: '-60px',
           left: 0,
           height: 'calc(100vh + 60px)',
           width: '100vw',
@@ -160,11 +180,17 @@ export default function Home() {
           justifyContent: 'space-between',
           overflow: 'hidden',
           zIndex: 10,
-          willChange: 'transform, filter',
-          transformStyle: 'preserve-3d'
+          willChange: 'opacity',
         }}
       >
-        {/* Background Video */}
+        {/*
+          ⚠️ GHOST-LOADING FIX:
+          The inline styles below define the animation's initial state SYNCHRONOUSLY,
+          before GSAP hydrates. Previously, GSAP's fromTo() set the initial state only
+          after client-side mount, causing a flash where the video appeared fully visible
+          for a split second before snapping to opacity:0 / scale:1.4 / blur.
+          Now the video starts hidden from SSR — no flash, no ghost.
+        */}
         <video
           ref={videoRef}
           autoPlay
@@ -180,7 +206,11 @@ export default function Home() {
             objectFit: 'cover',
             objectPosition: '40% 35%',
             zIndex: 0,
-            willChange: 'transform, filter'
+            willChange: 'transform, filter, opacity',
+            // Initial state — GSAP animates FROM here to the final state
+            opacity: 0,
+            transform: 'scale(1.4)',
+            filter: 'grayscale(1) contrast(1.1) brightness(0.5) blur(20px)',
           }}
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
@@ -208,7 +238,7 @@ export default function Home() {
           }}
         />
 
-        {/* Layer 2: Radial gradient */}
+        {/* Layer 2: Radial vignette */}
         <div
           style={{
             background: 'radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, transparent 70%)',
@@ -223,8 +253,8 @@ export default function Home() {
           }}
         />
 
-        {/* ── Hero: dois grupos verticais ── */}
-        <div className="hero-content-split">
+        {/* ── Hero Content — ref'd for scroll parallax ── */}
+        <div ref={heroContentRef} className="hero-content-split">
 
           {/* TOPO — Overline + Headline */}
           <div className="hero-text-group">
@@ -255,12 +285,10 @@ export default function Home() {
         </div>
       </div>
 
-
-
       {/* Spacer to push content below the absolute Hero */}
       <div className="h-screen w-full invisible pointer-events-none" />
 
-      {/* Main Content Sections Reordered for Conversion */}
+      {/* Main Content Sections */}
       <div className="relative z-30 bg-[#0D0D0D]">
         <Stats />
         <Services />
