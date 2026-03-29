@@ -38,21 +38,7 @@ export function Stats() {
         }
       });
 
-      // Section Entrance
-      gsap.fromTo(sectionRef.current,
-        { opacity: 0, y: 30 },
-        { 
-          opacity: 1, 
-          y: 0,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 95%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
+      // Section entrance removed for mobile stability
 
       mainTl.fromTo(items, 
         { opacity: 0, y: 20 },
@@ -101,9 +87,6 @@ export function Stats() {
           padding: 0 0 120px;
           position: relative;
           z-index: 30;
-          opacity: 0;
-          transform: translateY(30px);
-          will-change: transform, opacity;
           display: flex;
           justify-content: center;
           width: 100%;
