@@ -234,7 +234,7 @@ export default function Home() {
           flexDirection:  "column",
           justifyContent: "space-between",
           overflow:       "hidden",
-          zIndex:         999,       // Full priority to avoid layering bugs
+          zIndex:         10,       // Changed from 999 to 10 so Main Sections (30) can overlap it
           willChange:     "opacity",
           pointerEvents:  "auto",
         }}
