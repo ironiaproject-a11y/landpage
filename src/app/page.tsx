@@ -14,17 +14,13 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+import { Stats } from "@/components/Stats";
+import { Services } from "@/components/Services";
+import { TrustBar } from "@/components/TrustBar";
+
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), {
   ssr: false,
   loading: () => <div className="h-screen bg-[#0D0D0D]" />,
-});
-const TrustBar = nextDynamic(() => import("@/components/TrustBar").then(mod => mod.TrustBar), {
-  ssr: false,
-  loading: () => <div className="h-10 bg-[#0D0D0D]" />,
-});
-const Services = nextDynamic(() => import("@/components/Services").then(mod => mod.Services), {
-  ssr: false,
-  loading: () => <ServicesSkeleton />,
 });
 const CaseStudies = nextDynamic(() => import("@/components/CaseStudies").then(mod => mod.CaseStudies), {
   ssr: false,
@@ -49,10 +45,6 @@ const Testimonials = nextDynamic(() => import("@/components/Testimonials").then(
 const FAQ = nextDynamic(() => import("@/components/FAQ").then(mod => mod.FAQ), {
   ssr: false,
   loading: () => <div className="h-40 bg-[#0D0D0D]" />,
-});
-const Stats = nextDynamic(() => import("@/components/Stats").then(mod => mod.Stats), {
-  ssr: false,
-  loading: () => <div className="h-40 bg-[#0D0D0D] -mt-[10vh]" />,
 });
 const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.Footer), { ssr: false });
 
