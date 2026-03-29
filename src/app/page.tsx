@@ -129,7 +129,7 @@ export default function Home() {
         ScrollTrigger.create({
           trigger:     container,
           start:       "top top",
-          end:         "+=3000",
+          end:         "+=1000",
           pin:         true,
           scrub:       2,
           pinSpacing:  true,
@@ -169,7 +169,7 @@ export default function Home() {
           scrollTrigger: {
             trigger: container,
             start:   "top top",
-            end:     "+=3000",
+            end:     "+=1000",
             scrub:   2,
           },
           scale:    1.45, // parallax from 1.25 base
@@ -181,7 +181,7 @@ export default function Home() {
           scrollTrigger: {
             trigger: container,
             start:   "top top",
-            end:     "+=3000",
+            end:     "+=1000",
             scrub:   0.8,
           },
           yPercent: -22,
@@ -192,7 +192,7 @@ export default function Home() {
         gsap.to(container, {
           scrollTrigger: {
             trigger: container,
-            start:   "2500 top",
+            start:   "800 top",
             end:     "+=500",
             scrub:   true,
           },
@@ -271,7 +271,7 @@ export default function Home() {
             // Forcing initial visibility to prevent invisible states if script delays
             opacity:   1, 
             transform: "scale(1.4) translateY(-30px)",
-            filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(20px)",
+            filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 
             top:       "-10%", 
           }}
