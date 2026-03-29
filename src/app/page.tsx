@@ -117,8 +117,10 @@ export default function Home() {
         isInit = true;
         const duration = video.duration || 5;
 
+        let introDone = false;
+
         // 1. PINNING: THE LOCK (TRAVA)
-        ScrollTrigger.create({
+        const mainST = ScrollTrigger.create({
           trigger:     container,
           start:       "top top",
           end:         "+=1000",
@@ -128,11 +130,11 @@ export default function Home() {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            if (tl.progress() >= 0.99) {
+            if (introDone) {
               gsap.to(video, {
                 currentTime: self.progress * duration,
                 duration:    0.1,
-                ease:        "none",
+                ease:        "sine.out",
                 overwrite:   "auto",
               });
             }
@@ -140,7 +142,17 @@ export default function Home() {
         });
 
         // 2. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%)
-        const tl = gsap.timeline();
+        const tl = gsap.timeline({
+          onComplete: () => {
+            introDone = true;
+            // Sync immediately to current scroll position to avoid "jumps"
+            gsap.to(video, {
+              currentTime: mainST.progress * duration,
+              duration:    0.5,
+              ease:        "power2.out"
+            });
+          }
+        });
 
         tl.to(video, {
           currentTime: duration,
