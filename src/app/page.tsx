@@ -149,7 +149,7 @@ export default function Home() {
         });
 
         tl.to(video, {
-          scale:    1.25,
+          scale:    1.1, // reduced from 1.25
           filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
           opacity:  1,
           duration: ENTRANCE_DURATION,
@@ -164,7 +164,7 @@ export default function Home() {
             end:     "+=1000",
             scrub:   2,
           },
-          scale:    1.45, // parallax from 1.25 base
+          scale:    1.25, // parallax from 1.1 base (reduced from 1.45)
           yPercent: -8,
           ease:     "none",
         });
@@ -262,7 +262,7 @@ export default function Home() {
             willChange:     "transform, filter, opacity",
             // Forcing initial visibility to prevent invisible states if script delays
             opacity:   1, 
-            transform: "scale(1.4) translateY(-30px)",
+            transform: "scale(1.25) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 
             top:       "-10%", 
