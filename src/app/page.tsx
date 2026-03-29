@@ -106,9 +106,9 @@ export default function Home() {
     const heroContent = heroContentRef.current;
     if (!video || !container || !heroContent) return;
 
-    // Total entrance duration: delay 0.5 + duration 3.5 = 4.0 s
+    // Total entrance duration: delay 1.5 + duration 3.5 = 5.0 s
     const ENTRANCE_DURATION = 3.5;
-    const ENTRANCE_DELAY    = 0.5;
+    const ENTRANCE_DELAY    = 1.5;
 
     const ctx = gsap.context(() => {
       let isInit = false;
@@ -272,6 +272,7 @@ export default function Home() {
             objectPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
+            pointerEvents:  "none",
             // Forcing initial visibility to prevent invisible states if script delays
             opacity:   1, 
             transform: "scale(1.25) translateY(-30px)",
