@@ -258,6 +258,9 @@ export default function Home() {
           muted
           loop
           playsInline
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
           preload="auto"
           style={{
             position:       "absolute",
@@ -278,6 +281,20 @@ export default function Home() {
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
         </video>
+
+        {/* ── VIDEO CONTROLS SUPPRESSION ── */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          video::-webkit-media-controls {
+            display: none !important;
+          }
+          video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+            -webkit-appearance: none;
+          }
+          video::-internal-media-controls-download-button {
+            display: none !important;
+          }
+        `}} />
 
         {/* Gradient layers */}
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)", zIndex:1, pointerEvents:"none" }} />
