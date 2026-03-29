@@ -106,8 +106,8 @@ export default function Home() {
     const heroContent = heroContentRef.current;
     if (!video || !container || !heroContent) return;
 
-    // Total entrance duration: delay 0.5 + duration 2.2 = 2.7 s
-    const ENTRANCE_DURATION = 2.2;
+    // Total entrance duration: delay 0.5 + duration 3.5 = 4.0 s
+    const ENTRANCE_DURATION = 3.5;
     const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
@@ -125,7 +125,7 @@ export default function Home() {
           start:       "top top",
           end:         "+=1000",
           pin:         true,
-          scrub:       2,
+          scrub:       1.5,
           pinSpacing:  true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -133,8 +133,8 @@ export default function Home() {
             if (introDone) {
               gsap.to(video, {
                 currentTime: self.progress * duration,
-                duration:    0.1,
-                ease:        "sine.out",
+                duration:    0.4,
+                ease:        "power1.out",
                 overwrite:   "auto",
               });
             }
@@ -148,7 +148,7 @@ export default function Home() {
             // Sync immediately to current scroll position to avoid "jumps"
             gsap.to(video, {
               currentTime: mainST.progress * duration,
-              duration:    0.5,
+              duration:    0.8,
               ease:        "power2.out"
             });
           }
@@ -156,7 +156,7 @@ export default function Home() {
 
         tl.to(video, {
           currentTime: duration,
-          duration:    3.5,
+          duration:    5.5,
           ease:        "power2.inOut",
         });
 
