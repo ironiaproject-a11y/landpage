@@ -121,19 +121,24 @@ export default function Home() {
     const ENTRANCE_DELAY    = 0.5;
 
     const ctx = gsap.context(() => {
+      let isInit = false;
       const initGSAP = () => {
+        if (isInit) return;
+        isInit = true;
         const duration = video.duration || 5;
 
         // 1. PINNING: THE LOCK (TRAVA)
         ScrollTrigger.create({
-          trigger: container,
-          start:   "top top",
-          end:     "+=3000",
-          pin:     true,
-          scrub:   2,
+          trigger:     container,
+          start:       "top top",
+          end:         "+=3000",
+          pin:         true,
+          scrub:       2,
+          pinSpacing:  true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            if (tl.progress() === 1) {
+            if (tl.progress() >= 0.99) {
               gsap.to(video, {
                 currentTime: self.progress * duration,
                 duration:    0.1,
@@ -157,9 +162,9 @@ export default function Home() {
           scale:    1.25,
           filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
           opacity:  1,
-          duration: 2.2,
+          duration: ENTRANCE_DURATION,
           ease:     "expo.out",
-        }, 0);
+        }, ENTRANCE_DELAY);
 
         // 3. PARALLAX EFFECTS
         gsap.to(video, {
@@ -169,8 +174,8 @@ export default function Home() {
             end:     "+=3000",
             scrub:   2,
           },
-          scale:    1.45,
-          yPercent: -10,
+          scale:    1.45, // parallax from 1.25 base
+          yPercent: -8,
           ease:     "none",
         });
 
@@ -198,11 +203,17 @@ export default function Home() {
         });
       };
 
-      // Ensure duration is available before starting
+      // Safety Net: force initialization if metadata is delayed or fails
+      const safetyId = setTimeout(initGSAP, 2000);
+
       if (video.readyState >= 1) {
         initGSAP();
+        clearTimeout(safetyId);
       } else {
-        video.onloadedmetadata = initGSAP;
+        video.onloadedmetadata = () => {
+          initGSAP();
+          clearTimeout(safetyId);
+        };
       }
     });
 
@@ -225,17 +236,17 @@ export default function Home() {
         className="hero-container-reset"
         style={{
           position:       "relative",
-          top:            0,         // Reset top to 0 for GSAP pinning
+          top:            "-60px",
           left:           0,
-          height:         "100vh",   // Clean 100vh for pinning trigger
+          height:         "calc(100vh + 60px)",
           width:          "100vw",
           display:        "flex",
           flexDirection:  "column",
           justifyContent: "space-between",
           overflow:       "hidden",
-          zIndex:         50,        // Elevated above all following content (z-30)
+          zIndex:         999,       // Full priority to avoid layering bugs
           willChange:     "opacity",
-          pointerEvents:  "none",
+          pointerEvents:  "auto",
         }}
       >
         {/*
@@ -260,12 +271,12 @@ export default function Home() {
             objectPosition: "40% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
-            // Over-fill handled internally on the video asset
-            opacity:   0,
-            transform: "scale(1.4) translateY(-30px)", // Negative translate for over-fill
+            // Forcing initial visibility to prevent invisible states if script delays
+            opacity:   1, 
+            transform: "scale(1.4) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(20px)",
-            height:    "120%", // Extra height within the container
-            top:       "-10%", // Centered offset
+            height:    "120%", 
+            top:       "-10%", 
           }}
         >
           <source src="/hero-background-new.mp4" type="video/mp4" />
