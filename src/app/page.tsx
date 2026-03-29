@@ -58,7 +58,6 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 
 
 export default function Home() {
-  const spacerRef   = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
