@@ -48,7 +48,7 @@ export function Stats() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top bottom",
+            start: "top 95%",
             toggleActions: "play none none reverse"
           }
         }

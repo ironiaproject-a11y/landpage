@@ -228,7 +228,7 @@ export default function Home() {
           position:       "relative",
           top:            "-60px",
           left:           0,
-          height:         "calc(100vh + 60px)",
+          height:         "calc(100svh + 60px)",
           width:          "100vw",
           display:        "flex",
           flexDirection:  "column",
