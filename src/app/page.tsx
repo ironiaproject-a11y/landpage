@@ -113,8 +113,7 @@ export default function Home() {
     const video       = videoRef.current;
     const container   = containerRef.current;
     const heroContent = heroContentRef.current;
-    const spacer      = spacerRef.current;
-    if (!video || !container || !heroContent || !spacer) return;
+    if (!video || !container || !heroContent) return;
 
     // Total entrance duration: delay 0.5 + duration 2.2 = 2.7 s
     const ENTRANCE_DURATION = 2.2;
