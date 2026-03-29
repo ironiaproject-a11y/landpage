@@ -117,6 +117,7 @@ export default function Home() {
         isInit = true;
         const duration = video.duration || 5;
 
+        const isIntroViewed = typeof window !== "undefined" && sessionStorage.getItem("hero-intro-viewed") === "true";
         let introDone = false;
 
         // 1. PINNING: THE LOCK (TRAVA)
@@ -145,6 +146,9 @@ export default function Home() {
         const tl = gsap.timeline({
           onComplete: () => {
             introDone = true;
+            if (typeof window !== "undefined") {
+              sessionStorage.setItem("hero-intro-viewed", "true");
+            }
             // Sync immediately to current scroll position to avoid "jumps"
             gsap.to(video, {
               currentTime: mainST.progress * duration,
@@ -154,19 +158,24 @@ export default function Home() {
           }
         });
 
-        tl.to(video, {
-          currentTime: duration,
-          duration:    5.5,
-          ease:        "power2.inOut",
-        });
+        if (isIntroViewed) {
+          // Skip animations if already viewed in this session
+          tl.progress(1);
+        } else {
+          tl.to(video, {
+            currentTime: duration,
+            duration:    5.5,
+            ease:        "power2.inOut",
+          });
 
-        tl.to(video, {
-          scale:    1.1, // reduced from 1.25
-          filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
-          opacity:  1,
-          duration: ENTRANCE_DURATION,
-          ease:     "expo.out",
-        }, ENTRANCE_DELAY);
+          tl.to(video, {
+            scale:    1.1, // reduced from 1.25
+            filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
+            opacity:  1,
+            duration: ENTRANCE_DURATION,
+            ease:     "expo.out",
+          }, ENTRANCE_DELAY);
+        }
 
         // 3. PARALLAX EFFECTS
         gsap.to(video, {
