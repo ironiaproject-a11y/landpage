@@ -1,7 +1,7 @@
 "use client";
 
 import nextDynamic from "next/dynamic";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
@@ -53,6 +53,7 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   /* ─── VIDEO AUTOPLAY ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -262,17 +263,19 @@ export default function Home() {
           disablePictureInPicture
           disableRemotePlayback
           preload="auto"
+          onPlaying={() => setIsVideoReady(true)}
           style={{
             position:       "absolute",
             inset:          0,
             width:          "100%",
+            transition:     "opacity 1s ease",
             objectFit:      "cover",
             objectPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
             pointerEvents:  "none",
             // Forcing initial visibility to prevent invisible states if script delays
-            opacity:   1, 
+            opacity:   isVideoReady ? 1 : 0, 
             transform: "scale(1.25) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 

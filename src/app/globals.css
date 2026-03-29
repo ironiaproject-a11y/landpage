@@ -7,6 +7,23 @@
 img, svg, video {
   filter: contrast(1.05);
 }
+
+/* ☢️ NUCLEAR VIDEO CONTROL SUPPRESSION ☢️ */
+video::-webkit-media-controls {
+  display: none !important;
+}
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none;
+}
+video::-webkit-media-controls-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
 /* Canvas filter managed individually per component to avoid stacking */
 
 /* ===================================
