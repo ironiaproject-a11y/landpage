@@ -257,7 +257,7 @@ export default function Home() {
             inset:          0,
             width:          "100%",
             objectFit:      "cover",
-            objectPosition: "30% 35%",
+            objectPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
             // Forcing initial visibility to prevent invisible states if script delays
