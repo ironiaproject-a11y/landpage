@@ -137,19 +137,38 @@ export default function Home() {
 
         const duration = video.duration || 5;
 
-        // 0. ENTRANCE ANIMATION (Auto-play on load)
-        // This ensures the Hero is visible and elegant even before scrolling.
-        gsap.fromTo(container, 
-          { opacity: 0, y: 15 }, 
-          { 
-            opacity: 1, 
-            y: 0, 
-            duration: 1.8, 
-            ease: "expo.out",
-            overwrite: "auto" // Prevents conflict if user scrolls immediately
+        // 0. ENTRANCE ANIMATION (Sequential Intro on load)
+        // This creates a 'wow' narrative preview before scroll takes over.
+        const entranceTl = gsap.timeline({
+          delay: 0.5,
+          onComplete: () => {
+             // Optional: specific cleanup if needed
           }
+        });
+
+        // Step 1: Reveal 'SUA ORIGEM'
+        entranceTl.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out", overwrite: "auto" }
         );
         
+        // Step 2: Transition to 'SEU SORRISO' automatically
+        entranceTl.to(originText, {
+          opacity: 0, 
+          y: -20, 
+          filter: "blur(10px)",
+          duration: 0.8, 
+          ease: "power2.inOut"
+        }, "+=1.2"); // Pause to read Phrase 1
+
+        entranceTl.to(smileText, {
+          opacity: 1, 
+          y: 0, 
+          filter: "blur(0px)",
+          duration: 0.8, 
+          ease: "power2.out"
+        }, "-=0.2"); // Overlap with Phrase 1 vanishing
+
         // Force initial frame
         video.currentTime = 0;
 
