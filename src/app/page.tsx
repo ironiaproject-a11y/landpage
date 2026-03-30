@@ -323,14 +323,14 @@ export default function Home() {
           disableRemotePlayback
           preload="auto"
           style={{
-            position:       "fixed",
-            top:            "-9999px",
-            left:           "-9999px",
-            opacity:        0.0001,
+            position:       "absolute",
+            top:            0,
+            left:           0,
+            opacity:        0.001, // Must be > 0.0001 sometimes on iOS to force decode
             pointerEvents:  "none",
-            width:          "10px",
-            height:         "10px",
-            zIndex:         -99
+            width:          "100%",
+            height:         "100%",
+            zIndex:         -1
           }}
         >
           <source src="/Aqui.mp4" type="video/mp4" />
