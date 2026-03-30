@@ -193,17 +193,18 @@ export default function Home() {
           video.pause();
         }).catch(() => {});
 
-        // 1. PROXY & STATE
-        // We use a proxy object so both Intro and ScrollTrigger can animate the same value
-        // without competing for the same property in a way that causes flickering.
+        // 1. PROXY & DEFINITIVE STATE
+        // The "Berlin Wall" approach: Separate controllers that never fight.
         const proxy = { time: 0 };
         let isManualMode = false;
         const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
-        // Sync the video to the proxy time
-        const syncVideo = () => {
-          if (video && !isNaN(proxy.time)) {
-            video.currentTime = proxy.time;
+        // Functional hand-off helper
+        const switchToManual = () => {
+          if (isManualMode) return;
+          isManualMode = true;
+          if (intro && intro.isActive()) {
+            intro.kill();
           }
         };
 
@@ -218,10 +219,9 @@ export default function Home() {
             anticipatePin: 1.5,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // If the user scrolls more than a tiny bit, and we are not in manual mode yet
+              // If the user scrolls more than 0.5%, take over command immediately
               if (self.progress > 0.005 && !isManualMode) {
-                isManualMode = true;
-                if (intro && intro.isActive()) intro.kill();
+                switchToManual();
               }
             }
           }
@@ -232,7 +232,11 @@ export default function Home() {
           time: safeEnd, 
           duration: 1, 
           ease: "none",
-          onUpdate: syncVideo 
+          onUpdate: () => {
+             if (isManualMode && video && !isNaN(proxy.time)) {
+               video.currentTime = proxy.time;
+             }
+          }
         }, 0);
         
         masterTl.fromTo(canvas, 
@@ -266,14 +270,18 @@ export default function Home() {
           { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
         );
 
-        // Auto-scrub of the proxy
+        // Intro scrub of the proxy (only syncs if NOT in manual mode)
         intro.fromTo(proxy, 
           { time: 0 },
           { 
             time: safeEnd, 
             duration: 4.5, 
             ease: "power1.inOut",
-            onUpdate: syncVideo 
+            onUpdate: () => {
+              if (!isManualMode && video && !isNaN(proxy.time)) {
+                video.currentTime = proxy.time;
+              }
+            }
           },
           0.1
         );
