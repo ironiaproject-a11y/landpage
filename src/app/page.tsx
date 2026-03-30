@@ -119,161 +119,102 @@ export default function Home() {
     };
   }, []);
 
-  /* ─── GSAP ANIMATIONS ────────────────────────────────────────────── */
+  /* ─── GSAP UNIFIED MASTER TIMELINE ───────────────────────────────── */
   useEffect(() => {
     const video       = videoRef.current;
     const container   = containerRef.current;
     const heroContent = heroContentRef.current;
-    if (!video || !container || !heroContent) return;
-
-    // Total entrance duration: delay 1.5 + duration 3.5 = 5.0 s
-    const ENTRANCE_DURATION = 3.5;
-    const ENTRANCE_DELAY    = 1.5;
+    const originText  = originTextRef.current;
+    const smileText   = smileTextRef.current;
+    
+    if (!video || !container || !heroContent || !originText || !smileText) return;
 
     const ctx = gsap.context(() => {
       let isInit = false;
-      const initGSAP = () => {
+      const initMasterTimeline = () => {
         if (isInit) return;
         isInit = true;
+
         const duration = video.duration || 5;
 
-        let introDone = false;
-
-        // 1. PINNING: THE LOCK (TRAVA)
-        const mainST = ScrollTrigger.create({
-          trigger:     container,
-          start:       "top top",
-          end:         "+=1000",
-          pin:         true,
-          scrub:       1.5,
-          pinSpacing:  true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            if (introDone) {
-              gsap.to(video, {
-                currentTime: self.progress * duration,
-                duration:    0.8, // Increased for a more natural, fluid feel
-                ease:        "power1.out",
-                overwrite:   "auto",
-              });
-            }
+        // 1. PINNING & MASTER SCRUB
+        // One trigger to rule them all: Pins the hero and scrubs the main timeline.
+        const masterTl = gsap.timeline({
+          scrollTrigger: {
+            trigger:       container,
+            start:         "top top",
+            end:           "+=1200", // slightly more distance for a smoother feel
+            pin:           true,
+            scrub:         1.2,      // balanced for cinematic smoothness
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           }
         });
 
-        // 2. ENTRANCE: AUTOMATIC FULL SWEEP (0 -> 100%)
-        const tl = gsap.timeline({
-          onComplete: () => {
-            introDone = true;
-            // No immediate sync here to avoid "jump back" from last frame
-          }
-        });
-
-        tl.to(video, {
-          currentTime: duration,
-          duration:    5.5,
-          ease:        "power2.inOut",
-        });
-
-        tl.to(video, {
-          scale:    1.1, // reduced from 1.25
-          filter:   "grayscale(1) contrast(1.1) brightness(0.95) blur(0px)",
-          opacity:  1,
-          duration: ENTRANCE_DURATION,
-          ease:     "expo.out",
-        }, ENTRANCE_DELAY);
-
-        // 3. PARALLAX EFFECTS
-        gsap.to(video, {
-          scrollTrigger: {
-            trigger: container,
-            start:   "top top",
-            end:     "+=1000",
-            scrub:   2,
-          },
-          scale:    1.25, // parallax from 1.1 base (reduced from 1.45)
-          yPercent: -8,
-          ease:     "none",
-        });
-
-        gsap.to(heroContent, {
-          scrollTrigger: {
-            trigger: container,
-            start:   "top top",
-            end:     "+=1000",
-            scrub:   0.8,
-          },
-          yPercent: -6, // Reduced to keep text in view longer during scroll
-          ease:     "none",
-        });
-
-        // 4. SYNCED TYPOGRAPHY
-        // "SUA ORIGEM" - Linked to Skull appearance (early)
-        // Starts VISIBLE at 0 scroll, fades out between 50 and 400
-        gsap.set(originTextRef.current, { opacity: 1, filter: "blur(0px)", y: 0 });
-        gsap.to(originTextRef.current, {
-          scrollTrigger: {
-            trigger: container,
-            start: "50 top",
-            end: "+=350",
-            scrub: true,
-          },
-          opacity: 0,
-          filter: "blur(12px)",
-          y: -30,
-          ease: "none"
-        });
-
-        // "SEU SORRISO" - Linked to Woman smiling (late)
-        // Starts revealing even earlier (250px) and finishes at 750px
-        // to ensure it is fully visible BEFORE the container starts fading at 800px
-        gsap.fromTo(smileTextRef.current, 
-          { opacity: 0, y: 30 },
-          {
-            scrollTrigger: {
-              trigger:     container,
-              start:       "250 top",
-              end:         "750 top",
-              scrub:       true,
-              invalidateOnRefresh: true,
-            },
-            opacity: 1,
-            y: 0,
-            ease: "power2.out"
-          }
+        // 2. VIDEO PROGRESS (Scrubbing currentTime)
+        // We use a duration of 1 for the whole sequence to make child timings easier (percentages)
+        masterTl.fromTo(video, 
+          { currentTime: 0 },
+          { currentTime: duration, duration: 1, ease: "none" },
+          0
         );
 
-        // 5. FINAL HERO FADE OUT
-        gsap.to(container, {
-          scrollTrigger: {
-            trigger: container,
-            start:   "850 top", // delayed from 800 to avoid cutting off typography
-            end:     "+=450",
-            scrub:   true,
-          },
+        // 3. VIDEO VISUAL REFINEMENT (Scale & Filter)
+        masterTl.fromTo(video,
+          { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7) blur(0px)" },
+          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4) blur(0px)", duration: 1, ease: "none" },
+          0
+        );
+
+        // 4. TYPOGRAPHY SYNC
+        gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(smileText,  { opacity: 0, y: 30, filter: "blur(8px)" });
+
+        // Phrase 1: "SUA ORIGEM" - Fades out early (0% -> 35% of scroll)
+        masterTl.to(originText, {
+          opacity: 0,
+          y: -40,
+          filter: "blur(12px)",
+          duration: 0.35,
+          ease: "power2.inOut"
+        }, 0);
+
+        // Phrase 2: "SEU SORRISO" - Fades in (25% -> 70% of scroll)
+        masterTl.to(smileText, {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.45,
+          ease: "power2.out"
+        }, 0.25);
+
+        // 5. PARALLAX & FINAL FADE
+        masterTl.to(heroContent, {
+          yPercent: -15,
+          duration: 1,
+          ease: "none"
+        }, 0);
+
+        masterTl.to(container, {
           opacity: 0.25,
-          ease:    "none",
-        });
+          duration: 0.15,
+          ease: "power1.in"
+        }, 0.85);
       };
 
-      // Safety Net: force initialization if metadata is delayed or fails
-      const safetyId = setTimeout(initGSAP, 2000);
-
+      // Ensure metadata is ready
       if (video.readyState >= 1) {
-        initGSAP();
-        clearTimeout(safetyId);
+        initMasterTimeline();
       } else {
-        video.onloadedmetadata = () => {
-          initGSAP();
-          clearTimeout(safetyId);
-        };
+        video.onloadedmetadata = initMasterTimeline;
       }
+      
+      // Safety net
+      const safetyId = setTimeout(initMasterTimeline, 2000);
+      return () => clearTimeout(safetyId);
     });
 
-    // Refresh ScrollTrigger after a tick so Lenis has initialised its scroll
-    // proxy — without this the trigger positions can be miscalculated on first load.
     const rafId = requestAnimationFrame(() => ScrollTrigger.refresh());
-
     return () => {
       ctx.revert();
       cancelAnimationFrame(rafId);
