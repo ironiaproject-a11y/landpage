@@ -203,7 +203,7 @@ export default function Home() {
             end:     "+=1000",
             scrub:   0.8,
           },
-          yPercent: -25,
+          yPercent: -6, // Reduced to keep text in view longer during scroll
           ease:     "none",
         });
 
@@ -225,14 +225,14 @@ export default function Home() {
         });
 
         // "SEU SORRISO" - Linked to Woman smiling (late)
-        // Starts revealing much earlier (350px) to ensure visibility during transform
+        // Starts revealing even earlier (300px) and finishes at 850px
         gsap.fromTo(smileTextRef.current, 
           { opacity: 0, y: 20 },
           {
             scrollTrigger: {
               trigger: container,
-              start: "350 top",
-              end: "950 top",
+              start: "300 top",
+              end: "850 top",
               scrub: true,
             },
             opacity: 1,
