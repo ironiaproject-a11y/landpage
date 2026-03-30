@@ -185,19 +185,11 @@ export default function Home() {
         isInit = true;
         const duration = video.duration || 5;
         
-        // Setup initial static state (Skull)
-        gsap.set(video, { currentTime: 0 });
-        gsap.set(canvas, { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" });
-        gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
-        gsap.set(smileText, { opacity: 0, y: 30, filter: "blur(8px)" });
-        gsap.set(container, { opacity: 0, y: 15 });
-
         // AUTO-PLAY RE-FORCE
         video.muted = true;
         video.play().catch(() => {});
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
-        // Starts exactly where intro left off (60% to 100%)
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger:       container,
@@ -211,33 +203,38 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
-        masterTl.fromTo(video, 
-          { currentTime: duration * 0.6 }, 
-          { currentTime: duration, duration: 1, ease: "none", immediateRender: false }, 0);
-          
+        masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut" }, 0);
         masterTl.fromTo(canvas, 
-          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)" }, 
-          { scale: 1.5, filter: "grayscale(1) contrast(1.1) brightness(0.2)", duration: 1, ease: "none", immediateRender: false }, 0);
+          { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
+          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 0
+        );
 
-        // Phrase 1 (Sua Origem) is already faded out by intro.
-        // Phrase 2 (Seu Sorriso) fades out as we scroll away.
-        masterTl.fromTo(smileText, 
+        // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
+        masterTl.fromTo(originText, 
           { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.45, ease: "power2.inOut", immediateRender: false }, 0);
+          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
+
+        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in at 0.6
+        masterTl.fromTo(smileText, 
+          { opacity: 0, y: 30, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.6);
 
         // Final Fade Out
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        // Transition from Skull (0%) to Smile (60%) automatically.
         intro = gsap.timeline({ 
           delay: 0.1,
           onStart: () => {
              video.play().catch(() => {});
-          }
+          },
+          defaults: { overwrite: "auto" }
         });
 
-        intro.to(container, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" });
+        intro.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
+        );
 
         intro.to(originText, {
           opacity: 0, 
@@ -245,11 +242,13 @@ export default function Home() {
           filter: "blur(10px)",
           duration: 1.0, 
           ease: "power2.inOut"
-        }, "+=0.2");
+        }, "+=1.5");
 
-        // "Not too fast, not too slow" = 2.2s.
-        intro.to(video, { currentTime: duration * 0.6, duration: 2.2, ease: "sine.inOut" }, "-=1.0");
-        intro.to(canvas, { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 2.2, ease: "sine.inOut" }, "-=2.2");
+        intro.fromTo(video, 
+          { currentTime: 0 },
+          { currentTime: duration * 0.6, duration: 2.2, ease: "sine.inOut" },
+          "-=0.6"
+        );
 
         intro.to(smileText, {
           opacity: 1, 
@@ -257,7 +256,7 @@ export default function Home() {
           filter: "blur(0px)",
           duration: 1.0, 
           ease: "power2.out"
-        }, "-=0.8");
+        }, "-=0.4");
 
         // CLICK-TO-UNLOCK FALLBACK (Clears Play Icon and forces Playback)
         container.addEventListener("click", () => {
