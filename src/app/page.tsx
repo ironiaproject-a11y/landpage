@@ -216,11 +216,6 @@ export default function Home() {
           }
         });
 
-        // Cinematic Entrance animation for the hero container
-        intro.to(container, 
-          { opacity: 1, scale: 1, y: 0, duration: 1.8, ease: "expo.out" }
-        );
-
         // Intro scrub of the proxy (manages video.currentTime)
         intro.fromTo(proxy, 
           { time: 0 },
@@ -235,19 +230,6 @@ export default function Home() {
             }
           },
           0.1
-        );
-
-        // Sync text animations within the same flow
-        intro.fromTo(originText,
-          { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.8, ease: "power2.inOut" },
-          1.8
-        );
-
-        intro.fromTo(smileText,
-          { opacity: 0, y: 20, filter: "blur(10px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "power2.out" },
-          2.4
         );
 
         // Functional hand-off helper
@@ -298,14 +280,13 @@ export default function Home() {
 
         // Phrase 1 (Sua Origem) -> From 0 to 0.5 (Skull phase)
         masterTl.fromTo(originText, 
-          { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -30, filter: "blur(10px)", duration: 0.5, ease: "power2.inOut" }, 0);
+          { opacity: 1, y: 0 },
+          { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
 
         // Phrase 2 (Seu Sorriso) -> From 0.45 to end (Woman phase)
-        // Overlapping at 0.45-0.5 ensures no "empty" frames during text crossfade
         masterTl.fromTo(smileText, 
-          { opacity: 0, y: 20, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, 0.45);
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
 
         // Final Fade Out starts closer to the end of the scroll
         masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
@@ -355,11 +336,9 @@ export default function Home() {
           flexDirection:  "column",
           justifyContent: "space-between",
           overflow:       "hidden",
-          zIndex:         10,       // Changed from 999 to 10 so Main Sections (30) can overlap it
-          willChange:     "opacity, transform, filter",
+          zIndex:         10,
+          willChange:     "auto",
           pointerEvents:  "auto",
-          opacity:        0,
-          transform:      "scale(1.05) translateY(30px)",
         }}
       >
         {/*
