@@ -240,18 +240,19 @@ export default function Home() {
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 
         0);
 
-        // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
+        // Phrase 1 (Sua Origem) -> From 0 to 0.5 (Skull phase)
         masterTl.fromTo(originText, 
           { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
+          { opacity: 0, y: -30, filter: "blur(10px)", duration: 0.5, ease: "power2.inOut" }, 0);
 
-        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in
+        // Phrase 2 (Seu Sorriso) -> From 0.45 to end (Woman phase)
+        // Overlapping at 0.45-0.5 ensures no "empty" frames during text crossfade
         masterTl.fromTo(smileText, 
-          { opacity: 0, y: 30, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.55);
+          { opacity: 0, y: 20, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, 0.45);
 
         // Final Fade Out starts closer to the end of the scroll
-        masterTl.to(container, { opacity: 0.25, duration: 0.3, ease: "power1.in" }, 0.7);
+        masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
 
         // 3. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
         intro = gsap.timeline({ 
