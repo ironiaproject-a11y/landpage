@@ -152,14 +152,22 @@ export default function Home() {
           { opacity: 1, y: 0, duration: 1.2, ease: "expo.out", overwrite: "auto" }
         );
         
-        // Step 2: Transition to 'SEU SORRISO' automatically
+        // Step 2: Transition to 'SEU SORRISO' (and sync Video to Smile point)
         entranceTl.to(originText, {
           opacity: 0, 
           y: -20, 
           filter: "blur(10px)",
           duration: 0.8, 
           ease: "power2.inOut"
-        }, "+=1.2"); // Pause to read Phrase 1
+        }, "+=1.5"); // Pause longer to read Phrase 1
+
+        // Sync video to the smile point (~40%) during auto-intro
+        entranceTl.to(video, {
+          currentTime: duration * 0.42,
+          duration: 1.2,
+          ease: "power2.inOut",
+          overwrite: "auto"
+        }, "-=0.6");
 
         entranceTl.to(smileText, {
           opacity: 1, 
@@ -167,7 +175,7 @@ export default function Home() {
           filter: "blur(0px)",
           duration: 0.8, 
           ease: "power2.out"
-        }, "-=0.2"); // Overlap with Phrase 1 vanishing
+        }, "-=0.4"); 
 
         // Force initial frame
         video.currentTime = 0;
@@ -205,23 +213,24 @@ export default function Home() {
         gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
         gsap.set(smileText,  { opacity: 0, y: 30, filter: "blur(8px)" });
 
-        // Phrase 1: "SUA ORIGEM" - Fades out early (0% -> 35% of scroll)
+        // Phrase 1: "SUA ORIGEM" - Fades out (0% -> 40% of scroll)
         masterTl.to(originText, {
           opacity: 0,
           y: -40,
           filter: "blur(12px)",
-          duration: 0.35,
+          duration: 0.4,
           ease: "power2.inOut"
         }, 0);
 
-        // Phrase 2: "SEU SORRISO" - Fades in (25% -> 70% of scroll)
+        // Phrase 2: "SEU SORRISO" - Fades in LATER (At 42% of scroll)
+        // Starts appearing exactly when the skull transformation is mostly complete
         masterTl.to(smileText, {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.45,
+          duration: 0.4,
           ease: "power2.out"
-        }, 0.25);
+        }, 0.42); 
 
         // 5. PARALLAX & FINAL FADE
         masterTl.to(heroContent, {
