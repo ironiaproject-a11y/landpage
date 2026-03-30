@@ -199,6 +199,47 @@ export default function Home() {
         let isManualMode = false;
         const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
+        // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Created first to be available for control
+        intro = gsap.timeline({ 
+          delay: 0.1,
+          onComplete: () => { isManualMode = true; }
+        });
+
+        // Entrance animation for the hero container
+        intro.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
+        );
+
+        // Intro scrub of the proxy (manages video.currentTime)
+        intro.fromTo(proxy, 
+          { time: 0 },
+          { 
+            time: safeEnd, 
+            duration: 4.5, 
+            ease: "power1.inOut",
+            onUpdate: () => {
+              if (!isManualMode && video && !isNaN(proxy.time)) {
+                video.currentTime = proxy.time;
+              }
+            }
+          },
+          0.1
+        );
+
+        // Sync text animations within the same flow
+        intro.fromTo(originText,
+          { opacity: 1, y: 0, filter: "blur(0px)" },
+          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.8, ease: "power2.inOut" },
+          1.8
+        );
+
+        intro.fromTo(smileText,
+          { opacity: 0, y: 20, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "power2.out" },
+          2.4
+        );
+
         // Functional hand-off helper
         const switchToManual = () => {
           if (isManualMode) return;
@@ -208,7 +249,7 @@ export default function Home() {
           }
         };
 
-        // 2. MASTER TIMELINE (SCROLL-DRIVEN)
+        // 3. MASTER TIMELINE (SCROLL-DRIVEN)
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger:       container,
@@ -219,8 +260,9 @@ export default function Home() {
             anticipatePin: 1.5,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // If the user scrolls more than 0.5%, take over command immediately
-              if (self.progress > 0.005 && !isManualMode) {
+              // If the user actively scrolls (direction != 0), take over command immediately.
+              // This avoids triggering manual mode on pure load/refresh if scroll is slightly offset.
+              if (self.direction !== 0 && self.progress > 0.005 && !isManualMode) {
                 switchToManual();
               }
             }
@@ -257,47 +299,6 @@ export default function Home() {
 
         // Final Fade Out starts closer to the end of the scroll
         masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
-
-        // 3. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        intro = gsap.timeline({ 
-          delay: 0.1,
-          onComplete: () => { isManualMode = true; }
-        });
-
-        // Entrance
-        intro.fromTo(container, 
-          { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
-        );
-
-        // Intro scrub of the proxy (only syncs if NOT in manual mode)
-        intro.fromTo(proxy, 
-          { time: 0 },
-          { 
-            time: safeEnd, 
-            duration: 4.5, 
-            ease: "power1.inOut",
-            onUpdate: () => {
-              if (!isManualMode && video && !isNaN(proxy.time)) {
-                video.currentTime = proxy.time;
-              }
-            }
-          },
-          0.1
-        );
-
-        // Sync text animations within the same flow
-        intro.fromTo(originText,
-          { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.8, ease: "power2.inOut" },
-          1.8
-        );
-
-        intro.fromTo(smileText,
-          { opacity: 0, y: 20, filter: "blur(10px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "power2.out" },
-          2.4
-        );
 
         // Click fallback for interaction
         container.addEventListener("click", () => {
