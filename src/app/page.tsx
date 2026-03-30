@@ -53,7 +53,7 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isActuallyPlaying, setIsActuallyPlaying] = useState(false);
 
   /* ─── VIDEO AUTOPLAY ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -90,10 +90,25 @@ export default function Home() {
     // Safety net: fire after 4 s regardless
     const safetyId = setTimeout(onLoaded, 4000);
 
+    // Event listeners to detect real play state
+    const onPlay  = () => setIsActuallyPlaying(true);
+    const onPause = () => setIsActuallyPlaying(false);
+    const onEnded = () => setIsActuallyPlaying(false);
+    const onWaiting = () => setIsActuallyPlaying(false);
+
+    video.addEventListener("playing", onPlay);
+    video.addEventListener("pause", onPause);
+    video.addEventListener("ended", onEnded);
+    video.addEventListener("waiting", onWaiting);
+
     return () => {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", onLoaded);
+      video.removeEventListener("playing", onPlay);
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("waiting", onWaiting);
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("keydown", onInteraction);
       clearTimeout(safetyId);
@@ -259,23 +274,29 @@ export default function Home() {
           muted
           loop
           playsInline
+          /* @ts-ignore - non-standard WebKit prop */
+          webkit-playsinline="true"
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
           preload="auto"
-          onPlaying={() => setIsVideoReady(true)}
+          poster="/hero-video.webp"
           style={{
             position:       "absolute",
             inset:          0,
             width:          "100%",
-            transition:     "opacity 1s ease",
+            transition:     "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)", // Silky smooth entrance
             objectFit:      "cover",
             objectPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
             pointerEvents:  "none",
-            // Forcing initial visibility to prevent invisible states if script delays
-            opacity:   isVideoReady ? 1 : 0, 
+            /* 
+               NUCLEAR REVEAL: Only show when actually playing.
+               This prevents the OS play icon from flashing on the first frame if the
+               video stalls or is blocked by low-power mode policies.
+            */
+            opacity:   isActuallyPlaying ? 1 : 0, 
             transform: "scale(1.25) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 
@@ -285,16 +306,51 @@ export default function Home() {
           <source src="/hero-background-new.mp4" type="video/mp4" />
         </video>
 
-        {/* ── VIDEO CONTROLS SUPPRESSION ── */}
+        {/* ── POSTER LAYER (Background Placeholder) ── */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/hero-video.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "33% 35%",
+          zIndex: -1,
+          opacity: isActuallyPlaying ? 0 : 1,
+          transition: "opacity 1s ease",
+          transform: "scale(1.25) translateY(-30px)",
+          filter: "grayscale(1) contrast(1.1) brightness(0.5)",
+          height: "120%",
+          top: "-10%",
+        }} />
+
+        {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
         <style dangerouslySetInnerHTML={{ __html: `
           video::-webkit-media-controls {
             display: none !important;
+            -webkit-appearance: none;
+          }
+          video::-webkit-media-controls-enclosure {
+            display: none !important;
+          }
+          video::-webkit-media-controls-panel {
+            display: none !important;
+          }
+          video::-webkit-media-controls-play-button {
+            display: none !important;
+            -webkit-appearance: none;
           }
           video::-webkit-media-controls-start-playback-button {
             display: none !important;
             -webkit-appearance: none;
+            opacity: 0 !important;
+            pointer-events: none !important;
           }
           video::-internal-media-controls-download-button {
+            display: none !important;
+          }
+          video::-internal-media-controls-overflow-button {
+            display: none !important;
+          }
+          video::-webkit-media-controls-container {
             display: none !important;
           }
         `}} />
