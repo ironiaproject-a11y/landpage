@@ -137,6 +137,16 @@ export default function Home() {
 
         const duration = video.duration || 5;
 
+        // 0. ENTRANCE ANIMATION (Auto-play on load)
+        // This ensures the Hero is visible and elegant even before scrolling.
+        gsap.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.8, ease: "expo.out" }
+        );
+        
+        // Force initial frame
+        video.currentTime = 0;
+
         // 1. PINNING & MASTER SCRUB
         // One trigger to rule them all: Pins the hero and scrubs the main timeline.
         const masterTl = gsap.timeline({
@@ -277,7 +287,7 @@ export default function Home() {
                This prevents the OS play icon from flashing on the first frame if the
                video stalls or is blocked by low-power mode policies.
             */
-            opacity:   isActuallyPlaying ? 1 : 0, 
+            opacity:   1, // Opacity is now controlled by the initial GSAP state and Entrance animation
             transform: "scale(1.25) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 
