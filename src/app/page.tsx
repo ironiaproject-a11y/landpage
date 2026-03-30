@@ -137,49 +137,6 @@ export default function Home() {
 
         const duration = video.duration || 5;
 
-        // 0. ENTRANCE ANIMATION (Sequential Intro on load)
-        // This creates a 'wow' narrative preview before scroll takes over.
-        const entranceTl = gsap.timeline({
-          delay: 0.5,
-          onComplete: () => {
-             // Optional: specific cleanup if needed
-          }
-        });
-
-        // Step 1: Reveal 'SUA ORIGEM'
-        entranceTl.fromTo(container, 
-          { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out", overwrite: "auto" }
-        );
-        
-        // Step 2: Transition to 'SEU SORRISO' (and sync Video to Smile point)
-        entranceTl.to(originText, {
-          opacity: 0, 
-          y: -20, 
-          filter: "blur(10px)",
-          duration: 0.8, 
-          ease: "power2.inOut"
-        }, "+=1.5"); // Pause longer to read Phrase 1
-
-        // Sync video to the smile point (~40%) during auto-intro
-        entranceTl.to(video, {
-          currentTime: duration * 0.42,
-          duration: 1.2,
-          ease: "power2.inOut",
-          overwrite: "auto"
-        }, "-=0.6");
-
-        entranceTl.to(smileText, {
-          opacity: 1, 
-          y: 0, 
-          filter: "blur(0px)",
-          duration: 0.8, 
-          ease: "power2.out"
-        }, "-=0.4"); 
-
-        // Force initial frame
-        video.currentTime = 0;
-
         // 1. PINNING & MASTER SCRUB
         // One trigger to rule them all: Pins the hero and scrubs the main timeline.
         const masterTl = gsap.timeline({
@@ -188,62 +145,77 @@ export default function Home() {
             start:         "top top",
             end:           "+=1200", 
             pin:           true,
-            scrub:         1.8,      // Increased for a more luxurious, 'weighted' inertia
-            anticipatePin: 1.5,      // More anticipation for smoother pin/unpin transitions
+            scrub:         1.8,      // Weighted inertia
+            anticipatePin: 1.5,
             invalidateOnRefresh: true,
           }
         });
 
-        // 2. VIDEO PROGRESS (Scrubbing currentTime)
-        // We use a duration of 1 for the whole sequence to make child timings easier (percentages)
+        // A. Video Progress
         masterTl.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration, duration: 1, ease: "power1.inOut" }, // Organic frame progression
+          { currentTime: duration, duration: 1, ease: "power1.inOut" },
           0
         );
 
-        // 3. VIDEO VISUAL REFINEMENT (Scale & Filter)
+        // B. Video Scale/Filter
         masterTl.fromTo(video,
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7) blur(0px)" },
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4) blur(0px)", duration: 1, ease: "none" },
           0
         );
 
-        // 4. TYPOGRAPHY SYNC
+        // C. Typography
         gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
         gsap.set(smileText,  { opacity: 0, y: 30, filter: "blur(8px)" });
 
-        // Phrase 1: "SUA ORIGEM" - Fades out (0% -> 40% of scroll)
+        // Phrase 1: "SUA ORIGEM" - Fades out (0% -> 45%)
         masterTl.to(originText, {
           opacity: 0,
           y: -40,
           filter: "blur(12px)",
-          duration: 0.4,
+          duration: 0.45,
           ease: "power2.inOut"
         }, 0);
 
-        // Phrase 2: "SEU SORRISO" - Fades in LATER (At 42% of scroll)
-        // Starts appearing exactly when the skull transformation is mostly complete
+        // Phrase 2: "SEU SORRISO" - Fades in LATER (At 60%)
+        // Precisely aligned with the woman's face fully formed
         masterTl.to(smileText, {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.4,
+          duration: 0.35,
           ease: "power2.out"
-        }, 0.42); 
+        }, 0.6); 
 
-        // 5. PARALLAX & FINAL FADE
-        masterTl.to(heroContent, {
-          yPercent: -15,
-          duration: 1,
-          ease: "none"
-        }, 0);
-
+        // D. Final Fade Out
         masterTl.to(container, {
           opacity: 0.25,
           duration: 0.15,
           ease: "power1.in"
         }, 0.85);
+
+        // 0. ENTRANCE ANIMATION (Sequenced Control of the Master Timeline)
+        // Instead of fighting, we animate the progress of the Master Tl itself.
+        const intro = gsap.timeline({ delay: 0.5 });
+
+        // Reveal Hero
+        intro.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
+        );
+
+        // Preview the phrases automatically by advancing the master timeline progress
+        // This stops at 0.6 (The Smile phrase)
+        intro.to(masterTl, {
+          progress: 0.6,
+          duration: 3.5,
+          ease: "power2.inOut",
+          overwrite: "auto"
+        }, "+=1.0"); // Pause to read Phrase 1 first
+
+        // Force initial frame
+        video.currentTime = 0;
       };
 
       // Ensure metadata is ready
