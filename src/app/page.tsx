@@ -148,11 +148,6 @@ export default function Home() {
             scrub:         1.8, 
             anticipatePin: 1.5,
             invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              if (self.direction !== 0 && intro) {
-                intro.kill();
-              }
-            }
           }
         });
 
@@ -177,11 +172,37 @@ export default function Home() {
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        intro = gsap.timeline({ delay: 0.5, defaults: { overwrite: "auto" } });
-        intro.fromTo(container, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" });
-        intro.to(originText, { opacity: 0, y: -20, filter: "blur(10px)", duration: 0.8, ease: "power2.inOut" }, "+=1.5");
-        intro.to(video, { currentTime: duration * 0.6, duration: 1.5, ease: "power2.inOut" }, "-=0.6");
-        intro.to(smileText, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, "-=0.4");
+        intro = gsap.timeline({ 
+          delay: 0.5,
+          defaults: { overwrite: "auto" }
+        });
+
+        intro.fromTo(container, 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
+        );
+
+        intro.to(originText, {
+          opacity: 0, 
+          y: -20, 
+          filter: "blur(10px)",
+          duration: 0.8, 
+          ease: "power2.inOut"
+        }, "+=1.5");
+
+        intro.to(video, {
+          currentTime: duration * 0.6,
+          duration: 1.5,
+          ease: "power2.inOut"
+        }, "-=0.6");
+
+        intro.to(smileText, {
+          opacity: 1, 
+          y: 0, 
+          filter: "blur(0px)",
+          duration: 0.8, 
+          ease: "power2.out"
+        }, "-=0.4");
 
         video.currentTime = 0;
       };
