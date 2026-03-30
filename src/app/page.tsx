@@ -131,6 +131,8 @@ export default function Home() {
 
     const ctx = gsap.context(() => {
       let isInit = false;
+      let intro: gsap.core.Timeline;
+
       const initMasterTimeline = () => {
         if (isInit) return;
         isInit = true;
@@ -146,39 +148,36 @@ export default function Home() {
             scrub:         1.8, 
             anticipatePin: 1.5,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (self.direction !== 0 && intro) {
+                intro.kill();
+              }
+            }
           }
         });
 
-        // Sync Video & Filter
+        // Deterministic Video & Filter
         masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut" }, 0);
         masterTl.fromTo(video, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 0
         );
 
-        // Typography States
-        gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
-        gsap.set(smileText,  { opacity: 0, y: 30, filter: "blur(8px)" });
-
-        // Phrase 1 -> Out (Ensures visibility at scroll 0)
+        // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
         masterTl.fromTo(originText, 
           { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut", immediateRender: false }, 
-          0
-        );
+          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
 
-        // Phrase 2 -> In at 60% (Ensures hidden state before 60% and on reverse scroll)
+        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in at 0.6
         masterTl.fromTo(smileText, 
           { opacity: 0, y: 30, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out", immediateRender: false }, 
-          0.6
-        );
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.6);
 
-        // Final Fade
+        // Final Fade Out
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        const intro = gsap.timeline({ delay: 0.5, defaults: { overwrite: "auto" } });
+        intro = gsap.timeline({ delay: 0.5, defaults: { overwrite: "auto" } });
         intro.fromTo(container, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" });
         intro.to(originText, { opacity: 0, y: -20, filter: "blur(10px)", duration: 0.8, ease: "power2.inOut" }, "+=1.5");
         intro.to(video, { currentTime: duration * 0.6, duration: 1.5, ease: "power2.inOut" }, "-=0.6");
