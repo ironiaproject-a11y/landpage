@@ -194,6 +194,7 @@ export default function Home() {
         }).catch(() => {});
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
+        // This timeline starts exactly where the cinematic intro leaves off (55% of the video).
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger:       container,
@@ -207,8 +208,9 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
+        // Starts at 55% so it smoothly continues from the cinematic auto-play
         masterTl.fromTo(video, 
-          { currentTime: 0 }, 
+          { currentTime: duration * 0.55 }, 
           { currentTime: duration, duration: 1, ease: "power1.inOut" }, 
         0);
         
@@ -217,18 +219,8 @@ export default function Home() {
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 
         0);
 
-        // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
-        masterTl.fromTo(originText, 
-          { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
-
-        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in
-        masterTl.fromTo(smileText, 
-          { opacity: 0, y: 30, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.6);
-
-        // Final Fade Out
-        masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
+        // Final Fade Out starts closer to the end of the scroll
+        masterTl.to(container, { opacity: 0.25, duration: 0.3, ease: "power1.in" }, 0.7);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
         // Slowed down to 3.8s for a more premium, relaxed feeling
@@ -244,9 +236,11 @@ export default function Home() {
         );
 
         // Start video scrub immediately with the entrance
+        // Ending at 55% instead of 58% stops it on the perfect smile frame without hitting the stuttering 
+        // end-frames of the woman. Easing is set to stop smoothly.
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration * 0.58, duration: 3.8, ease: "power2.inOut" },
+          { currentTime: duration * 0.55, duration: 3.8, ease: "power1.inOut" },
           0.1
         );
 
