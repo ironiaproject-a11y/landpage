@@ -399,9 +399,6 @@ export default function Home() {
             transition:     "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)", // Silky smooth entrance
             objectFit:      "cover",
             objectPosition: "33% 35%",
-            backgroundImage: "url('/hero-video.webp')",
-            backgroundSize:  "cover",
-            backgroundPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
             pointerEvents:  "none",
