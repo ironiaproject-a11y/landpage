@@ -152,11 +152,8 @@ export default function Home() {
         const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Created first to be available for control
-        // We let the video play NATIVELY for the highest performance intro, no frame skipping.
-        video.play().catch(() => {});
-
         intro = gsap.timeline({ 
-          delay: 0,
+          paused: true, // Only start when the video ACTUALLY plays (fixes mobile pause issue)
           onComplete: () => { 
             isManualMode = true; 
           }
@@ -178,11 +175,25 @@ export default function Home() {
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
 
+        // Sync GSAP timeline to the video's actual play/pause state
+        const handleVideoPlay = () => { if (!isManualMode) intro.play(); };
+        const handleVideoPause = () => { if (!isManualMode) intro.pause(); };
+        
+        video.addEventListener('play', handleVideoPlay);
+        video.addEventListener('pause', handleVideoPause);
+
+        // Try to play natively. If it works, the 'play' event will fire and start `intro` timeline.
+        video.play().catch(() => {});
+        if (!video.paused) handleVideoPlay();
+
         // Functional hand-off helper
         const switchToManual = () => {
           if (isManualMode) return;
           isManualMode = true;
           video.pause(); // Pause native playback when scrolling takes over
+          
+          video.removeEventListener('play', handleVideoPlay);
+          video.removeEventListener('pause', handleVideoPause);
           if (intro && intro.isActive()) {
             intro.kill();
           }
