@@ -152,34 +152,37 @@ export default function Home() {
         const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Created first to be available for control
+        // We let the video play NATIVELY for the highest performance intro, no frame skipping.
+        video.play().catch(() => {});
+
         intro = gsap.timeline({ 
-          delay: 0.1,
+          delay: 0,
           onComplete: () => { 
             isManualMode = true; 
-            video.play().catch(() => {});
           }
         });
 
-        // Intro scrub of the proxy (manages video.currentTime)
-        intro.fromTo(proxy, 
-          { time: 0 },
-          { 
-            time: safeEnd, 
-            duration: 4.5, 
-            ease: "power1.inOut",
-            onUpdate: () => {
-              if (!isManualMode && video && !isNaN(proxy.time)) {
-                video.currentTime = proxy.time;
-              }
-            }
-          },
-          0.1
-        );
+        // Sync visual text animations to the native video duration
+        intro.fromTo(canvas, 
+          { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
+          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: duration, ease: "none" }, 
+        0);
+
+        // Phrase 1 (Sua Origem)
+        intro.fromTo(originText, 
+          { opacity: 1, y: 0 },
+          { opacity: 0, y: -30, duration: duration * 0.5, ease: "power2.inOut" }, 0);
+
+        // Phrase 2 (Seu Sorriso)
+        intro.fromTo(smileText, 
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
 
         // Functional hand-off helper
         const switchToManual = () => {
           if (isManualMode) return;
           isManualMode = true;
+          video.pause(); // Pause native playback when scrolling takes over
           if (intro && intro.isActive()) {
             intro.kill();
           }
