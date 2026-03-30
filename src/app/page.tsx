@@ -193,8 +193,21 @@ export default function Home() {
           video.pause();
         }).catch(() => {});
 
-        // 1. MASTER TIMELINE (SCROLL-DRIVEN)
-        // This timeline will scrub from 0 to the end, perfectly syncing video and text.
+        // 1. PROXY & STATE
+        // We use a proxy object so both Intro and ScrollTrigger can animate the same value
+        // without competing for the same property in a way that causes flickering.
+        const proxy = { time: 0 };
+        let isManualMode = false;
+        const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
+
+        // Sync the video to the proxy time
+        const syncVideo = () => {
+          if (video && !isNaN(proxy.time)) {
+            video.currentTime = proxy.time;
+          }
+        };
+
+        // 2. MASTER TIMELINE (SCROLL-DRIVEN)
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger:       container,
@@ -204,17 +217,23 @@ export default function Home() {
             scrub:         1.8, 
             anticipatePin: 1.5,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              // If the user scrolls more than a tiny bit, and we are not in manual mode yet
+              if (self.progress > 0.005 && !isManualMode) {
+                isManualMode = true;
+                if (intro && intro.isActive()) intro.kill();
+              }
+            }
           }
         });
 
-        // Deterministic Video & Filter
-        // Scrub from 0 to almost-end (duration - 0.05) to prevent EOF stutter
-        const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
-
-        masterTl.fromTo(video, 
-          { currentTime: 0 }, 
-          { currentTime: safeEnd, duration: 1, ease: "none" }, 
-        0);
+        // The Scroll-driven transformation (only active when isManualMode is true)
+        masterTl.to(proxy, { 
+          time: safeEnd, 
+          duration: 1, 
+          ease: "none",
+          onUpdate: syncVideo 
+        }, 0);
         
         masterTl.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
@@ -234,11 +253,10 @@ export default function Home() {
         // Final Fade Out starts closer to the end of the scroll
         masterTl.to(container, { opacity: 0.25, duration: 0.3, ease: "power1.in" }, 0.7);
 
-        // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        // Slowed down to 3.8s for a more premium, relaxed feeling
+        // 3. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
         intro = gsap.timeline({ 
           delay: 0.1,
-          defaults: { overwrite: "auto" }
+          onComplete: () => { isManualMode = true; }
         });
 
         // Entrance
@@ -247,39 +265,32 @@ export default function Home() {
           { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
         );
 
-        // Start video scrub immediately with the entrance
-        // End at safeEnd to play the whole animation without the end stutter
-        intro.fromTo(video, 
-          { currentTime: 0 },
-          { currentTime: safeEnd, duration: 4.5, ease: "power1.inOut" },
+        // Auto-scrub of the proxy
+        intro.fromTo(proxy, 
+          { time: 0 },
+          { 
+            time: safeEnd, 
+            duration: 4.5, 
+            ease: "power1.inOut",
+            onUpdate: syncVideo 
+          },
           0.1
         );
 
         // Sync text animations within the same flow
-        // "Sua origem" visible from start, fades out
         intro.fromTo(originText,
           { opacity: 1, y: 0, filter: "blur(0px)" },
           { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.8, ease: "power2.inOut" },
-          1.8 // starts fading at 1.8s
+          1.8
         );
 
-        // "Seu sorriso" hidden at start, fades in
         intro.fromTo(smileText,
           { opacity: 0, y: 20, filter: "blur(10px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "power2.out" },
-          2.4 // starts fading in at 2.4s
+          2.4
         );
 
-        // INTERRUPTION LOGIC: If user scrolls, kill intro to let ScrollTrigger take over
-        const handleScroll = () => {
-          if (window.scrollY > 10) {
-            intro.kill();
-            window.removeEventListener("scroll", handleScroll);
-          }
-        };
-        window.addEventListener("scroll", handleScroll, { passive: true });
-
-        // CLICK-TO-UNLOCK FALLBACK (Only for audio/interaction unlocks if needed)
+        // Click fallback for interaction
         container.addEventListener("click", () => {
           video.play().catch(() => {});
         }, { once: true });
