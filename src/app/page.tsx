@@ -207,7 +207,7 @@ export default function Home() {
 
         // Cinematic Entrance animation for the hero container
         intro.to(container, 
-          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "expo.out" }
+          { opacity: 1, scale: 1, y: 0, duration: 1.8, ease: "expo.out" }
         );
 
         // Intro scrub of the proxy (manages video.currentTime)
@@ -349,7 +349,6 @@ export default function Home() {
           pointerEvents:  "auto",
           opacity:        0,
           transform:      "scale(1.05) translateY(30px)",
-          filter:         "blur(8px)",
         }}
       >
         {/*
