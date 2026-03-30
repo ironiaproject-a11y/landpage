@@ -187,7 +187,11 @@ export default function Home() {
         
         // AUTO-PLAY RE-FORCE
         video.muted = true;
-        // video.play() removed to prevent stutter during initial GSAP scrubbing
+        // MOBILE DECODER WARM-UP: Prime the hardware by playing then immediately pausing. 
+        // This is critical for preventing the first-scrub stutter on iOS/Android.
+        video.play().then(() => {
+          video.pause();
+        }).catch(() => {});
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
         const masterTl = gsap.timeline({
@@ -203,7 +207,6 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
-        // We use fromTo for video.currentTime to ensure it's always controlled by ScrollTrigger
         masterTl.fromTo(video, 
           { currentTime: 0 }, 
           { currentTime: duration, duration: 1, ease: "power1.inOut" }, 
@@ -228,22 +231,22 @@ export default function Home() {
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
-        // Optimized sequence for instant impact and smooth transition
+        // Slowed down to 3.8s for a more premium, relaxed feeling
         intro = gsap.timeline({ 
-          delay: 0.05,
+          delay: 0.1,
           defaults: { overwrite: "auto" }
         });
 
         // Entrance
         intro.fromTo(container, 
           { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
+          { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
         );
 
-        // Start video scrub immediately with the entrance (NO video.play() to avoid mobile stutter)
+        // Start video scrub immediately with the entrance
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration * 0.58, duration: 2.2, ease: "sine.inOut" },
+          { currentTime: duration * 0.58, duration: 3.8, ease: "power2.inOut" },
           0.1
         );
 
@@ -252,17 +255,17 @@ export default function Home() {
           opacity: 0, 
           y: -20, 
           filter: "blur(10px)",
-          duration: 1.0, 
+          duration: 1.5, 
           ease: "power2.inOut"
-        }, 1.2);
+        }, 1.5);
 
         intro.to(smileText, {
           opacity: 1, 
           y: 0, 
           filter: "blur(0px)",
-          duration: 1.0, 
+          duration: 1.8, 
           ease: "power2.out"
-        }, 1.6);
+        }, 2.5);
 
         // INTERRUPTION LOGIC: If user scrolls, kill intro to let ScrollTrigger take over
         const handleScroll = () => {
@@ -282,11 +285,11 @@ export default function Home() {
         }, { once: true });
       };
 
-      // Ensure metadata is ready
-      if (video.readyState >= 1) {
+      // Ensure buffer is ready for scrubbing (canplaythrough is more reliable than loadedmetadata on mobile)
+      if (video.readyState >= 4) {
         initMasterTimeline();
       } else {
-        video.onloadedmetadata = initMasterTimeline;
+        video.oncanplaythrough = initMasterTimeline;
       }
       
       // Safety net
