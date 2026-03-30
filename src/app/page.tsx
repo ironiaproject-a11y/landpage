@@ -52,6 +52,7 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   // Direct Refs for synced typography
@@ -105,6 +106,25 @@ export default function Home() {
     video.addEventListener("ended", onEnded);
     video.addEventListener("waiting", onWaiting);
 
+    let rafId: number;
+    const renderCanvas = () => {
+      const canvas = canvasRef.current;
+      if (video && canvas) {
+        const ctx = canvas.getContext("2d", { alpha: false });
+        if (ctx && video.videoWidth > 0 && video.videoHeight > 0) {
+          if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+          }
+          if (video.readyState >= 2) {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          }
+        }
+      }
+      rafId = requestAnimationFrame(renderCanvas);
+    };
+    renderCanvas();
+
     return () => {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
@@ -116,18 +136,20 @@ export default function Home() {
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("keydown", onInteraction);
       clearTimeout(safetyId);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   /* ─── GSAP UNIFIED MASTER TIMELINE ───────────────────────────────── */
   useEffect(() => {
     const video       = videoRef.current;
+    const canvas      = canvasRef.current;
     const container   = containerRef.current;
     const heroContent = heroContentRef.current;
     const originText  = originTextRef.current;
     const smileText   = smileTextRef.current;
     
-    if (!video || !container || !heroContent || !originText || !smileText) return;
+    if (!video || !canvas || !container || !heroContent || !originText || !smileText) return;
 
     const ctx = gsap.context(() => {
       let isInit = false;
@@ -157,7 +179,7 @@ export default function Home() {
 
         // Deterministic Video & Filter
         masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut" }, 0);
-        masterTl.fromTo(video, 
+        masterTl.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 0
         );
@@ -267,6 +289,11 @@ export default function Home() {
           synchronously at render time. GSAP then uses gsap.to() to animate FROM
           these values — so the video is never briefly visible in its raw state.
         */}
+        {/* 
+            HIDDEN VIDEO ELEMENT 
+            We keep the video in the DOM to trigger loads, sound, and playhead data.
+            But we visually hide it so the OS never attempts to overlay a native UI.
+        */}
         <video
           ref={videoRef}
           autoPlay
@@ -279,7 +306,26 @@ export default function Home() {
           disablePictureInPicture
           disableRemotePlayback
           preload="auto"
-          poster="/hero-video.webp"
+          style={{
+            position:       "fixed",
+            top:            "-9999px",
+            left:           "-9999px",
+            opacity:        0.0001,
+            pointerEvents:  "none",
+            width:          "10px",
+            height:         "10px",
+            zIndex:         -99
+          }}
+        >
+          <source src="/hero-background-new.mp4" type="video/mp4" />
+        </video>
+
+        {/* 
+            CANVAS VISUAL PROXY 
+            Draws the video frames. Bypasses all iOS native playback UI limits.
+        */}
+        <canvas
+          ref={canvasRef}
           style={{
             position:       "absolute",
             inset:          0,
@@ -287,23 +333,19 @@ export default function Home() {
             transition:     "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)", // Silky smooth entrance
             objectFit:      "cover",
             objectPosition: "33% 35%",
+            backgroundImage: "url('/hero-video.webp')",
+            backgroundSize:  "cover",
+            backgroundPosition: "33% 35%",
             zIndex:         0,
             willChange:     "transform, filter, opacity",
             pointerEvents:  "none",
-            /* 
-               NUCLEAR REVEAL: Only show when actually playing.
-               This prevents the OS play icon from flashing on the first frame if the
-               video stalls or is blocked by low-power mode policies.
-            */
             opacity:   1, // Opacity is now controlled by the initial GSAP state and Entrance animation
             transform: "scale(1.25) translateY(-30px)",
             filter:    "grayscale(1) contrast(1.1) brightness(0.5) blur(0px)",
             height:    "120%", 
             top:       "-10%", 
           }}
-        >
-          <source src="/hero-background-new.mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
         <style dangerouslySetInnerHTML={{ __html: `
