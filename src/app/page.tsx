@@ -187,11 +187,7 @@ export default function Home() {
         
         // AUTO-PLAY RE-FORCE
         video.muted = true;
-        // MOBILE DECODER WARM-UP: Prime the hardware by playing then immediately pausing. 
-        // This is critical for preventing the first-scrub stutter on iOS/Android.
-        video.play().then(() => {
-          video.pause();
-        }).catch(() => {});
+        video.play().catch(() => {});
 
         // 1. PROXY & DEFINITIVE STATE
         // The "Berlin Wall" approach: Separate controllers that never fight.
@@ -202,7 +198,10 @@ export default function Home() {
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Created first to be available for control
         intro = gsap.timeline({ 
           delay: 0.1,
-          onComplete: () => { isManualMode = true; }
+          onComplete: () => { 
+            isManualMode = true; 
+            video.play().catch(() => {});
+          }
         });
 
         // Cinematic Entrance animation for the hero container
