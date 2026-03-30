@@ -205,10 +205,10 @@ export default function Home() {
           onComplete: () => { isManualMode = true; }
         });
 
-        // Entrance animation for the hero container
+        // Cinematic Entrance animation for the hero container
         intro.fromTo(container, 
-          { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }
+          { opacity: 0, scale: 1.05, y: 30, filter: "blur(8px)" }, 
+          { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "expo.out" }
         );
 
         // Intro scrub of the proxy (manages video.currentTime)
