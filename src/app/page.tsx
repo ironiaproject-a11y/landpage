@@ -238,8 +238,8 @@ export default function Home() {
           {
             scrollTrigger: {
               trigger: container,
-              start: "600 top",
-              end: "+=350",
+              start: "250 top",
+              end: "+=500",
               scrub: true,
             },
             opacity: 1,
@@ -350,22 +350,6 @@ export default function Home() {
           <source src="/hero-background-new.mp4" type="video/mp4" />
         </video>
 
-        {/* ── POSTER LAYER (Background Placeholder) ── */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url('/hero-video.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "33% 35%",
-          zIndex: -1,
-          opacity: isActuallyPlaying ? 0 : 1,
-          transition: "opacity 1s ease",
-          transform: "scale(1.25) translateY(-30px)",
-          filter: "grayscale(1) contrast(1.1) brightness(0.5)",
-          height: "120%",
-          top: "-10%",
-        }} />
-
         {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
         <style dangerouslySetInnerHTML={{ __html: `
           video::-webkit-media-controls {
@@ -408,10 +392,14 @@ export default function Home() {
         <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto" }}>
 
           <div className="hero-text-group">
-            <p id="hero-origin" className="hero-overline" style={{ opacity: 0 }}>SUA ORIGEM,</p>
-            <h1 id="hero-smile" className="hero-headline" style={{ opacity: 0 }}>
-              Seu sorriso<span className="hero-period">.</span>
-            </h1>
+            <PremiumReveal type="fade" direction="bottom" delay={0.1}>
+              <p id="hero-origin" className="hero-overline" style={{ opacity: 0 }}>SUA ORIGEM,</p>
+            </PremiumReveal>
+            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
+              <h1 id="hero-smile" className="hero-headline" style={{ opacity: 0 }}>
+                Seu sorriso<span className="hero-period">.</span>
+              </h1>
+            </PremiumReveal>
           </div>
 
           <div className="hero-action-group">
