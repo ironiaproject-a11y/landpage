@@ -206,8 +206,7 @@ export default function Home() {
         });
 
         // Cinematic Entrance animation for the hero container
-        intro.fromTo(container, 
-          { opacity: 0, scale: 1.05, y: 30, filter: "blur(8px)" }, 
+        intro.to(container, 
           { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "expo.out" }
         );
 
@@ -346,8 +345,11 @@ export default function Home() {
           justifyContent: "space-between",
           overflow:       "hidden",
           zIndex:         10,       // Changed from 999 to 10 so Main Sections (30) can overlap it
-          willChange:     "opacity",
+          willChange:     "opacity, transform, filter",
           pointerEvents:  "auto",
+          opacity:        0,
+          transform:      "scale(1.05) translateY(30px)",
+          filter:         "blur(8px)",
         }}
       >
         {/*
