@@ -209,31 +209,33 @@ export default function Home() {
 
         // 4. SYNCED TYPOGRAPHY
         // "SUA ORIGEM" - Linked to Skull appearance (early)
-        // Starts VISIBLE at 0 scroll, fades out between 150 and 450
+        // Starts VISIBLE at 0 scroll, fades out between 50 and 400
         gsap.set(originTextRef.current, { opacity: 1, filter: "blur(0px)", y: 0 });
         gsap.to(originTextRef.current, {
           scrollTrigger: {
             trigger: container,
-            start: "100 top",
+            start: "50 top",
             end: "+=350",
             scrub: true,
           },
           opacity: 0,
-          filter: "blur(10px)",
-          y: -20,
+          filter: "blur(12px)",
+          y: -30,
           ease: "none"
         });
 
         // "SEU SORRISO" - Linked to Woman smiling (late)
-        // Starts revealing even earlier (300px) and finishes at 850px
+        // Starts revealing even earlier (250px) and finishes at 750px
+        // to ensure it is fully visible BEFORE the container starts fading at 800px
         gsap.fromTo(smileTextRef.current, 
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 30 },
           {
             scrollTrigger: {
-              trigger: container,
-              start: "300 top",
-              end: "850 top",
-              scrub: true,
+              trigger:     container,
+              start:       "250 top",
+              end:         "750 top",
+              scrub:       true,
+              invalidateOnRefresh: true,
             },
             opacity: 1,
             y: 0,
@@ -241,14 +243,15 @@ export default function Home() {
           }
         );
 
+        // 5. FINAL HERO FADE OUT
         gsap.to(container, {
           scrollTrigger: {
             trigger: container,
-            start:   "800 top",
-            end:     "+=500",
+            start:   "850 top", // delayed from 800 to avoid cutting off typography
+            end:     "+=450",
             scrub:   true,
           },
-          opacity: 0.35,
+          opacity: 0.25,
           ease:    "none",
         });
       };
