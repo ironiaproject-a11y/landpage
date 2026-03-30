@@ -160,10 +160,20 @@ export default function Home() {
         gsap.set(originText, { opacity: 1, y: 0, filter: "blur(0px)" });
         gsap.set(smileText,  { opacity: 0, y: 30, filter: "blur(8px)" });
 
-        // Phrase 1 -> Out
-        masterTl.to(originText, { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
-        // Phrase 2 -> In at 60%
-        masterTl.to(smileText, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.6);
+        // Phrase 1 -> Out (Ensures visibility at scroll 0)
+        masterTl.fromTo(originText, 
+          { opacity: 1, y: 0, filter: "blur(0px)" },
+          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut", immediateRender: false }, 
+          0
+        );
+
+        // Phrase 2 -> In at 60% (Ensures hidden state before 60% and on reverse scroll)
+        masterTl.fromTo(smileText, 
+          { opacity: 0, y: 30, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out", immediateRender: false }, 
+          0.6
+        );
+
         // Final Fade
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
