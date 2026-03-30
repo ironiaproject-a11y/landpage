@@ -194,7 +194,7 @@ export default function Home() {
         }).catch(() => {});
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
-        // This timeline starts exactly where the cinematic intro leaves off (55% of the video).
+        // This timeline will scrub from 0 to the end, perfectly syncing video and text.
         const masterTl = gsap.timeline({
           scrollTrigger: {
             trigger:       container,
@@ -208,16 +208,28 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
-        // Starts at 55% so it smoothly continues from the cinematic auto-play
+        // Scrub from 0 to almost-end (duration - 0.05) to prevent EOF stutter
+        const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
+
         masterTl.fromTo(video, 
-          { currentTime: duration * 0.55 }, 
-          { currentTime: duration, duration: 1, ease: "power1.inOut" }, 
+          { currentTime: 0 }, 
+          { currentTime: safeEnd, duration: 1, ease: "none" }, 
         0);
         
         masterTl.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 
         0);
+
+        // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
+        masterTl.fromTo(originText, 
+          { opacity: 1, y: 0, filter: "blur(0px)" },
+          { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
+
+        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in
+        masterTl.fromTo(smileText, 
+          { opacity: 0, y: 30, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.55);
 
         // Final Fade Out starts closer to the end of the scroll
         masterTl.to(container, { opacity: 0.25, duration: 0.3, ease: "power1.in" }, 0.7);
@@ -236,30 +248,27 @@ export default function Home() {
         );
 
         // Start video scrub immediately with the entrance
-        // Ending at 55% instead of 58% stops it on the perfect smile frame without hitting the stuttering 
-        // end-frames of the woman. Easing is set to stop smoothly.
+        // End at safeEnd to play the whole animation without the end stutter
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration * 0.55, duration: 3.8, ease: "power1.inOut" },
+          { currentTime: safeEnd, duration: 3.8, ease: "power1.inOut" },
           0.1
         );
 
         // Sync text animations within the same flow
-        intro.to(originText, {
-          opacity: 0, 
-          y: -20, 
-          filter: "blur(10px)",
-          duration: 1.5, 
-          ease: "power2.inOut"
-        }, 1.5);
+        // "Sua origem" visible from start, fades out
+        intro.fromTo(originText,
+          { opacity: 1, y: 0, filter: "blur(0px)" },
+          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.5, ease: "power2.inOut" },
+          1.5 // starts fading at 1.5s
+        );
 
-        intro.to(smileText, {
-          opacity: 1, 
-          y: 0, 
-          filter: "blur(0px)",
-          duration: 1.8, 
-          ease: "power2.out"
-        }, 2.5);
+        // "Seu sorriso" hidden at start, fades in
+        intro.fromTo(smileText,
+          { opacity: 0, y: 20, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5, ease: "power2.out" },
+          2.0 // starts fading in at 2.0s
+        );
 
         // INTERRUPTION LOGIC: If user scrolls, kill intro to let ScrollTrigger take over
         const handleScroll = () => {
