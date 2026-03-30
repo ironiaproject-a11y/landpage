@@ -251,7 +251,7 @@ export default function Home() {
         // End at safeEnd to play the whole animation without the end stutter
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: safeEnd, duration: 3.8, ease: "power1.inOut" },
+          { currentTime: safeEnd, duration: 4.5, ease: "power1.inOut" },
           0.1
         );
 
@@ -259,15 +259,15 @@ export default function Home() {
         // "Sua origem" visible from start, fades out
         intro.fromTo(originText,
           { opacity: 1, y: 0, filter: "blur(0px)" },
-          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.5, ease: "power2.inOut" },
-          1.5 // starts fading at 1.5s
+          { opacity: 0, y: -20, filter: "blur(10px)", duration: 1.8, ease: "power2.inOut" },
+          1.8 // starts fading at 1.8s
         );
 
         // "Seu sorriso" hidden at start, fades in
         intro.fromTo(smileText,
           { opacity: 0, y: 20, filter: "blur(10px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5, ease: "power2.out" },
-          2.0 // starts fading in at 2.0s
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.8, ease: "power2.out" },
+          2.4 // starts fading in at 2.4s
         );
 
         // INTERRUPTION LOGIC: If user scrolls, kill intro to let ScrollTrigger take over
