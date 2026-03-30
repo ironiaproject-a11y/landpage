@@ -63,27 +63,51 @@ export default function Home() {
   /* ─── VIDEO AUTOPLAY ─────────────────────────────────────────────── */
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
 
-    // Force muted — required for autoplay in all browsers
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
 
-    const tryPlay = () => video.play().catch(() => {});
+    const drawFrame = () => {
+      if (!video || !canvas) return;
+      const ctx = canvas.getContext("2d", { alpha: false });
+      if (!ctx) return;
+      
+      if (video.videoWidth > 0 && video.videoHeight > 0) {
+        if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+        }
+        if (video.readyState >= 2) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+      }
+    };
 
-    // FETCH VIDEO AS BLOB FOR STUTTER-FREE SCRUBBING
-    // (Removed to fix "demora para começar" issue. Using direct streaming for instant start!)
-    
-    // Attempt 1: once data starts flowing or mounts
-    tryPlay();
+    let rafId: number;
+    const startDrawing = () => {
+      drawFrame();
+      rafId = requestAnimationFrame(startDrawing);
+    };
+    startDrawing();
 
-    // Attempt 2: once enough data is buffered
+    const tryPlay = () => {
+      if (video.paused) {
+        video.play().then(() => {
+          window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
+        }).catch(() => {});
+      }
+    };
+
+    video.addEventListener("loadedmetadata", () => {
+      tryPlay();
+    }, { once: true });
+
     video.addEventListener("canplay", tryPlay, { once: true });
-    video.addEventListener("loadeddata", tryPlay, { once: true });
-
-    // Attempt 3: on first user interaction of ANY kind (covers strict autoplay policies)
+    
     const onInteraction = () => {
       tryPlay();
       window.removeEventListener("pointerdown", onInteraction);
@@ -92,88 +116,12 @@ export default function Home() {
     window.addEventListener("pointerdown", onInteraction, { passive: true });
     window.addEventListener("keydown", onInteraction, { passive: true });
 
-    // Signal preloader that assets are ready
-    const onLoaded = () => window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-    video.addEventListener("canplay", onLoaded, { once: true });
-    // Safety net: fire after 4 s regardless
-    const safetyId = setTimeout(onLoaded, 4000);
-
-    // Event listeners to detect real play state
-    const onPlay  = () => setIsActuallyPlaying(true);
-    const onPause = () => setIsActuallyPlaying(false);
-    const onEnded = () => setIsActuallyPlaying(false);
-    const onWaiting = () => setIsActuallyPlaying(false);
-
-    video.addEventListener("playing", onPlay);
-    video.addEventListener("pause", onPause);
-    video.addEventListener("ended", onEnded);
-    video.addEventListener("waiting", onWaiting);
-
-    let rafId: number;
-    let rvfcId: number;
-
-    const drawFrame = () => {
-      const canvas = canvasRef.current;
-      if (video && canvas) {
-        const ctx = canvas.getContext("2d", { alpha: false });
-        if (ctx && video.videoWidth > 0 && video.videoHeight > 0) {
-          if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-          }
-          if (video.readyState >= 2) {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          }
-        }
-      }
-    };
-
-    const renderCanvasRaf = () => {
-      drawFrame();
-      rafId = requestAnimationFrame(renderCanvasRaf);
-    };
-
-    const renderCanvasRvfc = () => {
-      drawFrame();
-      // @ts-ignore
-      rvfcId = video.requestVideoFrameCallback(renderCanvasRvfc);
-    };
-
-    // Use native video frame syncing if available
-    // @ts-ignore
-    if ("requestVideoFrameCallback" in video) {
-      // @ts-ignore
-      rvfcId = video.requestVideoFrameCallback(renderCanvasRvfc);
-    } else {
-      renderCanvasRaf();
-    }
-
-    // Force autoplay retry loop - keeps trying to play until it works
-    let playAttempts = 0;
-    const playRetry = setInterval(() => {
-      if (video.paused && playAttempts < 20) {
-        video.play().catch(() => {});
-        playAttempts++;
-      } else if (!video.paused) {
-        clearInterval(playRetry);
-      }
-    }, 500);
+    tryPlay();
 
     return () => {
-      video.removeEventListener("canplay", tryPlay);
-      video.removeEventListener("loadeddata", tryPlay);
-      video.removeEventListener("canplay", onLoaded);
-      video.removeEventListener("playing", onPlay);
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("ended", onEnded);
-      video.removeEventListener("waiting", onWaiting);
+      cancelAnimationFrame(rafId);
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("keydown", onInteraction);
-      clearTimeout(safetyId);
-      clearInterval(playRetry);
-      cancelAnimationFrame(rafId);
-      // @ts-ignore
-      if (rvfcId && "cancelVideoFrameCallback" in video) video.cancelVideoFrameCallback(rvfcId);
     };
   }, []);
 
@@ -196,10 +144,6 @@ export default function Home() {
         if (isInit) return;
         isInit = true;
         const duration = video.duration || 5;
-        
-        // AUTO-PLAY RE-FORCE
-        video.muted = true;
-        video.play().catch(() => {});
 
         // 1. PROXY & DEFINITIVE STATE
         // The "Berlin Wall" approach: Separate controllers that never fight.
