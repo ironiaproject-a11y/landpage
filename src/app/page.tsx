@@ -148,6 +148,17 @@ export default function Home() {
       renderCanvasRaf();
     }
 
+    // Force autoplay retry loop - keeps trying to play until it works
+    let playAttempts = 0;
+    const playRetry = setInterval(() => {
+      if (video.paused && playAttempts < 20) {
+        video.play().catch(() => {});
+        playAttempts++;
+      } else if (!video.paused) {
+        clearInterval(playRetry);
+      }
+    }, 500);
+
     return () => {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
@@ -159,6 +170,7 @@ export default function Home() {
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("keydown", onInteraction);
       clearTimeout(safetyId);
+      clearInterval(playRetry);
       cancelAnimationFrame(rafId);
       // @ts-ignore
       if (rvfcId && "cancelVideoFrameCallback" in video) video.cancelVideoFrameCallback(rvfcId);
