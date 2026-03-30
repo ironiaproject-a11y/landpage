@@ -203,10 +203,11 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
-        masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut" }, 0);
+        // immediateRender: false prevents ScrollTrigger from resetting the video to 0 during the intro
+        masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut", immediateRender: false }, 0);
         masterTl.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
-          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 0
+          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none", immediateRender: false }, 0
         );
 
         // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
@@ -223,32 +224,36 @@ export default function Home() {
         masterTl.to(container, { opacity: 0.25, duration: 0.15, ease: "power1.in" }, 0.85);
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
+        // Optimized sequence for instant impact and smooth transition
         intro = gsap.timeline({ 
-          delay: 0.1,
+          delay: 0.05,
           onStart: () => {
              video.play().catch(() => {});
           },
           defaults: { overwrite: "auto" }
         });
 
+        // Entrance
         intro.fromTo(container, 
           { opacity: 0, y: 15 }, 
           { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
         );
 
+        // Start video scrub immediately with the entrance
+        intro.fromTo(video, 
+          { currentTime: 0 },
+          { currentTime: duration * 0.6, duration: 2.2, ease: "sine.inOut" },
+          0.1
+        );
+
+        // Sync text animations within the same flow
         intro.to(originText, {
           opacity: 0, 
           y: -20, 
           filter: "blur(10px)",
           duration: 1.0, 
           ease: "power2.inOut"
-        }, "+=1.5");
-
-        intro.fromTo(video, 
-          { currentTime: 0 },
-          { currentTime: duration * 0.6, duration: 2.2, ease: "sine.inOut" },
-          "-=0.6"
-        );
+        }, 1.2);
 
         intro.to(smileText, {
           opacity: 1, 
@@ -256,7 +261,7 @@ export default function Home() {
           filter: "blur(0px)",
           duration: 1.0, 
           ease: "power2.out"
-        }, "-=0.4");
+        }, 1.6);
 
         // CLICK-TO-UNLOCK FALLBACK (Clears Play Icon and forces Playback)
         container.addEventListener("click", () => {
