@@ -205,36 +205,36 @@ export default function Home() {
 
         // 4. SYNCED TYPOGRAPHY
         // "SUA ORIGEM" - Linked to Skull appearance (early)
-        // Starts VISIBLE at 0 scroll, fades out between 350 and 550
+        // Starts VISIBLE at 0 scroll, fades out between 150 and 450
         gsap.set("#hero-origin", { opacity: 1, filter: "blur(0px)", y: 0 });
         gsap.to("#hero-origin", {
           scrollTrigger: {
             trigger: container,
-            start: "350 top",
-            end: "+=200",
+            start: "150 top",
+            end: "+=300",
             scrub: true,
           },
           opacity: 0,
-          filter: "blur(10px)",
-          y: -20,
-          ease: "none"
+          filter: "blur(4px)",
+          y: -10,
+          ease: "power1.inOut"
         });
 
         // "SEU SORRISO" - Linked to Woman smiling (late)
-        // Starts INVISIBLE at 0 scroll, fades in between 550 and 850
+        // Starts INVISIBLE at 0 scroll, fades in between 450 and 850
         gsap.fromTo("#hero-smile", 
-          { opacity: 0, clipPath: "inset(0 100% 0 0)", y: 20 },
+          { opacity: 0, clipPath: "inset(0 100% 0 0)", y: 15 },
           {
             scrollTrigger: {
               trigger: container,
-              start: "550 top",
-              end: "+=300",
+              start: "450 top",
+              end: "+=400",
               scrub: true,
             },
             opacity: 1,
             clipPath: "inset(0 0% 0 0)",
             y: 0,
-            ease: "none"
+            ease: "power2.out"
           }
         );
 
@@ -382,14 +382,10 @@ export default function Home() {
         <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto" }}>
 
           <div className="hero-text-group">
-            <div className="relative overflow-hidden w-full h-full">
-              <p id="hero-origin" className="hero-overline">SUA ORIGEM,</p>
-            </div>
-            <div className="relative overflow-hidden w-full h-full">
-              <h1 id="hero-smile" className="hero-headline">
-                Seu sorriso<span className="hero-period">.</span>
-              </h1>
-            </div>
+            <p id="hero-origin" className="hero-overline">SUA ORIGEM,</p>
+            <h1 id="hero-smile" className="hero-headline">
+              Seu sorriso<span className="hero-period">.</span>
+            </h1>
           </div>
 
           <div className="hero-action-group">
