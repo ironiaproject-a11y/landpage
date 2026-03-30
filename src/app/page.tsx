@@ -141,7 +141,13 @@ export default function Home() {
         // This ensures the Hero is visible and elegant even before scrolling.
         gsap.fromTo(container, 
           { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 1.8, ease: "expo.out" }
+          { 
+            opacity: 1, 
+            y: 0, 
+            duration: 1.8, 
+            ease: "expo.out",
+            overwrite: "auto" // Prevents conflict if user scrolls immediately
+          }
         );
         
         // Force initial frame
@@ -153,10 +159,10 @@ export default function Home() {
           scrollTrigger: {
             trigger:       container,
             start:         "top top",
-            end:           "+=1200", // slightly more distance for a smoother feel
+            end:           "+=1200", 
             pin:           true,
-            scrub:         1.2,      // balanced for cinematic smoothness
-            anticipatePin: 1,
+            scrub:         1.8,      // Increased for a more luxurious, 'weighted' inertia
+            anticipatePin: 1.5,      // More anticipation for smoother pin/unpin transitions
             invalidateOnRefresh: true,
           }
         });
@@ -165,7 +171,7 @@ export default function Home() {
         // We use a duration of 1 for the whole sequence to make child timings easier (percentages)
         masterTl.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration, duration: 1, ease: "none" },
+          { currentTime: duration, duration: 1, ease: "power1.inOut" }, // Organic frame progression
           0
         );
 
