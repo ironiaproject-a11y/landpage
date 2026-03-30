@@ -73,10 +73,24 @@ export default function Home() {
 
     const tryPlay = () => video.play().catch(() => {});
 
-    // Attempt 1: as soon as the component mounts
+    // FETCH VIDEO AS BLOB FOR STUTTER-FREE SCRUBBING
+    // Bypasses HTTP range-request delays, giving GSAP instant access to frames.
+    fetch("/hero-background-new.mp4")
+      .then(res => res.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        video.src = url;
+        video.load();
+      })
+      .catch(() => {
+        video.src = "/hero-background-new.mp4";
+        video.load();
+      });
+
+    // Attempt 1: once data starts flowing or mounts
     tryPlay();
 
-    // Attempt 2: once enough data is buffered (covers slow connections)
+    // Attempt 2: once enough data is buffered
     video.addEventListener("canplay", tryPlay, { once: true });
     video.addEventListener("loadeddata", tryPlay, { once: true });
 
@@ -107,7 +121,9 @@ export default function Home() {
     video.addEventListener("waiting", onWaiting);
 
     let rafId: number;
-    const renderCanvas = () => {
+    let rvfcId: number;
+
+    const drawFrame = () => {
       const canvas = canvasRef.current;
       if (video && canvas) {
         const ctx = canvas.getContext("2d", { alpha: false });
@@ -121,9 +137,27 @@ export default function Home() {
           }
         }
       }
-      rafId = requestAnimationFrame(renderCanvas);
     };
-    renderCanvas();
+
+    const renderCanvasRaf = () => {
+      drawFrame();
+      rafId = requestAnimationFrame(renderCanvasRaf);
+    };
+
+    const renderCanvasRvfc = () => {
+      drawFrame();
+      // @ts-ignore
+      rvfcId = video.requestVideoFrameCallback(renderCanvasRvfc);
+    };
+
+    // Use native video frame syncing if available
+    // @ts-ignore
+    if ("requestVideoFrameCallback" in video) {
+      // @ts-ignore
+      rvfcId = video.requestVideoFrameCallback(renderCanvasRvfc);
+    } else {
+      renderCanvasRaf();
+    }
 
     return () => {
       video.removeEventListener("canplay", tryPlay);
@@ -137,6 +171,8 @@ export default function Home() {
       window.removeEventListener("keydown", onInteraction);
       clearTimeout(safetyId);
       cancelAnimationFrame(rafId);
+      // @ts-ignore
+      if (rvfcId && "cancelVideoFrameCallback" in video) video.cancelVideoFrameCallback(rvfcId);
     };
   }, []);
 
@@ -221,7 +257,7 @@ export default function Home() {
 
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration * 0.6, duration: 1.5, ease: "power2.inOut" },
+          { currentTime: duration * 0.6, duration: 1.5, ease: "sine.inOut" },
           "-=0.6"
         );
 
@@ -317,7 +353,6 @@ export default function Home() {
             zIndex:         -99
           }}
         >
-          <source src="/hero-background-new.mp4" type="video/mp4" />
         </video>
 
         {/* 
