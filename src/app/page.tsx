@@ -321,6 +321,12 @@ export default function Home() {
             display: none !important;
             -webkit-appearance: none;
           }
+          video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+            -webkit-appearance: none;
+            opacity: 0 !important;
+            pointer-events: none !important;
+          }
           video::-webkit-media-controls-start-playback-button {
             display: none !important;
             -webkit-appearance: none;
