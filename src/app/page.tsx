@@ -187,7 +187,7 @@ export default function Home() {
         
         // AUTO-PLAY RE-FORCE
         video.muted = true;
-        video.play().catch(() => {});
+        // video.play() removed to prevent stutter during initial GSAP scrubbing
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
         const masterTl = gsap.timeline({
@@ -203,19 +203,23 @@ export default function Home() {
         });
 
         // Deterministic Video & Filter
-        // immediateRender: false prevents ScrollTrigger from resetting the video to 0 during the intro
-        masterTl.fromTo(video, { currentTime: 0 }, { currentTime: duration, duration: 1, ease: "power1.inOut", immediateRender: false }, 0);
+        // We use fromTo for video.currentTime to ensure it's always controlled by ScrollTrigger
+        masterTl.fromTo(video, 
+          { currentTime: 0 }, 
+          { currentTime: duration, duration: 1, ease: "power1.inOut" }, 
+        0);
+        
         masterTl.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
-          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none", immediateRender: false }, 0
-        );
+          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 
+        0);
 
         // Phrase 1 (Sua Origem) -> Always visible at scroll 0, fades out
         masterTl.fromTo(originText, 
           { opacity: 1, y: 0, filter: "blur(0px)" },
           { opacity: 0, y: -40, filter: "blur(12px)", duration: 0.45, ease: "power2.inOut" }, 0);
 
-        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in at 0.6
+        // Phrase 2 (Seu Sorriso) -> Always hidden at scroll 0, fades in
         masterTl.fromTo(smileText, 
           { opacity: 0, y: 30, filter: "blur(8px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, 0.6);
@@ -227,9 +231,6 @@ export default function Home() {
         // Optimized sequence for instant impact and smooth transition
         intro = gsap.timeline({ 
           delay: 0.05,
-          onStart: () => {
-             video.play().catch(() => {});
-          },
           defaults: { overwrite: "auto" }
         });
 
@@ -239,10 +240,10 @@ export default function Home() {
           { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }
         );
 
-        // Start video scrub immediately with the entrance
+        // Start video scrub immediately with the entrance (NO video.play() to avoid mobile stutter)
         intro.fromTo(video, 
           { currentTime: 0 },
-          { currentTime: duration * 0.6, duration: 2.2, ease: "sine.inOut" },
+          { currentTime: duration * 0.58, duration: 2.2, ease: "sine.inOut" },
           0.1
         );
 
@@ -263,7 +264,16 @@ export default function Home() {
           ease: "power2.out"
         }, 1.6);
 
-        // CLICK-TO-UNLOCK FALLBACK (Clears Play Icon and forces Playback)
+        // INTERRUPTION LOGIC: If user scrolls, kill intro to let ScrollTrigger take over
+        const handleScroll = () => {
+          if (window.scrollY > 10) {
+            intro.kill();
+            window.removeEventListener("scroll", handleScroll);
+          }
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        // CLICK-TO-UNLOCK FALLBACK (Only for audio/interaction unlocks if needed)
         container.addEventListener("click", () => {
           video.play().catch(() => {});
         }, { once: true });
