@@ -137,6 +137,11 @@ export default function Home() {
         if (isInit) return;
         isInit = true;
         const duration = video.duration || 5;
+        
+        // AUTO-PLAY FORCE (Ensures the video is actually running)
+        video.play().catch(() => {
+          // If auto-play is blocked, it will be scrubbed anyway once user interacts
+        });
 
         // 1. MASTER TIMELINE (SCROLL-DRIVEN)
         const masterTl = gsap.timeline({
@@ -173,7 +178,7 @@ export default function Home() {
 
         // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD)
         intro = gsap.timeline({ 
-          delay: 0.5,
+          delay: 0.1, // Faster start for immediate action
           defaults: { overwrite: "auto" }
         });
 
@@ -203,8 +208,6 @@ export default function Home() {
           duration: 0.8, 
           ease: "power2.out"
         }, "-=0.4");
-
-        video.currentTime = 0;
       };
 
       // Ensure metadata is ready
