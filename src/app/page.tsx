@@ -205,45 +205,35 @@ export default function Home() {
 
         // 4. SYNCED TYPOGRAPHY
         // "SUA ORIGEM" - Linked to Skull appearance (early)
-        gsap.fromTo("#hero-origin", 
-          { opacity: 0, filter: "blur(10px)", y: 20 },
-          {
-            scrollTrigger: {
-              trigger: container,
-              start: "top top",
-              end: "+=400",
-              scrub: true,
-            },
-            opacity: 1,
-            filter: "blur(0px)",
-            y: 0,
-            ease: "none"
-          }
-        );
+        // Starts VISIBLE at 0 scroll, fades out between 350 and 550
+        gsap.set("#hero-origin", { opacity: 1, filter: "blur(0px)", y: 0 });
         gsap.to("#hero-origin", {
           scrollTrigger: {
             trigger: container,
-            start: "400 top",
+            start: "350 top",
             end: "+=200",
             scrub: true,
           },
           opacity: 0,
-          filter: "blur(5px)",
+          filter: "blur(10px)",
+          y: -20,
           ease: "none"
         });
 
         // "SEU SORRISO" - Linked to Woman smiling (late)
+        // Starts INVISIBLE at 0 scroll, fades in between 550 and 850
         gsap.fromTo("#hero-smile", 
-          { opacity: 0, clipPath: "inset(0 100% 0 0)" },
+          { opacity: 0, clipPath: "inset(0 100% 0 0)", y: 20 },
           {
             scrollTrigger: {
               trigger: container,
-              start: "250 top",
-              end: "+=500",
+              start: "550 top",
+              end: "+=300",
               scrub: true,
             },
             opacity: 1,
             clipPath: "inset(0 0% 0 0)",
+            y: 0,
             ease: "none"
           }
         );
@@ -392,14 +382,14 @@ export default function Home() {
         <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto" }}>
 
           <div className="hero-text-group">
-            <PremiumReveal type="fade" direction="bottom" delay={0.1}>
-              <p id="hero-origin" className="hero-overline" style={{ opacity: 0 }}>SUA ORIGEM,</p>
-            </PremiumReveal>
-            <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-              <h1 id="hero-smile" className="hero-headline" style={{ opacity: 0 }}>
+            <div className="relative overflow-hidden w-full h-full">
+              <p id="hero-origin" className="hero-overline">SUA ORIGEM,</p>
+            </div>
+            <div className="relative overflow-hidden w-full h-full">
+              <h1 id="hero-smile" className="hero-headline">
                 Seu sorriso<span className="hero-period">.</span>
               </h1>
-            </PremiumReveal>
+            </div>
           </div>
 
           <div className="hero-action-group">
