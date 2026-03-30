@@ -29,6 +29,8 @@ export default function RootLayout({
 
         {/* Preload Critical Assets */}
         <link rel="preload" href="/implant-3d.png" as="image" />
+        <link rel="preload" href="/hero-background-new.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/hero-video.webp" as="image" />
 
         <script
           type="application/ld+json"

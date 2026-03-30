@@ -210,6 +210,14 @@ export default function Home() {
           duration: 0.8, 
           ease: "power2.out"
         }, "-=0.4");
+
+        // CLICK-TO-UNLOCK FALLBACK (Clears Play Icon and forces Playback)
+        container.addEventListener("click", () => {
+          video.play().catch(() => {});
+        }, { once: true });
+        container.addEventListener("touchstart", () => {
+          video.play().catch(() => {});
+        }, { once: true });
       };
 
       // Ensure metadata is ready
