@@ -53,6 +53,10 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
+
+  // Direct Refs for synced typography
+  const originTextRef = useRef<HTMLParagraphElement>(null);
+  const smileTextRef  = useRef<HTMLHeadingElement>(null);
   const [isActuallyPlaying, setIsActuallyPlaying] = useState(false);
 
   /* ─── VIDEO AUTOPLAY ─────────────────────────────────────────────── */
@@ -206,33 +210,32 @@ export default function Home() {
         // 4. SYNCED TYPOGRAPHY
         // "SUA ORIGEM" - Linked to Skull appearance (early)
         // Starts VISIBLE at 0 scroll, fades out between 150 and 450
-        gsap.set("#hero-origin", { opacity: 1, filter: "blur(0px)", y: 0 });
-        gsap.to("#hero-origin", {
+        gsap.set(originTextRef.current, { opacity: 1, filter: "blur(0px)", y: 0 });
+        gsap.to(originTextRef.current, {
           scrollTrigger: {
             trigger: container,
-            start: "150 top",
-            end: "+=300",
+            start: "100 top",
+            end: "+=350",
             scrub: true,
           },
           opacity: 0,
-          filter: "blur(4px)",
-          y: -10,
-          ease: "power1.inOut"
+          filter: "blur(10px)",
+          y: -20,
+          ease: "none"
         });
 
         // "SEU SORRISO" - Linked to Woman smiling (late)
-        // Starts INVISIBLE at 0 scroll, fades in between 450 and 850
-        gsap.fromTo("#hero-smile", 
-          { opacity: 0, clipPath: "inset(0 100% 0 0)", y: 15 },
+        // Starts revealing much earlier (350px) to ensure visibility during transform
+        gsap.fromTo(smileTextRef.current, 
+          { opacity: 0, y: 20 },
           {
             scrollTrigger: {
               trigger: container,
-              start: "450 top",
-              end: "+=400",
+              start: "350 top",
+              end: "950 top",
               scrub: true,
             },
             opacity: 1,
-            clipPath: "inset(0 0% 0 0)",
             y: 0,
             ease: "power2.out"
           }
@@ -382,8 +385,8 @@ export default function Home() {
         <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto" }}>
 
           <div className="hero-text-group">
-            <p id="hero-origin" className="hero-overline">SUA ORIGEM,</p>
-            <h1 id="hero-smile" className="hero-headline">
+            <p ref={originTextRef} className="hero-overline">SUA ORIGEM,</p>
+            <h1 ref={smileTextRef} className="hero-headline">
               Seu sorriso<span className="hero-period">.</span>
             </h1>
           </div>
