@@ -66,16 +66,18 @@ export default function Home() {
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
 
+    // Ensure all mobile-critical attributes are set programmatically
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
 
+    // ── CANVAS DRAW LOOP ──────────────────────────────────────────────
     const drawFrame = () => {
       if (!video || !canvas) return;
       const ctx = canvas.getContext("2d", { alpha: false });
       if (!ctx) return;
-      
       if (video.videoWidth > 0 && video.videoHeight > 0) {
         if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
           canvas.width = video.videoWidth;
@@ -86,42 +88,63 @@ export default function Home() {
         }
       }
     };
-
     let rafId: number;
-    const startDrawing = () => {
-      drawFrame();
-      rafId = requestAnimationFrame(startDrawing);
-    };
+    const startDrawing = () => { drawFrame(); rafId = requestAnimationFrame(startDrawing); };
     startDrawing();
 
+    // ── iOS AudioContext UNLOCK TRICK ─────────────────────────────────
+    // iOS Safari requires a user gesture to unlock the audio context.
+    // Creating and immediately suspending a silent AudioContext "wakes up"
+    // the media engine allowing muted video autoplay to succeed.
+    const unlockAudio = () => {
+      try {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtx) {
+          const ac = new AudioCtx();
+          ac.resume().then(() => ac.close()).catch(() => {});
+        }
+      } catch { /* ignore */ }
+    };
+    unlockAudio();
+
+    // ── PLAY HELPER ───────────────────────────────────────────────────
     const tryPlay = () => {
       if (video.paused) {
-        video.play().then(() => {
-          window.dispatchEvent(new CustomEvent("hero-assets-loaded"));
-        }).catch(() => {});
+        video.play()
+          .then(() => { window.dispatchEvent(new CustomEvent("hero-assets-loaded")); })
+          .catch(() => { /* Blocked — GSAP scrub handles playback */ });
       }
     };
 
-    video.addEventListener("loadedmetadata", () => {
-      tryPlay();
-    }, { once: true });
+    // ── RESUMO QUANDO A ABA VOLTA AO FOCO ────────────────────────────
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") tryPlay();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
-    video.addEventListener("canplay", tryPlay, { once: true });
-    
+    // ── INTERAÇÃO DO USUÁRIO COMO FALLBACK ────────────────────────────
     const onInteraction = () => {
+      unlockAudio();
       tryPlay();
       window.removeEventListener("pointerdown", onInteraction);
-      window.removeEventListener("keydown", onInteraction);
+      window.removeEventListener("touchstart", onInteraction);
     };
     window.addEventListener("pointerdown", onInteraction, { passive: true });
-    window.addEventListener("keydown", onInteraction, { passive: true });
+    window.addEventListener("touchstart", onInteraction, { passive: true });
 
-    tryPlay();
+    // ── DISPARO INICIAL ───────────────────────────────────────────────
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener("canplay", tryPlay, { once: true });
+      video.addEventListener("loadedmetadata", tryPlay, { once: true });
+    }
 
     return () => {
       cancelAnimationFrame(rafId);
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointerdown", onInteraction);
-      window.removeEventListener("keydown", onInteraction);
+      window.removeEventListener("touchstart", onInteraction);
     };
   }, []);
 
@@ -143,135 +166,140 @@ export default function Home() {
       const initMasterTimeline = () => {
         if (isInit) return;
         isInit = true;
-        const duration = video.duration || 5;
 
-        // 1. PROXY & DEFINITIVE STATE
-        // The "Berlin Wall" approach: Separate controllers that never fight.
-        const proxy = { time: 0 };
-        let isManualMode = false;
-        const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
+        // ── DURATION GUARD ─────────────────────────────────────────────
+        // On iOS, video.duration can be NaN until the media engine
+        // receives enough data (often blocked without a user gesture).
+        // We poll up to 20 × 100ms (~2s); if still NaN we use 5s as a safe default.
+        let pollCount = 0;
+        const MAX_POLLS = 20;
 
-        // force pause native playback to prevent fighting
-        video.pause();
+        const buildTimelines = (duration: number) => {
+          const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
-        // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Mechanical Scrub
-        // Bypasses iOS/Android native autoplay locks by manually driving currentTime.
-        intro = gsap.timeline({ 
-          onComplete: () => { 
-            isManualMode = true; 
-            // try to natively loop after intro
-            video.play().catch(() => {});
-          }
-        });
+          // 1. PROXY & STATE
+          const proxy = { time: 0 };
+          let isManualMode = false;
 
-        // Scrub the video mechanically! Linear playback.
-        intro.fromTo(proxy, 
-          { time: 0 },
-          { 
-            time: safeEnd, 
-            duration: duration, 
-            ease: "none", 
+          // NOTE: Do NOT call video.pause() here — let the browser autoplay if it can.
+          // The GSAP scrub drives currentTime directly and coexists with native play.
+
+          // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Mechanical Scrub
+          intro = gsap.timeline({
+            onComplete: () => {
+              isManualMode = true;
+              video.play().catch(() => {});
+            }
+          });
+
+          intro.fromTo(proxy,
+            { time: 0 },
+            {
+              time: safeEnd,
+              duration: duration,
+              ease: "none",
+              onUpdate: () => {
+                if (!isManualMode && video && !isNaN(proxy.time)) {
+                  video.currentTime = proxy.time;
+                }
+              }
+            }, 0);
+
+          intro.fromTo(canvas,
+            { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" },
+            { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: duration, ease: "none" },
+          0);
+
+          intro.fromTo(originText,
+            { opacity: 1, y: 0 },
+            { opacity: 0, y: -30, duration: duration * 0.5, ease: "power2.inOut" }, 0);
+
+          intro.fromTo(smileText,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
+
+          // 3. HAND-OFF helper
+          const switchToManual = () => {
+            if (isManualMode) return;
+            isManualMode = true;
+            video.pause();
+            if (intro && intro.isActive()) intro.kill();
+          };
+
+          // 4. MASTER TIMELINE (SCROLL-DRIVEN)
+          const masterTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: container,
+              start: "top top",
+              end: "+=1200",
+              pin: true,
+              scrub: 1.8,
+              anticipatePin: 1.5,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                if (self.direction !== 0 && self.progress > 0.005 && !isManualMode) {
+                  switchToManual();
+                }
+              }
+            }
+          });
+
+          masterTl.to(proxy, {
+            time: safeEnd,
+            duration: 1,
+            ease: "none",
             onUpdate: () => {
-              if (!isManualMode && video && !isNaN(proxy.time)) {
+              if (isManualMode && video && !isNaN(proxy.time)) {
                 video.currentTime = proxy.time;
               }
             }
           }, 0);
 
-        // Sync visual text animations to the duration
-        intro.fromTo(canvas, 
-          { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
-          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: duration, ease: "none" }, 
-        0);
+          masterTl.fromTo(canvas,
+            { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" },
+            { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" },
+          0);
 
-        // Phrase 1 (Sua Origem)
-        intro.fromTo(originText, 
-          { opacity: 1, y: 0 },
-          { opacity: 0, y: -30, duration: duration * 0.5, ease: "power2.inOut" }, 0);
+          masterTl.fromTo(originText,
+            { opacity: 1, y: 0 },
+            { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
 
-        // Phrase 2 (Seu Sorriso)
-        intro.fromTo(smileText, 
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
+          masterTl.fromTo(smileText,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
 
-        // Functional hand-off helper
-        const switchToManual = () => {
-          if (isManualMode) return;
-          isManualMode = true;
-          video.pause(); // Pause native playback when scrolling takes over
-          if (intro && intro.isActive()) {
-            intro.kill();
+          masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
+
+          // Click / touch fallback to guarantee playback after first interaction
+          container.addEventListener("click", () => { video.play().catch(() => {}); }, { once: true });
+          container.addEventListener("touchstart", () => { video.play().catch(() => {}); }, { once: true });
+        }; // end buildTimelines
+
+        // Poll until duration is a finite number
+        const pollDuration = () => {
+          const d = video.duration;
+          if (isFinite(d) && d > 0) {
+            buildTimelines(d);
+          } else if (pollCount < MAX_POLLS) {
+            pollCount++;
+            setTimeout(pollDuration, 100);
+          } else {
+            // iOS never gave us duration — use a 5s fallback and drive via scrub only
+            buildTimelines(5);
           }
         };
-
-        // 3. MASTER TIMELINE (SCROLL-DRIVEN)
-        const masterTl = gsap.timeline({
-          scrollTrigger: {
-            trigger:       container,
-            start:         "top top",
-            end:           "+=1200", 
-            pin:           true,
-            scrub:         1.8, 
-            anticipatePin: 1.5,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              // If the user actively scrolls (direction != 0), take over command immediately.
-              // This avoids triggering manual mode on pure load/refresh if scroll is slightly offset.
-              if (self.direction !== 0 && self.progress > 0.005 && !isManualMode) {
-                switchToManual();
-              }
-            }
-          }
-        });
-
-        // The Scroll-driven transformation (only active when isManualMode is true)
-        masterTl.to(proxy, { 
-          time: safeEnd, 
-          duration: 1, 
-          ease: "none",
-          onUpdate: () => {
-             if (isManualMode && video && !isNaN(proxy.time)) {
-               video.currentTime = proxy.time;
-             }
-          }
-        }, 0);
-        
-        masterTl.fromTo(canvas, 
-          { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
-          { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" }, 
-        0);
-
-        // Phrase 1 (Sua Origem) -> From 0 to 0.5 (Skull phase)
-        masterTl.fromTo(originText, 
-          { opacity: 1, y: 0 },
-          { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
-
-        // Phrase 2 (Seu Sorriso) -> From 0.45 to end (Woman phase)
-        masterTl.fromTo(smileText, 
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
-
-        // Final Fade Out starts closer to the end of the scroll
-        masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
-
-        // Click fallback for interaction
-        container.addEventListener("click", () => {
-          video.play().catch(() => {});
-        }, { once: true });
-        container.addEventListener("touchstart", () => {
-          video.play().catch(() => {});
-        }, { once: true });
+        pollDuration();
       };
 
       // iOS blocks canplaythrough without interaction. Use loadedmetadata.
-      if (video.readyState >= 1) { // 1 = HAVE_METADATA
+      if (video.readyState >= 1) {
         initMasterTimeline();
       } else {
         video.addEventListener("loadedmetadata", initMasterTimeline);
       }
-      
-      // Safety net
-      const safetyId = setTimeout(initMasterTimeline, 1000);
+
+      // Safety net — fire after 1.5s regardless
+      const safetyId = setTimeout(initMasterTimeline, 1500);
       return () => {
         clearTimeout(safetyId);
         video.removeEventListener("loadedmetadata", initMasterTimeline);
