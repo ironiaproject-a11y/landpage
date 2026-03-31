@@ -250,6 +250,14 @@ export default function Home() {
           intro.eventCallback("onComplete", () => {
             isManualMode = true;
             if (video) video.pause();
+            
+            // Force Lenis to recognize the new layout after pinning is established
+            const lenis = (window as any).lenis;
+            if (lenis) {
+              lenis.start();
+              lenis.resize();
+            }
+            ScrollTrigger.refresh();
           });
 
           // Se o usuário rolar, completamos a intro para dar lugar ao scroll.
@@ -260,6 +268,13 @@ export default function Home() {
                  intro.progress(1);
               }
               if (video) video.pause();
+
+              const lenis = (window as any).lenis;
+              if (lenis) {
+                lenis.start();
+                lenis.resize();
+              }
+              setTimeout(() => ScrollTrigger.refresh(), 100);
             }
           };
           window.addEventListener("wheel", onFirstScroll, { passive: true, once: true });
@@ -312,16 +327,13 @@ export default function Home() {
         className="hero-container-reset"
         style={{
           position:       "relative",
-          top:            "-60px",
+          top:            0,
           left:           0,
-          height:         "calc(100svh + 60px)",
-          width:          "100vw",
-          display:        "flex",
-          flexDirection:  "column",
-          justifyContent: "space-between",
+          height:         "100vh",
+          width:          "100%",
           overflow:       "hidden",
+          background:     "#000",
           zIndex:         10,
-          willChange:     "auto",
           pointerEvents:  "auto",
         }}
       >
