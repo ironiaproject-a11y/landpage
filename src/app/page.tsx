@@ -151,15 +151,34 @@ export default function Home() {
         let isManualMode = false;
         const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
-        // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Created first to be available for control
+        // force pause native playback to prevent fighting
+        video.pause();
+
+        // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Mechanical Scrub
+        // Bypasses iOS/Android native autoplay locks by manually driving currentTime.
         intro = gsap.timeline({ 
-          paused: true, // Only start when the video ACTUALLY plays (fixes mobile pause issue)
           onComplete: () => { 
             isManualMode = true; 
+            // try to natively loop after intro
+            video.play().catch(() => {});
           }
         });
 
-        // Sync visual text animations to the native video duration
+        // Scrub the video mechanically! Linear playback.
+        intro.fromTo(proxy, 
+          { time: 0 },
+          { 
+            time: safeEnd, 
+            duration: duration, 
+            ease: "none", 
+            onUpdate: () => {
+              if (!isManualMode && video && !isNaN(proxy.time)) {
+                video.currentTime = proxy.time;
+              }
+            }
+          }, 0);
+
+        // Sync visual text animations to the duration
         intro.fromTo(canvas, 
           { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" }, 
           { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: duration, ease: "none" }, 
@@ -175,25 +194,11 @@ export default function Home() {
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
 
-        // Sync GSAP timeline to the video's actual play/pause state
-        const handleVideoPlay = () => { if (!isManualMode) intro.play(); };
-        const handleVideoPause = () => { if (!isManualMode) intro.pause(); };
-        
-        video.addEventListener('play', handleVideoPlay);
-        video.addEventListener('pause', handleVideoPause);
-
-        // Try to play natively. If it works, the 'play' event will fire and start `intro` timeline.
-        video.play().catch(() => {});
-        if (!video.paused) handleVideoPlay();
-
         // Functional hand-off helper
         const switchToManual = () => {
           if (isManualMode) return;
           isManualMode = true;
           video.pause(); // Pause native playback when scrolling takes over
-          
-          video.removeEventListener('play', handleVideoPlay);
-          video.removeEventListener('pause', handleVideoPause);
           if (intro && intro.isActive()) {
             intro.kill();
           }
@@ -258,16 +263,19 @@ export default function Home() {
         }, { once: true });
       };
 
-      // Ensure buffer is ready for scrubbing (canplaythrough is more reliable than loadedmetadata on mobile)
-      if (video.readyState >= 4) {
+      // iOS blocks canplaythrough without interaction. Use loadedmetadata.
+      if (video.readyState >= 1) { // 1 = HAVE_METADATA
         initMasterTimeline();
       } else {
-        video.oncanplaythrough = initMasterTimeline;
+        video.addEventListener("loadedmetadata", initMasterTimeline);
       }
       
       // Safety net
-      const safetyId = setTimeout(initMasterTimeline, 2000);
-      return () => clearTimeout(safetyId);
+      const safetyId = setTimeout(initMasterTimeline, 1000);
+      return () => {
+        clearTimeout(safetyId);
+        video.removeEventListener("loadedmetadata", initMasterTimeline);
+      };
     });
 
     const rafId = requestAnimationFrame(() => ScrollTrigger.refresh());
