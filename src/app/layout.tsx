@@ -79,7 +79,7 @@ export default function RootLayout({
           <MotionProvider>
             <SmoothScroll />
             <Preloader />
-            {/* Disabled temporarily to investigate top-line issue: <ScrollProgress /> */}
+            <ScrollProgress />
             <ClientSideExtras />
             <Navbar />
             {children}

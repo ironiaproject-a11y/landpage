@@ -202,19 +202,19 @@ export function Amenities() {
                                 <span>Experiência</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white text-level-3 italic block mt-2">Cinco Estrelas.</span>
+                                 <span className="text-[var(--color-text-primary)] text-level-3 italic block mt-2">Cinco Estrelas.</span>
                             </PremiumReveal>
                         </h2>
 
                         <PremiumReveal direction="bottom" delay={0.4}>
-                            <p className="text-level-3 mb-12 max-w-md">
+                            <p className="text-level-3 mb-12 max-w-md text-[var(--color-text-secondary)]">
                                 Cada detalhe foi curado para transcender a clínica tradicional. Um ambiente onde o luxo, o silêncio e o cuidado absoluto se fundem.
                             </p>
                         </PremiumReveal>
 
                         {/* Concept Image - Changes on Hover */}
                         <PremiumReveal type="mask" direction="right" delay={0.5} className="hidden lg:block rounded-[2rem]">
-                            <div className="relative w-full aspect-[4/5] overflow-hidden border border-white/5 bg-[#121212]">
+                            <div className="relative w-full aspect-[4/5] overflow-hidden border border-white/5 bg-[var(--color-bg-off-black)]">
                                 <Image
                                     src="/assets/images/luxury-lounge.png"
                                     alt="Lounge Private"
@@ -240,10 +240,10 @@ export function Amenities() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: index * 0.1 }}
                                     viewport={{ once: true, margin: "-5%" }}
-                                    className="group border-b border-white/5 hover:border-[#F8F8F6]/30 transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
+                                    className="group border-b border-white/5 hover:border-[var(--color-border-hover)] transition-colors duration-500 py-10 cursor-default amenity-item-parallax"
                                 >
                                     <div className="flex items-baseline justify-between mb-4">
-                                        <h3 className="text-level-3 font-[400] text-[#E2E2E2] group-hover:text-white group-hover:translate-x-4 transition-all duration-500 ease-out">
+                                        <h3 className="text-level-3 font-[400] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] group-hover:translate-x-4 transition-all duration-500 ease-out">
                                             {item.title}
                                         </h3>
                                         <span className="text-level-4 uppercase group-hover:text-[var(--color-text-primary)] transition-colors duration-500 opacity-50 group-hover:opacity-100">

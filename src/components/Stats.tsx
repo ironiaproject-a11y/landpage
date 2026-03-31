@@ -140,7 +140,7 @@ export function Stats() {
           line-height: 1;
           letter-spacing: -0.04em;
           margin-bottom: 12px;
-          color: #FFFFFF;
+          color: var(--color-text-primary);
           display: flex;
           align-items: flex-start;
           font-style: italic;
@@ -166,15 +166,15 @@ export function Stats() {
           font-family: var(--font-sans), sans-serif;
           font-size: 11px;
           font-weight: 400;
-          color: rgba(255,255,255,0.4);
+          color: var(--color-text-tertiary);
           letter-spacing: 0.3em;
           text-transform: uppercase;
           line-height: 1.2;
         }
 
         .stats-number--accent {
-          color: #FFFFFF;
-          text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+          color: var(--color-accent-gold);
+          text-shadow: 0 0 30px rgba(var(--color-accent-gold-rgb), 0.2);
         }
 
         @media (max-width: 1100px) {

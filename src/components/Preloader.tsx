@@ -65,7 +65,7 @@ export function Preloader() {
                             opacity: { duration: 1 }
                         }
                     }}
-                    className="fixed inset-0 z-[9999] bg-[#050505] flex items-center justify-center overflow-hidden origin-center"
+                    className="fixed inset-0 z-[9999] bg-[var(--color-bg-dark)] flex items-center justify-center overflow-hidden origin-center"
                 >
                     {/* Atmospheric Lighting */}
                     <m.div

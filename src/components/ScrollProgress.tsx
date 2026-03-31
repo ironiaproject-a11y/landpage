@@ -25,12 +25,12 @@ export function ScrollProgress() {
         <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isVisible ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 right-0 z-[9998] h-[2px] bg-transparent pointer-events-none"
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="fixed top-[60px] left-0 right-0 z-[9998] h-[1px] bg-transparent pointer-events-none"
         >
             <m.div
                 style={{ scaleX }}
-                className="h-full origin-left bg-gradient-to-r from-[#F8F8F6] via-[#E6D3A3] to-[#F8F8F6] shadow-[0_0_10px_rgba(212,197,165,0.5)]"
+                className="h-full origin-left bg-gradient-to-r from-transparent via-white/40 to-transparent shadow-[0_0_10px_rgba(255,255,255,0.2)]"
             />
         </m.div>
     );

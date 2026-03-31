@@ -106,8 +106,8 @@ export function Footer() {
                                     <Sparkles strokeWidth={1} className="w-7 h-7 fill-white/5" />
                                 </div>
                                 <PremiumReveal type="fade" direction="right">
-                                    <h3 className="text-level-2 font-[400] text-white uppercase">
-                                        Clínica<span className="text-white italic font-light">.</span>
+                                    <h3 className="text-level-2 font-[400] text-[var(--color-text-primary)] uppercase">
+                                        Clínica<span className="text-[var(--color-text-primary)] italic font-light">.</span>
                                     </h3>
                                 </PremiumReveal>
                             </div>
@@ -187,7 +187,7 @@ export function Footer() {
                         <div className="space-y-6 footer-reveal-item">
                             <div className="flex items-start gap-4 group">
                                 <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-white/30 transition-colors">
-                                    <MapPin strokeWidth={1} className="w-5 h-5 text-white/60" />
+                                    <MapPin strokeWidth={1} className="w-5 h-5 text-[var(--color-text-tertiary)]" />
                                 </div>
                                 <div className="text-level-3">
                                     <p className="font-[400] text-white mb-1">Unidade Central</p>
@@ -197,11 +197,11 @@ export function Footer() {
                             </div>
                             <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 hover:border-white/30 transition-colors">
                                 <a href={generateWhatsAppUrl(DEFAULT_MESSAGE)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-level-3 font-[400] text-white hover:text-white transition-colors">
-                                    <Phone strokeWidth={1} className="w-5 h-5 text-white/60" />
+                                    <Phone strokeWidth={1} className="w-5 h-5 text-[var(--color-text-tertiary)]" />
                                     {COMPANY_PHONE}
                                 </a>
                                 <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-3 text-level-3 font-medium hover:text-white transition-colors">
-                                    <Mail strokeWidth={1} className="w-5 h-5 text-white/60" />
+                                    <Mail strokeWidth={1} className="w-5 h-5 text-[var(--color-text-tertiary)]" />
                                     {COMPANY_EMAIL}
                                 </a>
                             </div>
@@ -217,7 +217,7 @@ export function Footer() {
                                 © {currentYear} Clínica Odontologia. Todos os direitos reservados.
                             </p>
                             <div className="flex items-center gap-2">
-                                <span className="text-level-4 text-[#F8F8F6]/20 font-mono uppercase">Build: 53e99ac5</span>
+                                <span className="text-level-4 text-[var(--color-text-tertiary)] font-mono uppercase">Build: 53e99ac5</span>
                                 <button
                                     onClick={() => {
                                         if (typeof window !== 'undefined') {
@@ -254,9 +254,9 @@ export function Footer() {
             </div>
 
             {/* Subtle Gradient Spots - Enhanced Depth */}
-            <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#F8F8F6]/3 blur-[140px] -z-10 rounded-full pointer-events-none translate-y-[-50%]" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F8F8F6]/5 blur-[120px] -z-10 rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F8F8F6]/3 blur-[100px] -z-10 rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-white/5 blur-[140px] -z-10 rounded-full pointer-events-none translate-y-[-50%]" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 blur-[120px] -z-10 rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] -z-10 rounded-full pointer-events-none" />
         </footer >
     );
 }
