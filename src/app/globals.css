@@ -72,8 +72,8 @@ video::-internal-media-controls-overflow-button {
   --color-text-secondary-on-light: rgba(0,0,0,0.70);
 
   /* Premium Accent System */
-  --color-accent-gold:      #FFFFFF;
-  --color-accent-gold-rgb:  255, 255, 255;
+  --color-accent-gold:      #D4AF37; /* Metallic Gold restoring warmth */
+  --color-accent-gold-rgb:  212, 175, 55;
   --color-accent:           rgba(255, 255, 255, 0.6);  /* White accent */
   --color-accent-soft:      rgba(255, 255, 255, 0.3);
   --color-accent-glow:      rgba(255, 255, 255, 0.08);
@@ -333,7 +333,7 @@ h3 {
 /* NUCLEAR OVERRIDE FOR CORMORANT GARAMOND */
 .font-serif, .font-headline, h1, h2, h3 {
   text-transform: none !important;
-  letter-spacing: -0.5px !important;
+  letter-spacing: -0.02em !important; /* Scale-relative tracking instead of flat px compression */
 }
 
 /* ── EDITORIAL UTILITIES ── */
@@ -606,6 +606,7 @@ section:not(.hero) {
   font-family: var(--font-ui);
   font-weight: 400;
   font-size: 16px;
+  min-width: 280px; /* Structural solid box to prevent hover jitter from dynamic tracking */
   border: 1px solid rgba(245, 245, 245, 0.15);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
