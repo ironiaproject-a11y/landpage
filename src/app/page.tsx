@@ -177,20 +177,20 @@ export default function Home() {
         const buildTimelines = (duration: number) => {
           const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
-          // 1. PROXY & STATE
+          // PROXY & STATE
           const proxy = { time: 0 };
           let isManualMode = false;
 
-          // NOTE: Do NOT call video.pause() here — let the browser autoplay if it can.
-          // The GSAP scrub drives currentTime directly and coexists with native play.
+          // ── EXPLICIT INITIAL STATES ────────────────────────────────────
+          // Ensure both phrases start in their correct state before any
+          // animation touches them — prevents flash / wrong initial opacity.
+          gsap.set(originText, { opacity: 1, y: 0 });
+          gsap.set(smileText,  { opacity: 0, y: 20 });
 
-          // 2. CINEMATIC INTRO (AUTO-PLAY ON LOAD) — Mechanical Scrub
-          intro = gsap.timeline({
-            onComplete: () => {
-              isManualMode = true;
-              video.play().catch(() => {});
-            }
-          });
+          // ── CINEMATIC INTRO ────────────────────────────────────────────
+          // Drives video.currentTime mechanically via GSAP — bypasses mobile autoplay locks.
+          // IMPORTANT: masterTl does NOT exist yet → zero conflicts possible on smileText.
+          intro = gsap.timeline();
 
           intro.fromTo(proxy,
             { time: 0 },
@@ -210,72 +210,108 @@ export default function Home() {
             { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: duration, ease: "none" },
           0);
 
+          // "Sua Origem" — aparece no início, some na metade
           intro.fromTo(originText,
             { opacity: 1, y: 0 },
             { opacity: 0, y: -30, duration: duration * 0.5, ease: "power2.inOut" }, 0);
 
+          // "Seu Sorriso" — entra na segunda metade, quando a mulher aparece
           intro.fromTo(smileText,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.45, ease: "power2.out" }, duration * 0.45);
 
-          // 3. HAND-OFF helper
-          const switchToManual = () => {
-            if (isManualMode) return;
-            isManualMode = true;
-            video.pause();
-            if (intro && intro.isActive()) intro.kill();
+          // ── DEFERRED SCROLL SETUP ──────────────────────────────────────
+          // FIX DEFINITIVO: masterTl é criado SOMENTE após o intro terminar
+          // (ou na primeira rolagem do usuário).
+          //
+          // Se o masterTl existisse simultaneamente com o intro, o mecanismo
+          // de scrub do GSAP (scroll=0 → masterTl.time=0) re-aplicaria o estado
+          // inicial de smileText (opacity:0) a cada frame, suprimindo o intro.
+          // "immediateRender:false" não resolve — o scrub precisa do masterTl
+          // inexistente para não interferir.
+          let scrollBuilt = false;
+
+          const setupScrollTimeline = () => {
+            if (scrollBuilt) return;
+            scrollBuilt = true;
+
+            // Capturar estado visual atual para passar ao scroll sem salto
+            const snapScale          = (gsap.getProperty(canvas,     "scale")   as number) || 1.1;
+            const snapFilter         = (gsap.getProperty(canvas,     "filter")  as string) || "grayscale(1) contrast(1.1) brightness(0.7)";
+            const snapSmileOpacity   = (gsap.getProperty(smileText,  "opacity") as number) ?? 0;
+            const snapSmileY         = (gsap.getProperty(smileText,  "y")       as number) ?? 20;
+            const snapOriginOpacity  = (gsap.getProperty(originText, "opacity") as number) ?? 1;
+            const snapOriginY        = (gsap.getProperty(originText, "y")       as number) ?? 0;
+
+            const masterTl = gsap.timeline({
+              scrollTrigger: {
+                trigger:             container,
+                start:               "top top",
+                end:                 "+=1200",
+                pin:                 true,
+                scrub:               1.8,
+                anticipatePin:       1.5,
+                invalidateOnRefresh: true,
+              }
+            });
+
+            // Scroll controla o currentTime do vídeo
+            masterTl.fromTo(proxy,
+              { time: proxy.time },
+              {
+                time: safeEnd,
+                duration: 1,
+                ease: "none",
+                onUpdate: () => {
+                  if (isManualMode && video && !isNaN(proxy.time)) {
+                    video.currentTime = proxy.time;
+                  }
+                }
+              }, 0);
+
+            masterTl.fromTo(canvas,
+              { scale: snapScale, filter: snapFilter },
+              { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" },
+            0);
+
+            // "Sua Origem" — continua de onde o intro parou
+            masterTl.fromTo(originText,
+              { opacity: snapOriginOpacity, y: snapOriginY },
+              { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
+
+            // "Seu Sorriso" — continua de onde o intro parou
+            masterTl.fromTo(smileText,
+              { opacity: snapSmileOpacity, y: snapSmileY },
+              { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
+
+            masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
+
+            ScrollTrigger.refresh();
           };
 
-          // 4. MASTER TIMELINE (SCROLL-DRIVEN)
-          const masterTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: container,
-              start: "top top",
-              end: "+=1200",
-              pin: true,
-              scrub: 1.8,
-              anticipatePin: 1.5,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                if (self.direction !== 0 && self.progress > 0.005 && !isManualMode) {
-                  switchToManual();
-                }
-              }
-            }
+          // Scroll ativa-se quando o intro termina naturalmente
+          intro.eventCallback("onComplete", () => {
+            isManualMode = true;
+            video.play().catch(() => {});
+            setupScrollTimeline();
           });
 
-          masterTl.to(proxy, {
-            time: safeEnd,
-            duration: 1,
-            ease: "none",
-            onUpdate: () => {
-              if (isManualMode && video && !isNaN(proxy.time)) {
-                video.currentTime = proxy.time;
-              }
+          // Scroll ativa-se se o usuário rolar antes do intro terminar
+          const onFirstScroll = () => {
+            if (!isManualMode) {
+              isManualMode = true;
+              if (intro && intro.isActive()) intro.kill();
             }
-          }, 0);
+            setupScrollTimeline();
+          };
+          window.addEventListener("scroll", onFirstScroll, { passive: true, once: true });
 
-          masterTl.fromTo(canvas,
-            { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)", immediateRender: false },
-            { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" },
-          0);
-
-          masterTl.fromTo(originText,
-            { opacity: 1, y: 0, immediateRender: false },
-            { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
-
-          masterTl.fromTo(smileText,
-            { opacity: 0, y: 20, immediateRender: false },
-            { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
-
-          masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
-
-          // Click / touch fallback to guarantee playback after first interaction
-          container.addEventListener("click", () => { video.play().catch(() => {}); }, { once: true });
+          // Fallback de toque/clique para garantir reprodução no mobile
+          container.addEventListener("click",      () => { video.play().catch(() => {}); }, { once: true });
           container.addEventListener("touchstart", () => { video.play().catch(() => {}); }, { once: true });
         }; // end buildTimelines
 
-        // Poll until duration is a finite number
+        // Polling até a duração ser um número finito
         const pollDuration = () => {
           const d = video.duration;
           if (isFinite(d) && d > 0) {
@@ -284,8 +320,7 @@ export default function Home() {
             pollCount++;
             setTimeout(pollDuration, 100);
           } else {
-            // iOS never gave us duration — use a 5s fallback and drive via scrub only
-            buildTimelines(5);
+            buildTimelines(5); // fallback iOS
           }
         };
         pollDuration();
