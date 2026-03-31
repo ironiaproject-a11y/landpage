@@ -256,16 +256,16 @@ export default function Home() {
           }, 0);
 
           masterTl.fromTo(canvas,
-            { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)" },
+            { scale: 1.1, filter: "grayscale(1) contrast(1.1) brightness(0.7)", immediateRender: false },
             { scale: 1.35, filter: "grayscale(1) contrast(1.1) brightness(0.4)", duration: 1, ease: "none" },
           0);
 
           masterTl.fromTo(originText,
-            { opacity: 1, y: 0 },
+            { opacity: 1, y: 0, immediateRender: false },
             { opacity: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 0);
 
           masterTl.fromTo(smileText,
-            { opacity: 0, y: 20 },
+            { opacity: 0, y: 20, immediateRender: false },
             { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.45);
 
           masterTl.to(container, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.82);
