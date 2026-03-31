@@ -219,11 +219,9 @@ export default function Home() {
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
 
-          // ── DEFERRED SCROLL SETUP ──────────────────────────────────────
-          // FIX: O scroll não tenta mais re-animar o vídeo ou os textos!
-          // Ele serve apenas para manter a seção em pin e sumir o container para a próxima seção.
+          // ── IMMEDIATE SCROLL SETUP ────────────────────────────────────
+          // FIX: Initialize immediately so PIN height (+1200) is added at startup.
           let scrollBuilt = false;
-
           const setupScrollTimeline = () => {
             if (scrollBuilt) return;
             scrollBuilt = true;
@@ -242,30 +240,30 @@ export default function Home() {
 
             // Única responsabilidade do scroll agora: fade out suave do block inteiro
             masterTl.to(container, { opacity: 0, duration: 1, ease: "power1.inOut" });
-
             ScrollTrigger.refresh();
           };
 
-          // Quando a introdução acaba, o vídeo deve FARRRR no último frame.
+          // Always initialize both — they can coexist because they touch different properties.
+          setupScrollTimeline();
+
+          // Quando a introdução acaba, o vídeo deve PARAR no último frame.
           intro.eventCallback("onComplete", () => {
             isManualMode = true;
             if (video) video.pause();
-            setupScrollTimeline();
           });
 
-          // Scroll ativa-se se o usuário iniciar scroll antes do fim da intro
+          // Se o usuário rolar, completamos a intro para dar lugar ao scroll.
           const onFirstScroll = () => {
             if (!isManualMode) {
               isManualMode = true;
               if (intro && intro.isActive()) {
-                 // Força animação pro último instante
                  intro.progress(1);
               }
               if (video) video.pause();
             }
-            setupScrollTimeline();
           };
-          window.addEventListener("scroll", onFirstScroll, { passive: true, once: true });
+          window.addEventListener("wheel", onFirstScroll, { passive: true, once: true });
+          window.addEventListener("touchstart", onFirstScroll, { passive: true, once: true });
         }; // end buildTimelines
 
         // Polling até a duração ser um número finito
