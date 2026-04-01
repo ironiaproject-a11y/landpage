@@ -258,15 +258,15 @@ export function Specialist() {
                                 <LuxuryCard
                                     glowColor="rgba(255,255,255,0.05)"
                                     className="border-white/5"
-                                    innerClassName="p-8 md:p-10 flex flex-col justify-between"
+                                    innerClassName="p-8 md:p-10 flex flex-col justify-between items-center text-center"
                                 >
-                                    <div className="relative mb-10">
-                                        <Quote strokeWidth={1} className="absolute -top-4 -left-2 w-16 h-16 text-white/5" />
-                                        <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300]">
+                                    <div className="relative mb-10 w-full flex flex-col items-center">
+                                        <Quote strokeWidth={1} className="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 text-white/5" />
+                                        <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300] max-w-[90%] mx-auto">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
                                     </div>
-                                    <div className="relative z-10 pt-6 border-t border-white/10">
+                                    <div className="relative z-10 pt-6 border-t border-white/10 w-full max-w-[80%] mx-auto">
                                         <h4 className="text-[var(--color-text-primary)] text-xl md:text-2xl font-medium tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
                                         <p className="text-[11px] md:text-xs text-white/50 uppercase tracking-[0.2em] font-light">Diretor Clínico • CRO 00.000</p>
                                     </div>
