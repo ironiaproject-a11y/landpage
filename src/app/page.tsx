@@ -219,53 +219,39 @@ export default function Home() {
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
 
-          // ── DEFERRED SCROLL SETUP ──────────────────────────────────────
-          // FIX: O scroll não tenta mais re-animar o vídeo ou os textos!
-          // Ele serve apenas para manter a seção em pin e sumir o container para a próxima seção.
-          let scrollBuilt = false;
-
-          const setupScrollTimeline = () => {
-            if (scrollBuilt) return;
-            scrollBuilt = true;
-
-            const masterTl = gsap.timeline({
-              scrollTrigger: {
-                trigger:             container,
-                start:               "top top",
-                end:                 "+=1200",
-                pin:                 true,
-                scrub:               1,
-                anticipatePin:       1.5,
-                invalidateOnRefresh: true,
+          // ── SYNCHRONOUS SCROLL SETUP ───────────────────────────────────
+          // Criar ScrollTrigger imediatamente garante o pin no loading.
+          const scrollTl = gsap.timeline({
+            scrollTrigger: {
+              trigger:             container,
+              start:               "top top",
+              end:                 "+=1200",
+              pin:                 true,
+              scrub:               1,
+              anticipatePin:       1.5,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                // Ignora eventos de layout iniciais: só aborta 
+                // a cinematic intro se o usuário rodar > 3% do trigger
+                if (self.progress > 0.03 && !isManualMode) {
+                  isManualMode = true;
+                  if (intro && intro.isActive()) intro.progress(1);
+                  if (video) video.pause();
+                }
               }
-            });
+            }
+          });
 
-            // Única responsabilidade do scroll agora: fade out suave do block inteiro
-            masterTl.to(container, { opacity: 0, duration: 1, ease: "power1.inOut" });
+          // Única responsabilidade do scroll agora: fade out suave do block
+          scrollTl.to(container, { opacity: 0, duration: 1, ease: "power1.inOut" });
 
-            ScrollTrigger.refresh();
-          };
-
-          // Quando a introdução acaba, o vídeo deve FARRRR no último frame.
+          // Quando a cinemática acaba de forma natural
           intro.eventCallback("onComplete", () => {
             isManualMode = true;
             if (video) video.pause();
-            setupScrollTimeline();
           });
 
-          // Scroll ativa-se se o usuário iniciar scroll antes do fim da intro
-          const onFirstScroll = () => {
-            if (!isManualMode) {
-              isManualMode = true;
-              if (intro && intro.isActive()) {
-                 // Força animação pro último instante
-                 intro.progress(1);
-              }
-              if (video) video.pause();
-            }
-            setupScrollTimeline();
-          };
-          window.addEventListener("scroll", onFirstScroll, { passive: true, once: true });
+          ScrollTrigger.refresh();
         }; // end buildTimelines
 
         // Polling até a duração ser um número finito
