@@ -84,7 +84,7 @@ export function Stats() {
       <style>{`
         .stats-container {
           background: transparent;
-          padding: 0 0 120px;
+          padding-bottom: var(--section-space-sm); /* Spacing Rhythm Check: Integrates with global tokens */
           position: relative;
           z-index: 30;
           display: flex;
@@ -101,7 +101,7 @@ export function Stats() {
           align-items: stretch;
           gap: 0;
           position: relative;
-          padding: 40px 60px;
+          padding: 40px 48px; /* Tighter padding to prevent early wrapping */
           background: rgba(255, 255, 255, 0.02);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
@@ -119,7 +119,7 @@ export function Stats() {
           flex-direction: column;
           align-items: center;
           text-align: center;
-          padding: 0 60px;
+          padding: 0 40px; /* Reduced specific item padding to balance the bar */
           min-width: 240px;
         }
 
@@ -142,7 +142,7 @@ export function Stats() {
           margin-bottom: 12px;
           color: var(--color-text-primary);
           display: flex;
-          align-items: flex-start;
+          align-items: baseline; /* Semantic alignment over fixed pixels */
           font-style: italic;
         }
 
@@ -152,8 +152,8 @@ export function Stats() {
           font-weight: 200;
           margin-left: 2px;
           opacity: 0.55; /* A3: Was 0.3 (~1.8:1 contrast) — now more readable */
-          margin-top: 8px;
           font-style: italic;
+          /* Removed fixed margin-top: relies on baseline alignment */
         }
 
         .stats-label-group {
@@ -179,7 +179,7 @@ export function Stats() {
 
         @media (max-width: 1100px) {
           .stats-item {
-            padding: 0 40px;
+            padding: 0 32px;
             min-width: 200px;
           }
         }
@@ -192,15 +192,23 @@ export function Stats() {
             max-width: 400px;
           }
           .stats-item {
-            padding: 30px 0;
+            padding: 40px 0;
             width: 100%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
           }
           .stats-item:last-child {
-            border-bottom: none;
+            padding-bottom: 0;
+          }
+          .stats-item:first-child {
+            padding-top: 0;
           }
           .stats-item:not(:last-child)::after {
-            display: none;
+            display: block;
+            top: auto;
+            bottom: 0;
+            right: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
           }
           .stats-number {
             font-size: 64px;
