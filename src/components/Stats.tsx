@@ -9,10 +9,19 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+/* ─── types ─────────────────────────────────────────────────── */
+interface Metric {
+  numeric: number;
+  suffix: string;
+  label: string;
+  subLabel: string;
+  accent?: boolean;
+}
+
 /* ─── data ────────────────────────────────────────────────── */
-const metrics = [
+const metrics: Metric[] = [
   { numeric: 20,  suffix: "+", label: "anos de", subLabel: "experiência" },
-  { numeric: 97,  suffix: "%", label: "pacientes", subLabel: "satisfeitos", accent: true },
+  { numeric: 97,  suffix: "%", label: "pacientes", subLabel: "satisfeitos" },
   { numeric: 785, suffix: "+", label: "sorrisos", subLabel: "transformados" },
 ];
 
@@ -140,9 +149,9 @@ export function Stats() {
           line-height: 1;
           letter-spacing: -0.04em;
           margin-bottom: 12px;
-          color: var(--color-text-primary);
+          color: #FFFFFF !important; /* Explicit white to ensure no yellow accent remains */
           display: flex;
-          align-items: baseline; /* Semantic alignment over fixed pixels */
+          align-items: baseline;
           font-style: italic;
         }
 

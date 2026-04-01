@@ -317,7 +317,7 @@ export default function Home() {
             <div className="hero-action-group">
 
               <PremiumReveal type="fade" direction="bottom" delay={0.5}>
-                <p className="hero-subheadline" style={{ visibility: "hidden" }}>
+                <p className="hero-subheadline" style={{ opacity: 0, pointerEvents: 'none', userSelect: 'none' }}>
                   Odontologia de alta performance
                 </p>
               </PremiumReveal>
