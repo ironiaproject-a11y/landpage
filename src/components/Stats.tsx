@@ -151,7 +151,7 @@ export function Stats() {
           font-size: 0.5em;
           font-weight: 200;
           margin-left: 2px;
-          opacity: 0.3;
+          opacity: 0.55; /* A3: Was 0.3 (~1.8:1 contrast) — now more readable */
           margin-top: 8px;
           font-style: italic;
         }
@@ -159,17 +159,17 @@ export function Stats() {
         .stats-label-group {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 4px; /* Slight increase for breathing room */
         }
 
         .stats-label {
           font-family: var(--font-sans), sans-serif;
           font-size: 11px;
           font-weight: 400;
-          color: var(--color-text-tertiary);
-          letter-spacing: 0.3em;
+          color: rgba(255, 255, 255, 0.70); /* Was color-text-tertiary (0.6) — improved contrast */
+          letter-spacing: 0.25em; /* Was 0.3em — slightly less aggressive */
           text-transform: uppercase;
-          line-height: 1.2;
+          line-height: 1.3;
         }
 
         .stats-number--accent {

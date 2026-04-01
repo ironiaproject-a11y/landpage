@@ -65,7 +65,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 {/* Content Section */}
                 <div className="px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 flex flex-col flex-grow">
                     <div className="flex items-center gap-4 mb-6">
-                        <span className="text-level-4 text-white/40 uppercase">Pilar {service.tag}</span>
+                        <span className="text-level-4 text-white/40 uppercase">Protocolo {service.tag}</span>
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
@@ -306,7 +306,7 @@ export function Services() {
                             <span>Tratamentos</span>
                         </PremiumReveal>
                         <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                            <span className="text-white text-level-3 italic block mt-2">Especializados.</span>
+                            <span className="text-headline-sub block mt-2">Especializados.</span>
                         </PremiumReveal>
                     </h2>
                     <PremiumReveal direction="bottom" delay={0.4}>

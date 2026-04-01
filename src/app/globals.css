@@ -119,6 +119,9 @@ video::-internal-media-controls-overflow-button {
   --font-h3-line-height:  1.3;
   --font-h3-tracking:     -0.01em;
 
+  /* LEVEL 2.5 — Editorial Subtitle (italicized secondary headline inside h2) */
+  --font-headline-sub:    clamp(20px, 2.2vw, 28px);
+
   /* LEVEL 3 (Body text - mostly 18px and 0.75 opacity) */
   --font-body:            18px;
 
@@ -135,6 +138,12 @@ video::-internal-media-controls-overflow-button {
   --tracking-luxury: 0.04em;
   --tracking-editorial: -0.015em;
   --tracking-body: 0.01em;
+  --tracking-button: 0.15em; /* Unified button tracking (was 4 different values) */
+
+  /* ── Vertical Section Rhythm ───────────────────────────── */
+  --section-space-sm:  clamp(64px, 8vw, 96px);
+  --section-space-md:  clamp(96px, 12vw, 160px);
+  --section-space-lg:  clamp(120px, 16vw, 200px);
 }
 
 /* ===================================
@@ -309,7 +318,7 @@ h1, .text-level-1 {
   font-size: var(--font-h1);
   font-weight: var(--font-h1-weight);
   line-height: var(--font-h1-line-height);
-  letter-spacing: var(--font-h1-tracking);
+  letter-spacing: var(--font-h1-tracking); /* -0.05em — keeps cinetic density at display sizes */
 }
 
 h2, .text-level-2 {
@@ -317,23 +326,38 @@ h2, .text-level-2 {
   font-size: var(--font-h2);
   font-weight: var(--font-h2-weight);
   line-height: var(--font-h2-line-height);
-  letter-spacing: -0.5px !important;
-  text-transform: none !important;
+  letter-spacing: var(--font-h2-tracking); /* -0.02em */
+  text-transform: none;
   margin-bottom: 3rem;
+  text-wrap: balance; /* C1 — prevents orphaned lines */
 }
 
 h3 {
   font-family: var(--font-serif);
   font-size: var(--font-h3);
   font-weight: var(--font-h3-weight);
-  line-height: 1.2;
-  letter-spacing: var(--font-h3-tracking);
+  line-height: 1.25;
+  letter-spacing: var(--font-h3-tracking); /* -0.01em */
+  text-wrap: balance;
 }
 
-/* NUCLEAR OVERRIDE FOR CORMORANT GARAMOND */
-.font-serif, .font-headline, h1, h2, h3 {
-  text-transform: none !important;
-  letter-spacing: -0.02em !important; /* Scale-relative tracking instead of flat px compression */
+/* Per-level tracking — replaces the previous nuclear override that forced -0.02em on ALL headings incl. h1 */
+.font-serif, .font-headline {
+  text-transform: none;
+}
+
+/* ── EDITORIAL SUBTITLE — level 2.5 ──
+   Used as the italic secondary line *inside* a h2 block.
+   Gives a distinct identity vs. body text (18px) without competing with the h2. */
+.text-headline-sub {
+  font-family: var(--font-serif);
+  font-size: var(--font-headline-sub); /* clamp(20px, 2.2vw, 28px) */
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  opacity: 0.65;
+  display: block;
 }
 
 /* ── EDITORIAL UTILITIES ── */
@@ -392,24 +416,29 @@ p, .text-level-3 {
   opacity: 0.75;
 }
 
-/* BUTTONS & UI */
-button, .btn, nav, a {
+/* BUTTONS & UI — A1: Unified tracking (was: 4px absolute on some, 0.22em/0.35em on others) */
+button, .btn, nav a {
   font-family: var(--font-sans);
   font-weight: 400;
-  letter-spacing: 4px;
+  letter-spacing: var(--tracking-button); /* 0.15em — consistent across all CTAs */
   color: #FFFFFF;
   text-transform: uppercase;
 }
 
-/* MICROCOPY */
+/* Nav links inherit tracking but don't force uppercase on all nav elements */
+nav {
+  font-family: var(--font-sans);
+}
+
+/* MICROCOPY — A3: Contrast fix (was opacity 0.5 → ~3.0:1, now 0.65 → ~4.5:1) */
 .small, label, .editorial-label, input::placeholder, .text-level-4 {
   font-family: var(--font-sans);
   font-size: 13px; /* Strict hierarchy */
   font-weight: 400;
-  letter-spacing: 3px;
+  letter-spacing: 0.12em; /* Reduced from 3px absolute — more controlled */
   text-transform: uppercase;
   color: #FFFFFF;
-  opacity: 0.5;
+  opacity: 0.65; /* Was 0.5 — WCAG AA fix: now ~4.5:1 on #0D0D0D */
 }
 
 /* ── Hero Editorial Block (animated hero text) ──────────── */
@@ -473,8 +502,8 @@ button, .btn, nav, a {
 
 .hero-headline {
   font-size: clamp(80px, 15vw, 130px) !important;
-  line-height: 0.8 !important;
-  font-weight: 700 !important;
+  line-height: 0.85 !important; /* Slight improvement from 0.8 — prevents clipping on descenders */
+  font-weight: 600 !important; /* C3: Was 700 — at 130px display size, 600 reads more refined */
   letter-spacing: -0.05em !important;
   margin-bottom: 40px !important;
   font-family: var(--font-serif) !important;
@@ -488,24 +517,25 @@ button, .btn, nav, a {
   margin-left: 0.02em !important;
 }
 
+/* B3 — Hero subheadline: improved readability */
 .hero-subheadline {
   font-size: 14px !important;
   font-weight: 300 !important;
-  opacity: 0.55;
+  opacity: 0.60; /* Slight boost for contrast */
   margin-top: 8px !important;
   margin-bottom: 64px !important;
   max-width: 600px !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  line-height: 1.4 !important;
+  line-height: 1.65 !important; /* Was 1.4 — matches body rhythm better */
   white-space: nowrap !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: 0.06em !important; /* Was 0.1em — less aggressive, more refined */
 }
 
 .hero-cta {
   padding: 20px 52px !important;
   font-size: 13px !important;
-  letter-spacing: 0.22em !important;
+  letter-spacing: var(--tracking-button) !important; /* Was 0.22em — now unified */
   font-weight: 600 !important;
   text-transform: uppercase !important;
   border: none !important;
@@ -541,6 +571,7 @@ button, .btn, nav, a {
   background: #f0f0f0 !important;
   color: #000000 !important;
   transform: translateY(-3px) scale(1.02) !important;
+  letter-spacing: 0.20em !important; /* Subtle expansion on hover, aligned with btn-premium */
   box-shadow: 0 16px 48px rgba(255,255,255,0.22), 0 4px 16px rgba(0,0,0,0.5) !important;
 }
 
@@ -588,16 +619,19 @@ button, .btn, nav, a {
   will-change: transform;
 }
 
-/* Global Section Spacing - Editorial Rhythm */
+/* B1 — Global Section Spacing: canonical token-based rhythm */
 section:not(.hero) {
-  padding: clamp(80px, 12vw, 160px) 0;
+  padding-top: var(--section-space-md);
+  padding-bottom: var(--section-space-md);
   content-visibility: auto;
   contain-intrinsic-size: 1px 1000px;
 }
 
+/* A1 — .btn-premium: tracking unified to var(--tracking-button) */
 .btn-premium {
-  @apply relative overflow-hidden inline-flex items-center justify-center transition-all duration-700 font-medium tracking-[4px] rounded-full;
+  @apply relative overflow-hidden inline-flex items-center justify-center transition-all duration-700 font-medium rounded-full;
   text-transform: uppercase;
+  letter-spacing: var(--tracking-button); /* Was tracking-[4px] — unified */
   background: transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -605,8 +639,8 @@ section:not(.hero) {
   padding: 18px 48px;
   font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 16px;
-  min-width: 280px; /* Structural solid box to prevent hover jitter from dynamic tracking */
+  font-size: 13px; /* Aligned with hero-cta size for consistency */
+  min-width: 280px; /* Structural solid box to prevent hover jitter */
   border: 1px solid rgba(245, 245, 245, 0.15);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
@@ -617,7 +651,7 @@ section:not(.hero) {
   border-color: #FFFFFF;
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
-  letter-spacing: 0.35em;
+  letter-spacing: 0.20em; /* Subtle expansion on hover, not dramatic */
 }
 
 .btn-premium::before {
@@ -934,9 +968,11 @@ section:not(.hero) {
   background: linear-gradient(180deg, var(--color-silver-bh), var(--color-silver-light));
 }
 
+/* A1 — btn-luxury-primary: tracking unified to var(--tracking-button) */
 .btn-luxury-primary {
-  @apply relative overflow-hidden flex items-center justify-center transition-all duration-700 tracking-[4px] rounded-full;
+  @apply relative overflow-hidden flex items-center justify-center transition-all duration-700 rounded-full;
   text-transform: uppercase;
+  letter-spacing: var(--tracking-button); /* Was tracking-[4px] absolute — now unified */
   background: rgba(15, 15, 15, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -944,7 +980,7 @@ section:not(.hero) {
   padding: 18px 42px;
   font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 13px; /* Consistent with hero-cta and btn-premium */
   /* Premium border without gold */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
   border: none;

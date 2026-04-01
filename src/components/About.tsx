@@ -169,7 +169,7 @@ export function About() {
                                 <span>Redefinindo o <br /> Conceito de Luxo</span>
                             </PremiumReveal>
                             <PremiumReveal type="mask" direction="bottom" delay={0.3}>
-                                <span className="text-white text-level-3 italic block mt-6 border-l border-white/20 pl-8 ml-2">Odontológico Master.</span>
+                                <span className="text-headline-sub block mt-6 border-l border-white/20 pl-8 ml-2">Odontológico Master.</span>
                             </PremiumReveal>
                         </h2>
 
@@ -226,7 +226,7 @@ export function About() {
                                 font-family: var(--font-sans), sans-serif;
                                 font-size: 11px;
                                 font-weight: 400;
-                                letter-spacing: 0.35em;
+                                letter-spacing: 0.15em; /* A1: Was 0.35em — now unified with --tracking-button */
                                 text-transform: uppercase;
                                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
                                 transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -253,11 +253,11 @@ export function About() {
                                 color: #FFFFFF;
                                 transform: translateY(-3px) scale(1.02);
                                 box-shadow: 0 10px 40px rgba(255, 255, 255, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-                                letter-spacing: 0.4em;
+                                letter-spacing: 0.20em; /* Proportional expansion on hover */
                             }
 
                             @media (max-width: 768px) {
-                                .btn-premium-cta-inline { padding: 14px 30px; font-size: 12px; letter-spacing: 0.25em; width: 100%; justify-content: center; min-height: 48px; }
+                                .btn-premium-cta-inline { padding: 14px 30px; font-size: 12px; letter-spacing: 0.15em; width: 100%; justify-content: center; min-height: 48px; }
                             }
                         `}</style>
                         <m.div

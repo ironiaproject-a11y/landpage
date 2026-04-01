@@ -183,7 +183,7 @@ export function Testimonials() {
                     <PremiumReveal type="mask" direction="bottom">
                         <h2 className="text-level-2">
                             Histórias de<br />
-                            <span className="text-white text-level-3 block mt-4 italic">transformação real.</span>
+                            <span className="text-headline-sub block mt-4">transformação real.</span>
                         </h2>
                     </PremiumReveal>
                 </div>
@@ -225,7 +225,7 @@ export function Testimonials() {
                                                 ))}
                                             </div>
 
-                                            <p className="text-level-3 italic mb-12 flex-grow">
+                                            <p className="text-level-3 italic mb-12 flex-grow" style={{ opacity: 0.82 }}>
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
@@ -240,8 +240,8 @@ export function Testimonials() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-[400] text-white text-level-3">{testimonial.name}</h4>
-                                                    <p className="text-level-4 uppercase font-[400]">{testimonial.role}</p>
+                                                    <h4 className="text-white text-level-3" style={{ fontWeight: 500, opacity: 0.95 }}>{testimonial.name}</h4>
+                                                    <p className="text-level-4 uppercase" style={{ fontWeight: 400, opacity: 0.60 }}>{testimonial.role}</p>
                                                 </div>
                                             </div>
                                         </div>
