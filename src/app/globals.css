@@ -483,7 +483,7 @@ nav {
   align-items: center;
   padding-bottom: clamp(80px, 12vh, 120px);
   width: 100%;
-  gap: 20px;
+  gap: 28px; /* Was 20px — gives intentional breathing room between tagline and CTA */
 }
 
 .hero-overline {
@@ -521,15 +521,15 @@ nav {
 .hero-subheadline {
   font-size: 14px !important;
   font-weight: 300 !important;
-  opacity: 0.60; /* Slight boost for contrast */
+  opacity: 0.65; /* Slightly more visible as the bridge element before the CTA */
   margin-top: 8px !important;
-  margin-bottom: 64px !important;
+  margin-bottom: 32px !important; /* Was 64px — was orphaning the CTA from the tagline */
   max-width: 600px !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  line-height: 1.65 !important; /* Was 1.4 — matches body rhythm better */
+  line-height: 1.65 !important;
   white-space: nowrap !important;
-  letter-spacing: 0.06em !important; /* Was 0.1em — less aggressive, more refined */
+  letter-spacing: 0.06em !important;
 }
 
 .hero-cta {
