@@ -124,32 +124,13 @@ export default function Home() {
           // PROXY & STATE
           const proxy = { time: 0 };
 
-          // ── PRIME VIDEO ALGORITHM ──
-          // Força o engine do Safari/Chrome a acordar o vídeo para que o GSAP consiga manipular o currentTime instantaneamente
-          video.play().then(() => video.pause()).catch(() => {});
-
           // ── EXPLICIT INITIAL STATES ──
           gsap.set(originText, { opacity: 1, y: 0 });
           gsap.set(smileText,  { opacity: 0, y: 20 });
           gsap.set(video, { opacity: 1 });
 
           // ── MAIN TIMELINE (Vídeo + Textos) ──
-          // Esta timeline não roda livremente no fundo.
-          // Ela será TOCADA pela introPlayback, ou SCRUBBADA pelo ScrollTrigger.
           const mainTl = gsap.timeline({ paused: true });
-
-          mainTl.fromTo(proxy,
-            { time: 0 },
-            {
-              time: safeEnd,
-              duration: duration,
-              ease: "none",
-              onUpdate: () => {
-                if (video && !isNaN(proxy.time)) {
-                  video.currentTime = proxy.time;
-                }
-              }
-            }, 0);
 
           // "Sua Origem" soma na metade
           mainTl.fromTo(originText,
@@ -161,19 +142,32 @@ export default function Home() {
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
 
-          // ── FASE 1: CINEMATIC INTRO AUTOPLAY ──
-          // Toca toda a mainTl uma única vez nativamente
+          // Mantemos proxy para o tamanho da timeline
+          mainTl.fromTo(proxy, { time: 0 }, { time: safeEnd, duration: duration, ease: "none" }, 0);
+
+          // ── FASE 1: CINEMATIC INTRO NATIVA ──
+          // Deixamos o VÍDEO tocar nativamente sem que o GSAP trave a CPU, assim o iOS Safari autoriza a renderização
+          if (video.paused) {
+             video.play().catch(() => {});
+          }
+
           mainTl.eventCallback("onComplete", () => {
             introDone = true;
+            video.pause(); // Para o vídeo nativamente no último frame do sorriso
             setupScroll();
           });
           
           mainTl.play();
 
           // ── FASE 2: MANUAL SCROLL SCRUBBING ──
-          // Assim que a intro acaba (ou é abortada ao rolar a página), o ScrollTrigger
-          // assume o comando da mainTl a partir de seu progresso.
           const setupScroll = () => {
+             // Somente agora atrelamos o proxy ao currentTime
+             mainTl.eventCallback("onUpdate", () => {
+                if (video && !isNaN(proxy.time)) {
+                   video.currentTime = proxy.time;
+                }
+             });
+
             ScrollTrigger.create({
               trigger: container,
               start: "top top",
@@ -184,11 +178,12 @@ export default function Home() {
             });
           };
 
-          // Aborta a intro na hora caso o usuário ouse rolar para baixo prematuramente!
+          // Aborta a intro na hora caso o usuário ouse rolar
           const onScrollInterrupt = () => {
             if (!introDone && window.scrollY > 30) {
               introDone = true;
               mainTl.pause();
+              video.pause();
               setupScroll();
               window.removeEventListener("scroll", onScrollInterrupt);
             }
