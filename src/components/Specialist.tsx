@@ -258,17 +258,17 @@ export function Specialist() {
                                 <LuxuryCard
                                     glowColor="rgba(255,255,255,0.05)"
                                     className="border-white/5"
-                                    innerClassName="p-8 md:p-10"
+                                    innerClassName="p-8 md:p-10 flex flex-col justify-between"
                                 >
-                                    <div className="relative">
-                                        <Quote strokeWidth={1.2} className="absolute top-0 right-0 w-12 h-12 text-[var(--color-text-primary)]/10" />
-                                        <p className="text-level-3 text-white italic mb-12 relative z-10">
+                                    <div className="relative mb-10">
+                                        <Quote strokeWidth={1} className="absolute -top-4 -left-2 w-16 h-16 text-white/5" />
+                                        <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300]">
                                             &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
                                         </p>
-                                        <div className="relative z-10">
-                                            <h4 className="text-[var(--color-text-primary)] text-level-3 font-[400] tracking-tight">Dr. Ricardo Alessandro</h4>
-                                            <p className="text-level-4 uppercase tracking-widest">Diretor Clínico • CRO 00.000</p>
-                                        </div>
+                                    </div>
+                                    <div className="relative z-10 pt-6 border-t border-white/10">
+                                        <h4 className="text-[var(--color-text-primary)] text-xl md:text-2xl font-medium tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
+                                        <p className="text-[11px] md:text-xs text-white/50 uppercase tracking-[0.2em] font-light">Diretor Clínico • CRO 00.000</p>
                                     </div>
                                 </LuxuryCard>
                             </div>

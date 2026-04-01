@@ -40,17 +40,17 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
             interactive={true}
         >
             <div
-                className="relative w-full h-full"
+                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden"
                 onMouseEnter={() => setIsVideoActive(true)}
                 onMouseLeave={() => setIsVideoActive(false)}
                 onTouchStart={() => setIsVideoActive(true)}
                 onTouchEnd={() => setIsVideoActive(false)}
             >
                 {/* Labels */}
-                <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
+                <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center pointer-events-none">
                     <span className="text-level-4 uppercase">Antes</span>
                 </div>
-                <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center">
+                <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full z-30 border border-white/10 flex items-center justify-center pointer-events-none">
                     <span className="text-level-4 uppercase">Depois</span>
                 </div>
 
@@ -59,12 +59,9 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                     poster={item.poster}
                     controls
                     playsInline
-                    className="w-full h-full object-cover scale-[1.01]"
+                    className="w-full h-full object-cover"
                     title={item.title}
                 />
-
-                {/* Bottom Mask for cleaner look */}
-                <div className="absolute bottom-0 left-0 w-full h-12 bg-black z-30" />
             </div>
         </LuxuryCard>
     );
