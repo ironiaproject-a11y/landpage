@@ -109,19 +109,18 @@ export default function Home() {
 
     const ctx = gsap.context(() => {
       let isInit = false;
-      let introDone = false;
 
       const initMasterTimeline = () => {
         if (isInit) return;
         isInit = true;
 
         let pollCount = 0;
-        const MAX_POLLS = 20;
+        const MAX_POLLS = 30;
 
         const buildTimelines = (duration: number) => {
           const safeEnd = duration > 0.1 ? duration - 0.05 : duration;
 
-          // PROXY & STATE
+          // ── PROXY & STATE ──
           const proxy = { time: 0 };
 
           // ── EXPLICIT INITIAL STATES ──
@@ -129,69 +128,69 @@ export default function Home() {
           gsap.set(smileText,  { opacity: 0, y: 20 });
           gsap.set(video, { opacity: 1 });
 
-          // ── MAIN TIMELINE (Vídeo + Textos) ──
-          const mainTl = gsap.timeline({ paused: true });
+          // ── THE MASTER TIMELINE ──
+          // It handles the entire "Sua Origem -> Seu Sorriso" narrative.
+          const mainTl = gsap.timeline({ 
+            paused: true,
+            onUpdate: () => {
+              if (video && !isNaN(proxy.time)) {
+                video.currentTime = proxy.time;
+              }
+            }
+          });
 
-          // "Sua Origem" soma na metade
+          // Text animations synced to the video duration
           mainTl.fromTo(originText,
             { opacity: 1, y: 0 },
             { opacity: 0, y: -30, duration: duration * 0.4, ease: "power2.inOut" }, 0);
 
-          // "Seu Sorriso" entra no final
           mainTl.fromTo(smileText,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
 
-          // Mantemos proxy para o tamanho da timeline
+          // The "Driver": animates proxy.time which in turn updates video.currentTime
           mainTl.fromTo(proxy, { time: 0 }, { time: safeEnd, duration: duration, ease: "none" }, 0);
 
-          // ── FASE 1: CINEMATIC INTRO NATIVA ──
-          // Deixamos o VÍDEO tocar nativamente sem que o GSAP trave a CPU, assim o iOS Safari autoriza a renderização
-          if (video.paused) {
-             video.play().catch(() => {});
-          }
-
-          mainTl.eventCallback("onComplete", () => {
-            introDone = true;
-            video.pause(); // Para o vídeo nativamente no último frame do sorriso
-            setupScroll();
+          // ── VIDEO PRIMING (Critical for Mobile Seeking) ──
+          // We call play() then pause() immediately to notify the browser that seeking will start.
+          video.play().then(() => {
+            video.pause();
+            
+            // ── PHASE 1: MECHANICAL INTRO ──
+            mainTl.play();
+          }).catch(() => {
+            // Fallback for strict autoplay blocks: just start the timeline
+            mainTl.play();
           });
-          
-          mainTl.play();
 
-          // ── FASE 2: MANUAL SCROLL SCRUBBING ──
+          // ── PHASE 2: MANUAL SCROLL HANDOVER ──
+          let st: ScrollTrigger | null = null;
           const setupScroll = () => {
-             // Somente agora atrelamos o proxy ao currentTime
-             mainTl.eventCallback("onUpdate", () => {
-                if (video && !isNaN(proxy.time)) {
-                   video.currentTime = proxy.time;
-                }
+             if (st) return;
+             st = ScrollTrigger.create({
+               trigger: container,
+               start: "top top",
+               end: "bottom bottom",
+               scrub: 1.2,
+               animation: mainTl,
+               invalidateOnRefresh: true,
              });
-
-            ScrollTrigger.create({
-              trigger: container,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 1,
-              animation: mainTl,
-              invalidateOnRefresh: true,
-            });
           };
 
-          // Aborta a intro na hora caso o usuário ouse rolar
+          mainTl.eventCallback("onComplete", setupScroll);
+
+          // Interrupt Intro on Scroll
           const onScrollInterrupt = () => {
-            if (!introDone && window.scrollY > 30) {
-              introDone = true;
+            if (window.scrollY > 50) {
               mainTl.pause();
-              video.pause();
               setupScroll();
               window.removeEventListener("scroll", onScrollInterrupt);
             }
           };
           window.addEventListener("scroll", onScrollInterrupt, { passive: true });
-        }; // end buildTimelines
+        };
 
-        // Polling até a duração ser um número finito
+        // Polling until duration is available
         const pollDuration = () => {
           const d = video.duration;
           if (isFinite(d) && d > 0) {
@@ -200,7 +199,7 @@ export default function Home() {
             pollCount++;
             setTimeout(pollDuration, 100);
           } else {
-            buildTimelines(5); // fallback iOS
+            buildTimelines(4.8); // Robust mobile fallback (most hero videos are ~5s)
           }
         };
         pollDuration();
@@ -212,7 +211,7 @@ export default function Home() {
         video.addEventListener("loadedmetadata", initMasterTimeline);
       }
 
-      const safetyId = setTimeout(initMasterTimeline, 1500);
+      const safetyId = setTimeout(initMasterTimeline, 2000);
       return () => {
         clearTimeout(safetyId);
         video.removeEventListener("loadedmetadata", initMasterTimeline);
@@ -244,9 +243,9 @@ export default function Home() {
           className="sticky-wrapper"
           style={{
             position: "sticky",
-            top: 0,
+            top: -60, // Over-fill Top Shift
             left: 0,
-            height: "100svh", // Safebox for mobile layout
+            height: "calc(100svh + 60px)", // Height Compensation
             width: "100%",
             display: "flex",
             flexDirection: "column",
@@ -274,16 +273,16 @@ export default function Home() {
               width:          "100%",
               height:         "100%",
               objectFit:      "cover",
-              objectPosition: "33% 35%",
+              objectPosition: "33% 35%", // Optimized for wide landscape crops
               zIndex:         0,
               pointerEvents:  "none",
               willChange:     "transform, filter",
               opacity:        1,
-              transform:      "scale(1.25)",
+              transform:      "scale(1.25)", // Critical for over-fill strategy
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
           >
-            <source src="/Aqui.mp4" type="video/mp4" />
+            <source src="/hero-background-new.mp4" type="video/mp4" />
           </video>
 
           {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
