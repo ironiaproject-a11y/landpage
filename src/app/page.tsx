@@ -124,6 +124,10 @@ export default function Home() {
           // PROXY & STATE
           const proxy = { time: 0 };
 
+          // ── PRIME VIDEO ALGORITHM ──
+          // Força o engine do Safari/Chrome a acordar o vídeo para que o GSAP consiga manipular o currentTime instantaneamente
+          video.play().then(() => video.pause()).catch(() => {});
+
           // ── EXPLICIT INITIAL STATES ──
           gsap.set(originText, { opacity: 1, y: 0 });
           gsap.set(smileText,  { opacity: 0, y: 20 });
@@ -263,6 +267,7 @@ export default function Home() {
           {/* Main Visual Video directly embedded */}
           <video
             ref={videoRef}
+            autoPlay
             muted
             playsInline
             /* @ts-ignore - non-standard WebKit prop */
