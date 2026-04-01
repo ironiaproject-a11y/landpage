@@ -214,7 +214,7 @@ export function Amenities() {
 
                         {/* Concept Image - Changes on Hover */}
                         <PremiumReveal type="mask" direction="right" delay={0.5} className="hidden lg:block rounded-[2rem]">
-                            <div className="relative w-full aspect-[4/5] overflow-hidden border border-white/5 bg-[var(--color-bg-off-black)]">
+                            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/5 bg-[var(--color-bg-off-black)]">
                                 <Image
                                     src="/assets/images/luxury-lounge.png"
                                     alt="Lounge Private"
@@ -222,9 +222,10 @@ export function Amenities() {
                                     className="object-cover grayscale transition-all duration-1000 lounge-image-parallax"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-10" />
-                                <div className="absolute bottom-8 left-8 z-20">
-                                    <div className="text-level-4 uppercase mb-2">Ambiente</div>
-                                    <div className="text-level-2">Lounge Private</div>
+                                {/* Caption — overflow-safe: max-w prevents bleed, font sizes are controlled */}
+                                <div className="absolute bottom-6 left-6 right-6 z-20 overflow-hidden">
+                                    <div className="text-[10px] uppercase tracking-[0.25em] opacity-60 mb-1.5">Ambiente</div>
+                                    <div className="text-xl md:text-2xl font-light tracking-tight text-white leading-tight truncate">Lounge Private</div>
                                 </div>
                             </div>
                         </PremiumReveal>

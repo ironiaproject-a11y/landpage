@@ -201,10 +201,10 @@ export function InstitutionalTrust() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {cards.map((card, index) => (
                         <LuxuryCard key={index} delay={0.2 + (index * 0.1)}>
-                            {/* Numerical Indicator - Editorial Style */}
-                            <div className="flex justify-between items-start mb-6 overflow-hidden">
-                                <div className="w-12 h-[1px] bg-white/10 mt-4 group-hover:w-20 group-hover:bg-white/30 transition-all duration-1000 origin-left" />
-                                <span className="font-display font-medium text-7xl md:text-8xl text-white/[0.02] group-hover:text-white/[0.05] transition-all duration-1000 leading-none tracking-tighter -mt-6 select-none">
+                            {/* Decorative Number — clipped so it never bleeds outside the card */}
+                            <div className="flex justify-between items-start mb-6 h-10 overflow-hidden">
+                                <div className="w-12 h-[1px] bg-white/10 mt-4 group-hover:w-20 group-hover:bg-white/30 transition-all duration-1000 origin-left shrink-0" />
+                                <span className="font-display font-medium text-7xl md:text-8xl text-white/[0.02] group-hover:text-white/[0.05] transition-all duration-1000 leading-none tracking-tighter select-none translate-y-4">
                                     {card.number}
                                 </span>
                             </div>

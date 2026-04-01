@@ -69,7 +69,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                         <div className="h-px bg-white/10 flex-grow" />
                     </div>
 
-                    <h3 className="text-level-2 text-white transition-colors duration-700">
+                    <h3 className="text-[clamp(20px,2.5vw,28px)] font-[300] text-white transition-colors duration-700 mb-4 leading-tight tracking-tight">
                         {service.title}
                     </h3>
 
