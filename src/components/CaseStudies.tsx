@@ -56,8 +56,8 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
 
                 <video
                     src={item.video}
-                    poster={item.poster}
                     controls
+                    muted
                     playsInline
                     className="w-[115%] h-[115%] object-cover absolute top-0 left-1/2 -translate-x-1/2 translate-y-[5%] grayscale"
                     title={item.title}

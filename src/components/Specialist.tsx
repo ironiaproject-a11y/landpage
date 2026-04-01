@@ -289,15 +289,16 @@ export function Specialist() {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
-                                    {/* Harmonious Bottom Info Bar */}
-                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-4 md:p-5 rounded-2xl border border-white/10 backdrop-blur-2xl flex items-center justify-between gap-4">
-                                        <div className="flex-1 min-w-0">
-                                            <h4 className="text-white text-base md:text-lg font-medium tracking-tight mb-1 truncate">Dr. Ricardo Alessandro</h4>
-                                            <p className="text-[10px] md:text-[11px] uppercase tracking-[0.12em] opacity-70 truncate">Especialista em Reabilitação Oral</p>
-                                        </div>
-                                        <div className="text-right border-l border-white/10 pl-4 shrink-0">
+                                    {/* Centralized Harmonious Bottom Info Bar */}
+                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-5 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl flex flex-col items-center justify-center text-center">
+                                        <h4 className="text-white text-lg md:text-xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                        <p className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-white/70 mb-3">Especialista em Reabilitação Oral</p>
+                                        
+                                        <div className="w-12 h-[1px] bg-white/10 mb-3" />
+                                        
+                                        <div className="flex items-center gap-2">
                                             <p className="text-[var(--color-text-primary)] text-2xl md:text-3xl font-medium tracking-tight leading-none">15</p>
-                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] opacity-50 mt-1">Anos de Maestria</p>
+                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-white/50 text-left leading-tight">Anos de<br/>Maestria</p>
                                         </div>
                                     </div>
                                 </div>
