@@ -291,7 +291,7 @@ export default function Home() {
           </video>
 
           {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
-          <style dangerouslySetInnerHTML={{ __html: \`
+          <style dangerouslySetInnerHTML={{ __html: `
             video::-webkit-media-controls { display: none !important; -webkit-appearance: none; }
             video::-webkit-media-controls-enclosure { display: none !important; }
             video::-webkit-media-controls-panel { display: none !important; }
@@ -301,7 +301,7 @@ export default function Home() {
             video::-internal-media-controls-download-button { display: none !important; }
             video::-internal-media-controls-overflow-button { display: none !important; }
             video::-webkit-media-controls-container { display: none !important; }
-          \`}} />
+          `}} />
 
           {/* Gradient layers */}
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)", zIndex:1, pointerEvents:"none" }} />
