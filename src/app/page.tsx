@@ -278,7 +278,7 @@ export default function Home() {
               pointerEvents:  "none",
               willChange:     "transform, filter",
               opacity:        1,
-              transform:      "translateZ(0)",
+              transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
           >
