@@ -295,10 +295,9 @@ export function Specialist() {
                                         <p className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-white/70 mb-3">Especialista em Reabilitação Oral</p>
                                         
                                         <div className="w-12 h-[1px] bg-white/10 mb-3" />
-                                        
-                                        <div className="flex items-center gap-2">
-                                            <p className="text-[var(--color-text-primary)] text-2xl md:text-3xl font-medium tracking-tight leading-none">15</p>
-                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-white/50 text-left leading-tight">Anos de<br/>Maestria</p>
+                                        <div className="flex flex-col items-center">
+                                            <p className="text-[var(--color-text-primary)] text-3xl md:text-4xl font-medium tracking-tight leading-none mb-1">15</p>
+                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-white/50 text-center leading-tight">Anos de Maestria</p>
                                         </div>
                                     </div>
                                 </div>
