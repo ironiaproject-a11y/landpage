@@ -148,7 +148,7 @@ export function Stats() {
           font-weight: 300;
           line-height: 1;
           letter-spacing: -0.04em;
-          margin-bottom: 12px;
+          margin-bottom: 4px;
           color: #FFFFFF !important; /* Explicit white to ensure no yellow accent remains */
           display: flex;
           align-items: baseline;

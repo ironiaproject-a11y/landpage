@@ -567,10 +567,10 @@ nav {
 }
 
 .hero-cta:hover {
-  background: #f0f0f0 !important;
+  background: #fdfaf4 !important; /* Subtle warm white */
   color: #000000 !important;
   transform: translateY(-3px) scale(1.02) !important;
-  box-shadow: 0 16px 48px rgba(255,255,255,0.22), 0 4px 16px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 16px 48px rgba(var(--color-accent-gold-rgb), 0.22), 0 4px 16px rgba(0,0,0,0.5) !important;
 }
 
 @media (max-width: 768px) {
@@ -646,9 +646,9 @@ section:not(.hero) {
 .btn-premium:hover {
   background: #FFFFFF;
   color: #000000;
-  border-color: #FFFFFF;
+  border-color: var(--color-accent-gold);
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(var(--color-accent-gold-rgb), 0.15);
   letter-spacing: 0.20em; /* Subtle expansion on hover, not dramatic */
 }
 

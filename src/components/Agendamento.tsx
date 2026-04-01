@@ -4,8 +4,25 @@ import { m } from "framer-motion";
 import { PremiumReveal } from "./PremiumReveal";
 import { generateWhatsAppUrl } from "@/utils/whatsapp";
 import { DEFAULT_MESSAGE } from "@/config/constants";
+import { useState } from "react";
 
 export function Agendamento() {
+    const [nome, setNome] = useState("");
+    const [whatsapp, setWhatsapp] = useState("");
+    const [descricao, setDescricao] = useState("");
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        if (!nome || !whatsapp) return;
+
+        const customMessage = `*Novo Agendamento*\n\nOlá! Meu nome é *${nome.trim()}*. Meu WhatsApp de contato é ${whatsapp.trim()}.${
+            descricao.trim() ? `\n\nGostaria de agendar uma avaliação e tenho a seguinte observação:\n_${descricao.trim()}_` : ''
+        }`;
+
+        window.open(generateWhatsAppUrl(customMessage), '_blank');
+    };
+
     return (
         <section id="agendamento" className="py-24 md:py-40 bg-black text-white relative overflow-hidden">
             {/* Ambient Lighting */}
@@ -33,40 +50,50 @@ export function Agendamento() {
                 </PremiumReveal>
                 
                 <div className="max-w-xl mx-auto">
-                    <m.div 
+                    <m.form 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="space-y-6"
+                        onSubmit={handleSubmit}
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <input 
                                 type="text" 
+                                required
+                                value={nome}
+                                onChange={(e) => setNome(e.target.value)}
                                 placeholder="Seu nome completo"
                                 className="w-full bg-white/[0.03] border border-white/10 px-8 py-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-all rounded-sm font-light"
                             />
                             <input 
                                 type="tel" 
+                                required
+                                value={whatsapp}
+                                onChange={(e) => setWhatsapp(e.target.value)}
                                 placeholder="Seu WhatsApp"
                                 className="w-full bg-white/[0.03] border border-white/10 px-8 py-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-all rounded-sm font-light"
                             />
                         </div>
                         <textarea 
+                            value={descricao}
+                            onChange={(e) => setDescricao(e.target.value)}
                             placeholder="Descreva brevemente o que você procura"
                             rows={4}
                             className="w-full bg-white/[0.03] border border-white/10 px-8 py-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-all rounded-sm font-light resize-none"
                         ></textarea>
                         
                         <m.button 
+                            type="submit"
                             whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full bg-white text-black py-6 px-10 text-xs md:text-sm tracking-[0.2em] uppercase font-medium transition-all flex items-center justify-center gap-4"
+                            className="w-full bg-white text-black py-6 px-10 text-xs md:text-sm tracking-[0.2em] uppercase font-medium transition-all flex items-center justify-center gap-4 group"
                         >
                             Solicitar Agendamento
-                            <span className="text-lg">→</span>
+                            <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
                         </m.button>
-                    </m.div>
+                    </m.form>
                 </div>
                 
                 <PremiumReveal direction="bottom" delay={0.6}>

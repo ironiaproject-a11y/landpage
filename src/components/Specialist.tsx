@@ -268,7 +268,7 @@ export function Specialist() {
                                     </div>
                                     <div className="relative z-10 pt-6 border-t border-white/10 w-full max-w-[80%] mx-auto">
                                         <h4 className="text-[var(--color-text-primary)] text-xl md:text-2xl font-medium tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[11px] md:text-xs text-white/50 uppercase tracking-[0.2em] font-light">Diretor Clínico • CRO 00.000</p>
+                                        <p className="text-[11px] md:text-xs text-white/70 uppercase tracking-[0.2em] font-light">Diretor Clínico • CRO 00.000</p>
                                     </div>
                                 </LuxuryCard>
                             </div>
@@ -297,7 +297,7 @@ export function Specialist() {
                                         <div className="w-12 h-[1px] bg-white/10 mb-3" />
                                         <div className="flex flex-col items-center">
                                             <p className="text-[var(--color-text-primary)] text-3xl md:text-4xl font-medium tracking-tight leading-none mb-1">15</p>
-                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-white/50 text-center leading-tight">Anos de Maestria</p>
+                                            <p className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-white/70 text-center leading-tight">Anos de Maestria</p>
                                         </div>
                                     </div>
                                 </div>
