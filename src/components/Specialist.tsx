@@ -289,16 +289,16 @@ export function Specialist() {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
-                                    {/* Badge top-right — overflow-safe */}
-                                    <div className="absolute top-4 right-4 md:top-6 md:right-6 glass-panel p-3 md:p-5 rounded-2xl border border-white/10 backdrop-blur-2xl badge-parallax z-20 op-badge-specialist max-w-[140px] md:max-w-[160px]">
-                                        <p className="text-[var(--color-text-primary)] text-3xl md:text-4xl font-medium tracking-tight leading-none">15</p>
-                                        <p className="text-[10px] md:text-[11px] uppercase tracking-[0.15em] opacity-50 leading-snug mt-1 whitespace-normal">Anos de Maestria</p>
-                                    </div>
-
-                                    {/* Caption bottom-left — overflow-safe */}
-                                    <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-20 op-desc-parallax max-w-[calc(100%-2rem)] md:max-w-[calc(100%-3rem)]">
-                                        <h4 className="text-white text-sm md:text-base font-medium tracking-tight mb-0.5 truncate">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[10px] md:text-[11px] uppercase tracking-[0.12em] opacity-70 whitespace-normal leading-snug">Especialista em Reabilitação Oral</p>
+                                    {/* Harmonious Bottom Info Bar */}
+                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-4 md:p-5 rounded-2xl border border-white/10 backdrop-blur-2xl flex items-center justify-between gap-4">
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="text-white text-base md:text-lg font-medium tracking-tight mb-1 truncate">Dr. Ricardo Alessandro</h4>
+                                            <p className="text-[10px] md:text-[11px] uppercase tracking-[0.12em] opacity-70 truncate">Especialista em Reabilitação Oral</p>
+                                        </div>
+                                        <div className="text-right border-l border-white/10 pl-4 shrink-0">
+                                            <p className="text-[var(--color-text-primary)] text-2xl md:text-3xl font-medium tracking-tight leading-none">15</p>
+                                            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] opacity-50 mt-1">Anos de Maestria</p>
+                                        </div>
                                     </div>
                                 </div>
                             </PremiumReveal>

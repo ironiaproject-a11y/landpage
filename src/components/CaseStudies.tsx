@@ -54,13 +54,13 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                     <span className="text-level-4 uppercase">Depois</span>
                 </div>
 
-                <MediaCard
-                    mp4Src={item.video}
-                    posterSrc={item.poster}
-                    alt={item.title}
-                    ariaLabel={item.title}
-                    playing={isVideoActive}
+                <video
+                    src={item.video}
+                    poster={item.poster}
+                    controls
+                    playsInline
                     className="w-full h-full object-cover scale-[1.01]"
+                    title={item.title}
                 />
 
                 {/* Bottom Mask for cleaner look */}

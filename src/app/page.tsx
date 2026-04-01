@@ -243,10 +243,10 @@ export default function Home() {
           className="sticky-wrapper"
           style={{
             position: "sticky",
-            top: -60, // Over-fill Top Shift
+            top: 0,
             left: 0,
-            height: "calc(100svh + 60px)", // Height Compensation
-            width: "100%",
+            height: "100dvh",
+            width: "100vw",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -270,15 +270,15 @@ export default function Home() {
               position:       "absolute",
               top:            0,
               left:           0,
-              width:          "100%",
-              height:         "100%",
+              width:          "100vw",
+              height:         "100dvh",
               objectFit:      "cover",
-              objectPosition: "33% 35%", // Optimized for wide landscape crops
+              objectPosition: "center",
               zIndex:         0,
               pointerEvents:  "none",
               willChange:     "transform, filter",
               opacity:        1,
-              transform:      "scale(1.25)", // Critical for over-fill strategy
+              transform:      "translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
           >
