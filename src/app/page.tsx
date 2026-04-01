@@ -162,21 +162,17 @@ export default function Home() {
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
 
           // ── FASE 1: CINEMATIC INTRO AUTOPLAY ──
-          // Toca toda a mainTl uma única vez
-          const introPlayback = gsap.to(mainTl, {
-            progress: 1,
-            duration: duration,
-            ease: "none",
-            onComplete: () => {
-              introDone = true;
-              setupScroll();
-            }
+          // Toca toda a mainTl uma única vez nativamente
+          mainTl.eventCallback("onComplete", () => {
+            introDone = true;
+            setupScroll();
           });
+          
+          mainTl.play();
 
           // ── FASE 2: MANUAL SCROLL SCRUBBING ──
           // Assim que a intro acaba (ou é abortada ao rolar a página), o ScrollTrigger
-          // assume o progresso da mainTl. Como o trigger é 300vh, e estamos no topo (scrollY=0),
-          // o scrub vai atrelhar a mainTl ao progresso 0 novamente (retornando a caveira dinamicamente).
+          // assume o comando da mainTl a partir de seu progresso.
           const setupScroll = () => {
             ScrollTrigger.create({
               trigger: container,
@@ -192,7 +188,7 @@ export default function Home() {
           const onScrollInterrupt = () => {
             if (!introDone && window.scrollY > 30) {
               introDone = true;
-              introPlayback.pause();
+              mainTl.pause();
               setupScroll();
               window.removeEventListener("scroll", onScrollInterrupt);
             }
