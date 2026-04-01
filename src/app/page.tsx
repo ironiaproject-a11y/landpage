@@ -315,11 +315,7 @@ export default function Home() {
             </div>
 
             <div className="hero-action-group">
-              <PremiumReveal type="fade" direction="bottom" delay={0.5}>
-                <p className="hero-subheadline">
-                  Odontologia de alta performance
-                </p>
-              </PremiumReveal>
+
               <PremiumReveal type="fade" direction="bottom" delay={0.65}>
                 <a href="#agendamento" className="hero-cta">
                   AGENDAR CONSULTA →
