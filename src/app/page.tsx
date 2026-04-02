@@ -298,9 +298,10 @@ export default function Home() {
               objectPosition: "center",
               zIndex:         0,
               pointerEvents:  "none",
-              willChange:     "transform, filter, opacity",
+              willChange:     "transform, filter, opacity, visibility",
               opacity:        isVideoPrimed ? 1 : 0,
-              transition:     "opacity 0.8s ease-in-out",
+              visibility:     isVideoPrimed ? "visible" : "hidden",
+              transition:     "opacity 0.8s ease-in-out, visibility 0s linear 0s",
               transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}

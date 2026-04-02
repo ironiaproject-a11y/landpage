@@ -80,8 +80,18 @@ video {
    ═══════════════════════════════════════════════════════════ */
 
 /* Target touch devices (mobile phones/tablets) */
-@media (pointer: coarse) {
-  video::-webkit-media-controls-overlay-play-button {
+@media (pointer: coarse), (max-width: 768px) {
+  /* Hide all video native controls */
+  video::-webkit-media-controls {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  video::-webkit-media-controls-overlay-play-button,
+  video::-webkit-media-controls-play-button,
+  video::-webkit-media-controls-start-playback-button {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -92,53 +102,45 @@ video {
     min-height: 0 !important;
     max-width: 0 !important;
     max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: hidden !important;
     position: absolute !important;
     clip: rect(0, 0, 0, 0) !important;
     -webkit-appearance: none !important;
     z-index: -1 !important;
+    content: none !important;
   }
   
-  video::-webkit-media-controls-play-button {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    z-index: -1 !important;
+  /* Ensure video doesn't show native controls */
+  video {
+    -webkit-media-controls-enabled: never !important;
+    -webkit-media-controls-visible: never !important;
   }
 }
 
 /* iOS Safari specific overrides */
 @supports (-webkit-touch-callout: none) {
-  video {
-    -webkit-user-select: none !important;
-    user-select: none !important;
+  /* iOS 13+ uses this */
+  video::-webkit-media-controls-overlay-enclosure {
+    display: none !important;
   }
   
-  video::-webkit-media-controls-overlay-play-button {
+  video::-webkit-media-controls-enclosure {
     display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
-    -webkit-appearance: none !important;
   }
 }
 
-/* Android Chrome specific overrides */
-@supports (hover: none) {
+/* Force hide on all mobile browsers */
+@media screen and (max-width: 1024px) {
   video::-webkit-media-controls-overlay-play-button {
     display: none !important;
     opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
     visibility: hidden !important;
-    pointer-events: none !important;
-    -webkit-appearance: none !important;
   }
 }
 /* Canvas filter managed individually per component to avoid stacking */
