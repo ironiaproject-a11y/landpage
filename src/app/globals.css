@@ -12,41 +12,50 @@ img, svg, video {
 video::-webkit-media-controls {
   display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
   -webkit-appearance: none !important;
 }
 video::-webkit-media-controls-start-playback-button {
   display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
   -webkit-appearance: none !important;
 }
 video::-webkit-media-controls-enclosure {
   display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
 }
 video::-webkit-media-controls-panel {
   display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
 }
 video::-webkit-media-controls-play-button {
   display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
 }
-video::-internal-media-controls-download-button {
+video::-webkit-media-controls-overlay-play-button {
   display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
-video::-internal-media-controls-overflow-button {
-  display: none !important;
-}
-/* Force hidden on iOS */
+video::-internal-media-controls-download-button { display: none !important; }
+video::-internal-media-controls-overflow-button { display: none !important; }
+
+/* Global pseudo-element capture for any media on page */
 *::-webkit-media-controls-start-playback-button {
     display: none !important;
     -webkit-appearance: none !important;
+    opacity: 0 !important;
 }
 *::-webkit-media-controls {
     display: none !important;
-    -webkit-appearance: none !important;
+    opacity: 0 !important;
 }
 /* Canvas filter managed individually per component to avoid stacking */
 

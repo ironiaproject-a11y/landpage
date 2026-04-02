@@ -85,11 +85,16 @@ export default function Home() {
     // ── INTERAÇÃO DO USUÁRIO COMO FALLBACK ────────────────────────────
     const onInteraction = () => {
       unlockAudio();
+      if (video.paused) {
+        video.play().then(() => video.pause()).catch(() => {});
+      }
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("touchstart", onInteraction);
+      window.removeEventListener("scroll", onInteraction);
     };
     window.addEventListener("pointerdown", onInteraction, { passive: true });
     window.addEventListener("touchstart", onInteraction, { passive: true });
+    window.addEventListener("scroll", onInteraction, { passive: true });
 
     return () => {
       window.removeEventListener("pointerdown", onInteraction);
@@ -272,6 +277,7 @@ export default function Home() {
             disablePictureInPicture
             disableRemotePlayback
             preload="auto"
+            poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
             style={{
               position:       "absolute",
               top:            0,
@@ -283,7 +289,7 @@ export default function Home() {
               zIndex:         0,
               pointerEvents:  "none",
               willChange:     "transform, filter",
-              opacity:        1,
+              opacity:        0,
               transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
