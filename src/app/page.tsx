@@ -59,7 +59,6 @@ export default function Home() {
   const heroBtnRef    = useRef<HTMLAnchorElement>(null);
   const [isVideoPrimed, setIsVideoPrimed] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [canPlayVideo, setCanPlayVideo] = useState(true);
 
   /* ─── DETECT iOS ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -67,8 +66,7 @@ export default function Home() {
       const ua = navigator.userAgent;
       const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || 
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-      setIsIOS(isIOSDevice && isMobile);
+      setIsIOS(isIOSDevice);
     };
     checkIOS();
   }, []);
@@ -79,27 +77,26 @@ export default function Home() {
     if (!video) return;
 
     const attemptAutoplay = async () => {
-      // On iOS, try autoplay
-      if (isIOS) {
+      try {
+        await video.play();
+        setIsVideoPrimed(true);
+      } catch (err) {
+        // Autoplay blocked - try muted autoplay
+        video.muted = true;
+        video.defaultMuted = true;
         try {
-          video.muted = true;
-          video.defaultMuted = true;
           await video.play();
           setIsVideoPrimed(true);
         } catch {
-          // Autoplay failed - hide video, show static image
-          setCanPlayVideo(false);
           setIsVideoPrimed(true);
         }
-      } else {
-        // On desktop, always show video
-        setIsVideoPrimed(true);
       }
     };
 
-    const timer = setTimeout(attemptAutoplay, 200);
+    // Small delay to ensure video is loaded
+    const timer = setTimeout(attemptAutoplay, 100);
     return () => clearTimeout(timer);
-  }, [isIOS]);
+  }, []);
 
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
   useEffect(() => {
@@ -312,51 +309,47 @@ export default function Home() {
             pointerEvents: "auto",
           }}
         >
-          {/* Main Visual Video - only show if autoplay works */}
-          {canPlayVideo && (
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              playsInline
-              /* @ts-ignore - non-standard WebKit prop */
-              webkit-playsinline="true"
-              controls={false}
-              disablePictureInPicture
-              disableRemotePlayback
-              preload="auto"
-              /* @ts-ignore - Safari specific prop */
-              x-webkit-airplay="deny"
-              style={{
-                position:       "absolute",
-                top:            0,
-                left:           0,
-                width:          "100vw",
-                height:         "100dvh",
-                objectFit:      "cover",
-                objectPosition: "center",
-                zIndex:         0,
-                pointerEvents:  "none",
-                willChange:     "transform, filter, opacity",
-                opacity:        1,
-                transition:     "opacity 0.8s ease-in-out",
-                transform:      "scale(1.3) translateZ(0)",
-                filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
-              }}
-            >
-              <source src="/hero-background-new.mp4" type="video/mp4" />
-            </video>
-          )}
+          {/* Main Visual Video directly embedded */}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            /* @ts-ignore - non-standard WebKit prop */
+            webkit-playsinline="true"
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            preload="auto"
+            /* @ts-ignore - Safari specific prop */
+            x-webkit-airplay="deny"
+            style={{
+              position:       "absolute",
+              top:            0,
+              left:           0,
+              width:          "100vw",
+              height:         "100dvh",
+              objectFit:      "cover",
+              objectPosition: "center",
+              zIndex:         0,
+              pointerEvents:  "none",
+              willChange:     "transform, filter, opacity",
+              opacity:        1,
+              transition:     "opacity 0.8s ease-in-out",
+              transform:      "scale(1.3) translateZ(0)",
+              filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
+            }}
+          >
+            <source src="/hero-background-new.mp4" type="video/mp4" />
+          </video>
 
           {/* Background gradient - always visible as base */}
           <div 
             style={{ 
               position: "absolute", 
               inset: 0, 
-              background: canPlayVideo 
-                ? "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.7) 100%)"
-                : "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0d0d0d 50%, #151515 75%, #0a0a0a 100%)",
-              zIndex: canPlayVideo ? -1 : 0, 
+              background: "linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 30%, #0d0d0d 70%, #000000 100%)",
+              zIndex: -1, 
               pointerEvents: "none"
             }} 
           />
