@@ -108,7 +108,7 @@ export function SofiaChat() {
     }
   }, [isOpen]);
 
-  /* Greeting on first open */
+  /* Greeting on first open — shown locally, NOT added to history */
   const greet = useCallback(async () => {
     if (didGreet.current) return;
     didGreet.current = true;
@@ -117,8 +117,10 @@ export function SofiaChat() {
     await new Promise(r => setTimeout(r, 900));
     const greeting = `Olá! 😊 Seja bem-vindo(a) à ${CLINICA}! Sou a Sofia, assistente virtual da clínica. Em que posso te ajudar hoje?`;
     setIsTyping(false);
+    // ⚠️ IMPORTANT: greeting is displayed locally but NOT pushed to historyRef.
+    // Gemini API requires the first message in 'contents' to be role:"user".
+    // Adding role:"model" first causes a 400 error and falls back to the generic phrase.
     setMessages([{ role: "bot", text: greeting }]);
-    historyRef.current.push({ role: "model", parts: [{ text: greeting }] });
   }, []);
 
   const handleToggle = useCallback(() => {
@@ -137,7 +139,13 @@ export function SofiaChat() {
 
     setInputVal("");
     setMessages(prev => [...prev, { role: "user", text }]);
-    historyRef.current.push({ role: "user", parts: [{ text }] });
+
+    // Push user turn — history always starts with "user"
+    const updatedHistory: HistoryEntry[] = [
+      ...historyRef.current,
+      { role: "user", parts: [{ text }] },
+    ];
+    historyRef.current = updatedHistory;
 
     setIsBusy(true);
     setIsTyping(true);
@@ -151,20 +159,31 @@ export function SofiaChat() {
           body: JSON.stringify({
             systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
             contents: historyRef.current,
-            generationConfig: { maxOutputTokens: 200, temperature: 0.75 },
+            generationConfig: { maxOutputTokens: 220, temperature: 0.8 },
           }),
         }
       );
 
       const data = await response.json();
+
+      // Log any API error to console for debugging
+      if (data?.error) {
+        console.error("[SofiaChat] Gemini API error:", data.error);
+      }
+
       const reply: string =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ??
         "Desculpe, tive um probleminha. Pode repetir? 😅";
 
       setIsTyping(false);
       setMessages(prev => [...prev, { role: "bot", text: reply }]);
-      historyRef.current.push({ role: "model", parts: [{ text: reply }] });
-    } catch {
+      // Append model reply to history
+      historyRef.current = [
+        ...historyRef.current,
+        { role: "model", parts: [{ text: reply }] },
+      ];
+    } catch (err) {
+      console.error("[SofiaChat] Network error:", err);
       setIsTyping(false);
       setMessages(prev => [...prev, { role: "bot", text: "Ops, instabilidade momentânea. Tente novamente. 😅" }]);
     } finally {
