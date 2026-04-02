@@ -58,6 +58,18 @@ export default function Home() {
   const smileTextRef  = useRef<HTMLHeadingElement>(null);
   const heroBtnRef    = useRef<HTMLAnchorElement>(null);
   const [isVideoPrimed, setIsVideoPrimed] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  /* ─── DETECT iOS ─────────────────────────────────────────────── */
+  useEffect(() => {
+    const checkIOS = () => {
+      const ua = navigator.userAgent;
+      const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || 
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      setIsIOS(isIOSDevice);
+    };
+    checkIOS();
+  }, []);
 
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
   useEffect(() => {
@@ -71,6 +83,13 @@ export default function Home() {
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
 
+    // ── iOS: Force video to stay hidden until user interaction ────────
+    // This prevents the native iOS play button from showing
+    if (isIOS) {
+      video.style.opacity = "0";
+      video.style.visibility = "hidden";
+    }
+
     // ── iOS AudioContext UNLOCK TRICK ─────────────────────────────────
     const unlockAudio = () => {
       try {
@@ -81,23 +100,47 @@ export default function Home() {
         }
       } catch { /* ignore */ }
     };
-    unlockAudio();
 
-    // ── INTERAÇÃO DO USUÁRIO COMO FALLBACK ────────────────────────────
+    // ── INTERACTION: Reveals video on iOS ────────────────────────────
     const onInteraction = () => {
       unlockAudio();
-      if (video.paused) {
-        video.play().then(() => {
+      
+      // On iOS, we reveal video only after user interaction
+      // This completely hides the native play button
+      if (isIOS) {
+        video.style.opacity = "1";
+        video.style.visibility = "visible";
+        video.style.transition = "opacity 0.5s ease-in-out, visibility 0s linear 0s";
+        
+        if (video.paused) {
+          video.play().then(() => {
+            video.pause();
+            setIsVideoPrimed(true);
+          }).catch(() => {
+            setIsVideoPrimed(true);
+          });
+        } else {
           setIsVideoPrimed(true);
-          video.pause();
-        }).catch(() => {});
+        }
       } else {
-        setIsVideoPrimed(true);
+        // On non-iOS, just set primed
+        if (video.paused) {
+          video.play().then(() => {
+            setIsVideoPrimed(true);
+            video.pause();
+          }).catch(() => {});
+        } else {
+          setIsVideoPrimed(true);
+        }
       }
+      
+      // Remove listeners after first interaction
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("touchstart", onInteraction);
       window.removeEventListener("scroll", onInteraction);
     };
+    
+    // Add listeners for ALL users (mobile and desktop)
     window.addEventListener("pointerdown", onInteraction, { passive: true });
     window.addEventListener("touchstart", onInteraction, { passive: true });
     window.addEventListener("scroll", onInteraction, { passive: true });
@@ -105,8 +148,9 @@ export default function Home() {
     return () => {
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("touchstart", onInteraction);
+      window.removeEventListener("scroll", onInteraction);
     };
-  }, []);
+  }, [isIOS]);
 
   /* ─── GSAP UNIFIED MASTER TIMELINE ───────────────────────────────── */
   useEffect(() => {

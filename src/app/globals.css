@@ -75,23 +75,27 @@ video {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE VIDEO CONTROL SUPPRESSION
-   Critical fix for play button appearing on mobile browsers
+   iOS VIDEO CONTROL SUPPRESSION
+   Complete solution for hiding native play button on iOS
    ═══════════════════════════════════════════════════════════ */
 
-/* Target touch devices (mobile phones/tablets) */
-@media (pointer: coarse), (max-width: 768px) {
-  /* Hide all video native controls */
-  video::-webkit-media-controls {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+/* iOS device detection - hide video controls completely */
+@supports (-webkit-touch-callout: none) {
+  /* iPhone/iPad specific */
+  video {
+    -webkit-appearance: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
   }
   
+  /* Hide all possible play button variants */
+  video::-webkit-media-controls,
   video::-webkit-media-controls-overlay-play-button,
   video::-webkit-media-controls-play-button,
-  video::-webkit-media-controls-start-playback-button {
+  video::-webkit-media-controls-start-playback-button,
+  video::-webkit-media-controls-overlay-enclosure,
+  video::-webkit-media-controls-enclosure,
+  video::-webkit-media-controls-panel {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -104,43 +108,30 @@ video {
     max-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    border: none !important;
+    outline: none !important;
     overflow: hidden !important;
     position: absolute !important;
     clip: rect(0, 0, 0, 0) !important;
+    left: -9999px !important;
+    top: -9999px !important;
     -webkit-appearance: none !important;
     z-index: -1 !important;
-    content: none !important;
-  }
-  
-  /* Ensure video doesn't show native controls */
-  video {
-    -webkit-media-controls-enabled: never !important;
-    -webkit-media-controls-visible: never !important;
   }
 }
 
-/* iOS Safari specific overrides */
-@supports (-webkit-touch-callout: none) {
-  /* iOS 13+ uses this */
-  video::-webkit-media-controls-overlay-enclosure {
+/* Touch devices - comprehensive control hiding */
+@media (pointer: coarse), (hover: none) {
+  video::-webkit-media-controls-overlay-play-button,
+  video::-webkit-media-controls-play-button {
     display: none !important;
-  }
-  
-  video::-webkit-media-controls-enclosure {
-    display: none !important;
-  }
-}
-
-/* Force hide on all mobile browsers */
-@media screen and (max-width: 1024px) {
-  video::-webkit-media-controls-overlay-play-button {
-    display: none !important;
-    opacity: 0 !important;
     width: 0 !important;
     height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
     position: absolute !important;
     left: -9999px !important;
-    visibility: hidden !important;
+    -webkit-appearance: none !important;
   }
 }
 /* Canvas filter managed individually per component to avoid stacking */
