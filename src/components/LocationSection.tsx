@@ -47,13 +47,13 @@ export function LocationSection() {
             <div className="relative w-full h-[500px] md:h-[700px] group transition-all duration-700">
                 {/* Floating Navigation Card - Luxury Minimalist */}
                 <m.div 
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.6 }}
-                    className="absolute top-12 left-6 md:left-12 z-20 w-[calc(100%-3rem)] md:max-w-sm"
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[calc(100%-3rem)] md:max-w-md px-4"
                 >
-                    <div className="bg-black/60 backdrop-blur-2xl p-8 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group/card">
+                    <div className="bg-black/70 backdrop-blur-[32px] p-10 md:p-12 rounded-[40px] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.03)] relative overflow-hidden group/card text-center">
                         {/* Subtle highlight */}
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
                         
@@ -64,18 +64,20 @@ export function LocationSection() {
                             Oferecemos serviço de manobrista (Valet) para sua total comodidade e segurança durante sua visita em nossa clínica clínica.
                         </p>
                         
-                        <Magnetic strength={0.5}>
-                            <a 
-                                href={GOOGLE_MAPS_LINK}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-3 px-6 py-3.5 bg-white text-black text-xs tracking-widest uppercase font-semibold rounded-full hover:bg-neutral-200 transition-all duration-500"
-                            >
-                                <Navigation size={14} fill="black" />
-                                Abrir no GPS
-                                <ExternalLink size={12} className="opacity-50" />
-                            </a>
-                        </Magnetic>
+                        <div className="flex justify-center">
+                            <Magnetic strength={0.5}>
+                                <a 
+                                    href={GOOGLE_MAPS_LINK}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-4 px-8 py-4 bg-white text-black text-[11px] tracking-[0.2em] uppercase font-bold rounded-full hover:bg-neutral-200 transition-all duration-500 shadow-xl"
+                                >
+                                    <Navigation size={14} fill="black" />
+                                    Abrir no GPS
+                                    <ExternalLink size={12} className="opacity-50" />
+                                </a>
+                            </Magnetic>
+                        </div>
                     </div>
                 </m.div>
 
