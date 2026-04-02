@@ -64,7 +64,7 @@ export function LocationSection() {
                             Oferecemos serviço de manobrista (Valet) para sua total comodidade e segurança durante sua visita em nossa clínica clínica.
                         </p>
                         
-                        <Magnetic speed={1.5}>
+                        <Magnetic strength={0.5}>
                             <a 
                                 href={GOOGLE_MAPS_LINK}
                                 target="_blank"
