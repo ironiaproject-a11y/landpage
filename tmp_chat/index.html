@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat Clínica</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+  {
+    "imports": {}
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <main class="chat-shell" role="application" aria-label="Chat da clínica">
+      <div class="header">
+        <div class="clinic-name">Sua origem, Seu sorriso</div>
+        <div id="status" class="status">Online</div>
+      </div>
+
+      <ul id="messages" class="messages" aria-live="polite"></ul>
+
+      <form id="composer" class="composer" autocomplete="off" action="javascript:;">
+        <input id="input" class="input" placeholder="Escreva sua mensagem..." />
+        <div class="actions">
+          <button id="quick-1" class="quick" type="button">Dói ao mastigar</button>
+          <button id="quick-2" class="quick" type="button">Sensibilidade</button>
+          <button id="quick-3" class="quick" type="button">Marcar consulta</button>
+        </div>
+        <button id="send" class="send" type="submit" aria-label="Enviar">Enviar</button>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
