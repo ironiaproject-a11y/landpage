@@ -51,17 +51,17 @@ export function LocationSection() {
                     whileInView={{ opacity: 1, scale: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[calc(100%-3rem)] md:max-w-md px-4"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[calc(100%-2rem)] md:max-w-sm px-4"
                 >
-                    <div className="bg-black/70 backdrop-blur-[32px] p-10 md:p-12 rounded-[40px] border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.03)] relative overflow-hidden group/card text-center">
+                    <div className="bg-black/75 backdrop-blur-[32px] p-8 md:p-10 rounded-3xl border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.02)] relative overflow-hidden group/card text-center">
                         {/* Subtle highlight */}
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
                         
-                        <h3 className="text-xl md:text-2xl font-light text-white mb-4 tracking-tight">
-                            Ambiente exclusivo com <span className="font-serif italic border-b border-white/20 pb-0.5">estacionamento privativo</span>
+                        <h3 className="text-lg md:text-xl font-light text-white mb-3 tracking-tight">
+                            Ambiente exclusivo com <span className="font-serif italic border-b border-white/10 pb-0.5">valet privativo</span>
                         </h3>
-                        <p className="text-sm text-white/50 leading-relaxed mb-8 font-light">
-                            Oferecemos serviço de manobrista (Valet) para sua total comodidade e segurança durante sua visita em nossa clínica clínica.
+                        <p className="text-[xs] md:text-[13px] text-white/50 leading-relaxed mb-6 font-light">
+                            Total comodidade e segurança durante sua visita em nossa clínica.
                         </p>
                         
                         <div className="flex justify-center">
@@ -70,7 +70,7 @@ export function LocationSection() {
                                     href={GOOGLE_MAPS_LINK}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-4 px-8 py-4 bg-white text-black text-[11px] tracking-[0.2em] uppercase font-bold rounded-full hover:bg-neutral-200 transition-all duration-500 shadow-xl"
+                                    className="inline-flex items-center gap-3 px-7 py-3.5 bg-white text-black text-[10px] tracking-[0.2em] uppercase font-bold rounded-full hover:bg-neutral-200 transition-all duration-500 shadow-lg"
                                 >
                                     <Navigation size={14} fill="black" />
                                     Abrir no GPS
