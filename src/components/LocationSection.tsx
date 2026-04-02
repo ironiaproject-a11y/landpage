@@ -44,16 +44,17 @@ export function LocationSection() {
             </div>
 
             {/* Map Container - Full Width Cinematic */}
-            <div className="relative w-full h-[500px] md:h-[700px] group transition-all duration-700">
-                {/* Floating Navigation Card - Luxury Minimalist */}
-                <m.div 
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[calc(100%-2rem)] md:max-w-sm px-4"
-                >
-                    <div className="bg-black/75 backdrop-blur-[32px] p-8 md:p-10 rounded-3xl border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.02)] relative overflow-hidden group/card text-center">
+            <div className="relative w-full h-[500px] md:h-[700px] group transition-all duration-700 overflow-hidden">
+                {/* Floating Navigation Card - Robust Flex Centering Overlay */}
+                <div className="absolute inset-0 z-20 flex items-center justify-center p-4 md:p-6 pointer-events-none">
+                    <m.div 
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                        className="w-full max-w-[340px] md:max-w-sm pointer-events-auto"
+                    >
+                        <div className="bg-black/75 backdrop-blur-[32px] p-8 md:p-10 rounded-3xl border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.02)] relative overflow-hidden group/card text-center">
                         {/* Subtle highlight */}
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
                         
@@ -80,6 +81,7 @@ export function LocationSection() {
                         </div>
                     </div>
                 </m.div>
+                </div>
 
                 {/* Google Maps Embed with Premium Styling */}
                 <div className="absolute inset-0 z-0 overflow-hidden">

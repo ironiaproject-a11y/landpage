@@ -54,11 +54,9 @@ export default function Home() {
   const videoRef     = useRef<HTMLVideoElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
-  // Direct Refs for synced typography
   const originTextRef = useRef<HTMLParagraphElement>(null);
   const smileTextRef  = useRef<HTMLHeadingElement>(null);
   const heroBtnRef    = useRef<HTMLAnchorElement>(null);
-  const [isActuallyPlaying, setIsActuallyPlaying] = useState(false);
 
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
   useEffect(() => {
@@ -295,7 +293,7 @@ export default function Home() {
 
           {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
           <style dangerouslySetInnerHTML={{ __html: `
-            video::-webkit-media-controls { display: none !important; -webkit-appearance: none; }
+            video::-webkit-media-controls { display: none !important; -webkit-appearance: none; opacity: 0 !important; }
             video::-webkit-media-controls-enclosure { display: none !important; }
             video::-webkit-media-controls-panel { display: none !important; }
             video::-webkit-media-controls-play-button { display: none !important; -webkit-appearance: none; }
@@ -304,6 +302,8 @@ export default function Home() {
             video::-internal-media-controls-download-button { display: none !important; }
             video::-internal-media-controls-overflow-button { display: none !important; }
             video::-webkit-media-controls-container { display: none !important; }
+            video::--webkit-media-controls-play-button { display: none !important; }
+            video::-moz-list-bullet { display: none !important; }
           `}} />
 
           {/* Gradient layers */}
