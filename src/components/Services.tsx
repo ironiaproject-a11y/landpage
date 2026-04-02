@@ -48,8 +48,12 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                 onTouchEnd={() => setIsVideoActive(false)}
             >
                 {/* Media Section */}
-                <div className="relative overflow-hidden rounded-t-[2rem] p-6 pb-0 md:p-10 md:pb-0">
-                    <div className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.03]">
+                <div className="relative overflow-hidden rounded-t-[2rem] p-6 pb-0 md:p-10 md:pb-0 z-10">
+                    <m.div 
+                        whileTap={{ scale: 1.05, y: -12, filter: "drop-shadow(0 20px 30px rgba(212, 175, 55, 0.3))" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        className="transform transition-transform duration-1000 ease-[0.22,1,0.36,1] group-hover:scale-[1.03]"
+                    >
                         <MediaCard
                             mp4Src={service.video}
                             webmSrc={service.video.replace('.mp4', '.webm')}
@@ -59,7 +63,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                             className="shadow-2xl rounded-xl overflow-hidden"
                             playing={isVideoActive}
                         />
-                    </div>
+                    </m.div>
                 </div>
 
                 {/* Content Section */}
@@ -109,7 +113,7 @@ export function Services() {
         },
         {
             icon: "Activity",
-            title: "Tratamento de Bruxismo e Dor",
+            title: "Disfunção e Dores Orofaciais",
             description: "Alívio eficaz para dores orofaciais e proteção dos dentes contra o desgaste excessivo.",
             tag: "02",
             image: "/assets/images/dental-exam.jpg",
@@ -117,7 +121,7 @@ export function Services() {
         },
         {
             icon: "Microscope",
-            title: "Tratamento de Canal",
+            title: "Endodontia Avançada",
             description: "Procedimentos endodônticos avançados para salvar seus dentes com máximo conforto e segurança.",
             tag: "03",
             image: "/assets/images/root-canal-treatment.png",
@@ -133,7 +137,7 @@ export function Services() {
         },
         {
             icon: "Sparkles",
-            title: "Estética Dental",
+            title: "Facetas e Lentes de Contato",
             description: "Transforme seu sorriso com facetas, clareamento e procedimentos que harmonizam sua face.",
             tag: "05",
             image: "/assets/images/service-aesthetic.png",
@@ -149,7 +153,7 @@ export function Services() {
         },
         {
             icon: "Activity",
-            title: "Cirurgias e Extrações",
+            title: "Cirurgias Orais Complexas",
             description: "Procedimentos cirúrgicos seguros, realizados por especialistas com técnicas minimamente invasivas.",
             tag: "07",
             image: "/assets/images/surgery-room.jpg",
@@ -157,7 +161,7 @@ export function Services() {
         },
         {
             icon: "ScanLine",
-            title: "Radiografia Panorâmica",
+            title: "Diagnóstico por Imagem",
             description: "Diagnóstico completo com imagens amplas da arcada dentária para um planejamento preciso.",
             tag: "08",
             image: "/assets/images/3d-ct-scan.jpg",
@@ -173,7 +177,7 @@ export function Services() {
         },
         {
             icon: "ScanLine",
-            title: "Radiografia Digital",
+            title: "Fluxo Digital 3D",
             description: "Imagens radiográficas de alta definição com menor exposição à radiação e resultado imediato.",
             tag: "11",
             image: "/assets/images/radiografia-digital-new.jpg",

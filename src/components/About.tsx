@@ -31,7 +31,7 @@ export function About() {
     const highlights = [
         "Autoridade em Lentes de Contato 3D",
         "Protocolos Clínicos Proprietários",
-        "Corpo Clínico Diplomado pela USP",
+        "Formação Acadêmica de Excelência",
         "Ecossistema Digital de Alta Precisão"
     ];
 
@@ -193,7 +193,7 @@ export function About() {
                                     Acreditamos que o seu sorriso é a sua assinatura no mundo. Por isso, não apenas tratamos dentes; devolvemos a liberdade de sorrir para as lentes da vida sem hesitar.
                                 </p>
                                 <p className="text-level-3">
-                                    Para materializar esse nível de confiança, combinamos a precisão da tecnologia alemã com a sensibilidade artística de reabilitações biomiméticas. 
+                                    Para materializar esse nível de confiança, combinamos a precisão da tecnologia de ponta com a sensibilidade artística de reabilitações biomiméticas. 
                                     <span className="block mt-6 text-white text-level-3 italic">Uma experiência que transcende o tratamento clínico convencional.</span>
                                 </p>
                             </div>

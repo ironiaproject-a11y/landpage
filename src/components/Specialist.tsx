@@ -237,7 +237,7 @@ export function Specialist() {
                                 </Magnetic>
                                 <div>
                                     <h4 className="text-[#F8F8F6] text-level-3 font-[400] mb-1 group-hover:text-white transition-colors">Formação de Excelência</h4>
-                                    <p className="text-level-3">Graduado e Especialista pela USP, com foco em Reabilitação Oral de Alta Complexidade.</p>
+                                    <p className="text-level-3">Formação em centros de referência nacionais e internacionais, com foco em Reabilitação Oral de Alta Complexidade.</p>
                                 </div>
                             </div>
                             <div className="credential-item flex items-start gap-6 group">

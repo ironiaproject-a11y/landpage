@@ -4,21 +4,24 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { WHATSAPP_NUMBER } from "@/config/constants";
 
 /* ─── CONFIG ─────────────────────────────────────────────────────────── */
-const GEMINI_KEY = "AIzaSyAtMq6u226Jugt_D3W-M6gC-dF60ussci8";
-const CLINICA    = "Clínica Premium";
-
-const SYSTEM_PROMPT = `Você é Sofia, assistente virtual da ${CLINICA}, clínica odontológica. Acolha visitantes da landing page e conduza-os ao agendamento.
-Tom: caloroso, humano, objetivo. Idioma: português do Brasil.
-Regras: nunca dê diagnóstico; nunca prometa resultado garantido; nunca invente preços; máximo 3 linhas por resposta; uma pergunta por vez; não saia do tema odontológico.
-Serviços: limpeza dental, clareamento, restauração, tratamento de canal, implantes, lentes de contato dental, urgência odontológica.
-Fluxo: cumprimente > identifique a necessidade (dor/urgência, estética, prevenção, preço, agendamento) > responda simples e empático > conduza ao próximo passo > peça nome e telefone quando houver interesse.
-Se dor: acolha e priorize encaixe rápido. Se estética: destaque melhora no sorriso. Se preço: diga que depende da avaliação. Se indeciso: faça uma pergunta curta.
-Quando o cliente quiser contato direto ou urgência, inclua exatamente [WHATSAPP] no final da mensagem.`;
+const CLINICA = "Sua origem, Seu sorriso";
+const CLINIC_WA = WHATSAPP_NUMBER.replace(/\D/g, "") || '5511999999999';
 
 /* ─── TYPES ──────────────────────────────────────────────────────────── */
-interface HistoryEntry {
-  role: "user" | "model";
-  parts: { text: string }[];
+interface BotResponse {
+  title?: string;
+  text?: string;
+  html?: string;
+  suggestions?: string[];
+  escalate?: boolean;
+}
+
+interface Message {
+  role: "bot" | "user";
+  title?: string;
+  text?: string;
+  html?: string;
+  suggestions?: string[];
 }
 
 /* ─── ICON HELPERS ───────────────────────────────────────────────────── */
@@ -47,52 +50,153 @@ const ChatBubbleIcon = () => (
   </svg>
 );
 
-const WaIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.126 1.526 5.855L.057 23.943l6.268-1.645A11.936 11.936 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 0 1-5.015-1.374l-.36-.214-3.724.977.994-3.634-.234-.374A9.786 9.786 0 0 1 2.182 12c0-5.414 4.404-9.818 9.818-9.818 5.414 0 9.818 4.404 9.818 9.818z" />
-  </svg>
-);
+/* ─── BOT LOGIC (From flow.js) ────────────────────────────────────────── */
+function handleBotFlow(input: string, ctx: any): BotResponse {
+  const kw = String(input || '').toLowerCase();
 
-/* ─── UTILITIES ──────────────────────────────────────────────────────── */
-function esc(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\n/g, "<br>");
-}
+  // booking intent
+  if (/agend|marcar|consulta|hora/.test(kw)) {
+    return {
+      title: 'Agendamento',
+      text: 'Perfeito — posso agendar uma avaliação. Informe um dia da semana e horário aproximado (ex: terça de manhã) e se precisa prioridade.',
+      suggestions: ['Terça de manhã', 'Quarta à tarde', 'Sexta de manhã', 'Preciso urgente', 'Enviar pelo WhatsApp']
+    };
+  }
 
-function renderBotText(text: string): string {
-  const hasWa = text.includes("[WHATSAPP]");
-  const cleaned = esc(text.replace("[WHATSAPP]", "")).trim();
-  const waBtn = hasWa
-    ? `<br><br><a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:600;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.126 1.526 5.855L.057 23.943l6.268-1.645A11.936 11.936 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 0 1-5.015-1.374l-.36-.214-3.724.977.994-3.634-.234-.374A9.786 9.786 0 0 1 2.182 12c0-5.414 4.404-9.818 9.818-9.818 5.414 0 9.818 4.404 9.818 9.818z"/></svg>
-        Falar pelo WhatsApp
-      </a>`
-    : "";
-  return cleaned + waBtn;
+  // emergency/acute signs
+  if (/(sangra|sangramento|incha|inchaço|inchado|dor intensa|dor forte|febre|dificuldade para respirar|difícil engolir|engolir)/.test(kw)) {
+    return {
+      title: 'Sinais de emergência',
+      text: 'Se há sangramento intenso, inchaço que dificulta respirar/engolir, febre alta ou dor insuportável, procure emergência imediatamente. Posso ligar para a clínica ou priorizar sua vaga — prefere isso?',
+      suggestions: ['Ligar pra clínica', 'Marcar primeira vaga', 'Explicar sintomas']
+    };
+  }
+
+  // duration/severity follow-up
+  if (/(há|faz)\s*\d+|dias|semanas|meses|há pouco tempo|sumiu|melhorou|piorou/.test(kw) || /(leve|moderada|forte|insuportável|intensa)/.test(kw)) {
+    return {
+      title: 'Obrigado pela informação',
+      text: 'Obrigado — isso ajuda. Para priorizar: você tem febre, inchaço visível ou secreção/pus na boca?',
+      suggestions: ['Tenho febre', 'Há inchaço', 'Não, só dor']
+    };
+  }
+
+  // toothache general
+  if (/(dor de dente|dor no dente|toothache|doendo|dor aguda)/.test(kw)) {
+    ctx.lastIssue = 'dor_de_dente';
+    return {
+      title: 'Dor de dente',
+      text: 'A dor de dente pode ser por cárie, infecção (pulpite), fratura ou sensibilidade. Para alívio imediato: enxágue com água morna e sal, evite mastigar do lado afetado e analgésico conforme tolerância. Quer que eu agende uma avaliação ou prefere orientações para dor agora?',
+      suggestions: ['Agendar avaliação', 'Dicas para alívio agora', 'Quero falar com atendente']
+    };
+  }
+
+  // pain when chewing
+  if (/(mastig|dor ao mastig|dói ao mastig)/.test(kw)) {
+    ctx.lastIssue = 'dor_mastigar';
+    return {
+      title: 'Dor ao mastigar',
+      text: 'Dor ao mastigar normalmente indica problema estrutural (fratura) ou cárie profunda. Evite mastigar do lado afetado e faça bochechos mornos. Deseja que eu verifique opções de horário ou envie orientações por WhatsApp?',
+      suggestions: ['Ver horários', 'Enviar pelo WhatsApp', 'Dúvidas']
+    };
+  }
+
+  // nocturnal/night pain
+  if (/(dor à noite|acorda à noite|dor noturna|acordo com dor)/.test(kw)) {
+    ctx.lastIssue = 'dor_noturna';
+    return {
+      title: 'Dor noturna',
+      text: 'Dor que acorda à noite costuma indicar inflamação pulpar (necessidade de tratamento de canal) ou infecção. Recomendo agendar avaliação com prioridade. Deseja que eu confira horários?',
+      suggestions: ['Sim, verificar horários', 'Quero orientações para dormir', 'Dúvidas']
+    };
+  }
+
+  // sensitivity
+  if (/sensibilidade|sensível|frio|doe com frio|sensível ao frio|sensível ao doce/.test(kw)) {
+    ctx.lastIssue = 'sensibilidade';
+    return {
+      title: 'Sensibilidade dentária',
+      text: 'Sensibilidade ao frio/doce pode vir de desgaste do esmalte, retração gengival ou restauração com fim de vida útil. Tente creme dental dessensibilizante e escova macia; podemos avaliar e aplicar flúor profissional.',
+      suggestions: ['Marcar avaliação', 'Produtos recomendados', 'Dúvidas']
+    };
+  }
+
+  // broken filling / lost crown
+  if (/(coroa|coroa caiu|restauração caiu|obturação caiu|plomb|caiu|colocou|coroa solta|protese solta)/.test(kw)) {
+    ctx.lastIssue = 'restauracao_solta';
+    return {
+      title: 'Restauração / prótese solta',
+      text: 'Se uma restauração ou coroa caiu, guarde o fragmento e evite mastigar. Trazer o fragmento pode facilitar a reparação. Deseja agendar urgente para recolocação?',
+      suggestions: ['Agendar urgente', 'Como guardar o fragmento', 'Dúvidas']
+    };
+  }
+
+  // cosmetic
+  if (/(clareamento|faceta|veneers|facetas|estética|sorriso bonito|estético)/.test(kw)) {
+    ctx.lastIssue = 'estetica';
+    return {
+      title: 'Estética dentária',
+      text: 'Oferecemos clareamento, facetas e restaurações estéticas. Uma avaliação define opções e custos. Deseja agendar para avaliação estética?',
+      suggestions: ['Agendar avaliação estética', 'Ver opções de tratamento', 'Dúvidas']
+    };
+  }
+
+  // human attendant
+  if (/(atendente|falar com atendente|atendimento humano|humano|falar com humano)/.test(kw)) {
+    return {
+      title: 'Atendimento humano',
+      text: 'Posso encaminhar para um atendente humano. Deseja solicitação imediata ou preferir que entrem em contato mais tarde?',
+      suggestions: ['Solicitar agora', 'Prefiro horário', 'Dúvidas']
+    };
+  }
+
+  if (/solicitar atendimento agora|solicitar atendimento|solicitar atendente|solicitar atendimento já/.test(kw)) {
+    return {
+      title: 'Encaminhando para atendente',
+      text: 'Certo — estou encaminhando seu pedido para um atendente humano. A equipe receberá a solicitação e entrará em contato em breve. Deseja enviar seu nome e telefone para agilizar?',
+      suggestions: ['Enviar nome e telefone', 'Não, obrigado'],
+      escalate: true
+    };
+  }
+
+  // WhatsApp booking
+  if (/(enviar pelo whatsapp|enviar pelo whats|enviar pelo zap|whatsapp|whats|zap)/.test(kw)) {
+    const issueLabel = ctx.lastIssue ? ctx.lastIssue.replace(/_/g, ' ') : 'agendamento';
+    const preText = `Olá! Gostaria de agendar uma avaliação na clínica "${CLINICA}". Motivo: ${issueLabel}. Pode confirmar horários disponíveis e orientações, por favor?`;
+    const url = `https://wa.me/${CLINIC_WA}?text=${encodeURIComponent(preText)}`;
+    return {
+      title: 'Enviar pelo WhatsApp',
+      html: `Clique para abrir o WhatsApp e enviar sua solicitação: <br><br><a href="${url}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:600;">Falar pelo WhatsApp</a>`,
+      suggestions: ['Enviei pelo WhatsApp', 'Quero outra opção']
+    };
+  }
+
+  // Fallback
+  return {
+    title: 'Posso ajudar com:',
+    text: 'Se preferir, diga resumidamente qual é o problema (ex: "dor ao mastigar", "sensibilidade", "quero agendar"). Posso fazer triagem e agendar.',
+    suggestions: ['Dói ao mastigar', 'Sensibilidade ao frio', 'Quero agendar', 'Tenho inchaço']
+  };
 }
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────── */
 export function SofiaChat() {
-  const [isOpen, setIsOpen]         = useState(false);
-  const [isVisible, setIsVisible]   = useState(false);
-  const [messages, setMessages]     = useState<{ role: "bot" | "user"; text: string }[]>([]);
-  const [inputVal, setInputVal]     = useState("");
-  const [isBusy, setIsBusy]         = useState(false);
-  const [isTyping, setIsTyping]     = useState(false);
-  const historyRef                   = useRef<HistoryEntry[]>([]);
-  const msgsEndRef                   = useRef<HTMLDivElement>(null);
-  const inputRef                     = useRef<HTMLInputElement>(null);
-  const didGreet                     = useRef(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputVal, setInputVal] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [status, setStatus] = useState("Online");
+  const ctxRef = useRef<any>({});
+  const msgsEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const didGreet = useRef(false);
 
   /* Reveal after preloader */
   useEffect(() => {
     const show = () => setIsVisible(true);
     window.addEventListener("preloader-exiting", show);
-    if (!(window as { __PRELOADER_ACTIVE__?: boolean }).__PRELOADER_ACTIVE__) setIsVisible(true);
+    if (!(window as any).__PRELOADER_ACTIVE__) setIsVisible(true);
     return () => window.removeEventListener("preloader-exiting", show);
   }, []);
 
@@ -108,20 +212,32 @@ export function SofiaChat() {
     }
   }, [isOpen]);
 
-  /* Greeting on first open — shown locally, NOT added to history */
-  const greet = useCallback(async () => {
+  const addBotMessage = useCallback((response: BotResponse) => {
+    setIsTyping(true);
+    
+    // Simulate typing delay based on length
+    const textLen = (response.text || response.html || "").length;
+    const delay = Math.min(600 + textLen * 20, 2000);
+
+    setTimeout(() => {
+      setIsTyping(false);
+      if (response.escalate) {
+        setStatus("Solicitando atendente...");
+        setTimeout(() => setStatus("Atendimento solicitado"), 1800);
+      }
+      setMessages(prev => [...prev, { role: "bot", ...response }]);
+    }, delay);
+  }, []);
+
+  const greet = useCallback(() => {
     if (didGreet.current) return;
     didGreet.current = true;
-
-    setIsTyping(true);
-    await new Promise(r => setTimeout(r, 900));
-    const greeting = `Olá! 😊 Seja bem-vindo(a) à ${CLINICA}! Sou a Sofia, assistente virtual da clínica. Em que posso te ajudar hoje?`;
-    setIsTyping(false);
-    // ⚠️ IMPORTANT: greeting is displayed locally but NOT pushed to historyRef.
-    // Gemini API requires the first message in 'contents' to be role:"user".
-    // Adding role:"model" first causes a 400 error and falls back to the generic phrase.
-    setMessages([{ role: "bot", text: greeting }]);
-  }, []);
+    addBotMessage({
+      title: 'Olá 👋',
+      text: `Bem-vindo à ${CLINICA}! Sou o assistente virtual. Posso ajudar com dores, agendamentos e informações sobre tratamentos. Como posso ajudar você hoje?`,
+      suggestions: ['Dói ao mastigar', 'Sensibilidade ao frio', 'Quero agendar']
+    });
+  }, [addBotMessage]);
 
   const handleToggle = useCallback(() => {
     setIsOpen(prev => {
@@ -131,75 +247,22 @@ export function SofiaChat() {
     });
   }, [greet]);
 
-  const handleClose = useCallback(() => setIsOpen(false), []);
+  const handleSend = useCallback((textOverride?: string) => {
+    const text = textOverride || inputVal.trim();
+    if (!text) return;
 
-  const handleSend = useCallback(async () => {
-    const text = inputVal.trim();
-    if (!text || isBusy) return;
-
-    setInputVal("");
+    if (!textOverride) setInputVal("");
     setMessages(prev => [...prev, { role: "user", text }]);
 
-    // Push user turn — history always starts with "user"
-    const updatedHistory: HistoryEntry[] = [
-      ...historyRef.current,
-      { role: "user", parts: [{ text }] },
-    ];
-    historyRef.current = updatedHistory;
+    const response = handleBotFlow(text, ctxRef.current);
+    addBotMessage(response);
+  }, [inputVal, addBotMessage]);
 
-    setIsBusy(true);
-    setIsTyping(true);
-
-    try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: historyRef.current,
-            generationConfig: { maxOutputTokens: 220, temperature: 0.8 },
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      // Log any API error to console for debugging
-      if (data?.error) {
-        console.error("[SofiaChat] Gemini API error:", data.error);
-      }
-
-      const reply: string =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text ??
-        "Desculpe, tive um probleminha. Pode repetir? 😅";
-
-      setIsTyping(false);
-      setMessages(prev => [...prev, { role: "bot", text: reply }]);
-      // Append model reply to history
-      historyRef.current = [
-        ...historyRef.current,
-        { role: "model", parts: [{ text: reply }] },
-      ];
-    } catch (err) {
-      console.error("[SofiaChat] Network error:", err);
-      setIsTyping(false);
-      setMessages(prev => [...prev, { role: "bot", text: "Ops, instabilidade momentânea. Tente novamente. 😅" }]);
-    } finally {
-      setIsBusy(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSend();
     }
-  }, [inputVal, isBusy]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    },
-    [handleSend]
-  );
+  };
 
   return (
     <>
@@ -214,14 +277,13 @@ export function SofiaChat() {
         @media(max-width:440px){
           #sofia-window{bottom:0!important;right:0!important;width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;}
           #sofia-fab{bottom:88px!important;right:16px!important;}
-          #sofia-window{bottom:0!important;}
         }
       `}</style>
 
       {/* ── FAB ────────────────────────────────────────────────────────── */}
       <button
         id="sofia-fab"
-        aria-label="Abrir chat com Sofia"
+        aria-label="Abrir chat"
         onClick={handleToggle}
         style={{
           position: "fixed",
@@ -229,15 +291,15 @@ export function SofiaChat() {
           right: 28,
           width: 62,
           height: 62,
-          background: "linear-gradient(135deg, #0d9e8c, #05c8a8)",
+          background: "#000000",
           borderRadius: "50%",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 8px 40px rgba(13,158,140,.35), 0 2px 8px rgba(0,0,0,.15)",
+          boxShadow: "0 8px 40px rgba(0,0,0,.35)",
           border: "none",
-          transition: "transform .25s, box-shadow .25s, opacity .6s",
+          transition: "transform .25s, opacity .6s",
           zIndex: 9998,
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "scale(1)" : "scale(0.7)",
@@ -247,15 +309,13 @@ export function SofiaChat() {
         onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
       >
         <ChatBubbleIcon />
-        {/* Pulse ring */}
         <span
-          aria-hidden="true"
           style={{
             position: "absolute",
             width: 62,
             height: 62,
             borderRadius: "50%",
-            border: "2px solid #0d9e8c",
+            border: "2px solid #000",
             animation: "sofia-pulse 2.4s infinite",
             pointerEvents: "none",
           }}
@@ -265,19 +325,17 @@ export function SofiaChat() {
       {/* ── CHAT WINDOW ─────────────────────────────────────────────────── */}
       <div
         id="sofia-window"
-        role="dialog"
-        aria-label="Chat com Sofia"
         style={{
           position: "fixed",
           bottom: 174,
           right: 28,
           width: 380,
           maxWidth: "calc(100vw - 32px)",
-          height: 560,
+          height: 580,
           maxHeight: "calc(100vh - 130px)",
           background: "#ffffff",
           borderRadius: 18,
-          boxShadow: "0 8px 40px rgba(13,158,140,.18), 0 2px 8px rgba(0,0,0,.12)",
+          boxShadow: "0 8px 40px rgba(0,0,0,.15)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
@@ -285,248 +343,104 @@ export function SofiaChat() {
           transform: isOpen ? "scale(1) translateY(0)" : "scale(.92) translateY(16px)",
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? "all" : "none",
-          transition: "opacity .3s ease, transform .3s ease",
+          transition: "opacity .3s, transform .3s",
         }}
       >
         {/* Header */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #0d9e8c 0%, #05c8a8 100%)",
-            padding: "18px 20px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,.2)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              color: "#fff",
-            }}
-          >
-            <BotIcon size={22} />
+        <div style={{ background: "#000", padding: "18px 20px", display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,.15)", display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center", color: "#fff" }}>
+            <BotIcon size={20} />
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontFamily: "Jost, sans-serif", fontSize: 15, fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>
-              Sofia – Assistente da Clínica
-            </div>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,.82)", display: "flex", alignItems: "center", gap: 5, marginTop: 2 }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#7effc8", display: "inline-block", boxShadow: "0 0 6px #7effc8" }} />
-              Online agora
+            <div style={{ color: "#fff", fontWeight: 600, fontSize: 15 }}>{CLINICA}</div>
+            <div style={{ color: "rgba(255,255,255,.7)", fontSize: 12, display: "flex", alignItems: "center", gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80" }} />
+              {status}
             </div>
           </div>
-          <button
-            id="sofia-close-btn"
-            onClick={handleClose}
-            aria-label="Fechar chat"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,.85)", padding: 4, display: "flex" }}
-          >
+          <button onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "#fff", cursor: "pointer" }}>
             <CloseIcon />
           </button>
         </div>
 
         {/* Messages */}
-        <div
-          id="sofia-msgs"
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "20px 16px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 12,
-            background: "#f7f5f2",
-          }}
-        >
+        <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px", background: "#f8f8f8", display: "flex", flexDirection: "column", gap: 12 }}>
           {messages.map((msg, i) => (
-            <div
-              key={i}
-              className="sofia-msg-anim"
-              style={{
-                display: "flex",
-                gap: 8,
-                alignSelf: msg.role === "bot" ? "flex-start" : "flex-end",
-                flexDirection: msg.role === "bot" ? "row" : "row-reverse",
-                maxWidth: "84%",
-              }}
-            >
-              {msg.role === "bot" && (
-                <div
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: "#0d9e8c",
-                    flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 2,
-                    color: "#fff",
-                  }}
-                >
-                  <BotIcon size={15} />
-                </div>
+            <div key={i} className="sofia-msg-anim" style={{ alignSelf: msg.role === "bot" ? "flex-start" : "flex-end", maxWidth: "85%" }}>
+              {msg.role === "bot" && msg.title && (
+                <div style={{ fontSize: 11, color: "#888", marginBottom: 4, marginLeft: 4 }}>{msg.title}</div>
               )}
               <div
                 style={{
-                  padding: "11px 15px",
-                  borderRadius: msg.role === "bot" ? "16px 16px 16px 4px" : "16px 16px 4px 16px",
-                  fontFamily: "Jost, sans-serif",
+                  padding: "10px 14px",
+                  borderRadius: msg.role === "bot" ? "14px 14px 14px 4px" : "14px 14px 4px 14px",
+                  background: msg.role === "bot" ? "#fff" : "#000",
+                  color: msg.role === "bot" ? "#000" : "#fff",
                   fontSize: 14,
-                  lineHeight: 1.55,
-                  background: msg.role === "bot" ? "#ffffff" : "#0d9e8c",
-                  color: msg.role === "bot" ? "#1a1a2e" : "#fff",
-                  boxShadow: msg.role === "bot" ? "0 1px 4px rgba(0,0,0,.07)" : "none",
+                  lineHeight: 1.5,
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                  border: msg.role === "bot" ? "1px solid #eee" : "none"
                 }}
-                dangerouslySetInnerHTML={{
-                  __html: msg.role === "bot" ? renderBotText(msg.text) : esc(msg.text),
-                }}
-              />
+              >
+                {msg.html ? (
+                  <div dangerouslySetInnerHTML={{ __html: msg.html }} />
+                ) : (
+                  msg.text
+                )}
+                
+                {msg.suggestions && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+                    {msg.suggestions.map((s, si) => (
+                      <button
+                        key={si}
+                        onClick={() => handleSend(s)}
+                        style={{
+                          background: "#fff",
+                          border: "1px solid #ddd",
+                          padding: "5px 10px",
+                          borderRadius: 8,
+                          fontSize: 12,
+                          cursor: "pointer",
+                          transition: "border-color .2s"
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.borderColor = "#000"}
+                        onMouseLeave={e => e.currentTarget.style.borderColor = "#ddd"}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
 
-          {/* Typing indicator */}
           {isTyping && (
-            <div
-              className="sofia-msg-anim"
-              style={{ display: "flex", gap: 8, alignSelf: "flex-start", maxWidth: "84%" }}
-            >
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: "50%",
-                  background: "#0d9e8c",
-                  flexShrink: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 2,
-                  color: "#fff",
-                }}
-              >
-                <BotIcon size={15} />
-              </div>
-              <div
-                style={{
-                  padding: "14px 18px",
-                  borderRadius: "16px 16px 16px 4px",
-                  background: "#fff",
-                  boxShadow: "0 1px 4px rgba(0,0,0,.07)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
-                }}
-              >
-                {[1, 2, 3].map(n => (
-                  <span
-                    key={n}
-                    className={`sofia-bounce-${n}`}
-                    style={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      background: "#5c6472",
-                      display: "inline-block",
-                    }}
-                  />
-                ))}
-              </div>
+            <div style={{ alignSelf: "flex-start", background: "#fff", padding: "12px 16px", borderRadius: "14px 14px 14px 4px", display: "flex", gap: 4 }}>
+              {[1, 2, 3].map(n => (
+                <span key={n} className={`sofia-bounce-${n}`} style={{ width: 6, height: 6, background: "#ccc", borderRadius: "50%" }} />
+              ))}
             </div>
           )}
-
           <div ref={msgsEndRef} />
         </div>
 
-        {/* Input area */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "14px 16px",
-            borderTop: "1px solid #edeae6",
-            background: "#ffffff",
-            flexShrink: 0,
-          }}
-        >
+        {/* Input */}
+        <div style={{ padding: 16, borderTop: "1px solid #eee", display: "flex", gap: 10 }}>
           <input
             ref={inputRef}
-            id="sofia-chat-input"
-            type="text"
-            placeholder="Digite sua mensagem…"
-            autoComplete="off"
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isBusy}
-            style={{
-              flex: 1,
-              border: "1.5px solid #e2dfd9",
-              borderRadius: 24,
-              padding: "10px 16px",
-              fontFamily: "Jost, sans-serif",
-              fontSize: 14,
-              color: "#1a1a2e",
-              background: "#f7f5f2",
-              outline: "none",
-              height: 42,
-              transition: "border-color .2s, background .2s",
-            }}
-            onFocus={e => {
-              e.target.style.borderColor = "#0d9e8c";
-              e.target.style.background = "#fff";
-            }}
-            onBlur={e => {
-              e.target.style.borderColor = "#e2dfd9";
-              e.target.style.background = "#f7f5f2";
-            }}
+            placeholder="Digite sua dúvida..."
+            style={{ flex: 1, border: "1px solid #ddd", borderRadius: 10, padding: "10px 14px", fontSize: 14, outline: "none" }}
           />
           <button
-            id="sofia-send-btn"
-            onClick={handleSend}
-            disabled={isBusy || !inputVal.trim()}
-            aria-label="Enviar mensagem"
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: "50%",
-              background: isBusy || !inputVal.trim() ? "#ccc" : "#0d9e8c",
-              border: "none",
-              cursor: isBusy || !inputVal.trim() ? "not-allowed" : "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background .2s",
-              flexShrink: 0,
-              color: "#fff",
-            }}
+            onClick={() => handleSend()}
+            style={{ width: 42, height: 42, borderRadius: "50%", background: "#000", color: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             <SendIcon />
           </button>
-        </div>
-
-        {/* Disclaimer */}
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: 11,
-            color: "#b0aca6",
-            padding: "0 16px 10px",
-            fontFamily: "Jost, sans-serif",
-            background: "#fff",
-          }}
-        >
-          🔒 Suas informações são tratadas com sigilo.
         </div>
       </div>
     </>
