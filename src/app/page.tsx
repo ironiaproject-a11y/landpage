@@ -301,7 +301,7 @@ export default function Home() {
               willChange:     "transform, filter, opacity, visibility",
               opacity:        isVideoPrimed ? 1 : 0,
               visibility:     isVideoPrimed ? "visible" : "hidden",
-              transition:     "opacity 0.8s ease-in-out, visibility 0s linear 0s",
+              transition:     "opacity 0.8s ease-in-out, visibility 0.8s ease-in-out",
               transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
@@ -309,19 +309,53 @@ export default function Home() {
             <source src="/hero-background-new.mp4" type="video/mp4" />
           </video>
 
+          {/* Mobile placeholder - covers everything until video is ready */}
+          <div 
+            style={{ 
+              position: "absolute", 
+              inset: 0, 
+              backgroundColor: "#000000", 
+              backgroundImage: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%)",
+              zIndex: isVideoPrimed ? -1 : 2, 
+              transition: "z-index 0s linear 0.8s",
+              pointerEvents: "none"
+            }} 
+          />
+
           {/* ── NUCLEAR VIDEO CONTROLS SUPPRESSION ── */}
           <style dangerouslySetInnerHTML={{ __html: `
-            video::-webkit-media-controls { display: none !important; -webkit-appearance: none; opacity: 0 !important; }
-            video::-webkit-media-controls-enclosure { display: none !important; }
-            video::-webkit-media-controls-panel { display: none !important; }
-            video::-webkit-media-controls-play-button { display: none !important; -webkit-appearance: none; }
-            video::-webkit-media-controls-overlay-play-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; pointer-events: none !important; }
-            video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; pointer-events: none !important; }
-            video::-internal-media-controls-download-button { display: none !important; }
-            video::-internal-media-controls-overflow-button { display: none !important; }
-            video::-webkit-media-controls-container { display: none !important; }
-            video::--webkit-media-controls-play-button { display: none !important; }
-            video::-moz-list-bullet { display: none !important; }
+            video::-webkit-media-controls { display: none !important; -webkit-appearance: none; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+            video::-webkit-media-controls-enclosure { display: none !important; visibility: hidden !important; }
+            video::-webkit-media-controls-panel { display: none !important; visibility: hidden !important; }
+            video::-webkit-media-controls-play-button { display: none !important; -webkit-appearance: none; visibility: hidden !important; }
+            video::-webkit-media-controls-overlay-play-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; width: 0 !important; height: 0 !important; }
+            video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+            video::-internal-media-controls-download-button { display: none !important; visibility: hidden !important; }
+            video::-internal-media-controls-overflow-button { display: none !important; visibility: hidden !important; }
+            video::-webkit-media-controls-container { display: none !important; visibility: hidden !important; }
+            video::--webkit-media-controls-play-button { display: none !important; visibility: hidden !important; }
+            video::-moz-list-bullet { display: none !important; visibility: hidden !important; }
+            /* Mobile-specific: completely hide any video controls layer */
+            @media (max-width: 1024px), (pointer: coarse) {
+              video::-webkit-media-controls-overlay-play-button,
+              video::-webkit-media-controls-play-button {
+                display: none !important;
+                opacity: 0 !important;
+                width: 0 !important;
+                height: 0 !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                max-width: 0 !important;
+                max-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                position: absolute !important;
+                left: -9999px !important;
+                visibility: hidden !important;
+                clip: rect(0,0,0,0) !important;
+                -webkit-appearance: none !important;
+              }
+            }
           `}} />
 
           {/* ── IPHONE STEALTH OVERLAY (Hides play-button flash) ── */}
