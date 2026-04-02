@@ -177,7 +177,9 @@ export default function Home() {
             // ── PHASE 1: MECHANICAL INTRO ──
             mainTl.play();
           }).catch(() => {
-            // Fallback for strict autoplay blocks: just start the timeline
+            // Fallback for strict autoplay blocks: statically reveal the first frame
+            if (video) video.currentTime = 0.01;
+            setIsVideoPrimed(true);
             mainTl.play();
           });
 
