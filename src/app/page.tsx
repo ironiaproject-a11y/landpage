@@ -284,6 +284,8 @@ export default function Home() {
             disablePictureInPicture
             disableRemotePlayback
             preload="auto"
+            /* @ts-ignore - Safari specific prop */
+            x-webkit-airplay="deny"
             poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
             style={{
               position:       "absolute",
@@ -319,6 +321,19 @@ export default function Home() {
             video::--webkit-media-controls-play-button { display: none !important; }
             video::-moz-list-bullet { display: none !important; }
           `}} />
+
+          {/* ── IPHONE STEALTH OVERLAY (Hides play-button flash) ── */}
+          <div 
+            style={{ 
+              position: "absolute", 
+              inset: 0, 
+              backgroundColor: "#000000", 
+              zIndex: 1, 
+              opacity: isVideoPrimed ? 0 : 1, 
+              transition: "opacity 1.2s ease-in-out",
+              pointerEvents: "none"
+            }} 
+          />
 
           {/* Gradient layers */}
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)", zIndex:1, pointerEvents:"none" }} />
