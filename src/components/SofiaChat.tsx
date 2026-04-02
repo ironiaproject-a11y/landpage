@@ -50,6 +50,12 @@ const ChatBubbleIcon = () => (
   </svg>
 );
 
+const WhatsAppIcon = ({ size = 28 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.171.824-.311.05-1.098.073-2.331-.421-2.091-.837-3.414-2.937-3.519-3.078-.103-.14-.774-.959-.774-1.829 0-.869.433-1.298.587-1.458.158-.16.347-.2.463-.2.117 0 .23-.001.328.005.102.003.239-.038.374.286.136.328.468 1.14.51 1.226.041.085.068.184.01.3-.059.117-.088.19-.174.29-.086.103-.181.231-.258.309-.086.086-.177.18-.076.354.101.174.45 0 .741.002.943.839 1.708 1.55 2.135 1.73.432.181.688.15.943-.141.256-.291 1.085-1.26 1.375-1.693.289-.434.579-.362.973-.217l2.427 1.214zM12 2C6.477 2 2 6.477 2 12c0 2.136.67 4.116 1.81 5.74L2 22l4.37-1.15A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.845 0-3.541-.533-4.97-1.454l-.356-.227-2.601.685.698-2.549-.248-.395c-.947-1.503-1.503-3.28-1.503-5.06 0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" />
+  </svg>
+);
+
 /* ─── BOT LOGIC ──────────────────────────────────────────────────────── */
 function handleBotFlow(input: string, ctx: any): BotResponse {
   const kw = String(input || '').toLowerCase();
@@ -57,27 +63,27 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
   // 1. Booking intent
   if (/agend|marcar|consulta|hora/.test(kw)) {
     return {
-      title: 'Agendamento',
-      text: 'Perfeito — posso agendar uma avaliação. Informe um dia da semana e horário aproximado (ex: terça de manhã) e se precisa prioridade.',
-      suggestions: ['Terça de manhã', 'Quarta à tarde', 'Sexta de manhã', 'Preciso urgente', 'Enviar pelo WhatsApp']
+      title: 'Agendamento e Triagem',
+      text: 'Será um prazer agendar a sua avaliação! Para garantirmos o profissional ideal para o seu caso (seja Estética, Reabilitação ou Cirurgia), você tem alguma preferência de dia ou período para a sua consulta? Nossa equipe fará o contato logo em seguida para formalizar o horário.',
+      suggestions: ['Manhã (08h - 12h)', 'Tarde (13h - 18h)', 'Urgência para hoje', 'Falar com Atendente']
     };
   }
 
   // 2. Emergency/acute signs
   if (/(sangra|sangramento|incha|inchaço|inchado|dor intensa|dor forte|febre|dificuldade para respirar|difícil engolir|engolir)/.test(kw)) {
     return {
-      title: 'Sinais de emergência',
-      text: 'Se há sangramento intenso, inchaço que dificulta respirar/engolir, febre alta ou dor insuportável, procure emergência imediatamente. Posso ligar para a clínica ou priorizar sua vaga — prefere isso?',
-      suggestions: ['Ligar pra clínica', 'Marcar primeira vaga', 'Explicar sintomas']
+      title: 'Atenção: Sinais Clínicos Prioritários',
+      text: 'Identifiquei sinais que podem exigir atendimento imediato (como sangramento ativo, febre ou inchaço acentuado). Recomendamos que você fale agora com nossa equipe ou procure a clínica. Deseja que eu solicite uma interrupção da recepção para falar com você com urgência?',
+      suggestions: ['Solicitar Urgência Agora', 'Ligar diretamente', 'Entender sintomas']
     };
   }
 
   // 3. Duration/severity follow-up
   if (/(há|faz)\s*\d+|dias|semanas|meses|há pouco tempo|sumiu|melhorou|piorou/.test(kw) || /(leve|moderada|forte|insuportável|intensa)/.test(kw)) {
     return {
-      title: 'Obrigado pela informação',
-      text: 'Obrigado — isso ajuda. Para priorizar: você tem febre, inchaço visível ou secreção/pus na boca?',
-      suggestions: ['Tenho febre', 'Há inchaço', 'Não, só dor']
+      title: 'Histórico de Sintomas',
+      text: 'Entendido. Esses detalhes sobre o tempo e a intensidade são fundamentais para o nosso diagnóstico prévio. Para que eu possa ser mais específica: esses sintomas são constantes ou surgem apenas com estímulos (como gelado ou mastigação)?',
+      suggestions: ['É constante', 'Ao mastigar', 'Com frio/calor', 'Prefiro não detalhar']
     };
   }
 
@@ -85,9 +91,9 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
   if (/(dor de dente|dor no dente|toothache|doendo|dor aguda)/.test(kw)) {
     ctx.lastIssue = 'dor_de_dente';
     return {
-      title: 'Dor de dente',
-      text: 'A dor de dente pode ser por cárie, infecção (pulpite), fratura ou sensibilidade. Para alívio imediato: enxágue com água morna e sal, evite mastigar do lado afetado e analgésico conforme tolerância. Quer que eu agende uma avaliação ou prefere orientações para dor agora?',
-      suggestions: ['Agendar avaliação', 'Dicas para alívio agora', 'Quero falar com atendente']
+      title: 'Orientações sobre Dor Dental',
+      text: 'Sinto muito que esteja com essa dor. Clinicamente, a dor aguda pode indicar necessidade de tratamento endodôntico (canal), cárie profunda ou inflamação gengival. Para alívio paliativo imediato, evite bochechos vigorosos e mantenha a cabeça elevada ao deitar. Gostaria de verificar nossa primeira vaga disponível ou falar com um especialista via WhatsApp?',
+      suggestions: ['Primeira vaga disponível', 'Dicas de alívio rápido', 'Falar no WhatsApp']
     };
   }
 
@@ -105,9 +111,9 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
   if (/(dor à noite|acorda à noite|dor noturna|acordo com dor)/.test(kw)) {
     ctx.lastIssue = 'dor_noturna';
     return {
-      title: 'Dor noturna',
-      text: 'Dor que acorda à noite costuma indicar inflamação pulpar (necessidade de tratamento de canal) ou infecção. Recomendo agendar avaliação com prioridade. Deseja que eu confira horários?',
-      suggestions: ['Sim, verificar horários', 'Quero orientações para dormir', 'Dúvidas']
+      title: 'Dor Noturna (Urgência)',
+      text: 'Dores que se intensificam ou impedem o sono geralmente estão ligadas a quadros de pulpite aguda (inflamação interna do dente). Este é um dos sinais mais claros de que uma intervenção é necessária rapidamente. Posso registrar sua solicitação como prioridade clínica?',
+      suggestions: ['Sim, registrar como Prioridade', 'Saber mais sobre dor noturna', 'Dicas de como dormir hoje']
     };
   }
 
@@ -146,8 +152,28 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
     ctx.lastIssue = 'pos_op';
     return {
       title: 'Pós-operatório',
-      text: 'Para dor pós-operatória siga as orientações do cirurgião: gelo nas primeiras 24h (externo), evitar cuspir e esforço, e analgesia conforme receitado. Se houver sangramento ativo, febre ou pus, procure contato urgente.',
-      suggestions: ['Preciso de ajuda agora', 'Agendar revisão', 'Dúvidas']
+      text: 'No pós-operatório imediato, é normal um leve desconforto. Lembre-se: repouso, gelo na face (20 min intermitente) e nada de bochechos ou alimentos quentes hoje. Se houver sangramento ativo que não estanca com compressão, por favor, nos avise agora.',
+      suggestions: ['Tenho sangramento', 'Agendar revisão', 'Dicas de alimentação']
+    };
+  }
+
+  // 10b. Root Canal (Endodontics)
+  if (/(canal|tratamento de canal|endodontia|polpa)/.test(kw)) {
+    ctx.lastIssue = 'canal';
+    return {
+      title: 'Tratamento de Canal',
+      text: 'O tratamento de canal visa salvar um dente cuja polpa está comprometida. Hoje, com as técnicas rotatórias e microscopia que utilizamos, o procedimento é praticamente indolor e muito mais rápido. Deseja agendar uma avaliação com nossos endodontistas?',
+      suggestions: ['Ver horários para Canal', 'Dói fazer canal?', 'Falar com Atendente']
+    };
+  }
+
+  // 10c. Cleaning (Prophylaxis)
+  if (/(limpeza|profilaxia|tártaro|pedra no dente|raspagem)/.test(kw)) {
+    ctx.lastIssue = 'limpeza';
+    return {
+      title: 'Prevenção e Limpeza',
+      text: 'A profilaxia profissional deve ser feita a cada 6 meses para prevenir cáries e doenças gengivais. Realizamos uma limpeza profunda com ultrassom e jato de bicarbonato para remover tártaro e manchas. Vamos deixar seu sorriso renovado?',
+      suggestions: ['Agendar Limpeza', 'Quanto tempo demora?', 'Falar no WhatsApp']
     };
   }
 
@@ -165,9 +191,9 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
   if (/(apinhamento|apinhado|sorriso torto|alinhamento|aparelho ortodôntico|aparelho|ortodontia)/.test(kw)) {
     ctx.lastIssue = 'ortodontia';
     return {
-      title: 'Ortodontia / alinhamento',
-      text: 'Temos opções de ortodontia convencional e alinhadores. Posso agendar uma avaliação para plano de tratamento e orçamento. Quer marcar uma avaliação gratuita (triagem)?',
-      suggestions: ['Sim, agendar triagem', 'Quero orçamento', 'Dúvidas']
+      title: 'Planejamento Ortodôntico',
+      text: 'Trabalhamos com as tecnologias mais modernas de alinhamento, desde aparelhos convencionais até alinhadores invisíveis de última geração. O primeiro passo é um escaneamento e diagnóstico 3D para projetarmos o seu novo sorriso. Deseja agendar sua triagem ortodôntica?',
+      suggestions: ['Agendar Triagem 3D', 'Saber sobre Alinhadores Invisíveis', 'Valores aproximados']
     };
   }
 
@@ -175,9 +201,9 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
   if (/(clareamento|faceta|veneers|facetas|estética|sorriso bonito|estético)/.test(kw)) {
     ctx.lastIssue = 'estetica';
     return {
-      title: 'Estética dentária',
-      text: 'Oferecemos clareamento, facetas e restaurações estéticas. Uma avaliação define opções e custos. Deseja agendar para avaliação estética?',
-      suggestions: ['Agendar avaliação estética', 'Ver opções de tratamento', 'Dúvidas']
+      title: 'Consultoria de Estética Oral',
+      text: 'A transformação do seu sorriso é nossa especialidade. Realizamos desde clareamentos profissionais até reabilitações completas com Facetas e Lentes de Contato de Porcelana. Cada caso é planejado para ser natural e harmonioso. Deseja ver alguns casos de sucesso ou agendar sua avaliação estética?',
+      suggestions: ['Ver Casos de Sucesso', 'Agendar Avaliação Estética', 'Diferença entre Facetas e Lentes']
     };
   }
 
@@ -269,9 +295,9 @@ function handleBotFlow(input: string, ctx: any): BotResponse {
 
   // Fallback
   return {
-    title: 'Posso ajudar com:',
-    text: 'Se preferir, diga resumidamente qual é o problema (ex: "dor ao mastigar", "sensibilidade", "quero agendar"). Posso fazer triagem e agendar.',
-    suggestions: ['Dói ao mastigar', 'Sensibilidade ao frio', 'Quero agendar', 'Tenho inchaço']
+    title: 'Assistente Sofia',
+    text: 'Sinto muito, não consegui compreender totalmente o termo utilizado. Mas não se preocupe: sou especialista em identificar casos de dor, sensibilidade, tratamentos estéticos e agendamentos. Você poderia resumir sua dúvida em poucas palavras (ex: "quero clareamento" ou "estou com inchaço")?',
+    suggestions: ['Agendar uma Consulta', 'Dores ou Urgências', 'Tratamentos Estéticos', 'Falar com Atendente']
   };
 }
 
@@ -330,8 +356,8 @@ export function ClinicChat() {
     didGreet.current = true;
     addBotMessage({
       title: 'Olá 👋',
-      text: `Bem-vindo à ${CLINICA}! Sou o assistente virtual. Posso ajudar com dores, agendamentos e informações sobre tratamentos. Como posso ajudar você hoje?`,
-      suggestions: ['Dói ao mastigar', 'Sensibilidade ao frio', 'Quero agendar']
+      text: `Olá! Sou a Sofia, assistente virtual da sua clínica ${CLINICA}. É um prazer ajudar! Posso auxiliar com agendamentos, orientações sobre dores ou informações sobre nossos tratamentos de elite. Como posso ser útil hoje?`,
+      suggestions: ['Agendar Avaliação', 'Entender uma Dor', 'Procedimentos Estéticos']
     });
   }, [addBotMessage]);
 
@@ -412,17 +438,7 @@ export function ClinicChat() {
         onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
         onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
       >
-        <ChatBubbleIcon />
-        <span
-          style={{
-            position: "absolute",
-            inset: -2,
-            borderRadius: "50%",
-            border: "2px solid #fff",
-            animation: "chat-pulse 2s infinite",
-            pointerEvents: "none",
-          }}
-        />
+        <WhatsAppIcon />
       </button>
 
       {/* ── CHAT WINDOW ─────────────────────────────────────────────────── */}

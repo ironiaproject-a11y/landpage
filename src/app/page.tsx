@@ -56,6 +56,7 @@ export default function Home() {
   // Direct Refs for synced typography
   const originTextRef = useRef<HTMLParagraphElement>(null);
   const smileTextRef  = useRef<HTMLHeadingElement>(null);
+  const heroBtnRef    = useRef<HTMLAnchorElement>(null);
   const [isActuallyPlaying, setIsActuallyPlaying] = useState(false);
 
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
@@ -104,8 +105,9 @@ export default function Home() {
     const heroContent = heroContentRef.current;
     const originText  = originTextRef.current;
     const smileText   = smileTextRef.current;
+    const heroBtn     = heroBtnRef.current;
     
-    if (!video || !container || !heroContent || !originText || !smileText) return;
+    if (!video || !container || !heroContent || !originText || !smileText || !heroBtn) return;
 
     const ctx = gsap.context(() => {
       let isInit = false;
@@ -126,6 +128,7 @@ export default function Home() {
           // ── EXPLICIT INITIAL STATES ──
           gsap.set(originText, { opacity: 1, y: 0 });
           gsap.set(smileText,  { opacity: 0, y: 20 });
+          gsap.set(heroBtn,    { opacity: 0, y: 30, scale: 0.9 });
           gsap.set(video, { opacity: 1 });
 
           // ── THE MASTER TIMELINE ──
@@ -147,6 +150,10 @@ export default function Home() {
           mainTl.fromTo(smileText,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: duration * 0.25, ease: "power2.out" }, duration * 0.75);
+
+          mainTl.fromTo(heroBtn,
+            { opacity: 0, y: 30, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: duration * 0.25, ease: "back.out(1.7)" }, duration * 0.8);
 
           // The "Driver": animates proxy.time which in turn updates video.currentTime
           mainTl.fromTo(proxy, { time: 0 }, { time: safeEnd, duration: duration, ease: "none" }, 0);
@@ -320,11 +327,9 @@ export default function Home() {
                   Odontologia de alta performance
                 </p>
               </PremiumReveal>
-              <PremiumReveal type="fade" direction="bottom" delay={0.65}>
-                <a href="#agendamento" className="hero-cta">
-                  AGENDAR CONSULTA →
-                </a>
-              </PremiumReveal>
+              <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
+                AGENDAR CONSULTA →
+              </a>
             </div>
 
           </div>
