@@ -17,6 +17,7 @@ if (typeof window !== "undefined") {
 import { Stats } from "@/components/Stats";
 import { Services } from "@/components/Services";
 import { TrustBar } from "@/components/TrustBar";
+import { LocationSection } from "@/components/LocationSection";
 
 const About = nextDynamic(() => import("@/components/About").then(mod => mod.About), {
   ssr: false,
@@ -350,6 +351,7 @@ export default function Home() {
         <Testimonials />
         <FAQ />
         <Agendamento />
+        <LocationSection />
         <Footer />
       </div>
     </main>
