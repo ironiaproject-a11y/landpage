@@ -52,6 +52,7 @@ const Footer = nextDynamic(() => import("@/components/Footer").then(mod => mod.F
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   const originTextRef = useRef<HTMLParagraphElement>(null);
@@ -143,6 +144,52 @@ export default function Home() {
     };
   }, []);
 
+  /* ─── CANVAS RENDERER ────────────────────────────────────────── */
+  const renderFrame = () => {
+    const video  = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
+
+    const ctx = canvas.getContext("2d", { alpha: false });
+    if (!ctx) return;
+
+    // High DPI Handling
+    const dpr = window.devicePixelRatio || 1;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+    }
+
+    // Object-fit: cover implementation in Canvas
+    const videoW = video.videoWidth || 1920;
+    const videoH = video.videoHeight || 1080;
+    const videoAspect = videoW / videoH;
+    const canvasAspect = w / h;
+
+    let drawW, drawH, offsetX = 0, offsetY = 0;
+
+    if (canvasAspect > videoAspect) {
+      drawW = w * dpr;
+      drawH = (w * dpr) / videoAspect;
+      offsetY = (canvas.height - drawH) / 2;
+    } else {
+      drawH = h * dpr;
+      drawW = (h * dpr) * videoAspect;
+      offsetX = (canvas.width - drawW) / 2;
+    }
+
+    ctx.drawImage(video, offsetX, offsetY, drawW, drawH);
+  };
+
+  // Sync canvas with resize
+  useEffect(() => {
+    window.addEventListener("resize", renderFrame);
+    return () => window.removeEventListener("resize", renderFrame);
+  }, []);
+
   /* ─── GSAP UNIFIED MASTER TIMELINE ───────────────────────────────── */
   useEffect(() => {
     const video       = videoRef.current;
@@ -183,6 +230,7 @@ export default function Home() {
             onUpdate: () => {
               if (video && !isNaN(proxy.time)) {
                 video.currentTime = proxy.time;
+                renderFrame();
               }
             }
           });
@@ -208,12 +256,14 @@ export default function Home() {
           video.play().then(() => {
             setIsVideoPrimed(true);
             video.pause();
+            renderFrame();
             
             // ── PHASE 1: MECHANICAL INTRO ──
             mainTl.play();
           }).catch(() => {
             // Fallback for strict autoplay blocks: statically reveal the first frame
             if (video) video.currentTime = 0.01;
+            renderFrame();
             setIsVideoPrimed(true);
             mainTl.play();
           });
@@ -309,10 +359,9 @@ export default function Home() {
             pointerEvents: "auto",
           }}
         >
-          {/* Main Visual Video directly embedded */}
+          {/* Main Visual Source (Hidden from view but used as frame buffer) */}
           <video
             ref={videoRef}
-            autoPlay
             muted
             playsInline
             /* @ts-ignore - non-standard WebKit prop */
@@ -324,24 +373,33 @@ export default function Home() {
             /* @ts-ignore - Safari specific prop */
             x-webkit-airplay="deny"
             style={{
+              position: "absolute",
+              opacity: 0,
+              pointerEvents: "none",
+              visibility: "hidden"
+            }}
+          >
+            <source src="/hero-background-new.mp4" type="video/mp4" />
+          </video>
+
+          {/* New Canvas Renderer — 100% Native-UI-Free */}
+          <canvas
+            ref={canvasRef}
+            style={{
               position:       "absolute",
               top:            0,
               left:           0,
               width:          "100vw",
               height:         "100dvh",
-              objectFit:      "cover",
-              objectPosition: "center",
               zIndex:         0,
               pointerEvents:  "none",
-              willChange:     "transform, filter, opacity",
+              willChange:     "transform",
               opacity:        1,
               transition:     "opacity 0.8s ease-in-out",
-              transform:      "scale(1.3) translateZ(0)",
-              filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
+              transform:      "scale(1.1) translateZ(0)",
+              filter:         "grayscale(1) contrast(1.1) brightness(0.6)",
             }}
-          >
-            <source src="/hero-background-new.mp4" type="video/mp4" />
-          </video>
+          />
 
           {/* Background gradient - always visible as base */}
           <div 
