@@ -329,7 +329,7 @@ export default function Home() {
               position: "absolute", 
               inset: 0, 
               backgroundColor: "#000000", 
-              zIndex: 1, 
+              zIndex: 999, 
               opacity: isVideoPrimed ? 0 : 1, 
               transition: "opacity 1.2s ease-in-out",
               pointerEvents: "none"
