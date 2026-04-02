@@ -532,22 +532,24 @@ nav {
 }
 
 .hero-cta {
-  padding: 20px 52px !important;
-  font-size: 13px !important;
-  letter-spacing: 0.22em !important;
-  font-weight: 600 !important;
+  padding: 14px 40px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.25em !important;
+  font-weight: 500 !important;
   text-transform: uppercase !important;
-  border: none !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #ffffff !important;
   border-radius: 9999px !important;
-  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
   text-decoration: none !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5em !important;
-  box-shadow: 0 8px 32px rgba(255,255,255,0.18), 0 2px 8px rgba(0,0,0,0.4) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
   pointer-events: auto !important;
   position: relative !important;
   overflow: hidden !important;
@@ -557,9 +559,9 @@ nav {
   content: '' !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent) !important;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
   transform: translateX(-100%) !important;
-  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) !important;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1) !important;
 }
 
 .hero-cta:hover::before {
@@ -567,10 +569,11 @@ nav {
 }
 
 .hero-cta:hover {
-  background: #fdfaf4 !important; /* Subtle warm white */
+  background: #ffffff !important;
   color: #000000 !important;
-  transform: translateY(-3px) scale(1.02) !important;
-  box-shadow: 0 16px 48px rgba(var(--color-accent-gold-rgb), 0.22), 0 4px 16px rgba(0,0,0,0.5) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 30px rgba(255,255,255,0.15) !important;
+  border-color: #ffffff !important;
 }
 
 @media (max-width: 768px) {
@@ -582,8 +585,9 @@ nav {
     font-size: 13px !important;
   }
   .hero-cta {
-    width: 100% !important;
-    padding: 20px 32px !important;
+    width: auto !important;
+    min-width: 220px !important;
+    padding: 16px 32px !important;
   }
 }
 
