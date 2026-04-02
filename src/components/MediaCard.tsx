@@ -190,6 +190,22 @@ export function MediaCard({
                 }
             }}
         >
+            {/* Poster Image Layer (High-End Placeholder) */}
+            <div className={clsx(
+                "absolute inset-0 z-0 transition-opacity duration-700",
+                isPlaying && isLoaded ? "opacity-0" : "opacity-100"
+            )}>
+                <Image
+                    ref={posterRef}
+                    src={posterSrc}
+                    alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    priority={isInView}
+                />
+            </div>
+
             {/* Video Layer */}
             <video
                 ref={videoRef}
@@ -201,7 +217,7 @@ export function MediaCard({
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
                     "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out z-[1]",
-                    isLoaded ? "opacity-100" : "opacity-0"
+                    (isPlaying && isLoaded) ? "opacity-100" : "opacity-0"
                 )}
             />
 

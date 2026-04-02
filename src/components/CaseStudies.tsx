@@ -54,13 +54,14 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                     <span className="text-level-4 uppercase">Depois</span>
                 </div>
 
-                <video
-                    src={item.video}
-                    controls
-                    muted
-                    playsInline
-                    className="w-[115%] h-[115%] object-cover absolute top-0 left-1/2 -translate-x-1/2 translate-y-[5%] grayscale"
-                    title={item.title}
+                <MediaCard
+                    mp4Src={item.video}
+                    posterSrc={item.poster}
+                    alt={item.title}
+                    ariaLabel={item.title}
+                    className="w-full h-full grayscale"
+                    aspectRatio="aspect-video"
+                    playing={isVideoActive}
                 />
             </div>
         </LuxuryCard>

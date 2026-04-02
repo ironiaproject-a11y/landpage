@@ -288,7 +288,6 @@ export default function Home() {
             preload="auto"
             /* @ts-ignore - Safari specific prop */
             x-webkit-airplay="deny"
-            poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
             style={{
               position:       "absolute",
               top:            0,

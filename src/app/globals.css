@@ -9,6 +9,7 @@ img, svg, video {
 }
 
 /* ☢️ NUCLEAR VIDEO CONTROL SUPPRESSION ☢️ */
+/* Webkit (Safari, Chrome, Edge, etc.) */
 video::-webkit-media-controls {
   display: none !important;
   opacity: 0 !important;
@@ -49,6 +50,10 @@ video::-webkit-media-controls-overlay-play-button {
 video::-internal-media-controls-download-button { display: none !important; }
 video::-internal-media-controls-overflow-button { display: none !important; }
 
+/* Firefox (Gecko) */
+video::-moz-list-bullet { display: none !important; }
+video::-moz-list-number { display: none !important; }
+
 /* Global pseudo-element capture for any media on page */
 *::-webkit-media-controls-start-playback-button {
     display: none !important;
@@ -60,6 +65,13 @@ video::-internal-media-controls-overflow-button { display: none !important; }
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
+}
+
+/* Force hiding on any possible system play button overlay */
+video {
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
 /* Canvas filter managed individually per component to avoid stacking */
 
