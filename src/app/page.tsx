@@ -71,24 +71,44 @@ export default function Home() {
     checkIOS();
   }, []);
 
+  /* ─── FORCE iOS AUTOPLAY ──────────────────────────────────────── */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const attemptAutoplay = async () => {
+      try {
+        await video.play();
+        setIsVideoPrimed(true);
+      } catch (err) {
+        // Autoplay blocked - try muted autoplay
+        video.muted = true;
+        video.defaultMuted = true;
+        try {
+          await video.play();
+          setIsVideoPrimed(true);
+        } catch {
+          setIsVideoPrimed(true);
+        }
+      }
+    };
+
+    // Small delay to ensure video is loaded
+    const timer = setTimeout(attemptAutoplay, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Ensure all mobile-critical attributes are set programmatically
+    // Ensure all mobile-critical attributes are set
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
-
-    // ── iOS: Force video to stay hidden until user interaction ────────
-    // This prevents the native iOS play button from showing
-    if (isIOS) {
-      video.style.opacity = "0";
-      video.style.visibility = "hidden";
-    }
 
     // ── iOS AudioContext UNLOCK TRICK ─────────────────────────────────
     const unlockAudio = () => {
@@ -101,46 +121,17 @@ export default function Home() {
       } catch { /* ignore */ }
     };
 
-    // ── INTERACTION: Reveals video on iOS ────────────────────────────
+    // ── INTERACTION: Set primed on user interaction ──────────────────
     const onInteraction = () => {
       unlockAudio();
+      setIsVideoPrimed(true);
       
-      // On iOS, we reveal video only after user interaction
-      // This completely hides the native play button
-      if (isIOS) {
-        video.style.opacity = "1";
-        video.style.visibility = "visible";
-        video.style.transition = "opacity 0.5s ease-in-out, visibility 0s linear 0s";
-        
-        if (video.paused) {
-          video.play().then(() => {
-            video.pause();
-            setIsVideoPrimed(true);
-          }).catch(() => {
-            setIsVideoPrimed(true);
-          });
-        } else {
-          setIsVideoPrimed(true);
-        }
-      } else {
-        // On non-iOS, just set primed
-        if (video.paused) {
-          video.play().then(() => {
-            setIsVideoPrimed(true);
-            video.pause();
-          }).catch(() => {});
-        } else {
-          setIsVideoPrimed(true);
-        }
-      }
-      
-      // Remove listeners after first interaction
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("touchstart", onInteraction);
       window.removeEventListener("scroll", onInteraction);
     };
     
-    // Add listeners for ALL users (mobile and desktop)
+    // Add listeners
     window.addEventListener("pointerdown", onInteraction, { passive: true });
     window.addEventListener("touchstart", onInteraction, { passive: true });
     window.addEventListener("scroll", onInteraction, { passive: true });
@@ -150,7 +141,7 @@ export default function Home() {
       window.removeEventListener("touchstart", onInteraction);
       window.removeEventListener("scroll", onInteraction);
     };
-  }, [isIOS]);
+  }, []);
 
   /* ─── GSAP UNIFIED MASTER TIMELINE ───────────────────────────────── */
   useEffect(() => {
@@ -342,10 +333,9 @@ export default function Home() {
               objectPosition: "center",
               zIndex:         0,
               pointerEvents:  "none",
-              willChange:     "transform, filter, opacity, visibility",
-              opacity:        isVideoPrimed ? 1 : 0,
-              visibility:     isVideoPrimed ? "visible" : "hidden",
-              transition:     "opacity 0.8s ease-in-out, visibility 0.8s ease-in-out",
+              willChange:     "transform, filter, opacity",
+              opacity:        1,
+              transition:     "opacity 0.8s ease-in-out",
               transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
@@ -353,15 +343,13 @@ export default function Home() {
             <source src="/hero-background-new.mp4" type="video/mp4" />
           </video>
 
-          {/* Mobile placeholder - covers everything until video is ready */}
+          {/* Background gradient - always visible as base */}
           <div 
             style={{ 
               position: "absolute", 
               inset: 0, 
-              backgroundColor: "#000000", 
-              backgroundImage: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%)",
-              zIndex: isVideoPrimed ? -1 : 2, 
-              transition: "z-index 0s linear 0.8s",
+              background: "linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 30%, #0d0d0d 70%, #000000 100%)",
+              zIndex: -1, 
               pointerEvents: "none"
             }} 
           />
