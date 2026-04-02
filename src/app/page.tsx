@@ -57,6 +57,7 @@ export default function Home() {
   const originTextRef = useRef<HTMLParagraphElement>(null);
   const smileTextRef  = useRef<HTMLHeadingElement>(null);
   const heroBtnRef    = useRef<HTMLAnchorElement>(null);
+  const [isVideoPrimed, setIsVideoPrimed] = useState(false);
 
   /* ─── VIDEO AUTOPLAY (MOBILE AUDIO UNLOCK) ─────────────────────── */
   useEffect(() => {
@@ -86,7 +87,12 @@ export default function Home() {
     const onInteraction = () => {
       unlockAudio();
       if (video.paused) {
-        video.play().then(() => video.pause()).catch(() => {});
+        video.play().then(() => {
+          setIsVideoPrimed(true);
+          video.pause();
+        }).catch(() => {});
+      } else {
+        setIsVideoPrimed(true);
       }
       window.removeEventListener("pointerdown", onInteraction);
       window.removeEventListener("touchstart", onInteraction);
@@ -165,6 +171,7 @@ export default function Home() {
           // ── VIDEO PRIMING (Critical for Mobile Seeking) ──
           // We call play() then pause() immediately to notify the browser that seeking will start.
           video.play().then(() => {
+            setIsVideoPrimed(true);
             video.pause();
             
             // ── PHASE 1: MECHANICAL INTRO ──
@@ -288,8 +295,9 @@ export default function Home() {
               objectPosition: "center",
               zIndex:         0,
               pointerEvents:  "none",
-              willChange:     "transform, filter",
-              opacity:        0,
+              willChange:     "transform, filter, opacity",
+              opacity:        isVideoPrimed ? 1 : 0,
+              transition:     "opacity 0.8s ease-in-out",
               transform:      "scale(1.3) translateZ(0)",
               filter:         "grayscale(1) contrast(1.1) brightness(0.5)",
             }}
