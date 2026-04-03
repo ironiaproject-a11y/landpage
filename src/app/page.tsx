@@ -482,6 +482,10 @@ export default function Home() {
               <h1 ref={smileTextRef} className="hero-headline">
                 Seu sorriso<span className="hero-period">.</span>
               </h1>
+              <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
+                AGENDAR CONSULTA →
+              </a>
+              <div className="hero-social-proof">★★★★★ 4.9 no Google</div>
             </div>
 
             <div className="hero-action-group">
@@ -491,9 +495,6 @@ export default function Home() {
                   Odontologia de alta performance
                 </p>
               </PremiumReveal>
-              <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
-                AGENDAR CONSULTA →
-              </a>
             </div>
 
           </div>
