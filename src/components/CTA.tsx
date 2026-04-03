@@ -86,9 +86,15 @@ export function CTA() {
                     <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] glow-blob opacity-20" />
 
                     <PremiumReveal type="fade" direction="top" delay={0.2}>
-                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-caption-marker border border-white/10 mb-12">
-                            <Calendar strokeWidth={1} className="w-3.5 h-3.5" />
-                            Agenda Aberta 2026
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
+                            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 text-white text-caption-marker border border-white/10">
+                                <Calendar strokeWidth={1} className="w-3.5 h-3.5" />
+                                Agenda Aberta — Abril 2026
+                            </div>
+                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-caption-marker font-medium animate-pulse">
+                                <span className="w-1.5 h-1.5 rounded-full bg-black inline-block" />
+                                Últimas vagas disponíveis
+                            </div>
                         </div>
                     </PremiumReveal>
 

@@ -478,7 +478,7 @@ export default function Home() {
           <div ref={heroContentRef} className="hero-content-split" style={{ pointerEvents: "auto", position: 'relative', height: '100%', zIndex: 2 }}>
 
             <div className="hero-text-group">
-              <p ref={originTextRef} className="hero-overline">SUA ORIGEM,</p>
+              <p ref={originTextRef} className="hero-overline">PEREIRA BARRETO · SP</p>
               <h1 ref={smileTextRef} className="hero-headline">
                 Seu sorriso<span className="hero-period">.</span>
               </h1>
@@ -487,13 +487,21 @@ export default function Home() {
             <div className="hero-action-group">
 
               <PremiumReveal type="fade" direction="bottom" delay={0.5}>
-                <p className="hero-subheadline" style={{ opacity: 0, pointerEvents: 'none', userSelect: 'none' }}>
-                  Odontologia de alta performance
+                <p className="hero-subheadline">
+                  Implantes · Facetas · Ortodontia · Endodontia
                 </p>
               </PremiumReveal>
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
+              {/* Micro trust signals */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '20px', opacity: 0.35, fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                <span>✦ Mais de 785 sorrisos</span>
+                <span style={{ width: '1px', height: '10px', background: 'rgba(255,255,255,0.3)' }} />
+                <span>97% satisfação</span>
+                <span style={{ width: '1px', height: '10px', background: 'rgba(255,255,255,0.3)' }} />
+                <span>20+ anos</span>
+              </div>
             </div>
 
           </div>
