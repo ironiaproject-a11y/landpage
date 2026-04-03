@@ -574,19 +574,25 @@ nav {
   display: flex !important;
   align-items: center !important;
   gap: 1.5rem !important;
-  margin-top: clamp(40px, 8vh, 60px) !important;
+  margin-top: clamp(32px, 6vh, 48px) !important;
   padding: 10px 24px !important;
   background: rgba(255, 255, 255, 0.03) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.05) !important;
   border-radius: 9999px !important;
-  opacity: 0.5;
-  transition: opacity 0.5s ease;
+  opacity: 0;
+  animation: hero-badge-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1s;
+}
+
+@keyframes hero-badge-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 0.45; transform: translateY(0); }
 }
 
 .hero-trust-badge:hover {
-  opacity: 0.85;
+  opacity: 0.8 !important;
 }
 
 .hero-trust-item {

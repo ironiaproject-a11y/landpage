@@ -484,11 +484,6 @@ export default function Home() {
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
-              <div className="hero-trust-badge">
-                <span className="hero-trust-item">★★★★★ 4.9 NO GOOGLE</span>
-                <span className="hero-trust-divider" />
-                <span className="hero-trust-item">785+ SORRISOS TRANSFORMADOS</span>
-              </div>
             </div>
 
             <div className="hero-action-group">
@@ -498,6 +493,11 @@ export default function Home() {
                   Odontologia de alta performance
                 </p>
               </PremiumReveal>
+              <div className="hero-trust-badge">
+                <span className="hero-trust-item">★★★★★ 4.9 NO GOOGLE</span>
+                <span className="hero-trust-divider" />
+                <span className="hero-trust-item">785+ SORRISOS TRANSFORMADOS</span>
+              </div>
             </div>
 
           </div>
