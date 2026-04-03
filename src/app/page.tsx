@@ -256,14 +256,15 @@ export default function Home() {
           video.play().then(() => {
             setIsVideoPrimed(true);
             video.pause();
-            renderFrame();
+            // Force an initial draw
+            setTimeout(renderFrame, 50); 
             
             // ── PHASE 1: MECHANICAL INTRO ──
             mainTl.play();
           }).catch(() => {
             // Fallback for strict autoplay blocks: statically reveal the first frame
             if (video) video.currentTime = 0.01;
-            renderFrame();
+            setTimeout(renderFrame, 50);
             setIsVideoPrimed(true);
             mainTl.play();
           });
@@ -359,9 +360,11 @@ export default function Home() {
             pointerEvents: "auto",
           }}
         >
-          {/* Main Visual Source (Hidden from view but used as frame buffer) */}
+          {/* Main Visual Source (Hidden buffer) */}
           <video
             ref={videoRef}
+            autoPlay
+            loop
             muted
             playsInline
             /* @ts-ignore - non-standard WebKit prop */
@@ -372,11 +375,16 @@ export default function Home() {
             preload="auto"
             /* @ts-ignore - Safari specific prop */
             x-webkit-airplay="deny"
+            onCanPlay={renderFrame}
+            onPlaying={renderFrame}
+            onSeeked={renderFrame}
             style={{
               position: "absolute",
               opacity: 0,
               pointerEvents: "none",
-              visibility: "hidden"
+              width: "1px",  /* Some browsers need non-zero size to decode */
+              height: "1px",
+              zIndex: -1
             }}
           >
             <source src="/hero-background-new.mp4" type="video/mp4" />
