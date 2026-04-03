@@ -82,19 +82,10 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                     </p>
 
                     <div className="mt-auto">
-                        <a
-                            href={`#agendamento?servico=${encodeURIComponent(service.title)}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                const el = document.getElementById('agendamento');
-                                if (el) el.scrollIntoView({ behavior: 'smooth' });
-                            }}
-                            className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-level-4 uppercase transition-all duration-700 hover:bg-white hover:text-black hover:border-white hover:shadow-[0_12px_40px_rgba(255,255,255,0.12)]"
-                            aria-label={`Agendar consulta para ${service.title}`}
-                        >
-                            <span>Agendar Consulta</span>
+                        <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-[var(--color-text-primary)] text-level-4 uppercase transition-all duration-700 group-hover:bg-white group-hover:text-black group-hover:border-white group-hover:shadow-[0_12px_40px_rgba(255,255,255,0.12)]">
+                            <span>Conhecer Protocolo</span>
                             <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -331,7 +322,7 @@ export function Services() {
             </div>
 
             {/* Services Grid Evolution - Dynamic Asymmetrical Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-32">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[80px] md:gap-32">
                 {
                     services.map((service, index) => (
                         <div key={index} className="service-card-wrapper h-auto md:h-full">

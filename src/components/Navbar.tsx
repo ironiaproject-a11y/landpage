@@ -303,30 +303,15 @@ export function Navbar() {
                     {/* Mobile Toggle - Only visible after scroll for maximum minimalism in Hero */}
                     <AnimatePresence>
                         {isScrolled && (
-                            <m.div
+                            <m.button
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
-                                className="md:hidden relative z-50 flex items-center gap-3"
+                                className="md:hidden relative z-50 text-[var(--color-text-primary)]"
+                                onClick={() => setIsMobileOpen(!isMobileOpen)}
                             >
-                                {/* WhatsApp quick CTA — mobile only */}
-                                <a
-                                    href="https://wa.me/5518999999999"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Falar no WhatsApp"
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-[10px] font-medium tracking-[0.12em] uppercase transition-all active:scale-95"
-                                >
-                                    <Phone size={12} strokeWidth={2} />
-                                    WhatsApp
-                                </a>
-                                <m.button
-                                    className="text-[var(--color-text-primary)]"
-                                    onClick={() => setIsMobileOpen(!isMobileOpen)}
-                                >
-                                    {isMobileOpen ? <X strokeWidth={1} /> : <Menu strokeWidth={1} />}
-                                </m.button>
-                            </m.div>
+                                {isMobileOpen ? <X strokeWidth={1} /> : <Menu strokeWidth={1} />}
+                            </m.button>
                         )}
                     </AnimatePresence>
                 </div>
