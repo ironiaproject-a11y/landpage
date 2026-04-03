@@ -567,19 +567,41 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: clamp(80px, 12vh, 120px);
-  width: 100%;
   gap: 12px;
 }
 
-.hero-social-proof {
-  font-size: 11px;
+.hero-trust-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  margin-top: clamp(40px, 8vh, 60px) !important;
+  padding: 10px 24px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 9999px !important;
   opacity: 0.5;
-  margin-top: 16px;
-  letter-spacing: 0.05em;
-  font-weight: 400;
-  text-align: center;
-  color: #FFFFFF;
+  transition: opacity 0.5s ease;
+}
+
+.hero-trust-badge:hover {
+  opacity: 0.85;
+}
+
+.hero-trust-item {
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: #FFFFFF !important;
+  white-space: nowrap !important;
+}
+
+.hero-trust-divider {
+  width: 1px !important;
+  height: 12px !important;
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 
 .hero-overline {

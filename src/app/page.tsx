@@ -14,7 +14,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-import { Stats } from "@/components/Stats";
 import { Services } from "@/components/Services";
 import { TrustBar } from "@/components/TrustBar";
 import { LocationSection } from "@/components/LocationSection";
@@ -485,7 +484,11 @@ export default function Home() {
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
-              <div className="hero-social-proof">★★★★★ 4.9 no Google</div>
+              <div className="hero-trust-badge">
+                <span className="hero-trust-item">★★★★★ 4.9 NO GOOGLE</span>
+                <span className="hero-trust-divider" />
+                <span className="hero-trust-item">785+ SORRISOS TRANSFORMADOS</span>
+              </div>
             </div>
 
             <div className="hero-action-group">
@@ -503,7 +506,6 @@ export default function Home() {
 
       {/* Main Sections */}
       <div className="relative z-30 bg-[#0D0D0D] pt-16">
-        <Stats />
         <Services />
         <TrustBar />
         <InstitutionalTrust />
