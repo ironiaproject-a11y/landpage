@@ -60,7 +60,8 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                     alt={item.title}
                     ariaLabel={item.title}
                     className="w-full h-full grayscale"
-                    videoClassName="scale-[1.5] translate-y-[12%] origin-center"
+                    videoClassName="scale-[1.8] origin-top"
+                    posterClassName="scale-[1.8] origin-top"
                     aspectRatio="aspect-video"
                     playing={isVideoActive}
                 />

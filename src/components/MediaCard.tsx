@@ -13,6 +13,7 @@ interface MediaCardProps {
     ariaLabel: string;
     className?: string;
     videoClassName?: string;
+    posterClassName?: string;
     aspectRatio?: string;
     onPlay?: () => void;
     onPause?: () => void;
@@ -37,6 +38,7 @@ export function MediaCard({
     ariaLabel,
     className,
     videoClassName,
+    posterClassName,
     aspectRatio = "aspect-[4/3]",
     onPlay,
     onPause,
@@ -203,7 +205,7 @@ export function MediaCard({
                     alt={alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    className={clsx("object-cover", posterClassName)}
                     priority={isInView}
                 />
             </div>
