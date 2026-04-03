@@ -25,6 +25,7 @@ interface Service {
     tag: string;
     image: string;
     video: string;
+    useVideoAsPoster?: boolean;
 }
 
 
@@ -62,6 +63,7 @@ function ServiceCard({ service, index, isMobile }: { service: Service; index: nu
                             ariaLabel={service.title}
                             className="shadow-2xl rounded-xl overflow-hidden"
                             playing={isVideoActive}
+                            useVideoAsPoster={service.useVideoAsPoster}
                         />
                     </m.div>
                 </div>
@@ -109,7 +111,8 @@ export function Services() {
             description: "Recupere a função e a estética do seu sorriso com implantes de alta durabilidade e precisão.",
             tag: "01",
             image: "/assets/images/service-implant.png",
-            video: "/assets/videos/services/implant_new.mp4"
+            video: "/assets/videos/services/implant_new.mp4",
+            useVideoAsPoster: true
         },
         {
             icon: "Activity",
@@ -173,7 +176,8 @@ export function Services() {
             description: "Correção e alinhamento dental com protocolos modernos para um sorriso funcional e estético.",
             tag: "09",
             image: "/assets/images/service-orthodontics.png",
-            video: "/assets/videos/services/ortho_protocol.mp4"
+            video: "/assets/videos/services/ortho_protocol.mp4",
+            useVideoAsPoster: true
         },
         {
             icon: "ScanLine",

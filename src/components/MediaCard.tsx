@@ -19,6 +19,7 @@ interface MediaCardProps {
     onPause?: () => void;
     playing?: boolean;
     onClick?: () => void;
+    useVideoAsPoster?: boolean;
 }
 
 /**
@@ -43,7 +44,8 @@ export function MediaCard({
     onPlay,
     onPause,
     playing,
-    onClick
+    onClick,
+    useVideoAsPoster = false
 }: MediaCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -221,7 +223,7 @@ export function MediaCard({
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
                     "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out z-[1]",
-                    (isPlaying && isLoaded) ? "opacity-100" : "opacity-0",
+                    (isPlaying && isLoaded) || (useVideoAsPoster && isLoaded) ? "opacity-100" : "opacity-0",
                     videoClassName
                 )}
             />
