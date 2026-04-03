@@ -12,6 +12,7 @@ interface MediaCardProps {
     alt: string;
     ariaLabel: string;
     className?: string;
+    videoClassName?: string;
     aspectRatio?: string;
     onPlay?: () => void;
     onPause?: () => void;
@@ -35,6 +36,7 @@ export function MediaCard({
     alt,
     ariaLabel,
     className,
+    videoClassName,
     aspectRatio = "aspect-[4/3]",
     onPlay,
     onPause,
@@ -217,7 +219,8 @@ export function MediaCard({
                 onLoadedData={() => setIsLoaded(true)}
                 className={clsx(
                     "media-video absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out z-[1]",
-                    (isPlaying && isLoaded) ? "opacity-100" : "opacity-0"
+                    (isPlaying && isLoaded) ? "opacity-100" : "opacity-0",
+                    videoClassName
                 )}
             />
 
