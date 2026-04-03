@@ -494,9 +494,9 @@ export default function Home() {
                 </p>
               </PremiumReveal>
               <div className="hero-trust-badge">
-                <span className="hero-trust-item">★★★★★ 4.9 NO GOOGLE</span>
+                <span className="hero-trust-item">4.9 Google Rating</span>
                 <span className="hero-trust-divider" />
-                <span className="hero-trust-item">785+ SORRISOS TRANSFORMADOS</span>
+                <span className="hero-trust-item">785+ Sorrisos Transformados</span>
               </div>
             </div>
 

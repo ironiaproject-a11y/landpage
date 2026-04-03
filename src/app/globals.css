@@ -573,41 +573,43 @@ nav {
 .hero-trust-badge {
   display: flex !important;
   align-items: center !important;
-  gap: 1.5rem !important;
-  margin-top: clamp(32px, 6vh, 48px) !important;
-  padding: 10px 24px !important;
-  background: rgba(255, 255, 255, 0.03) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  border-radius: 9999px !important;
+  gap: 2rem !important;
+  margin-top: clamp(48px, 10vh, 80px) !important;
+  padding: 0 !important; /* No more box padding */
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  border-radius: 0 !important;
   opacity: 0;
-  animation: hero-badge-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 1s;
+  animation: hero-badge-fade 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1.2s;
 }
 
 @keyframes hero-badge-fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 0.45; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); letter-spacing: 0.1em; }
+  to { opacity: 0.35; transform: translateY(0); letter-spacing: 0.3em; }
 }
 
 .hero-trust-badge:hover {
-  opacity: 0.8 !important;
+  opacity: 0.7 !important;
 }
 
 .hero-trust-item {
-  font-size: 10px !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.2em !important;
+  font-size: 11px !important;
+  font-weight: 300 !important;
+  letter-spacing: inherit !important;
   text-transform: uppercase !important;
   color: #FFFFFF !important;
   white-space: nowrap !important;
+  font-family: var(--font-sans) !important;
 }
 
 .hero-trust-divider {
-  width: 1px !important;
-  height: 12px !important;
-  background: rgba(255, 255, 255, 0.15) !important;
+  width: 4px !important;
+  height: 4px !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50% !important;
 }
 
 .hero-overline {
