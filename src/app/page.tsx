@@ -6,6 +6,7 @@ import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/c
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
 import { PremiumReveal } from "@/components/PremiumReveal";
+import { Star } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -494,7 +495,15 @@ export default function Home() {
                 </p>
               </PremiumReveal>
               <div className="hero-trust-badge">
-                <span className="hero-trust-item">4.9 Google Rating</span>
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={11} fill="white" className="text-white opacity-90" strokeWidth={0} />
+                    ))}
+                  </div>
+                  <span className="hero-trust-item font-bold">4.9</span>
+                  <span className="hero-trust-item">Google Rating</span>
+                </div>
                 <span className="hero-trust-divider" />
                 <span className="hero-trust-item">785+ Sorrisos Transformados</span>
               </div>
