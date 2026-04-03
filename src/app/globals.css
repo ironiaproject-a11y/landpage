@@ -574,7 +574,6 @@ nav {
   display: flex !important;
   align-items: center !important;
   gap: 1.5rem !important;
-  margin-top: 1.5rem !important; /* Tighter spacing below CTA */
   padding: 8px 20px !important;
   background: rgba(255, 255, 255, 0.05) !important;
   backdrop-filter: blur(16px) !important;

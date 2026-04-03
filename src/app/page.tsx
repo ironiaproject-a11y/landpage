@@ -485,15 +485,6 @@ export default function Home() {
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
-            </div>
-
-            <div className="hero-action-group">
-
-              <PremiumReveal type="fade" direction="bottom" delay={0.5}>
-                <p className="hero-subheadline" style={{ opacity: 0, pointerEvents: 'none', userSelect: 'none' }}>
-                  Odontologia de alta performance
-                </p>
-              </PremiumReveal>
               <div className="hero-trust-badge">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-0.5">
@@ -508,6 +499,7 @@ export default function Home() {
                 <span className="hero-trust-item">785+ Sorrisos Transformados</span>
               </div>
             </div>
+
 
           </div>
         </div>
