@@ -573,36 +573,27 @@ nav {
 .hero-trust-badge {
   display: flex !important;
   align-items: center !important;
-  gap: 1.5rem !important;
-  padding: 8px 20px !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 9999px !important;
-  opacity: 0;
-  animation: hero-badge-fade 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 1.5s;
-  transition: all 0.5s ease-in-out !important;
-}
-
-@keyframes hero-badge-fade {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 0.8; transform: translateY(0); }
+  gap: 0.75rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  opacity: 0.65 !important;
+  transition: opacity 0.3s ease-in-out !important;
 }
 
 .hero-trust-badge:hover {
   opacity: 1 !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  transform: translateY(-2px);
 }
-
 .hero-trust-item {
   font-size: 11px !important;
   font-weight: 300 !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  text-transform: none !important;
   color: #FFFFFF !important;
   white-space: nowrap !important;
   font-family: var(--font-sans) !important;
@@ -610,7 +601,6 @@ nav {
   align-items: center;
   gap: 4px;
 }
-
 .hero-trust-item.font-bold {
   font-weight: 600 !important;
   letter-spacing: 0.05em !important;

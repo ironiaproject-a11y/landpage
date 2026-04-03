@@ -479,25 +479,22 @@ export default function Home() {
 
             <div className="hero-text-group">
               <p ref={originTextRef} className="hero-overline">SUA ORIGEM,</p>
+              <div className="hero-trust-badge">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} fill="white" className="text-white" strokeWidth={0} />
+                    ))}
+                  </div>
+                  <span className="hero-trust-item">4.9 no Google · 785+ sorrisos</span>
+                </div>
+              </div>
               <h1 ref={smileTextRef} className="hero-headline">
                 Seu sorriso<span className="hero-period">.</span>
               </h1>
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
-              <div className="hero-trust-badge">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={11} fill="white" className="text-white opacity-90" strokeWidth={0} />
-                    ))}
-                  </div>
-                  <span className="hero-trust-item font-bold">4.9</span>
-                  <span className="hero-trust-item">Google Rating</span>
-                </div>
-                <span className="hero-trust-divider" />
-                <span className="hero-trust-item">785+ Sorrisos Transformados</span>
-              </div>
             </div>
 
 
