@@ -664,17 +664,6 @@ nav {
   letter-spacing: 0.1em !important;
 }
 
-.hero-sub-headline {
-  font-size: 17px !important;
-  font-weight: 400 !important;
-  color: rgba(255, 255, 255, 0.65) !important;
-  margin-top: 16px !important;
-  margin-bottom: 0 !important;
-  letter-spacing: 0.02em !important;
-  font-family: var(--font-sans) !important;
-  line-height: 1.5 !important;
-}
-
 .hero-social-proof {
   display: flex;
   flex-direction: column;
@@ -697,7 +686,7 @@ nav {
 
 .hero-stars {
   font-size: 18px;
-  color: #D4AF37;
+  color: rgba(255, 255, 255, 0.8);
   letter-spacing: 2px;
   line-height: 1;
 }
@@ -768,10 +757,6 @@ nav {
 @media (max-width: 768px) {
   .hero-headline {
     font-size: 56px !important;
-  }
-  .hero-sub-headline {
-    font-size: 15px !important;
-    padding: 0 20px;
   }
   .hero-subheadline {
     white-space: normal !important;
