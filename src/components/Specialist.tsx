@@ -254,21 +254,23 @@ export function Specialist() {
                         </div>
 
                         <PremiumReveal type="fade" delay={0.4}>
-                            <div ref={quoteRef}>
+                            <div ref={quoteRef} className="h-full flex flex-col justify-center">
                                 <LuxuryCard
                                     glowColor="rgba(255,255,255,0.05)"
                                     className="border-white/5"
-                                    innerClassName="p-8 md:p-10 flex flex-col justify-between items-center text-center"
+                                    innerClassName="p-8 md:p-10 flex flex-col items-center text-center h-full"
                                 >
-                                    <div className="relative mb-10 w-full flex flex-col items-center">
-                                        <Quote strokeWidth={1} className="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 text-white/5" />
-                                        <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300] max-w-[90%] mx-auto">
-                                            &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
-                                        </p>
+                                    <div className="flex-grow flex flex-col justify-center">
+                                        <div className="relative mb-8 w-full flex flex-col items-center">
+                                            <Quote strokeWidth={1} className="w-12 h-12 text-white/10 mb-4" />
+                                            <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300]">
+                                                &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="relative z-10 pt-6 border-t border-white/10 w-full max-w-[80%] mx-auto">
-                                        <h4 className="text-[var(--color-text-primary)] text-xl md:text-2xl font-medium tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[11px] md:text-xs text-white/70 uppercase tracking-[0.2em] font-light">Diretor Clínico • CRO 00.000</p>
+                                    <div className="relative z-10 pt-6 border-t border-white/10 w-full">
+                                        <h4 className="text-[var(--color-text-primary)] text-lg md:text-xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                        <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.15em] font-light">Diretor Clínico · CRO 00.000</p>
                                     </div>
                                 </LuxuryCard>
                             </div>
