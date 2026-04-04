@@ -723,9 +723,9 @@ nav {
     padding: 16px 32px !important;
   }
   .hero-action-group {
-    margin-bottom: 8dvh !important; /* Move lower in mobile */
-    gap: 14px !important; /* Specified 12-16px range */
-    padding-bottom: 32px !important; /* Minimum "respiro" before next section */
+    margin-bottom: 17dvh !important; /* Elevado ~30px para melhor equilíbrio visual */
+    gap: 14px !important; /* Espaçamento entre botão e prova social (12-16px) */
+    padding-bottom: 0 !important; /* Consolidado no margin-bottom para controle preciso */
   }
   .hero-trust-item {
     font-size: 10px !important; /* Subtle adjustment for smaller mobile screens */

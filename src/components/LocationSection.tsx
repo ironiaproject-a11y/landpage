@@ -54,14 +54,14 @@ export function LocationSection() {
                         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
                         className="w-full max-w-[340px] md:max-w-sm pointer-events-auto"
                     >
-                        <div className="bg-black/75 backdrop-blur-[32px] p-8 md:p-10 rounded-3xl border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(255,255,255,0.02)] relative overflow-hidden group/card text-center">
+                        <div className="bg-black/90 backdrop-blur-[64px] p-8 md:p-10 rounded-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9),0_0_40px_rgba(255,255,255,0.02)] relative overflow-hidden group/card text-center">
                         {/* Subtle highlight */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
                         
-                        <h3 className="text-lg md:text-xl font-light text-white mb-3 tracking-tight">
-                            Ambiente exclusivo com <span className="font-serif italic border-b border-white/10 pb-0.5">valet privativo</span>
+                        <h3 className="text-xl md:text-2xl font-light text-white mb-3 tracking-tight">
+                            Ambiente exclusivo com <span className="font-serif italic border-b border-white/20 pb-0.5">valet privativo</span>
                         </h3>
-                        <p className="text-[xs] md:text-[13px] text-white/50 leading-relaxed mb-6 font-light">
+                        <p className="text-[11px] md:text-[13px] text-white/50 leading-relaxed mb-8 font-light">
                             Total comodidade e segurança durante sua visita em nossa clínica.
                         </p>
                         
@@ -94,13 +94,13 @@ export function LocationSection() {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Localização da Clínica Premium"
-                        className="opacity-100 grayscale-[100%] brightness-[0.7] contrast-[1.2] transition-all duration-1000 group-hover:grayscale-[20%] group-hover:brightness-[0.8] w-full h-full scale-[1.05] group-hover:scale-[1]"
+                        className="opacity-100 grayscale-[100%] brightness-[0.4] contrast-[1.1] transition-all duration-1000 group-hover:grayscale-[40%] group-hover:brightness-[0.5] w-full h-full scale-[1.05] group-hover:scale-[1]"
                     ></iframe>
                     
-                    {/* Cinematic Grain & Fade Out Overlays */}
-                    <div className="absolute inset-0 pointer-events-none z-10">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-60" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 md:from-black/40 md:to-black/40" />
+                    {/* Cinematic Grain & Fade Out Overlays - Strengthened for better card isolation */}
+                    <div className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-1000 group-hover:opacity-40">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-transparent to-black/90 md:from-black/60 md:to-black/60" />
                     </div>
                 </div>
 

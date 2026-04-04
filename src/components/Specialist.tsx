@@ -290,14 +290,19 @@ export function Specialist() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
                                     {/* Centralized Harmonious Bottom Info Bar */}
-                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-5 md:p-6 rounded-2xl border border-white/10 backdrop-blur-2xl flex flex-col items-center justify-center text-center">
-                                        <h4 className="text-white text-lg md:text-xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
-                                        <p className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-white/70 mb-3">Especialista em Reabilitação Oral</p>
+                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-3xl flex flex-col items-center justify-center text-center shadow-2xl">
+                                        {/* Primary Focus: Name */}
+                                        <h4 className="text-white text-2xl md:text-3xl font-semibold tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
+                                        {/* Discrete Role */}
+                                        <p className="text-[9px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6 font-light">Especialista em Reabilitação Oral</p>
                                         
-                                        <div className="w-12 h-[1px] bg-white/10 mb-3" />
+                                        {/* Subtle Divider */}
+                                        <div className="w-16 h-[1px] bg-white/10 mb-6" />
+                                        
+                                        {/* Secondary Focus: Metric */}
                                         <div className="flex flex-col items-center">
-                                            <p className="text-[var(--color-text-primary)] text-3xl md:text-4xl font-medium tracking-tight leading-none mb-1">15</p>
-                                            <p className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-white/70 text-center leading-tight">Anos de Maestria</p>
+                                            <p className="text-[var(--color-text-primary)] text-xl md:text-2xl font-medium tracking-tight leading-none mb-1.5 opacity-90">15</p>
+                                            <p className="text-[10px] md:text-[xs] uppercase tracking-[0.15em] text-white/30 text-center font-light leading-tight">Anos de Maestria</p>
                                         </div>
                                     </div>
                                 </div>
