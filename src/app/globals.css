@@ -722,6 +722,15 @@ nav {
     min-width: 220px !important;
     padding: 16px 32px !important;
   }
+  .hero-action-group {
+    margin-bottom: 8dvh !important; /* Move lower in mobile */
+    gap: 14px !important; /* Specified 12-16px range */
+    padding-bottom: 32px !important; /* Minimum "respiro" before next section */
+  }
+  .hero-trust-item {
+    font-size: 10px !important; /* Subtle adjustment for smaller mobile screens */
+    opacity: 0.6 !important;
+  }
 }
 
 /* ── Overline / Editorial Label ───────── */
