@@ -551,7 +551,7 @@ export default function Home() {
       </div>
 
       {/* Main Sections */}
-      <div className="relative z-30 bg-[#0D0D0D] pt-16">
+      <div className="relative z-30 bg-[#0D0D0D] pt-8">
         <Services />
         <TrustBar />
         <InstitutionalTrust />

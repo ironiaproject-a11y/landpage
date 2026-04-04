@@ -295,7 +295,7 @@ export function Services() {
     }, [mounted, isMobile]);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-40 bg-transparent relative overflow-hidden" id="servicos">
+        <section ref={sectionRef} className="py-16 md:py-24 bg-transparent relative overflow-hidden" id="servicos">
             {/* Priority Preload for the first card video */}
             <link rel="preload" href={firstVideo} as="video" type="video/mp4" />
 
