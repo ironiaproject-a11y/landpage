@@ -2,6 +2,7 @@
 
 import nextDynamic from "next/dynamic";
 import { useRef, useEffect, useState } from "react";
+import { m } from "framer-motion";
 import { ServicesSkeleton, CaseStudiesSkeleton, TestimonialsSkeleton } from "@/components/SectionSkeletons";
 import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
@@ -510,7 +511,13 @@ export default function Home() {
 
             <div className="hero-action-group">
               <div className="hero-social-proof">
-                <div className="hero-social-proof-row">
+                <m.div
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  viewport={{ once: true }}
+                  className="hero-social-proof-row"
+                >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-google-icon">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="rgba(255,255,255,0.8)"/>
                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="rgba(255,255,255,0.8)"/>
@@ -519,10 +526,16 @@ export default function Home() {
                   </svg>
                   <span className="hero-stars">★★★★★</span>
                   <span className="hero-rating-text">4.9 no Google</span>
-                </div>
-                <div className="hero-social-proof-row hero-satisfaction-row">
+                </m.div>
+                <m.div
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  viewport={{ once: true }}
+                  className="hero-social-proof-row hero-satisfaction-row"
+                >
                   <span className="hero-satisfaction-text"><span ref={percentRef}>0</span>% de satisfação dos pacientes</span>
-                </div>
+                </m.div>
               </div>
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
