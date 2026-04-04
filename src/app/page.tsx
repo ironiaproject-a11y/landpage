@@ -60,6 +60,7 @@ export default function Home() {
   const heroBtnRef    = useRef<HTMLAnchorElement>(null);
   const [isVideoPrimed, setIsVideoPrimed] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const percentRef = useRef<HTMLSpanElement>(null);
 
   /* ─── DETECT iOS ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -331,6 +332,28 @@ export default function Home() {
     };
   }, []);
 
+  /* ─── PERCENTAGE COUNTER ANIMATION ────────────────────────────── */
+  useEffect(() => {
+    const el = percentRef.current;
+    if (!el) return;
+
+    const counter = { value: 0 };
+    gsap.to(counter, {
+      value: 98,
+      duration: 1.5,
+      delay: 0.8, // subtle delay to让用户看到开始
+      ease: "power2.out",
+      onUpdate: () => {
+        if (el) el.textContent = Math.round(counter.value).toString();
+      },
+      scrollTrigger: {
+        trigger: el,
+        start: "top 95%",
+        once: true,
+      }
+    });
+  }, []);
+
   return (
     <main className="w-full bg-[#0D0D0D] overflow-x-clip">
 
@@ -479,22 +502,26 @@ export default function Home() {
 
             <div className="hero-text-group">
               <p ref={originTextRef} className="hero-overline">SUA ORIGEM,</p>
-              <div className="hero-trust-badge">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={10} fill="white" className="text-white" strokeWidth={0} />
-                    ))}
-                  </div>
-                  <span className="hero-trust-item">4.9 no Google · 785+ sorrisos</span>
-                </div>
-              </div>
               <h1 ref={smileTextRef} className="hero-headline">
                 Seu sorriso<span className="hero-period">.</span>
               </h1>
+            </div>
+
+            <div className="hero-action-group">
               <a ref={heroBtnRef} href="#agendamento" className="hero-cta" style={{ position: 'relative', zIndex: 10 }}>
                 AGENDAR CONSULTA →
               </a>
+              <div className="hero-trust-badge">
+                <span className="hero-trust-item">
+                  <span ref={percentRef}>0</span>% de satisfação · 
+                  <span className="flex items-center gap-0.5 mx-1.5 align-middle inline-flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} fill="white" className="text-white" strokeWidth={0} />
+                    ))}
+                  </span>
+                  4.9 no Google
+                </span>
+              </div>
             </div>
 
 
