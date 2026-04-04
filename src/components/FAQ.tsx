@@ -4,13 +4,7 @@ import { m, AnimatePresence } from "framer-motion";
 import { Plus, Minus, HelpCircle } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { PremiumReveal } from "./PremiumReveal";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const faqs = [
     {

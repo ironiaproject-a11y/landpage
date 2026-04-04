@@ -6,13 +6,7 @@ import { MediaCard } from "./MediaCard";
 import { useRef, useEffect, useState } from "react";
 import { LuxuryCard } from "./LuxuryCard";
 import { PremiumReveal } from "./PremiumReveal";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const cases = [
     {
@@ -35,12 +29,12 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
     return (
         <LuxuryCard
             delay={0.2}
-            innerClassName="p-0"
+            innerClassName="p-0 overflow-hidden rounded-[2rem]"
             className="max-w-5xl w-full"
             interactive={true}
         >
             <div
-                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden"
+                className="relative w-full aspect-video bg-black overflow-hidden"
                 onMouseEnter={() => setIsVideoActive(true)}
                 onMouseLeave={() => setIsVideoActive(false)}
                 onTouchStart={() => setIsVideoActive(true)}
@@ -59,10 +53,10 @@ function ResultCard({ item, index }: { item: ResultCaseItem; index: number }) {
                     posterSrc={item.poster}
                     alt={item.title}
                     ariaLabel={item.title}
-                    className="w-full h-full grayscale"
+                    className="absolute inset-0 w-full h-full grayscale rounded-none border-0"
                     videoClassName="object-cover w-full h-full"
                     posterClassName="object-cover w-full h-full"
-                    aspectRatio="aspect-video"
+                    aspectRatio=""
                     playing={isVideoActive}
                 />
             </div>

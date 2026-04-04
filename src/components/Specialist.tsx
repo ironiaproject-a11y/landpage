@@ -7,13 +7,7 @@ import { PremiumReveal } from "./PremiumReveal";
 import { LuxuryCard } from "./LuxuryCard";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function Specialist() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -276,7 +270,7 @@ export function Specialist() {
                     <div className="lg:w-1/2 order-1 lg:order-2">
                         <div className="relative dr-portrait-wrapper will-change-transform [transform:translateZ(0)]">
                             <PremiumReveal type="mask" direction="bottom" duration={1.5}>
-                                <div className="relative rounded-[2rem] overflow-hidden border border-white/10 dr-portrait-inner">
+                                <div className="relative rounded-[2rem] overflow-hidden border border-white/10 dr-portrait-inner" style={{contain: "layout"}}>
                                     <Image
                                         src="/assets/images/dr-ricardo.png"
                                         alt="Dr. Ricardo Alessandro"
@@ -288,7 +282,7 @@ export function Specialist() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-black/20 to-transparent" />
 
                                     {/* Centralized Harmonious Bottom Info Bar */}
-                                    <div className="absolute bottom-4 inset-x-4 md:bottom-6 md:inset-x-6 z-20 op-desc-parallax glass-panel p-6 md:p-8 rounded-2xl border border-white/10 backdrop-blur-3xl flex flex-col items-center justify-center text-center shadow-2xl">
+                                    <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-20 op-desc-parallax glass-panel p-4 md:p-8 rounded-2xl border border-white/10 backdrop-blur-3xl flex flex-col items-center justify-center text-center shadow-2xl overflow-hidden">
                                         {/* Primary Focus: Name */}
                                         <h4 className="text-white text-2xl md:text-3xl font-semibold tracking-tight mb-2">Dr. Ricardo Alessandro</h4>
                                         {/* Discrete Role */}

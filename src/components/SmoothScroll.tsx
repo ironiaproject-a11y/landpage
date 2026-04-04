@@ -7,13 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export function SmoothScroll() {
     useEffect(() => {
+        // ── Skip Lenis on touch/mobile — native scroll is faster ──
+        const isTouch = window.matchMedia("(pointer: coarse)").matches;
+        if (isTouch) return;
+
         const lenis = new Lenis({
-            duration: 0.8, // Snappier response
+            duration: 0.8,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
-            wheelMultiplier: 1.1, // Slightly more travel
+            wheelMultiplier: 1.1,
             touchMultiplier: 1.5,
             infinite: false,
         });
@@ -27,16 +31,12 @@ export function SmoothScroll() {
 
         gsap.ticker.lagSmoothing(0);
 
-        // Remove normalization to increase main thread responsiveness
-        // ScrollTrigger.normalizeScroll(true);
-        
         // Expose lenis for other components
         (window as any).lenis = lenis;
 
         return () => {
             lenis.destroy();
             gsap.ticker.remove(lenis.raf as any);
-            // ScrollTrigger.normalizeScroll(false);
             (window as any).lenis = undefined;
         };
     }, []);

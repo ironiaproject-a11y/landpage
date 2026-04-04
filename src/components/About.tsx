@@ -5,13 +5,7 @@ import { PremiumReveal } from "./PremiumReveal";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function About() {
     const sectionRef = useRef<HTMLElement>(null);

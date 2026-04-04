@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;700&display=swap');
+/* Fonts now handled by next/font/google — no @import needed */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -178,9 +178,9 @@ video {
   --color-background:        var(--color-bg-dark);
 
 
-  /* ── TYPOGRAPHY TOKENS (Premium System — Cormorant Garamond & Jost) ───────────────────────── */
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Jost', sans-serif;
+  /* ── TYPOGRAPHY TOKENS (Premium System — Cormorant Garamond & Jost via next/font) ─────── */
+  --font-serif: var(--font-cormorant, 'Cormorant Garamond', serif);
+  --font-sans: var(--font-jost, 'Jost', sans-serif);
 
   /* Legacy aliases (mapped to new system) */
   --font-headline: var(--font-serif);
@@ -268,12 +268,18 @@ body {
   line-height: 1.85;
   overflow-x: hidden;
   position: relative;
-  cursor: none; 
+  /* cursor:none only on desktop with precise pointer — saves paint on mobile */
+  cursor: auto;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
   margin: 0;
   padding: 0;
   width: 100vw;
+}
+
+/* Only apply custom cursor on devices that have a mouse */
+@media (pointer: fine) {
+  body { cursor: none; }
 }
 
 /* Ensure interactive elements use correct UI font */
@@ -283,13 +289,16 @@ button,
 input,
 textarea,
 select {
-  cursor: none !important;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
   font-family: var(--font-sans);
   font-weight: 400;
   letter-spacing: 0.02em;
+}
+
+/* Custom cursor only on fine-pointer devices */
+@media (pointer: fine) {
+  a, button, [role="button"], input, textarea, select {
+    cursor: none !important;
+  }
 }
 
 /* Fallback for touch devices where custom cursor might be problematic */
@@ -306,28 +315,21 @@ select {
   }
 }
 
-/* Cinematic Grain & Vignette System */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  animation: grain-animation 15s steps(8) infinite;
-  /* Lighter on CPU */
-}
-
-@media (max-width: 768px) {
+/* Cinematic Grain & Vignette System — only on desktop with animation preference */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   body::before {
-    animation: none;
-    /* Disable animation on mobile for battery/performance */
-    opacity: 0.08;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    animation: grain-animation 20s steps(6) infinite;
   }
 }
 
@@ -819,7 +821,7 @@ nav {
 
 .text-mask-reveal-inner {
   display: block;
-  will-change: transform;
+  /* will-change applied via GSAP only during animation, not statically */
 }
 
 /* B1 — Global Section Spacing: canonical token-based rhythm */
@@ -1078,6 +1080,29 @@ section:not(.hero) {
   overflow: hidden;
 }
 
+/* ── Touch device backdrop-filter fallback ── GPU killer on Android */
+@media (pointer: coarse) {
+  .glass-panel,
+  .glass-panel-warm,
+  .glass-card-premium,
+  .btn-premium,
+  .btn-luxury-primary,
+  .btn-luxury-ghost,
+  .hero-cta {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .glass-panel,
+  .glass-card-premium {
+    background: rgba(10, 10, 10, 0.88) !important;
+  }
+  .btn-premium,
+  .btn-luxury-primary,
+  .hero-cta {
+    background: rgba(20, 20, 20, 0.92) !important;
+  }
+}
+
 .glass-panel::before {
   content: "";
   position: absolute;
@@ -1294,7 +1319,8 @@ section:not(.hero) {
 }
 
 .media-video {
-  will-change: opacity;
+  /* will-change: opacity applied by JS only during opacity transitions */
+  will-change: auto;
 }
 
 .media-poster {

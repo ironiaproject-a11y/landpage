@@ -5,13 +5,7 @@ import { Quote, Star } from "lucide-react";
 import { PremiumReveal } from "./PremiumReveal";
 import { LuxuryCard } from "./LuxuryCard";
 import { useRef, useEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register ScrollTrigger
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function Testimonials() {
     const sectionRef = useRef<HTMLElement>(null);

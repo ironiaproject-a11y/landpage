@@ -7,13 +7,8 @@ import { InstitutionalTrust } from "@/components/InstitutionalTrust";
 import { Agendamento } from "@/components/Agendamento";
 import { PremiumReveal } from "@/components/PremiumReveal";
 import { Star } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
-/* ─── register gsap ─────────────────────────────────────────── */
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 import { Services } from "@/components/Services";
 import { TrustBar } from "@/components/TrustBar";
