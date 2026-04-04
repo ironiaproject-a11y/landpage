@@ -4,7 +4,6 @@ import { m } from "framer-motion";
 import { Quote, Star } from "lucide-react";
 import { PremiumReveal } from "./PremiumReveal";
 import { LuxuryCard } from "./LuxuryCard";
-import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -22,39 +21,34 @@ export function Testimonials() {
 
     const testimonials = [
         {
-            name: "Dr. Mariana Costa",
-            role: "Empresária & Palestrante",
+            name: "Mariana Costa",
+            detail: "paciente · lentes de contato dental · são paulo, sp",
             content: "Recuperei minha segurança ao sorrir. O planejamento digital tornou todo o processo previsível e o resultado ficou incrivelmente natural.",
-            rating: 5,
-            image: "/assets/images/dr-ricardo.png"
+            rating: 5
         },
         {
             name: "Ricardo Oliveira",
-            role: "Sócio-Diretor Corporativo",
+            detail: "paciente · implantes dentários · são paulo, sp",
             content: "Precisão clínica excepcional. A equipe demonstrou um domínio técnico impressionante em cada etapa do meu tratamento de implantes.",
-            rating: 5,
-            image: "/assets/images/luxury-lounge.png"
+            rating: 5
         },
         {
             name: "Fernanda Santos",
-            role: "Arquiteta de Interiores",
+            detail: "paciente · clareamento premium · campinas, sp",
             content: "O atendimento exclusivo e o ambiente sofisticado fazem toda a diferença. Superou minhas expectativas mais exigentes.",
-            rating: 5,
-            image: "/assets/images/clinic-interior.png"
+            rating: 5
         },
         {
-            name: "Dr. Carlos Eduardo",
-            role: "Cirurgião Plástico",
+            name: "Carlos Eduardo",
+            detail: "paciente · reabilitação oral · são paulo, sp",
             content: "Como profissional da área de estética, sou extremamente rigoroso. A Clínica Premium entrega um nível de acabamento e naturalidade que raramente se vê.",
-            rating: 5,
-            image: "/assets/images/dr-ricardo.png"
+            rating: 5
         },
         {
             name: "Beatriz Lins",
-            role: "Executiva de Tecnologia",
+            detail: "paciente · protocolo sobre implantes · são paulo, sp",
             content: "O protocolo de atendimento digital é fascinante. Rapidez, eficiência e um resultado que transformou minha presença profissional.",
-            rating: 5,
-            image: "/assets/images/luxury-lounge.png"
+            rating: 5
         }
     ];
 
@@ -229,20 +223,9 @@ export function Testimonials() {
                                                 &quot;{testimonial.content}&quot;
                                             </p>
 
-                                            <div className="pt-8 border-t border-white/5 flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 relative">
-                                                    <Image
-                                                        src={testimonial.image}
-                                                        alt={testimonial.name}
-                                                        fill
-                                                        loading="lazy"
-                                                        className="object-cover grayscale"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-white text-level-3" style={{ fontWeight: 500, opacity: 0.95 }}>{testimonial.name}</h4>
-                                                    <p className="text-level-4 uppercase" style={{ fontWeight: 400, opacity: 0.60 }}>{testimonial.role}</p>
-                                                </div>
+                                            <div className="pt-8 border-t border-white/5">
+                                                <h4 className="text-white text-level-3 mb-1" style={{ fontWeight: 500, opacity: 0.95 }}>{testimonial.name}</h4>
+                                                <p className="text-level-4" style={{ fontWeight: 400, opacity: 0.60 }}>{testimonial.detail}</p>
                                             </div>
                                         </div>
                                     </LuxuryCard>
