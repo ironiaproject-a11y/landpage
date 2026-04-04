@@ -254,22 +254,18 @@ export function Specialist() {
                         </div>
 
                         <PremiumReveal type="fade" delay={0.4}>
-                            <div ref={quoteRef} className="h-full flex flex-col justify-center">
+                            <div ref={quoteRef} className="flex justify-center">
                                 <LuxuryCard
                                     glowColor="rgba(255,255,255,0.05)"
-                                    className="border-white/5"
-                                    innerClassName="p-8 md:p-10 flex flex-col items-center text-center h-full"
+                                    className="border-white/5 max-w-lg w-full"
+                                    innerClassName="p-6 md:p-8 flex flex-col items-center text-center"
                                 >
-                                    <div className="flex-grow flex flex-col justify-center">
-                                        <div className="relative mb-8 w-full flex flex-col items-center">
-                                            <Quote strokeWidth={1} className="w-12 h-12 text-white/10 mb-4" />
-                                            <p className="text-lg md:text-xl text-white/90 italic leading-relaxed relative z-10 font-[300]">
-                                                &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="relative z-10 pt-6 border-t border-white/10 w-full">
-                                        <h4 className="text-[var(--color-text-primary)] text-lg md:text-xl font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
+                                    <Quote strokeWidth={1} className="w-10 h-10 text-white/10 mb-4" />
+                                    <p className="text-base md:text-lg text-white/90 italic leading-relaxed relative z-10 font-[300] mb-6">
+                                        &quot;Minha missão não é apenas tratar dentes, mas esculpir a confiança que permite a cada paciente expressar sua verdadeira essência através do sorriso.&quot;
+                                    </p>
+                                    <div className="relative z-10 pt-4 border-t border-white/10 w-full">
+                                        <h4 className="text-[var(--color-text-primary)] text-base md:text-lg font-medium tracking-tight mb-1">Dr. Ricardo Alessandro</h4>
                                         <p className="text-[10px] md:text-xs text-white/60 uppercase tracking-[0.15em] font-light">Diretor Clínico · CRO 00.000</p>
                                     </div>
                                 </LuxuryCard>
