@@ -664,6 +664,62 @@ nav {
   letter-spacing: 0.1em !important;
 }
 
+.hero-sub-headline {
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  margin-top: 16px !important;
+  margin-bottom: 0 !important;
+  letter-spacing: 0.02em !important;
+  font-family: var(--font-sans) !important;
+  line-height: 1.5 !important;
+}
+
+.hero-social-proof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  margin-bottom: 28px;
+}
+
+.hero-social-proof-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hero-google-icon {
+  flex-shrink: 0;
+}
+
+.hero-stars {
+  font-size: 18px;
+  color: #D4AF37;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.hero-rating-text {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+}
+
+.hero-satisfaction-row {
+  margin-top: 2px;
+}
+
+.hero-satisfaction-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.01em;
+}
+
 .hero-cta {
   padding: 14px 40px !important;
   font-size: 12px !important;
@@ -713,9 +769,27 @@ nav {
   .hero-headline {
     font-size: 56px !important;
   }
+  .hero-sub-headline {
+    font-size: 15px !important;
+    padding: 0 20px;
+  }
   .hero-subheadline {
     white-space: normal !important;
     font-size: 13px !important;
+  }
+  .hero-social-proof {
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    gap: 6px;
+  }
+  .hero-stars {
+    font-size: 16px;
+  }
+  .hero-rating-text {
+    font-size: 14px;
+  }
+  .hero-satisfaction-text {
+    font-size: 13px;
   }
   .hero-cta {
     width: auto !important;
@@ -723,12 +797,12 @@ nav {
     padding: 16px 32px !important;
   }
   .hero-action-group {
-    margin-bottom: 17dvh !important; /* Elevado ~30px para melhor equilíbrio visual */
-    gap: 14px !important; /* Espaçamento entre botão e prova social (12-16px) */
-    padding-bottom: 0 !important; /* Consolidado no margin-bottom para controle preciso */
+    margin-bottom: 17dvh !important;
+    gap: 0 !important;
+    padding-bottom: 0 !important;
   }
   .hero-trust-item {
-    font-size: 10px !important; /* Subtle adjustment for smaller mobile screens */
+    font-size: 10px !important;
     opacity: 0.6 !important;
   }
 }
